@@ -1,3 +1,4 @@
+# deprecated
 class_name GdUnitCommand
 extends RefCounted
 

@@ -42,7 +42,16 @@ const DEFAULTS_WINDOWS := {
 }
 
 
-static func default_keys(shortcut :ShortCut) -> PackedInt32Array:
+const SETTINGS_MAPPING: Dictionary[ShortCut, String] = {
+	ShortCut.RUN_TESTCASE : GdUnitSettings.SHORTCUT_EDITOR_RUN_TEST
+}
+
+
+static func as_property(sortcut: ShortCut) -> String:
+	return SETTINGS_MAPPING[sortcut]
+
+
+static func default_keys(shortcut: ShortCut) -> PackedInt32Array:
 	match OS.get_name().to_lower():
 		'windows':
 			return DEFAULTS_WINDOWS[shortcut]

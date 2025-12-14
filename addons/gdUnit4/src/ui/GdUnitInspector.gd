@@ -8,8 +8,11 @@ var _command_handler := GdUnitCommandHandler.instance()
 
 func _ready() -> void:
 	@warning_ignore("return_value_discarded")
-	GdUnitCommandHandler.instance().gdunit_runner_start.connect(func() -> void:
-		var control :Control = get_parent_control()
+	GdUnitSignals.instance().gdunit_event.connect(func(event: GdUnitEvent) -> void:
+		if event.type() != GdUnitEvent.SESSION_START:
+			return
+
+		var control: Control = get_parent_control()
 		# if the tab is floating we dont need to set as current
 		if control is TabContainer:
 			var tab_container :TabContainer = control

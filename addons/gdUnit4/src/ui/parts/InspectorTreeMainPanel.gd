@@ -208,8 +208,6 @@ func _ready() -> void:
 	GdUnitSignals.instance().gdunit_test_discover_added.connect(on_test_case_discover_added)
 	GdUnitSignals.instance().gdunit_test_discover_deleted.connect(on_test_case_discover_deleted)
 	GdUnitSignals.instance().gdunit_test_discover_modified.connect(on_test_case_discover_modified)
-	var command_handler := GdUnitCommandHandler.instance()
-	command_handler.gdunit_runner_stop.connect(_on_gdunit_runner_stop)
 	if _run_test_recovery:
 		GdUnitTestDiscoverer.restore_last_session()
 
@@ -1119,6 +1117,17 @@ func collect_test_cases(item: TreeItem, tests: Array[GdUnitTestCase] = []) -> Ar
 	return tests
 
 
+func test_session_stop() -> void:
+	_context_menu.set_item_disabled(CONTEXT_MENU_RUN_ID, false)
+	_context_menu.set_item_disabled(CONTEXT_MENU_DEBUG_ID, false)
+	abort_running()
+	sort_tree_items(_tree_root)
+	# wait until the tree redraw
+	await get_tree().process_frame
+	var failure_item := _find_first_item_by_state(_tree_root, STATE.FAILED)
+	select_item( failure_item if failure_item else _current_selected_item)
+
+
 ################################################################################
 # Tree signal receiver
 ################################################################################
@@ -1182,17 +1191,6 @@ func _on_gdunit_runner_start() -> void:
 	clear_reports()
 
 
-func _on_gdunit_runner_stop(_id: int) -> void:
-	_context_menu.set_item_disabled(CONTEXT_MENU_RUN_ID, false)
-	_context_menu.set_item_disabled(CONTEXT_MENU_DEBUG_ID, false)
-	abort_running()
-	sort_tree_items(_tree_root)
-	# wait until the tree redraw
-	await get_tree().process_frame
-	var failure_item := _find_first_item_by_state(_tree_root, STATE.FAILED)
-	select_item( failure_item if failure_item else _current_selected_item)
-
-
 func _on_gdunit_event(event: GdUnitEvent) -> void:
 	match event.type():
 		GdUnitEvent.DISCOVER_START:
@@ -1221,6 +1219,9 @@ func _on_gdunit_event(event: GdUnitEvent) -> void:
 
 		GdUnitEvent.TESTSUITE_AFTER:
 			update_test_suite(event)
+
+		GdUnitEvent.SESSION_CLOSE:
+			await test_session_stop()
 
 
 func _on_context_m_index_pressed(index: int) -> void:

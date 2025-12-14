@@ -1,3 +1,4 @@
+# deprecated
 class_name GdUnitShortcutAction
 extends RefCounted
 

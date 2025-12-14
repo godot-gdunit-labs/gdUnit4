@@ -36,8 +36,8 @@ func _ready() -> void:
 	var command_handler := GdUnitCommandHandler.instance()
 	run_overall_pressed.connect(command_handler._on_run_overall_pressed)
 	stop_pressed.connect(command_handler._on_stop_pressed)
-	command_handler.gdunit_runner_start.connect(_on_gdunit_runner_start)
-	command_handler.gdunit_runner_stop.connect(_on_gdunit_runner_stop)
+
+	GdUnitSignals.instance().gdunit_event.connect(_on_gdunit_event)
 	GdUnitSignals.instance().gdunit_settings_changed.connect(_on_gdunit_settings_changed)
 	init_buttons()
 	init_shortcuts(command_handler)
@@ -84,16 +84,16 @@ func _on_stop_pressed() -> void:
 	stop_pressed.emit()
 
 
-func _on_gdunit_runner_start() -> void:
-	_button_run_overall.disabled = true
-	_button_run.disabled = true
-	_button_run_debug.disabled = true
-	_button_stop.disabled = false
-
-
-func _on_gdunit_runner_stop(_client_id: int) -> void:
-	_button_run_overall.disabled = false
-	_button_stop.disabled = true
+func _on_gdunit_event(event: GdUnitEvent) -> void:
+	if event.type() == GdUnitEvent.SESSION_START:
+		_button_run_overall.disabled = true
+		_button_run.disabled = true
+		_button_run_debug.disabled = true
+		_button_stop.disabled = false
+		return
+	if event.type() == GdUnitEvent.SESSION_CLOSE:
+		_button_run_overall.disabled = false
+		_button_stop.disabled = true
 
 
 func _on_gdunit_settings_changed(_property: GdUnitProperty) -> void:

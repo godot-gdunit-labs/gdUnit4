@@ -42,6 +42,10 @@ max_line_length = 180
 # File Extension Settings
 ##########################################
 
+# GDScript Godot files
+[*.gd]
+indent_style = tab
+
 # Visual Studio Solution Files
 [*.sln]
 indent_style = tab

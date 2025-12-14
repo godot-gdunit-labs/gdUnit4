@@ -1110,6 +1110,16 @@ func _on_run_pressed(run_debug: bool) -> void:
 	GdUnitCommandHandler.instance().cmd_run_tests(test_to_execute, run_debug)
 
 
+func _on_run_tests_until_failure(run_debug: bool) -> void:
+	var item: = _tree.get_selected()
+	if item == null:
+		print_rich("[color=GOLDENROD]Abort Testrun, no test suite selected![/color]")
+		return
+
+	var test_to_execute := collect_test_cases(item)
+	GdUnitCommandHandler.instance().cmd_rerun_tests_until_failure(test_to_execute, run_debug)
+
+
 func _on_collapse_tree_item(collapse: bool, parent := _current_selected_item) -> void:
 	if parent == null:
 		parent = _tree_root

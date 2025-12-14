@@ -4,7 +4,7 @@ extends PopupMenu
 
 
 signal run_tests(debug: bool)
-signal run_tests_until_failure()
+signal run_tests_until_failure(debug: bool)
 signal collapse_tree_item(collapse: bool)
 
 
@@ -27,6 +27,7 @@ func _ready() -> void:
 		push_error("Internal error, can't connect to the test inspector!")
 	else:
 		run_tests.connect(inspector._on_run_pressed)
+		run_tests_until_failure.connect(inspector._on_run_tests_until_failure)
 		collapse_tree_item.connect(inspector._on_collapse_tree_item)
 
 	_setup_item(CONTEXT_MENU_RUN_ID, "Run Tests", "Play", GdUnitShortcut.ShortCut.RERUN_TESTS)
@@ -68,7 +69,7 @@ func _on_index_pressed(index: int) -> void:
 		CONTEXT_MENU_RUN_ID:
 			run_tests.emit(false)
 		CONTEXT_MENU_RERUN_UNTIL_ID:
-			run_tests_until_failure.emit()
+			run_tests_until_failure.emit(true)
 		CONTEXT_MENU_EXPAND_ALL:
 			collapse_tree_item.emit(false)
 		CONTEXT_MENU_COLLAPSE_ALL:

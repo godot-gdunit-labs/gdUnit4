@@ -61,6 +61,7 @@ const SHORTCUT_SETTINGS = MAIN_CATEGORY + "/Shortcuts"
 const GROUP_SHORTCUT_INSPECTOR = SHORTCUT_SETTINGS + "/inspector"
 const SHORTCUT_INSPECTOR_RERUN_TEST = GROUP_SHORTCUT_INSPECTOR + "/rerun_test"
 const SHORTCUT_INSPECTOR_RERUN_TEST_DEBUG = GROUP_SHORTCUT_INSPECTOR + "/rerun_test_debug"
+const SHORTCUT_INSPECTOR_RERUN_TEST_UNTIL_FAILURE = GROUP_SHORTCUT_INSPECTOR + "/rerun_test_until_failure"
 const SHORTCUT_INSPECTOR_RUN_TEST_OVERALL = GROUP_SHORTCUT_INSPECTOR + "/run_test_overall"
 const SHORTCUT_INSPECTOR_RUN_TEST_STOP = GROUP_SHORTCUT_INSPECTOR + "/run_test_stop"
 
@@ -306,6 +307,10 @@ static func is_feature_enabled(feature: String) -> bool:
 
 static func get_flaky_max_retries() -> int:
 	return get_setting(TEST_FLAKY_MAX_RETRIES, 3)
+
+
+static func get_rerun_max_retries() -> int:
+	return get_setting(TEST_RERUN_UNTIL_FAILURE_RETRIES, 10)
 
 
 static func set_test_discover_enabled(enable :bool) -> void:

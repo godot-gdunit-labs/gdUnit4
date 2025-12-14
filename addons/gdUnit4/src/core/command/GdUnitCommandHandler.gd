@@ -14,6 +14,7 @@ const CMD_RUN_TESTSUITE = "Run TestSuites"
 const CMD_RUN_TESTSUITE_DEBUG = "Run TestSuites (Debug)"
 const CMD_RERUN_TESTS = "ReRun Tests"
 const CMD_RERUN_TESTS_DEBUG = "ReRun Tests (Debug)"
+const CMD_RERUN_TESTS_UNTIL_FAILURE = "ReRun Tests Until Failure"
 const CMD_STOP_TEST_RUN = "Stop Test Run"
 const CMD_CREATE_TESTCASE = "Create TestCase"
 
@@ -21,6 +22,7 @@ const SETTINGS_SHORTCUT_MAPPING := {
 	"N/A" : GdUnitShortcut.ShortCut.NONE,
 	GdUnitSettings.SHORTCUT_INSPECTOR_RERUN_TEST : GdUnitShortcut.ShortCut.RERUN_TESTS,
 	GdUnitSettings.SHORTCUT_INSPECTOR_RERUN_TEST_DEBUG : GdUnitShortcut.ShortCut.RERUN_TESTS_DEBUG,
+	GdUnitSettings.SHORTCUT_INSPECTOR_RERUN_TEST_UNTIL_FAILURE : GdUnitShortcut.ShortCut.RERUN_TESTS_UNTIL_FAILURE,
 	GdUnitSettings.SHORTCUT_INSPECTOR_RUN_TEST_OVERALL : GdUnitShortcut.ShortCut.RUN_TESTS_OVERALL,
 	GdUnitSettings.SHORTCUT_INSPECTOR_RUN_TEST_STOP : GdUnitShortcut.ShortCut.STOP_TEST_RUN,
 	GdUnitSettings.SHORTCUT_EDITOR_RUN_TEST : GdUnitShortcut.ShortCut.RUN_TESTCASE,
@@ -38,6 +40,7 @@ const CommandMapping := {
 	GdUnitShortcut.ShortCut.RUN_TESTSUITE_DEBUG: GdUnitCommandHandler.CMD_RUN_TESTSUITE_DEBUG,
 	GdUnitShortcut.ShortCut.RERUN_TESTS: GdUnitCommandHandler.CMD_RERUN_TESTS,
 	GdUnitShortcut.ShortCut.RERUN_TESTS_DEBUG: GdUnitCommandHandler.CMD_RERUN_TESTS_DEBUG,
+	GdUnitShortcut.ShortCut.RERUN_TESTS_UNTIL_FAILURE: GdUnitCommandHandler.CMD_RERUN_TESTS_UNTIL_FAILURE,
 	GdUnitShortcut.ShortCut.STOP_TEST_RUN: GdUnitCommandHandler.CMD_STOP_TEST_RUN,
 	GdUnitShortcut.ShortCut.CREATE_TEST: GdUnitCommandHandler.CMD_CREATE_TESTCASE,
 }
@@ -84,6 +87,8 @@ func _init() -> void:
 	register_command(GdUnitCommand.new(CMD_RUN_TESTSUITE_DEBUG, is_not_running, cmd_run_test_suites.bind(true), GdUnitShortcut.ShortCut.RUN_TESTSUITE_DEBUG))
 	register_command(GdUnitCommand.new(CMD_RERUN_TESTS, is_not_running, cmd_run.bind(false), GdUnitShortcut.ShortCut.RERUN_TESTS))
 	register_command(GdUnitCommand.new(CMD_RERUN_TESTS_DEBUG, is_not_running, cmd_run.bind(true), GdUnitShortcut.ShortCut.RERUN_TESTS_DEBUG))
+	register_command(GdUnitCommand.new(CMD_RERUN_TESTS_UNTIL_FAILURE, is_not_running, cmd_run.bind(true), GdUnitShortcut.ShortCut.NONE))
+
 	register_command(GdUnitCommand.new(CMD_CREATE_TESTCASE, is_not_running, cmd_create_test, GdUnitShortcut.ShortCut.CREATE_TEST))
 	register_command(GdUnitCommand.new(CMD_STOP_TEST_RUN, is_running, cmd_stop.bind(_client_id), GdUnitShortcut.ShortCut.STOP_TEST_RUN))
 
@@ -109,7 +114,7 @@ func check_test_run_stopped_manually() -> void:
 	if is_test_running_but_stop_pressed():
 		if GdUnitSettings.is_verbose_assert_warnings():
 			push_warning("Test Runner scene was stopped manually, force stopping the current test run!")
-		cmd_stop(_client_id)
+		await cmd_stop(_client_id)
 
 
 func is_test_running_but_stop_pressed() -> bool:
@@ -252,6 +257,22 @@ func cmd_run_overall(debug: bool) -> void:
 	cmd_run(debug)
 
 
+var rerun_until_failure_count := 0
+
+func cmd_rerun_tests_until_failure(tests_to_execute: Array[GdUnitTestCase], debug: bool) -> void:
+	# Save tests to runner config before execute
+	var result := _runner_config.clear()\
+		.add_test_cases(tests_to_execute)\
+		.save_config()
+	if result.is_error():
+		push_error(result.error_message())
+		return
+
+	rerun_until_failure_count = GdUnitSettings.get_rerun_max_retries()
+	ProjectSettings.set_setting(GdUnitSettings.TEST_FLAKY_CHECK, false)
+	cmd_run(debug)
+
+
 func cmd_run(debug: bool) -> void:
 	# don't start is already running
 	if _is_running:
@@ -288,6 +309,12 @@ func cmd_stop(client_id: int) -> void:
 			if result != OK:
 				push_error("ERROR checked stopping GdUnit Test Runner. error code: %s" % result)
 	_current_runner_process_id = -1
+
+	# we try rerun until first failure
+	if rerun_until_failure_count > 0:
+		await (Engine.get_main_loop() as SceneTree).process_frame
+		rerun_until_failure_count -= 1
+		cmd_run(_running_debug_mode)
 
 
 func cmd_editor_run_test(debug: bool) -> void:
@@ -362,11 +389,12 @@ func active_script() -> Script:
 ################################################################################
 func _on_event(event: GdUnitEvent) -> void:
 	if event.type() == GdUnitEvent.SESSION_CLOSE:
-		cmd_stop(_client_id)
+		await cmd_stop(_client_id)
 
 
 func _on_stop_pressed() -> void:
-	cmd_stop(_client_id)
+	rerun_until_failure_count = 0
+	await cmd_stop(_client_id)
 
 
 func _on_run_pressed(debug := false) -> void:
@@ -404,5 +432,5 @@ func _on_client_connected(client_id: int) -> void:
 func _on_client_disconnected(client_id: int) -> void:
 	# only stops is not in debug mode running and the current client
 	if not _running_debug_mode and _client_id == client_id:
-		cmd_stop(client_id)
+		await cmd_stop(client_id)
 	_client_id = -1

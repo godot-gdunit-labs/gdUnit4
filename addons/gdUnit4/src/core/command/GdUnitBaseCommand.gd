@@ -2,32 +2,29 @@
 extends RefCounted
 
 
-var id: String:
-	set(value):
-		id = value
-	get:
-		return id
-
-
-var shortcut: Shortcut = null:
-	set(value):
-		shortcut = value
-	get:
-		return shortcut
+var id: String
+var icon: Texture2D
+var shortcut: Shortcut = null
+var shortcut_type: GdUnitShortcut.ShortCut
 
 
 func _init(p_id: String, p_shortcut: GdUnitShortcut.ShortCut = GdUnitShortcut.ShortCut.NONE) -> void:
 	id = p_id
-	_set_shortut(p_shortcut)
+	shortcut_type = p_shortcut
+	_set_shortcut()
 
 
-func _set_shortut(p_shortcut: GdUnitShortcut.ShortCut) -> void:
-	if p_shortcut == GdUnitShortcut.ShortCut.NONE:
+func update_shortcut() -> void:
+	_set_shortcut()
+
+
+func _set_shortcut() -> void:
+	if shortcut_type == GdUnitShortcut.ShortCut.NONE:
 		return
 
-	var property_name := GdUnitShortcut.as_property(p_shortcut)
+	var property_name := GdUnitShortcut.as_property(shortcut_type)
 	var property := GdUnitSettings.get_property(property_name)
-	var keys := GdUnitShortcut.default_keys(p_shortcut)
+	var keys := GdUnitShortcut.default_keys(shortcut_type)
 	if property != null:
 		keys = property.value()
 	var inputEvent := _create_shortcut_input_even(keys)

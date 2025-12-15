@@ -1,7 +1,6 @@
 @tool
 extends PanelContainer
 
-signal run_overall_pressed(debug: bool)
 signal run_pressed(debug: bool)
 signal stop_pressed()
 
@@ -19,12 +18,15 @@ const  InspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/Insp
 const SETTINGS_SHORTCUT_MAPPING := {
 	GdUnitSettings.SHORTCUT_INSPECTOR_RERUN_TEST: GdUnitShortcut.ShortCut.RERUN_TESTS,
 	GdUnitSettings.SHORTCUT_INSPECTOR_RERUN_TEST_DEBUG: GdUnitShortcut.ShortCut.RERUN_TESTS_DEBUG,
-	GdUnitSettings.SHORTCUT_INSPECTOR_RUN_TEST_OVERALL: GdUnitShortcut.ShortCut.RUN_TESTS_OVERALL,
 	GdUnitSettings.SHORTCUT_INSPECTOR_RUN_TEST_STOP: GdUnitShortcut.ShortCut.STOP_TEST_RUN,
 }
 
 
+var command_handler: GdUnitCommandHandler
+
+
 func _ready() -> void:
+	command_handler = GdUnitCommandHandler.instance()
 	var inspector :InspectorTreeMainPanel = get_parent().get_parent().find_child("MainPanel", false, false)
 	if inspector == null:
 		push_error("Internal error, can't connect to the test inspector!")
@@ -33,18 +35,16 @@ func _ready() -> void:
 		run_pressed.connect(inspector._on_run_pressed)
 
 	GdUnit4Version.init_version_label(_version_label)
-	var command_handler := GdUnitCommandHandler.instance()
-	run_overall_pressed.connect(command_handler._on_run_overall_pressed)
 	stop_pressed.connect(command_handler._on_stop_pressed)
 
 	GdUnitSignals.instance().gdunit_event.connect(_on_gdunit_event)
 	GdUnitSignals.instance().gdunit_settings_changed.connect(_on_gdunit_settings_changed)
 	init_buttons()
-	init_shortcuts(command_handler)
+	init_shortcuts()
 
 
 func init_buttons() -> void:
-	_button_run_overall.icon = GdUnitUiTools.get_run_overall_icon()
+	_button_run_overall.icon = command_handler.command_icon(GdUnitCommandRunTestsOverall.ID)
 	_button_run_overall.visible = GdUnitSettings.is_inspector_toolbar_button_show()
 	_button_run.icon = GdUnitUiTools.get_icon("Play")
 	_button_run_debug.icon = GdUnitUiTools.get_icon("PlayStart")
@@ -56,14 +56,14 @@ func init_buttons() -> void:
 	_button_run_debug.disabled = true
 
 
-func init_shortcuts(command_handler: GdUnitCommandHandler) -> void:
+func init_shortcuts() -> void:
 	_button_run.shortcut = command_handler.get_shortcut(GdUnitShortcut.ShortCut.RERUN_TESTS)
-	_button_run_overall.shortcut = command_handler.get_shortcut(GdUnitShortcut.ShortCut.RUN_TESTS_OVERALL)
+	_button_run_overall.shortcut = command_handler.command_shortcut(GdUnitCommandRunTestsOverall.ID)
 	_button_run_debug.shortcut = command_handler.get_shortcut(GdUnitShortcut.ShortCut.RERUN_TESTS_DEBUG)
 	_button_stop.shortcut = command_handler.get_shortcut(GdUnitShortcut.ShortCut.STOP_TEST_RUN)
 	# register for shortcut changes
 	@warning_ignore("return_value_discarded")
-	GdUnitSignals.instance().gdunit_settings_changed.connect(_on_settings_changed.bind(command_handler))
+	GdUnitSignals.instance().gdunit_settings_changed.connect(_on_settings_changed)
 
 
 func _on_inspector_selected(item: TreeItem) -> void:
@@ -72,8 +72,8 @@ func _on_inspector_selected(item: TreeItem) -> void:
 	_button_run_debug.disabled = button_disabled
 
 
-func _on_runoverall_pressed(debug:=false) -> void:
-	run_overall_pressed.emit(debug)
+func _on_runoverall_pressed(debug := true) -> void:
+	command_handler.command_execute(GdUnitCommandRunTestsOverall.ID, debug)
 
 
 func _on_run_pressed(debug := false) -> void:
@@ -114,9 +114,14 @@ func _on_btn_tool_pressed() -> void:
 	settings_dlg.popup_centered_ratio(.60)
 
 
-func _on_settings_changed(property: GdUnitProperty, command_handler: GdUnitCommandHandler) -> void:
+func _on_settings_changed(property: GdUnitProperty) -> void:
 	# needs to wait a frame to be command handler notified first for settings changes
 	await get_tree().process_frame
+
+	if property.name().begins_with(GdUnitSettings.GROUP_SHORTCUT_INSPECTOR):
+		_button_run_overall.shortcut = command_handler.command_shortcut(GdUnitCommandRunTestsOverall.ID)
+
+	# deprecated
 	if SETTINGS_SHORTCUT_MAPPING.has(property.name()):
 		var shortcut: GdUnitShortcut.ShortCut = SETTINGS_SHORTCUT_MAPPING.get(property.name(), GdUnitShortcut.ShortCut.NONE)
 		match shortcut:

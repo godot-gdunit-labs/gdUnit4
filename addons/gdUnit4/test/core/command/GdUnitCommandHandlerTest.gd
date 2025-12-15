@@ -1,11 +1,7 @@
 
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
-@warning_ignore('unused_parameter')
-@warning_ignore('return_value_discarded')
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/core/command/GdUnitCommandHandler.gd'
 
 var _handler :GdUnitCommandHandler
 
@@ -18,15 +14,19 @@ func after() -> void:
 	_handler.free()
 
 
+func test_command_shortcut() -> void:
+	assert_str(_handler.command_shortcut(GdUnitCommandRunTestsOverall.ID).get_as_text()).is_equal("Alt+F7")
+
+
+
 @warning_ignore('unused_parameter')
 func test_create_shortcuts_defaults(shortcut :GdUnitShortcut.ShortCut, expected :String, test_parameters := [
 	[GdUnitShortcut.ShortCut.RUN_TESTCASE, "GdUnitShortcutAction: RUN_TESTCASE (Ctrl+Alt+F5) -> Run TestCases"],
 	[GdUnitShortcut.ShortCut.RUN_TESTCASE_DEBUG, "GdUnitShortcutAction: RUN_TESTCASE_DEBUG (Ctrl+Alt+F6) -> Run TestCases (Debug)"],
 	[GdUnitShortcut.ShortCut.RERUN_TESTS, "GdUnitShortcutAction: RERUN_TESTS (Alt+F5) -> ReRun Tests"],
 	[GdUnitShortcut.ShortCut.RERUN_TESTS_DEBUG, "GdUnitShortcutAction: RERUN_TESTS_DEBUG (Alt+F6) -> ReRun Tests (Debug)"],
-	[GdUnitShortcut.ShortCut.RUN_TESTS_OVERALL, "GdUnitShortcutAction: RUN_TESTS_OVERALL (Alt+F7) -> Debug Overall TestSuites"],
 	[GdUnitShortcut.ShortCut.STOP_TEST_RUN, "GdUnitShortcutAction: STOP_TEST_RUN (Alt+F8) -> Stop Test Run"],
-	[GdUnitShortcut.ShortCut.CREATE_TEST, "GdUnitShortcutAction: CREATE_TEST (Ctrl+Alt+F10) -> Create TestCase"],]) -> void:
+	[GdUnitShortcut.ShortCut.CREATE_TEST, "GdUnitShortcutAction: CREATE_TEST (Ctrl+Alt+F10) -> Create TestCase"]]) -> void:
 
 	if OS.get_name().to_lower() == "macos":
 		expected.replace("Ctrl", "Command")
@@ -38,7 +38,6 @@ func test_create_shortcuts_defaults(shortcut :GdUnitShortcut.ShortCut, expected 
 ## actually needs to comment out, it produces a lot of leaked instances
 func _test__check_test_run_stopped_manually() -> void:
 	var inspector :GdUnitCommandHandler = mock(GdUnitCommandHandler, CALL_REAL_FUNC)
-	inspector._client_id = 1
 
 	# simulate no test is running
 	do_return(false).on(inspector).is_test_running_but_stop_pressed()
@@ -48,4 +47,4 @@ func _test__check_test_run_stopped_manually() -> void:
 	# simulate the test runner was manually stopped by the editor
 	do_return(true).on(inspector).is_test_running_but_stop_pressed()
 	inspector.check_test_run_stopped_manually()
-	verify(inspector, 1).cmd_stop(inspector._client_id)
+	verify(inspector, 1).cmd_stop()

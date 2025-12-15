@@ -4,7 +4,6 @@ extends Object
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
-const CMD_RUN_OVERALL = "Debug Overall TestSuites"
 const CMD_RUN_TESTCASE = "Run TestCases"
 const CMD_RUN_TESTCASE_DEBUG = "Run TestCases (Debug)"
 const CMD_RUN_TESTSUITE = "Run TestSuites"
@@ -28,7 +27,6 @@ const SETTINGS_SHORTCUT_MAPPING := {
 }
 
 const CommandMapping := {
-	GdUnitShortcut.ShortCut.RUN_TESTS_OVERALL: GdUnitCommandHandler.CMD_RUN_OVERALL,
 	GdUnitShortcut.ShortCut.RUN_TESTCASE: GdUnitCommandHandler.CMD_RUN_TESTCASE,
 	GdUnitShortcut.ShortCut.RUN_TESTCASE_DEBUG: GdUnitCommandHandler.CMD_RUN_TESTCASE_DEBUG,
 	GdUnitShortcut.ShortCut.RUN_TESTSUITE: GdUnitCommandHandler.CMD_RUN_TESTSUITE,
@@ -67,13 +65,14 @@ func _init() -> void:
 	@warning_ignore("return_value_discarded")
 	_runner_config.load_config()
 
-	_register_command(GdUnitCommandTestSession.new())
+	var test_session_command := GdUnitCommandTestSession.new()
+	_register_command(test_session_command)
+	_register_command(GdUnitCommandRunTestsOverall.new(test_session_command))
 
 
 	init_shortcuts()
 	var is_running := func(_script :Script) -> bool: return _is_running
 	var is_not_running := func(_script :Script) -> bool: return !_is_running
-	register_command(GdUnitCommand.new(CMD_RUN_OVERALL, is_not_running, cmd_run_overall.bind(true), GdUnitShortcut.ShortCut.RUN_TESTS_OVERALL))
 	register_command(GdUnitCommand.new(CMD_RUN_TESTCASE, is_not_running, cmd_editor_run_test.bind(false), GdUnitShortcut.ShortCut.RUN_TESTCASE))
 	register_command(GdUnitCommand.new(CMD_RUN_TESTCASE_DEBUG, is_not_running, cmd_editor_run_test.bind(true), GdUnitShortcut.ShortCut.RUN_TESTCASE_DEBUG))
 	register_command(GdUnitCommand.new(CMD_RUN_TESTSUITE, is_not_running, cmd_run_test_suites.bind(false), GdUnitShortcut.ShortCut.RUN_TESTSUITE))
@@ -147,6 +146,7 @@ func create_shortcut_input_even(key_codes: PackedInt32Array) -> InputEventKey:
 	return inputEvent
 
 
+# deprecated
 func register_shortcut(p_shortcut: GdUnitShortcut.ShortCut, p_input_event: InputEvent) -> void:
 	GdUnitTools.prints_verbose("register shortcut: '%s' to '%s'" % [GdUnitShortcut.ShortCut.keys()[p_shortcut], p_input_event.as_text()])
 	var shortcut := Shortcut.new()
@@ -155,18 +155,38 @@ func register_shortcut(p_shortcut: GdUnitShortcut.ShortCut, p_input_event: Input
 	_shortcuts[p_shortcut] = GdUnitShortcutAction.new(p_shortcut, shortcut, command_name)
 
 
+func command_icon(command_id: String) -> Texture2D:
+	return _commnand_mappings[command_id].icon
+
+
+func command_shortcut(command_id: String) -> Shortcut:
+	return _commnand_mappings[command_id].shortcut
+
+
+func command_execute(...parameters: Array) -> void:
+	if parameters.is_empty():
+		push_error("Invalid arguments used on CommandHandler:execute()! Expecting [<command_id, args...>]")
+
+	var command_id: String = parameters.pop_front()
+	_commnand_mappings[command_id].callv("execute", parameters)
+
+
+# deprecated
 func get_shortcut(shortcut_type: GdUnitShortcut.ShortCut) -> Shortcut:
 	return get_shortcut_action(shortcut_type).shortcut
 
 
+# deprecated
 func get_shortcut_action(shortcut_type: GdUnitShortcut.ShortCut) -> GdUnitShortcutAction:
 	return _shortcuts.get(shortcut_type)
 
 
+# deprecated
 func get_shortcut_command(p_shortcut: GdUnitShortcut.ShortCut) -> String:
 	return CommandMapping.get(p_shortcut, "unknown command")
 
 
+# deprecated
 func register_command(p_command: GdUnitCommand) -> void:
 	_commands[p_command.name] = p_command
 
@@ -231,8 +251,10 @@ func cmd_run_tests(tests_to_execute: Array[GdUnitTestCase], debug: bool) -> void
 
 
 func cmd_run_overall(debug: bool) -> void:
-	var tests_to_execute := await GdUnitTestDiscoverer.run()
-	cmd_run(tests_to_execute, debug)
+	var command: GdUnitCommandRunTestsOverall = _commnand_mappings[GdUnitCommandRunTestsOverall.ID]
+	if command.is_running():
+		return
+	command.execute(debug)
 
 
 func cmd_run(tests_to_execute: Array[GdUnitTestCase], debug: bool) -> void:
@@ -313,11 +335,12 @@ func _on_stop_pressed() -> void:
 	cmd_stop()
 
 
-func _on_run_overall_pressed(_debug := false) -> void:
-	cmd_run_overall(true)
-
-
 func _on_settings_changed(property: GdUnitProperty) -> void:
+
+	for command: GdUnitBaseCommand in _commnand_mappings.values():
+		command.update_shortcut()
+
+	# deprecated
 	if SETTINGS_SHORTCUT_MAPPING.has(property.name()):
 		var shortcut :GdUnitShortcut.ShortCut = SETTINGS_SHORTCUT_MAPPING.get(property.name())
 		var value: PackedInt32Array = property.value()

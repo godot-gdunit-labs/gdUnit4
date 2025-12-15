@@ -37,7 +37,7 @@ jobs:
           sparse-checkout: .github
 
       - name: 'Download artifacts'
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: artifact_gdUnit4_Godot${{ matrix.godot-version }}-${{ matrix.godot-status }}${{ matrix.godot-net }}
           github-token: ${{ secrets.GITHUB_TOKEN }}

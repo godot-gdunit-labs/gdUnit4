@@ -10,8 +10,8 @@ func _init() -> void:
 			return false
 		return GdUnitTestSuiteScanner.is_test_suite(script) == is_ts
 	var command_handler := GdUnitCommandHandler.instance()
-	_context_menus[GdUnitContextMenuItem.MENU_ID.TEST_RUN] = GdUnitContextMenuItem.new(GdUnitContextMenuItem.MENU_ID.TEST_RUN, "Run Testsuites", "Play", is_test_suite.bind(true), command_handler.command(GdUnitCommandHandler.CMD_RUN_TESTSUITE))
-	_context_menus[GdUnitContextMenuItem.MENU_ID.TEST_DEBUG] = GdUnitContextMenuItem.new(GdUnitContextMenuItem.MENU_ID.TEST_DEBUG, "Debug Testsuites", "PlayStart", is_test_suite.bind(true), command_handler.command(GdUnitCommandHandler.CMD_RUN_TESTSUITE_DEBUG))
+	_context_menus[GdUnitContextMenuItem.MENU_ID.TEST_RUN] = GdUnitContextMenuItem.new(GdUnitContextMenuItem.MENU_ID.TEST_RUN, "Run Testsuites", "Play", is_test_suite.bind(true), command_handler.get_command(GdUnitCommandHandler.CMD_RUN_TESTSUITE))
+	_context_menus[GdUnitContextMenuItem.MENU_ID.TEST_DEBUG] = GdUnitContextMenuItem.new(GdUnitContextMenuItem.MENU_ID.TEST_DEBUG, "Debug Testsuites", "PlayStart", is_test_suite.bind(true), command_handler.get_command(GdUnitCommandHandler.CMD_RUN_TESTSUITE_DEBUG))
 
 	# setup shortcuts
 	for menu_item: GdUnitContextMenuItem  in _context_menus.values():

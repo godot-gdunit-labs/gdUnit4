@@ -2,25 +2,46 @@ class_name GdUnitCommandTestSession
 extends GdUnitBaseCommand
 
 
-const ID := "Start TestSession"
-
-
-enum PARAMS {
-	START,
-	STOP
-}
+const ID := "Run TestSession"
 
 
 var _current_runner_process_id: int
+var _is_running: bool
+var _is_debug: bool
 
 
 func _init() -> void:
 	super(ID, GdUnitShortcut.ShortCut.NONE)
+	_is_running = false
 
 
-func execute(...parameters: Array) -> void:
-	var mode: PARAMS = parameters[0]
-	if mode == PARAMS.START:
+func is_running() -> bool:
+	return _is_running
+
+
+func stop() -> void:
+	if not is_running():
+		return
+
+	if _is_debug:
+		EditorInterface.stop_playing_scene()
+	else:
+		if OS.is_process_running(_current_runner_process_id):
+			var result := OS.kill(_current_runner_process_id)
+			if result != OK:
+				push_error("ERROR checked stopping GdUnit Test Runner. error code: %s" % result)
+			_current_runner_process_id = -1
+	_is_running = false
+	# We need finaly to send the test session close event because the current run is hard aborted.
+	GdUnitSignals.instance().gdunit_event.emit(GdUnitSessionClose.new())
+
+
+func execute(tests_to_execute: Array[GdUnitTestCase], debug := false) -> void:
+	_is_debug = debug
+	_prepare_test_session(tests_to_execute)
+	if debug:
+		EditorInterface.play_custom_scene("res://addons/gdUnit4/src/core/runners/GdUnitTestRunner.tscn")
+	else:
 		var arguments := Array()
 		if OS.is_stdout_verbose():
 			arguments.append("--verbose")
@@ -29,11 +50,17 @@ func execute(...parameters: Array) -> void:
 		arguments.append(ProjectSettings.globalize_path("res://"))
 		arguments.append("res://addons/gdUnit4/src/core/runners/GdUnitTestRunner.tscn")
 		_current_runner_process_id = OS.create_process(OS.get_executable_path(), arguments, false);
-	elif mode == PARAMS.STOP:
-		if OS.is_process_running(_current_runner_process_id):
-			var result := OS.kill(_current_runner_process_id)
-			if result != OK:
-				push_error("ERROR checked stopping GdUnit Test Runner. error code: %s" % result)
-			_current_runner_process_id = -1
-	else:
-		push_error("ERROR invalid command argument: %s" % parameters)
+	_is_running = true
+
+
+func _prepare_test_session(tests_to_execute: Array[GdUnitTestCase]) -> void:
+	var server_port: int = Engine.get_meta("gdunit_server_port")
+	var result := GdUnitRunnerConfig.new() \
+		.set_server_port(server_port) \
+		.add_test_cases(tests_to_execute) \
+		.save_config()
+	if result.is_error():
+		push_error(result.error_message())
+		return
+	# before start we have to save all scrpt changes
+	ScriptEditorControls.save_all_open_script()

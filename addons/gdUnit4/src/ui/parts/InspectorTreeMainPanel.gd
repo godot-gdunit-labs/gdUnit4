@@ -706,7 +706,7 @@ func add_report(item: TreeItem, report: GdUnitReport) -> void:
 
 func abort_running(items:=_tree_root.get_children()) -> void:
 	for item in items:
-		if is_state_running(item):
+		if item.get_icon(0) == ICON_SPINNER:
 			set_state_aborted(item)
 			abort_running(item.get_children())
 

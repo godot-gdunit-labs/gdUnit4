@@ -42,12 +42,9 @@ const CommandMapping := {
 # the current test runner config
 var _runner_config := GdUnitRunnerConfig.new()
 
-# if no debug mode we have an process id
-var _current_runner_process_id: int = 0
+
 # hold is current an test running
 var _is_running: bool = false
-# holds if the current running tests started in debug mode
-var _running_debug_mode: bool
 
 var _commands := {}
 var _shortcuts := {}
@@ -71,7 +68,6 @@ func _init() -> void:
 	_runner_config.load_config()
 
 	_register_command(GdUnitCommandTestSession.new())
-	_register_command(GdUnitCommandTestSessionDebug.new())
 
 
 	init_shortcuts()
@@ -113,7 +109,7 @@ func check_test_run_stopped_manually() -> void:
 
 
 func is_test_running_but_stop_pressed() -> bool:
-	return _running_debug_mode and _is_running and not EditorInterface.is_playing_scene()
+	return _is_running and not EditorInterface.is_playing_scene()
 
 
 func assert_shortcut_mappings(mappings: Dictionary) -> void:
@@ -175,16 +171,16 @@ func register_command(p_command: GdUnitCommand) -> void:
 	_commands[p_command.name] = p_command
 
 
-func _register_command(p_command: GdUnitBaseCommand) -> void:
+func _register_command(command: GdUnitBaseCommand) -> void:
 	# first verify the command is not already registerd
-	if _commnand_mappings.has(p_command.id):
-		push_error("Command with id '%s' is already registerd!" % p_command.id)
+	if _commnand_mappings.has(command.id):
+		push_error("Command with id '%s' is already registerd!" % command.id)
 		return
 
-	_commnand_mappings[p_command.id] = p_command
+	_commnand_mappings[command.id] = command
 
 
-func command(cmd_name: String) -> GdUnitCommand:
+func get_command(cmd_name: String) -> GdUnitCommand:
 	return _commands.get(cmd_name)
 
 
@@ -202,13 +198,8 @@ func cmd_run_test_suites(scripts: Array[Script], debug: bool, rerun := false) ->
 
 	# create new runner runner_config for fresh run otherwise use saved one
 	if not rerun:
-		var result := _runner_config.clear()\
-			.add_test_cases(tests_to_execute)\
-			.save_config()
-		if result.is_error():
-			push_error(result.error_message())
-			return
-	cmd_run(debug)
+		_runner_config.clear().save_config()
+	cmd_run(tests_to_execute, debug)
 
 
 func cmd_run_test_case(script: Script, test_case: String, test_param_index: int, debug: bool, rerun := false) -> void:
@@ -230,71 +221,33 @@ func cmd_run_test_case(script: Script, test_case: String, test_param_index: int,
 
 	# create new runner config for fresh run otherwise use saved one
 	if not rerun:
-		var result := _runner_config.clear()\
-			.add_test_cases(tests_to_execute)\
-			.save_config()
-		if result.is_error():
-			push_error(result.error_message())
-			return
-	cmd_run(debug)
+		_runner_config.clear().save_config()
+
+	cmd_run(tests_to_execute, debug)
 
 
 func cmd_run_tests(tests_to_execute: Array[GdUnitTestCase], debug: bool) -> void:
-	# Save tests to runner config before execute
-	var result := _runner_config.clear()\
-		.add_test_cases(tests_to_execute)\
-		.save_config()
-	if result.is_error():
-		push_error(result.error_message())
-		return
-	cmd_run(debug)
+	cmd_run(tests_to_execute, debug)
 
 
 func cmd_run_overall(debug: bool) -> void:
 	var tests_to_execute := await GdUnitTestDiscoverer.run()
-	var result := _runner_config.clear()\
-		.add_test_cases(tests_to_execute)\
-		.save_config()
-	if result.is_error():
-		push_error(result.error_message())
-		return
-	cmd_run(debug)
+	cmd_run(tests_to_execute, debug)
 
 
-func cmd_run(debug: bool) -> void:
-	# don't start is already running
-	if _is_running:
+func cmd_run(tests_to_execute: Array[GdUnitTestCase], debug: bool) -> void:
+	var command: GdUnitCommandTestSession = _commnand_mappings[GdUnitCommandTestSession.ID]
+	if command.is_running():
 		return
-
-	# save current selected excution config
-	var server_port: int = Engine.get_meta("gdunit_server_port")
-	var result := _runner_config.set_server_port(server_port).save_config()
-	if result.is_error():
-		push_error(result.error_message())
-		return
-	# before start we have to save all changes
-	ScriptEditorControls.save_all_open_script()
-	_current_runner_process_id = -1
-	_running_debug_mode = debug
-	if debug:
-		run_debug_mode()
-	else:
-		run_release_mode()
+	command.execute(tests_to_execute, debug)
 
 
 func cmd_stop() -> void:
+	var command: GdUnitCommandTestSession = _commnand_mappings[GdUnitCommandTestSession.ID]
 	# don't stop if is already stopped
-	if not _is_running:
+	if not command.is_running():
 		return
-	_is_running = false
-	if _running_debug_mode:
-		EditorInterface.stop_playing_scene()
-	elif _current_runner_process_id > 0:
-		if OS.is_process_running(_current_runner_process_id):
-			var result := OS.kill(_current_runner_process_id)
-			if result != OK:
-				push_error("ERROR checked stopping GdUnit Test Runner. error code: %s" % result)
-	_current_runner_process_id = -1
+	command.stop()
 
 
 func cmd_editor_run_test(debug: bool) -> void:
@@ -334,22 +287,6 @@ func cmd_discover_tests() -> void:
 	await GdUnitTestDiscoverer.run()
 
 
-func run_debug_mode() -> void:
-	EditorInterface.play_custom_scene("res://addons/gdUnit4/src/core/runners/GdUnitTestRunner.tscn")
-	_is_running = true
-
-
-func run_release_mode() -> void:
-	var arguments := Array()
-	if OS.is_stdout_verbose():
-		arguments.append("--verbose")
-	arguments.append("--no-window")
-	arguments.append("--path")
-	arguments.append(ProjectSettings.globalize_path("res://"))
-	arguments.append("res://addons/gdUnit4/src/core/runners/GdUnitTestRunner.tscn")
-	_current_runner_process_id = OS.create_process(OS.get_executable_path(), arguments, false);
-	_is_running = true
-
 
 func is_active_script_editor() -> bool:
 	return EditorInterface.get_script_editor().get_current_editor() != null
@@ -374,10 +311,6 @@ func _on_event(event: GdUnitEvent) -> void:
 
 func _on_stop_pressed() -> void:
 	cmd_stop()
-
-
-func _on_run_pressed(debug := false) -> void:
-	cmd_run(debug)
 
 
 func _on_run_overall_pressed(_debug := false) -> void:
@@ -405,6 +338,4 @@ func _on_settings_changed(property: GdUnitProperty) -> void:
 # Network stuff
 ################################################################################
 func _on_client_disconnected(_client_id: int) -> void:
-	# only stops is not in debug mode running and the current client
-	if not _running_debug_mode:
-		cmd_stop()
+	cmd_stop()

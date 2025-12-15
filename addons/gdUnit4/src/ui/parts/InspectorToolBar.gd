@@ -2,7 +2,6 @@
 extends PanelContainer
 
 signal run_pressed(debug: bool)
-signal stop_pressed()
 
 const  InspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/InspectorTreeMainPanel.gd")
 
@@ -18,7 +17,6 @@ const  InspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/Insp
 const SETTINGS_SHORTCUT_MAPPING := {
 	GdUnitSettings.SHORTCUT_INSPECTOR_RERUN_TEST: GdUnitShortcut.ShortCut.RERUN_TESTS,
 	GdUnitSettings.SHORTCUT_INSPECTOR_RERUN_TEST_DEBUG: GdUnitShortcut.ShortCut.RERUN_TESTS_DEBUG,
-	GdUnitSettings.SHORTCUT_INSPECTOR_RUN_TEST_STOP: GdUnitShortcut.ShortCut.STOP_TEST_RUN,
 }
 
 
@@ -35,7 +33,6 @@ func _ready() -> void:
 		run_pressed.connect(inspector._on_run_pressed)
 
 	GdUnit4Version.init_version_label(_version_label)
-	stop_pressed.connect(command_handler._on_stop_pressed)
 
 	GdUnitSignals.instance().gdunit_event.connect(_on_gdunit_event)
 	GdUnitSignals.instance().gdunit_settings_changed.connect(_on_gdunit_settings_changed)
@@ -48,7 +45,7 @@ func init_buttons() -> void:
 	_button_run_overall.visible = GdUnitSettings.is_inspector_toolbar_button_show()
 	_button_run.icon = GdUnitUiTools.get_icon("Play")
 	_button_run_debug.icon = GdUnitUiTools.get_icon("PlayStart")
-	_button_stop.icon = GdUnitUiTools.get_icon("Stop")
+	_button_stop.icon = command_handler.command_icon(GdUnitCommandStopTestSession.ID)
 	_tool_button.icon = GdUnitUiTools.get_icon("Tools")
 	_button_wiki.icon = GdUnitUiTools.get_icon("HelpSearch")
 	# Set run buttons initial disabled
@@ -60,7 +57,7 @@ func init_shortcuts() -> void:
 	_button_run.shortcut = command_handler.get_shortcut(GdUnitShortcut.ShortCut.RERUN_TESTS)
 	_button_run_overall.shortcut = command_handler.command_shortcut(GdUnitCommandRunTestsOverall.ID)
 	_button_run_debug.shortcut = command_handler.get_shortcut(GdUnitShortcut.ShortCut.RERUN_TESTS_DEBUG)
-	_button_stop.shortcut = command_handler.get_shortcut(GdUnitShortcut.ShortCut.STOP_TEST_RUN)
+	_button_stop.shortcut = command_handler.command_shortcut(GdUnitCommandStopTestSession.ID)
 	# register for shortcut changes
 	@warning_ignore("return_value_discarded")
 	GdUnitSignals.instance().gdunit_settings_changed.connect(_on_settings_changed)
@@ -81,7 +78,7 @@ func _on_run_pressed(debug := false) -> void:
 
 
 func _on_stop_pressed() -> void:
-	stop_pressed.emit()
+	command_handler.command_execute(GdUnitCommandStopTestSession.ID)
 
 
 func _on_gdunit_event(event: GdUnitEvent) -> void:
@@ -120,6 +117,7 @@ func _on_settings_changed(property: GdUnitProperty) -> void:
 
 	if property.name().begins_with(GdUnitSettings.GROUP_SHORTCUT_INSPECTOR):
 		_button_run_overall.shortcut = command_handler.command_shortcut(GdUnitCommandRunTestsOverall.ID)
+		_button_stop.shortcut = command_handler.command_shortcut(GdUnitCommandStopTestSession.ID)
 
 	# deprecated
 	if SETTINGS_SHORTCUT_MAPPING.has(property.name()):

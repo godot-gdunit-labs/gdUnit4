@@ -16,6 +16,7 @@ func after() -> void:
 
 func test_command_shortcut() -> void:
 	assert_str(_handler.command_shortcut(GdUnitCommandRunTestsOverall.ID).get_as_text()).is_equal("Alt+F7")
+	assert_str(_handler.command_shortcut(GdUnitCommandStopTestSession.ID).get_as_text()).is_equal("Alt+F8")
 
 
 
@@ -25,7 +26,6 @@ func test_create_shortcuts_defaults(shortcut :GdUnitShortcut.ShortCut, expected 
 	[GdUnitShortcut.ShortCut.RUN_TESTCASE_DEBUG, "GdUnitShortcutAction: RUN_TESTCASE_DEBUG (Ctrl+Alt+F6) -> Run TestCases (Debug)"],
 	[GdUnitShortcut.ShortCut.RERUN_TESTS, "GdUnitShortcutAction: RERUN_TESTS (Alt+F5) -> ReRun Tests"],
 	[GdUnitShortcut.ShortCut.RERUN_TESTS_DEBUG, "GdUnitShortcutAction: RERUN_TESTS_DEBUG (Alt+F6) -> ReRun Tests (Debug)"],
-	[GdUnitShortcut.ShortCut.STOP_TEST_RUN, "GdUnitShortcutAction: STOP_TEST_RUN (Alt+F8) -> Stop Test Run"],
 	[GdUnitShortcut.ShortCut.CREATE_TEST, "GdUnitShortcutAction: CREATE_TEST (Ctrl+Alt+F10) -> Create TestCase"]]) -> void:
 
 	if OS.get_name().to_lower() == "macos":

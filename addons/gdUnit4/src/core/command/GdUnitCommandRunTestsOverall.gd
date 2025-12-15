@@ -17,10 +17,6 @@ func is_running() -> bool:
 	return _test_session_command.is_running()
 
 
-func stop() -> void:
-	_test_session_command.stop()
-
-
 func execute(debug: bool) -> void:
 	var tests_to_execute := await GdUnitTestDiscoverer.run()
 	_test_session_command.execute(tests_to_execute, debug)

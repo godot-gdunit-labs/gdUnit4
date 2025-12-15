@@ -51,5 +51,3 @@ func _create_shortcut_input_even(key_codes: PackedInt32Array) -> InputEventKey:
 
 
 @abstract func is_running() -> bool
-
-@abstract func stop() -> void

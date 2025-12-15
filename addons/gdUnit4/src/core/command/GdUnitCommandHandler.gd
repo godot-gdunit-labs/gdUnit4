@@ -10,7 +10,6 @@ const CMD_RUN_TESTSUITE = "Run TestSuites"
 const CMD_RUN_TESTSUITE_DEBUG = "Run TestSuites (Debug)"
 const CMD_RERUN_TESTS = "ReRun Tests"
 const CMD_RERUN_TESTS_DEBUG = "ReRun Tests (Debug)"
-const CMD_STOP_TEST_RUN = "Stop Test Run"
 const CMD_CREATE_TESTCASE = "Create TestCase"
 
 const SETTINGS_SHORTCUT_MAPPING := {
@@ -33,7 +32,6 @@ const CommandMapping := {
 	GdUnitShortcut.ShortCut.RUN_TESTSUITE_DEBUG: GdUnitCommandHandler.CMD_RUN_TESTSUITE_DEBUG,
 	GdUnitShortcut.ShortCut.RERUN_TESTS: GdUnitCommandHandler.CMD_RERUN_TESTS,
 	GdUnitShortcut.ShortCut.RERUN_TESTS_DEBUG: GdUnitCommandHandler.CMD_RERUN_TESTS_DEBUG,
-	GdUnitShortcut.ShortCut.STOP_TEST_RUN: GdUnitCommandHandler.CMD_STOP_TEST_RUN,
 	GdUnitShortcut.ShortCut.CREATE_TEST: GdUnitCommandHandler.CMD_CREATE_TESTCASE,
 }
 
@@ -67,11 +65,11 @@ func _init() -> void:
 
 	var test_session_command := GdUnitCommandTestSession.new()
 	_register_command(test_session_command)
+	_register_command(GdUnitCommandStopTestSession.new(test_session_command))
 	_register_command(GdUnitCommandRunTestsOverall.new(test_session_command))
 
 
 	init_shortcuts()
-	var is_running := func(_script :Script) -> bool: return _is_running
 	var is_not_running := func(_script :Script) -> bool: return !_is_running
 	register_command(GdUnitCommand.new(CMD_RUN_TESTCASE, is_not_running, cmd_editor_run_test.bind(false), GdUnitShortcut.ShortCut.RUN_TESTCASE))
 	register_command(GdUnitCommand.new(CMD_RUN_TESTCASE_DEBUG, is_not_running, cmd_editor_run_test.bind(true), GdUnitShortcut.ShortCut.RUN_TESTCASE_DEBUG))
@@ -80,7 +78,6 @@ func _init() -> void:
 	register_command(GdUnitCommand.new(CMD_RERUN_TESTS, is_not_running, cmd_run.bind(false), GdUnitShortcut.ShortCut.RERUN_TESTS))
 	register_command(GdUnitCommand.new(CMD_RERUN_TESTS_DEBUG, is_not_running, cmd_run.bind(true), GdUnitShortcut.ShortCut.RERUN_TESTS_DEBUG))
 	register_command(GdUnitCommand.new(CMD_CREATE_TESTCASE, is_not_running, cmd_create_test, GdUnitShortcut.ShortCut.CREATE_TEST))
-	register_command(GdUnitCommand.new(CMD_STOP_TEST_RUN, is_running, cmd_stop, GdUnitShortcut.ShortCut.STOP_TEST_RUN))
 
 	# schedule discover tests if enabled and running inside the editor
 	if Engine.is_editor_hint() and GdUnitSettings.is_test_discover_enabled():
@@ -265,11 +262,11 @@ func cmd_run(tests_to_execute: Array[GdUnitTestCase], debug: bool) -> void:
 
 
 func cmd_stop() -> void:
-	var command: GdUnitCommandTestSession = _commnand_mappings[GdUnitCommandTestSession.ID]
+	var command: GdUnitCommandStopTestSession = _commnand_mappings[GdUnitCommandStopTestSession.ID]
 	# don't stop if is already stopped
 	if not command.is_running():
 		return
-	command.stop()
+	command.execute()
 
 
 func cmd_editor_run_test(debug: bool) -> void:
@@ -329,10 +326,6 @@ func active_script() -> Script:
 func _on_event(event: GdUnitEvent) -> void:
 	if event.type() == GdUnitEvent.SESSION_CLOSE:
 		cmd_stop()
-
-
-func _on_stop_pressed() -> void:
-	cmd_stop()
 
 
 func _on_settings_changed(property: GdUnitProperty) -> void:

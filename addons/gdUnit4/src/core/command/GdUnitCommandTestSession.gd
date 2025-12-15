@@ -2,7 +2,7 @@ class_name GdUnitCommandTestSession
 extends GdUnitBaseCommand
 
 
-const ID := "Run TestSession"
+const ID := "Start Test Session"
 
 
 var _current_runner_process_id: int

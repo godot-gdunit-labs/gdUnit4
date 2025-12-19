@@ -1,7 +1,7 @@
 #
 
 <p align="center">
-  <img src="https://github.com/MikeSchulze/gdUnit4/blob/master/icon.png?branch=master" alt=""></br>
+  <img src="https://github.com/godot-gdunit-labs/gdUnit4/blob/master/icon.png?branch=master" alt=""></br>
   <h1 align="center">GdUnit4 <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/MikeSchulze/gdunit4" width="14%"> </h1>
 </p>
 <h2 align="center">A Godot Embedded Unit Testing Framework</h2>
@@ -50,13 +50,13 @@
 
 <p align="center">
   <a target="_blank" href="https://www.youtube.com/watch?v=-iqxs3KPvLQ">
-    <img src="https://github.com/MikeSchulze/gdUnit4/blob/master/assets/gdUnit4-animated.gif" width="100%" alt=""/>
+    <img src="https://github.com/godot-gdunit-labs/gdUnit4/blob/master/assets/gdUnit4-animated.gif" width="100%" alt=""/>
   </a>
 </p>
 
 <p align="center">
   <img alt="GitHub branch checks state" src="https://img.shields.io/github/checks-status/MikeSchulze/gdunit4/master"></br>
-  <img alt="" src="https://github.com/MikeSchulze/gdUnit4/actions/workflows/ci-dev.yml/badge.svg?branch=master"></br>
+  <img alt="" src="https://github.com/godot-gdunit-labs/gdUnit4/actions/workflows/ci-dev.yml/badge.svg?branch=master"></br>
 </p>
 
 ## What is GdUnit4?
@@ -139,9 +139,9 @@ ensure that your code is thoroughly tested and free of bugs, which can save you 
 
 ### GdUnit4Net - C# Support
 
-* **C# API** - [gdUnit4.api](https://github.com/MikeSchulze/gdUnit4Net/blob/master/README.md)  
+* **C# API** - [gdUnit4.api](https://github.com/godot-gdunit-labs/gdUnit4Net/blob/master/README.md)  
   Full support for writing tests in C#
-* **VSTest Integration** - [gdunit4.test.adapter](https://github.com/MikeSchulze/gdUnit4Net/blob/master/TestAdapter/README.md)  
+* **VSTest Integration** - [gdunit4.test.adapter](https://github.com/godot-gdunit-labs/gdUnit4Net/blob/master/TestAdapter/README.md)  
   Run and debug tests in:
   * Visual Studio
   * Visual Studio Code
@@ -190,10 +190,10 @@ The video walks through practical automated testing techniques that can help imp
 <!-- markdownlint-capture -->
 <!-- markdownlint-disable -->
 
-* [Give Feedback](https://github.com/MikeSchulze/gdUnit4/discussions) on the gdUnit GitHub Discussions page.
-* [Suggest Improvements](https://github.com/MikeSchulze/gdUnit4/issues/new?assignees=MikeSchulze&labels=enhancement&template=feature_request.md&title=) by creating a new feature
+* [Give Feedback](https://github.com/godot-gdunit-labs/gdUnit4/discussions) on the gdUnit GitHub Discussions page.
+* [Suggest Improvements](https://github.com/godot-gdunit-labs/gdUnit4/issues/new?assignees=MikeSchulze&labels=enhancement&template=feature_request.md&title=) by creating a new feature
   request issue on the gdUnit GitHub Issues page.
-* [Report Bugs](https://github.com/MikeSchulze/gdUnit4/issues/new?assignees=MikeSchulze&labels=bug&projects=projects%2F5&template=bug_report.yml&title=GD-XXX%3A+Describe+the+issue+briefly)
+* [Report Bugs](https://github.com/godot-gdunit-labs/gdUnit4/issues/new?assignees=MikeSchulze&labels=bug&projects=projects%2F5&template=bug_report.yml&title=GD-XXX%3A+Describe+the+issue+briefly)
   by creating a new bug report issue on the gdUnit GitHub Issues page.
 
 <!-- markdownlint-enable -->
@@ -218,7 +218,7 @@ Continuous Integration (CI) is in place for every pull request to prevent any po
 
 **Thank you for your interest in contributing to GdUnit4!**<br>
 To ensure a smooth and collaborative contribution process, please review our
-[contribution guidelines](https://github.com/MikeSchulze/gdUnit4/blob/master/CONTRIBUTING.md) before getting started.
+[contribution guidelines](https://github.com/godot-gdunit-labs/gdUnit4/blob/master/CONTRIBUTING.md) before getting started.
 These guidelines outline the standards and expectations we uphold in this project.
 
 **Code of Conduct:**<br>

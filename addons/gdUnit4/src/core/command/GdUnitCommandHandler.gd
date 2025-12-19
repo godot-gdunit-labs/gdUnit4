@@ -8,8 +8,6 @@ const CMD_RUN_TESTCASE = "Run TestCases"
 const CMD_RUN_TESTCASE_DEBUG = "Run TestCases (Debug)"
 const CMD_RUN_TESTSUITE = "Run TestSuites"
 const CMD_RUN_TESTSUITE_DEBUG = "Run TestSuites (Debug)"
-const CMD_RERUN_TESTS = "ReRun Tests"
-const CMD_RERUN_TESTS_DEBUG = "ReRun Tests (Debug)"
 const CMD_CREATE_TESTCASE = "Create TestCase"
 
 const SETTINGS_SHORTCUT_MAPPING := {
@@ -30,8 +28,6 @@ const CommandMapping := {
 	GdUnitShortcut.ShortCut.RUN_TESTCASE_DEBUG: GdUnitCommandHandler.CMD_RUN_TESTCASE_DEBUG,
 	GdUnitShortcut.ShortCut.RUN_TESTSUITE: GdUnitCommandHandler.CMD_RUN_TESTSUITE,
 	GdUnitShortcut.ShortCut.RUN_TESTSUITE_DEBUG: GdUnitCommandHandler.CMD_RUN_TESTSUITE_DEBUG,
-	GdUnitShortcut.ShortCut.RERUN_TESTS: GdUnitCommandHandler.CMD_RERUN_TESTS,
-	GdUnitShortcut.ShortCut.RERUN_TESTS_DEBUG: GdUnitCommandHandler.CMD_RERUN_TESTS_DEBUG,
 	GdUnitShortcut.ShortCut.CREATE_TEST: GdUnitCommandHandler.CMD_CREATE_TESTCASE,
 }
 
@@ -66,6 +62,8 @@ func _init() -> void:
 	var test_session_command := GdUnitCommandTestSession.new()
 	_register_command(test_session_command)
 	_register_command(GdUnitCommandStopTestSession.new(test_session_command))
+	_register_command(GdUnitCommandInspectorRunTests.new(test_session_command))
+	_register_command(GdUnitCommandInspectorDebugTests.new(test_session_command))
 	_register_command(GdUnitCommandRunTestsOverall.new(test_session_command))
 
 
@@ -75,8 +73,6 @@ func _init() -> void:
 	register_command(GdUnitCommand.new(CMD_RUN_TESTCASE_DEBUG, is_not_running, cmd_editor_run_test.bind(true), GdUnitShortcut.ShortCut.RUN_TESTCASE_DEBUG))
 	register_command(GdUnitCommand.new(CMD_RUN_TESTSUITE, is_not_running, cmd_run_test_suites.bind(false), GdUnitShortcut.ShortCut.RUN_TESTSUITE))
 	register_command(GdUnitCommand.new(CMD_RUN_TESTSUITE_DEBUG, is_not_running, cmd_run_test_suites.bind(true), GdUnitShortcut.ShortCut.RUN_TESTSUITE_DEBUG))
-	register_command(GdUnitCommand.new(CMD_RERUN_TESTS, is_not_running, cmd_run.bind(false), GdUnitShortcut.ShortCut.RERUN_TESTS))
-	register_command(GdUnitCommand.new(CMD_RERUN_TESTS_DEBUG, is_not_running, cmd_run.bind(true), GdUnitShortcut.ShortCut.RERUN_TESTS_DEBUG))
 	register_command(GdUnitCommand.new(CMD_CREATE_TESTCASE, is_not_running, cmd_create_test, GdUnitShortcut.ShortCut.CREATE_TEST))
 
 	# schedule discover tests if enabled and running inside the editor
@@ -88,6 +84,12 @@ func _init() -> void:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
+		for command: GdUnitBaseCommand in _commnand_mappings.values():
+			if Engine.is_editor_hint():
+				EditorInterface.get_command_palette().remove_command("GdUnit4/"+command.id)
+			command.free()
+		_commnand_mappings.clear()
+
 		_commands.clear()
 		_shortcuts.clear()
 
@@ -195,6 +197,9 @@ func _register_command(command: GdUnitBaseCommand) -> void:
 		return
 
 	_commnand_mappings[command.id] = command
+	if Engine.is_editor_hint():
+		EditorInterface.get_base_control().add_child(command)
+		EditorInterface.get_command_palette().add_command(command.id, "GdUnit4/"+command.id, command.execute, command.shortcut.get_as_text() if command.shortcut else "None")
 
 
 func get_command(cmd_name: String) -> GdUnitCommand:

@@ -17,5 +17,5 @@ func is_running() -> bool:
 	return _test_session_command.is_running()
 
 
-func execute() -> void:
+func execute(..._parameters: Array) -> void:
 	_test_session_command.stop()

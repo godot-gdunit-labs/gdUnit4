@@ -1,5 +1,5 @@
 @abstract class_name GdUnitBaseCommand
-extends RefCounted
+extends Node
 
 
 var id: String
@@ -12,6 +12,15 @@ func _init(p_id: String, p_shortcut: GdUnitShortcut.ShortCut = GdUnitShortcut.Sh
 	id = p_id
 	shortcut_type = p_shortcut
 	_set_shortcut()
+
+
+func _shortcut_input(event: InputEvent) -> void:
+	if is_running():
+		return
+
+	if shortcut and shortcut.matches_event(event):
+		execute()
+		get_viewport().set_input_as_handled()
 
 
 func update_shortcut() -> void:
@@ -51,3 +60,5 @@ func _create_shortcut_input_even(key_codes: PackedInt32Array) -> InputEventKey:
 
 
 @abstract func is_running() -> bool
+
+@abstract func execute(...parameters: Array) -> void

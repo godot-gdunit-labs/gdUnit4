@@ -36,10 +36,12 @@ func stop() -> void:
 	GdUnitSignals.instance().gdunit_event.emit(GdUnitSessionClose.new())
 
 
-func execute(tests_to_execute: Array[GdUnitTestCase], debug := false) -> void:
-	_is_debug = debug
+func execute(...parameters: Array) -> void:
+	var tests_to_execute: Array[GdUnitTestCase] = parameters[0]
+	_is_debug = parameters[1]
+
 	_prepare_test_session(tests_to_execute)
-	if debug:
+	if _is_debug:
 		EditorInterface.play_custom_scene("res://addons/gdUnit4/src/core/runners/GdUnitTestRunner.tscn")
 	else:
 		var arguments := Array()

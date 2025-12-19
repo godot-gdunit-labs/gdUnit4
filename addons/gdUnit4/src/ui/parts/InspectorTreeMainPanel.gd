@@ -6,10 +6,10 @@ signal test_counters_changed(index: int, total: int, state: GdUnitInspectorTreeC
 signal tree_item_selected(item: TreeItem)
 
 
-const CONTEXT_MENU_RUN_ID = 0
-const CONTEXT_MENU_DEBUG_ID = 1
-const CONTEXT_MENU_COLLAPSE_ALL = 3
-const CONTEXT_MENU_EXPAND_ALL = 4
+const CONTEXT_MENU_RUN_ID := 0
+const CONTEXT_MENU_DEBUG_ID := 1
+const CONTEXT_MENU_COLLAPSE_ALL := 3
+const CONTEXT_MENU_EXPAND_ALL := 4
 
 
 @onready var _tree: Tree = $Panel/Tree
@@ -193,13 +193,14 @@ func disable_test_recovery() -> void:
 
 @warning_ignore("return_value_discarded")
 func _ready() -> void:
-	_context_menu.set_item_icon(CONTEXT_MENU_RUN_ID, GdUnitUiTools.get_icon("Play"))
-	_context_menu.set_item_icon(CONTEXT_MENU_DEBUG_ID, GdUnitUiTools.get_icon("PlayStart"))
+	var base_control := EditorInterface.get_base_control()
+	base_control.set_meta("GdUnit4Inspector", self)
+
+	_init_context_menu(CONTEXT_MENU_RUN_ID, GdUnitCommandInspectorRunTests.ID)
+	_init_context_menu(CONTEXT_MENU_DEBUG_ID, GdUnitCommandInspectorDebugTests.ID)
+
 	_context_menu.set_item_icon(CONTEXT_MENU_EXPAND_ALL, GdUnitUiTools.get_icon("ExpandTree"))
 	_context_menu.set_item_icon(CONTEXT_MENU_COLLAPSE_ALL, GdUnitUiTools.get_icon("CollapseTree"))
-	# do colorize the icons
-	#for index in _context_menu.item_count:
-	#	_context_menu.set_item_icon_modulate(index, Color.MEDIUM_PURPLE)
 
 	_spinner.icon = GdUnitUiTools.get_spinner()
 	init_tree()
@@ -210,6 +211,13 @@ func _ready() -> void:
 	GdUnitSignals.instance().gdunit_test_discover_modified.connect(on_test_case_discover_modified)
 	if _run_test_recovery:
 		GdUnitTestDiscoverer.restore_last_session()
+
+
+func _init_context_menu(context_menu_id: int, comand_id: String) -> void:
+	var command_handler := GdUnitCommandHandler.instance()
+	_context_menu.set_item_metadata(context_menu_id, comand_id)
+	_context_menu.set_item_icon(context_menu_id, command_handler.command_icon(comand_id))
+	_context_menu.set_item_shortcut(context_menu_id, command_handler.command_shortcut(comand_id))
 
 
 # we need current to manually redraw bacause of the animation bug
@@ -1137,17 +1145,6 @@ func _on_tree_item_mouse_selected(mouse_position: Vector2, mouse_button_index: i
 		_context_menu.popup()
 
 
-func _on_run_pressed(run_debug: bool) -> void:
-	_context_menu.hide()
-	var item: = _tree.get_selected()
-	if item == null:
-		print_rich("[color=GOLDENROD]Abort Testrun, no test suite selected![/color]")
-		return
-
-	var test_to_execute := collect_test_cases(item)
-	GdUnitCommandHandler.instance().cmd_run_tests(test_to_execute, run_debug)
-
-
 func _on_Tree_item_selected() -> void:
 	# only show report checked manual item selection
 	# we need to check the run mode here otherwise it will be called every selection
@@ -1226,14 +1223,13 @@ func _on_gdunit_event(event: GdUnitEvent) -> void:
 
 func _on_context_m_index_pressed(index: int) -> void:
 	match index:
-		CONTEXT_MENU_DEBUG_ID:
-			_on_run_pressed(true)
-		CONTEXT_MENU_RUN_ID:
-			_on_run_pressed(false)
 		CONTEXT_MENU_EXPAND_ALL:
 			do_collapse_all(false)
 		CONTEXT_MENU_COLLAPSE_ALL:
 			do_collapse_all(true)
+		_:
+			var command_id: String = _context_menu.get_item_metadata(index)
+			GdUnitCommandHandler.instance().command_execute(command_id)
 
 
 func _on_settings_changed(property :GdUnitProperty) -> void:

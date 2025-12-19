@@ -193,11 +193,12 @@ func disable_test_recovery() -> void:
 
 @warning_ignore("return_value_discarded")
 func _ready() -> void:
-	var base_control := EditorInterface.get_base_control()
-	base_control.set_meta("GdUnit4Inspector", self)
+	if Engine.is_editor_hint():
+		var base_control := EditorInterface.get_base_control()
+		base_control.set_meta("GdUnit4Inspector", self)
 
-	_init_context_menu(CONTEXT_MENU_RUN_ID, GdUnitCommandInspectorRunTests.ID)
-	_init_context_menu(CONTEXT_MENU_DEBUG_ID, GdUnitCommandInspectorDebugTests.ID)
+		_init_context_menu(CONTEXT_MENU_RUN_ID, GdUnitCommandInspectorRunTests.ID)
+		_init_context_menu(CONTEXT_MENU_DEBUG_ID, GdUnitCommandInspectorDebugTests.ID)
 
 	_context_menu.set_item_icon(CONTEXT_MENU_EXPAND_ALL, GdUnitUiTools.get_icon("ExpandTree"))
 	_context_menu.set_item_icon(CONTEXT_MENU_COLLAPSE_ALL, GdUnitUiTools.get_icon("CollapseTree"))

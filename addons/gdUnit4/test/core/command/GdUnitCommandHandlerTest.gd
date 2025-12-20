@@ -15,22 +15,12 @@ func after() -> void:
 
 
 func test_command_shortcut() -> void:
+	assert_str(_handler.command_shortcut(GdUnitCommandInspectorRunTests.ID).get_as_text()).is_equal("Alt+F5")
+	assert_str(_handler.command_shortcut(GdUnitCommandInspectorDebugTests.ID).get_as_text()).is_equal("Alt+F6")
 	assert_str(_handler.command_shortcut(GdUnitCommandRunTestsOverall.ID).get_as_text()).is_equal("Alt+F7")
 	assert_str(_handler.command_shortcut(GdUnitCommandStopTestSession.ID).get_as_text()).is_equal("Alt+F8")
-
-
-
-@warning_ignore('unused_parameter')
-func test_create_shortcuts_defaults(shortcut :GdUnitShortcut.ShortCut, expected :String, test_parameters := [
-	[GdUnitShortcut.ShortCut.RUN_TESTCASE, "GdUnitShortcutAction: RUN_TESTCASE (Ctrl+Alt+F5) -> Run TestCases"],
-	[GdUnitShortcut.ShortCut.RUN_TESTCASE_DEBUG, "GdUnitShortcutAction: RUN_TESTCASE_DEBUG (Ctrl+Alt+F6) -> Run TestCases (Debug)"],
-	[GdUnitShortcut.ShortCut.CREATE_TEST, "GdUnitShortcutAction: CREATE_TEST (Ctrl+Alt+F10) -> Create TestCase"]]) -> void:
-
-	if OS.get_name().to_lower() == "macos":
-		expected.replace("Ctrl", "Command")
-
-	var action := _handler.get_shortcut_action(shortcut)
-	assert_that(str(action)).is_equal(expected)
+	assert_str(_handler.command_shortcut(GdUnitCommandScriptEditorRunTests.ID).get_as_text()).is_equal("Ctrl+Alt+F5")
+	assert_str(_handler.command_shortcut(GdUnitCommandScriptEditorDebugTests.ID).get_as_text()).is_equal("Ctrl+Alt+F6")
 
 
 ## actually needs to comment out, it produces a lot of leaked instances

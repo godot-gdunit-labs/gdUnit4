@@ -4,8 +4,6 @@ extends Object
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
-const CMD_RUN_TESTCASE = "Run TestCases"
-const CMD_RUN_TESTCASE_DEBUG = "Run TestCases (Debug)"
 const CMD_RUN_TESTSUITE = "Run TestSuites"
 const CMD_RUN_TESTSUITE_DEBUG = "Run TestSuites (Debug)"
 const CMD_CREATE_TESTCASE = "Create TestCase"
@@ -24,8 +22,6 @@ const SETTINGS_SHORTCUT_MAPPING := {
 }
 
 const CommandMapping := {
-	GdUnitShortcut.ShortCut.RUN_TESTCASE: GdUnitCommandHandler.CMD_RUN_TESTCASE,
-	GdUnitShortcut.ShortCut.RUN_TESTCASE_DEBUG: GdUnitCommandHandler.CMD_RUN_TESTCASE_DEBUG,
 	GdUnitShortcut.ShortCut.RUN_TESTSUITE: GdUnitCommandHandler.CMD_RUN_TESTSUITE,
 	GdUnitShortcut.ShortCut.RUN_TESTSUITE_DEBUG: GdUnitCommandHandler.CMD_RUN_TESTSUITE_DEBUG,
 	GdUnitShortcut.ShortCut.CREATE_TEST: GdUnitCommandHandler.CMD_CREATE_TESTCASE,
@@ -64,15 +60,17 @@ func _init() -> void:
 	_register_command(GdUnitCommandStopTestSession.new(test_session_command))
 	_register_command(GdUnitCommandInspectorRunTests.new(test_session_command))
 	_register_command(GdUnitCommandInspectorDebugTests.new(test_session_command))
+	_register_command(GdUnitCommandScriptEditorRunTests.new(test_session_command))
+	_register_command(GdUnitCommandScriptEditorDebugTests.new(test_session_command))
 	_register_command(GdUnitCommandRunTestsOverall.new(test_session_command))
 
 
 	init_shortcuts()
 	var is_not_running := func(_script :Script) -> bool: return !_is_running
-	register_command(GdUnitCommand.new(CMD_RUN_TESTCASE, is_not_running, cmd_editor_run_test.bind(false), GdUnitShortcut.ShortCut.RUN_TESTCASE))
-	register_command(GdUnitCommand.new(CMD_RUN_TESTCASE_DEBUG, is_not_running, cmd_editor_run_test.bind(true), GdUnitShortcut.ShortCut.RUN_TESTCASE_DEBUG))
 	register_command(GdUnitCommand.new(CMD_RUN_TESTSUITE, is_not_running, cmd_run_test_suites.bind(false), GdUnitShortcut.ShortCut.RUN_TESTSUITE))
 	register_command(GdUnitCommand.new(CMD_RUN_TESTSUITE_DEBUG, is_not_running, cmd_run_test_suites.bind(true), GdUnitShortcut.ShortCut.RUN_TESTSUITE_DEBUG))
+
+	## icon is "New"
 	register_command(GdUnitCommand.new(CMD_CREATE_TESTCASE, is_not_running, cmd_create_test, GdUnitShortcut.ShortCut.CREATE_TEST))
 
 	# schedule discover tests if enabled and running inside the editor
@@ -155,18 +153,32 @@ func register_shortcut(p_shortcut: GdUnitShortcut.ShortCut, p_input_event: Input
 
 
 func command_icon(command_id: String) -> Texture2D:
+	if not _commnand_mappings.has(command_id):
+		push_error("GdUnitCommandHandler:command_icon(): No command id '%s' is registered." % command_id)
+		print_stack()
+		return
 	return _commnand_mappings[command_id].icon
 
 
 func command_shortcut(command_id: String) -> Shortcut:
+	if not _commnand_mappings.has(command_id):
+		push_error("GdUnitCommandHandler:command_shortcut(): No command id '%s' is registered." % command_id)
+		print_stack()
+		return
 	return _commnand_mappings[command_id].shortcut
 
 
 func command_execute(...parameters: Array) -> void:
 	if parameters.is_empty():
 		push_error("Invalid arguments used on CommandHandler:execute()! Expecting [<command_id, args...>]")
+		print_stack()
+		return
 
 	var command_id: String = parameters.pop_front()
+	if not _commnand_mappings.has(command_id):
+		push_error("GdUnitCommandHandler:command_execute(): No command id '%s' is registered." % command_id)
+		print_stack()
+		return
 	_commnand_mappings[command_id].callv("execute", parameters)
 
 
@@ -193,7 +205,7 @@ func register_command(p_command: GdUnitCommand) -> void:
 func _register_command(command: GdUnitBaseCommand) -> void:
 	# first verify the command is not already registerd
 	if _commnand_mappings.has(command.id):
-		push_error("Command with id '%s' is already registerd!" % command.id)
+		push_error("GdUnitCommandHandler:_register_command(): Command with id '%s' is already registerd!" % command.id)
 		return
 
 	_commnand_mappings[command.id] = command

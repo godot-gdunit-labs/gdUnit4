@@ -1,7 +1,7 @@
 @tool
 extends EditorContextMenuPlugin
 
-var _context_menus: Dictionary[GdUnitContextMenuItem.MENU_ID, GdUnitContextMenuItem] = {}
+var _context_menus: Array[GdUnitContextMenuItem] = []
 
 
 func _init() -> void:
@@ -10,11 +10,21 @@ func _init() -> void:
 			return false
 		return GdUnitTestSuiteScanner.is_test_suite(script) == is_ts
 	var command_handler := GdUnitCommandHandler.instance()
-	_context_menus[GdUnitContextMenuItem.MENU_ID.TEST_RUN] = GdUnitContextMenuItem.new(GdUnitContextMenuItem.MENU_ID.TEST_RUN, "Run Testsuites", "Play", is_test_suite.bind(true), command_handler.get_command(GdUnitCommandHandler.CMD_RUN_TESTSUITE))
-	_context_menus[GdUnitContextMenuItem.MENU_ID.TEST_DEBUG] = GdUnitContextMenuItem.new(GdUnitContextMenuItem.MENU_ID.TEST_DEBUG, "Debug Testsuites", "PlayStart", is_test_suite.bind(true), command_handler.get_command(GdUnitCommandHandler.CMD_RUN_TESTSUITE_DEBUG))
+	_context_menus.append(GdUnitContextMenuItem.new(
+		"GdUnitContextMenuItem.MENU_ID.TEST_RUN",
+		"Run Testsuites",
+		is_test_suite.bind(true),
+		command_handler.get_command(GdUnitCommandHandler.CMD_RUN_TESTSUITE)
+	))
+	_context_menus.append(GdUnitContextMenuItem.new(
+		"GdUnitContextMenuItem.MENU_ID.TEST_DEBUG",
+		"Debug Testsuites",
+		is_test_suite.bind(true),
+		command_handler.get_command(GdUnitCommandHandler.CMD_RUN_TESTSUITE_DEBUG)
+	))
 
 	# setup shortcuts
-	for menu_item: GdUnitContextMenuItem  in _context_menus.values():
+	for menu_item in _context_menus:
 		var cb := func call(files: Array) -> void:
 			menu_item.execute([files])
 		add_menu_shortcut(menu_item.shortcut(), cb)
@@ -40,5 +50,5 @@ func _popup_menu(paths: PackedStringArray) -> void:
 	if test_suites.is_empty():
 		return
 
-	for menu_item: GdUnitContextMenuItem  in _context_menus.values():
-		add_context_menu_item(menu_item.name, menu_item.execute.bind(test_suites).unbind(1), GdUnitUiTools.get_icon(menu_item.icon))
+	for menu_item in _context_menus:
+		add_context_menu_item(menu_item.name, menu_item.execute.bind(test_suites).unbind(1), menu_item.icon)

@@ -1,13 +1,13 @@
 @tool
 extends EditorContextMenuPlugin
 
+
 var _context_menus: Array[GdUnitContextMenuItem] = []
 
 
 func _init() -> void:
 	var is_test_suite := func is_visible(script: Script, is_ts: bool) -> bool:
 		return GdUnitTestSuiteScanner.is_test_suite(script) == is_ts
-	var command_handler := GdUnitCommandHandler.instance()
 	_context_menus.append(GdUnitContextMenuItem.new(
 		GdUnitCommandScriptEditorRunTests.ID,
 		"Run Tests",
@@ -21,10 +21,10 @@ func _init() -> void:
 		null
 	))
 	_context_menus.append(GdUnitContextMenuItem.new(
-		"GdUnitContextMenuItem.MENU_ID.CREATE_TEST",
+		GdUnitCommandScriptEditorCreateTest.ID,
 		"Create Test",
 		is_test_suite.bind(false),
-		command_handler.get_command(GdUnitCommandHandler.CMD_CREATE_TESTCASE)
+		null
 	))
 
 	# setup shortcuts

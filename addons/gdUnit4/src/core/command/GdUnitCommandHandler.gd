@@ -6,7 +6,7 @@ const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
 const CMD_RUN_TESTSUITE = "Run TestSuites"
 const CMD_RUN_TESTSUITE_DEBUG = "Run TestSuites (Debug)"
-const CMD_CREATE_TESTCASE = "Create TestCase"
+
 
 const SETTINGS_SHORTCUT_MAPPING := {
 	"N/A" : GdUnitShortcut.ShortCut.NONE,
@@ -24,7 +24,6 @@ const SETTINGS_SHORTCUT_MAPPING := {
 const CommandMapping := {
 	GdUnitShortcut.ShortCut.RUN_TESTSUITE: GdUnitCommandHandler.CMD_RUN_TESTSUITE,
 	GdUnitShortcut.ShortCut.RUN_TESTSUITE_DEBUG: GdUnitCommandHandler.CMD_RUN_TESTSUITE_DEBUG,
-	GdUnitShortcut.ShortCut.CREATE_TEST: GdUnitCommandHandler.CMD_CREATE_TESTCASE,
 }
 
 # the current test runner config
@@ -62,6 +61,7 @@ func _init() -> void:
 	_register_command(GdUnitCommandInspectorDebugTests.new(test_session_command))
 	_register_command(GdUnitCommandScriptEditorRunTests.new(test_session_command))
 	_register_command(GdUnitCommandScriptEditorDebugTests.new(test_session_command))
+	_register_command(GdUnitCommandScriptEditorCreateTest.new())
 	_register_command(GdUnitCommandRunTestsOverall.new(test_session_command))
 
 
@@ -70,8 +70,6 @@ func _init() -> void:
 	register_command(GdUnitCommand.new(CMD_RUN_TESTSUITE, is_not_running, cmd_run_test_suites.bind(false), GdUnitShortcut.ShortCut.RUN_TESTSUITE))
 	register_command(GdUnitCommand.new(CMD_RUN_TESTSUITE_DEBUG, is_not_running, cmd_run_test_suites.bind(true), GdUnitShortcut.ShortCut.RUN_TESTSUITE_DEBUG))
 
-	## icon is "New"
-	register_command(GdUnitCommand.new(CMD_CREATE_TESTCASE, is_not_running, cmd_create_test, GdUnitShortcut.ShortCut.CREATE_TEST))
 
 	# schedule discover tests if enabled and running inside the editor
 	if Engine.is_editor_hint() and GdUnitSettings.is_test_discover_enabled():
@@ -284,39 +282,6 @@ func cmd_stop() -> void:
 	if not command.is_running():
 		return
 	command.execute()
-
-
-func cmd_editor_run_test(debug: bool) -> void:
-	if is_active_script_editor():
-		var cursor_line := active_base_editor().get_caret_line()
-		#run test case?
-		var regex := RegEx.new()
-		@warning_ignore("return_value_discarded")
-		regex.compile("(^func[ ,\t])(test_[a-zA-Z0-9_]*)")
-		var result := regex.search(active_base_editor().get_line(cursor_line))
-		if result:
-			var func_name := result.get_string(2).strip_edges()
-			if func_name.begins_with("test_"):
-				cmd_run_test_case(active_script(), func_name, -1, debug)
-				return
-	# otherwise run the full test suite
-	var selected_test_suites: Array[Script] = [active_script()]
-	cmd_run_test_suites(selected_test_suites, debug)
-
-
-func cmd_create_test() -> void:
-	if not is_active_script_editor():
-		return
-	var cursor_line := active_base_editor().get_caret_line()
-	var result := GdUnitTestSuiteBuilder.create(active_script(), cursor_line)
-	if result.is_error():
-		# show error dialog
-		push_error("Failed to create test case: %s" % result.error_message())
-		return
-	var info: Dictionary = result.value()
-	var script_path: String = info.get("path")
-	var script_line: int = info.get("line")
-	ScriptEditorControls.edit_script(script_path, script_line)
 
 
 func cmd_discover_tests() -> void:

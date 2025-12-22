@@ -155,8 +155,8 @@ static func create_shortcut_properties_if_need() -> void:
 	create_property_if_need(SHORTCUT_EDITOR_RUN_TEST_DEBUG, GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.RUN_TESTCASE_DEBUG), "Run the currently selected test (Debug mode).")
 	create_property_if_need(SHORTCUT_EDITOR_CREATE_TEST, GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.CREATE_TEST), "Create a new test case for the currently selected function")
 	# filesystem
-	create_property_if_need(SHORTCUT_FILESYSTEM_RUN_TEST, GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.NONE), "Run all test suites in the selected folder or file")
-	create_property_if_need(SHORTCUT_FILESYSTEM_RUN_TEST_DEBUG, GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.NONE), "Run all test suites in the selected folder or file (Debug)")
+	create_property_if_need(SHORTCUT_FILESYSTEM_RUN_TEST, GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.RUN_TESTSUITE), "Run all test suites in the selected folder or file")
+	create_property_if_need(SHORTCUT_FILESYSTEM_RUN_TEST_DEBUG, GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.RUN_TESTSUITE_DEBUG), "Run all test suites in the selected folder or file (Debug)")
 
 
 static func create_property_if_need(name :String, default :Variant, help :="", value_set := PackedStringArray()) -> void:

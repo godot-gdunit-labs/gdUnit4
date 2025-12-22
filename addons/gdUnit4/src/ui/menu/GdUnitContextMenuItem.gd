@@ -57,6 +57,6 @@ func is_visible(...args: Array) -> bool:
 
 func execute(...args: Array) -> void:
 	if command == null:
-		GdUnitCommandHandler.instance().command_execute(command_id)
+		GdUnitCommandHandler.instance().command_execute(command_id, args)
 	else:
 		command.runnable.callv(args)

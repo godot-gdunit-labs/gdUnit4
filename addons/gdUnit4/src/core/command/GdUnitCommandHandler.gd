@@ -4,9 +4,6 @@ extends Object
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
-const CMD_RUN_TESTSUITE = "Run TestSuites"
-const CMD_RUN_TESTSUITE_DEBUG = "Run TestSuites (Debug)"
-
 
 const SETTINGS_SHORTCUT_MAPPING := {
 	"N/A" : GdUnitShortcut.ShortCut.NONE,
@@ -22,8 +19,6 @@ const SETTINGS_SHORTCUT_MAPPING := {
 }
 
 const CommandMapping := {
-	GdUnitShortcut.ShortCut.RUN_TESTSUITE: GdUnitCommandHandler.CMD_RUN_TESTSUITE,
-	GdUnitShortcut.ShortCut.RUN_TESTSUITE_DEBUG: GdUnitCommandHandler.CMD_RUN_TESTSUITE_DEBUG,
 }
 
 # the current test runner config
@@ -32,11 +27,8 @@ var _runner_config := GdUnitRunnerConfig.new()
 
 # hold is current an test running
 var _is_running: bool = false
-
 var _commands := {}
 var _shortcuts := {}
-
-
 var _commnand_mappings: Dictionary[String, GdUnitBaseCommand]= {}
 
 static func instance() -> GdUnitCommandHandler:
@@ -62,14 +54,9 @@ func _init() -> void:
 	_register_command(GdUnitCommandScriptEditorRunTests.new(test_session_command))
 	_register_command(GdUnitCommandScriptEditorDebugTests.new(test_session_command))
 	_register_command(GdUnitCommandScriptEditorCreateTest.new())
+	_register_command(GdUnitCommandFileSystemRunTests.new(test_session_command))
+	_register_command(GdUnitCommandFileSystemDebugTests.new(test_session_command))
 	_register_command(GdUnitCommandRunTestsOverall.new(test_session_command))
-
-
-	init_shortcuts()
-	var is_not_running := func(_script :Script) -> bool: return !_is_running
-	register_command(GdUnitCommand.new(CMD_RUN_TESTSUITE, is_not_running, cmd_run_test_suites.bind(false), GdUnitShortcut.ShortCut.RUN_TESTSUITE))
-	register_command(GdUnitCommand.new(CMD_RUN_TESTSUITE_DEBUG, is_not_running, cmd_run_test_suites.bind(true), GdUnitShortcut.ShortCut.RUN_TESTSUITE_DEBUG))
-
 
 	# schedule discover tests if enabled and running inside the editor
 	if Engine.is_editor_hint() and GdUnitSettings.is_test_discover_enabled():
@@ -85,9 +72,6 @@ func _notification(what: int) -> void:
 				EditorInterface.get_command_palette().remove_command("GdUnit4/"+command.id)
 			command.free()
 		_commnand_mappings.clear()
-
-		_commands.clear()
-		_shortcuts.clear()
 
 
 func _do_process() -> void:
@@ -212,70 +196,6 @@ func _register_command(command: GdUnitBaseCommand) -> void:
 		EditorInterface.get_command_palette().add_command(command.id, "GdUnit4/"+command.id, command.execute, command.shortcut.get_as_text() if command.shortcut else "None")
 
 
-func get_command(cmd_name: String) -> GdUnitCommand:
-	return _commands.get(cmd_name)
-
-
-func cmd_run_test_suites(scripts: Array[Script], debug: bool, rerun := false) -> void:
-	# Update test discovery
-	GdUnitSignals.instance().gdunit_event.emit(GdUnitEventTestDiscoverStart.new())
-	var tests_to_execute: Array[GdUnitTestCase] = []
-	for script in scripts:
-		GdUnitTestDiscoverer.discover_tests(script, func(test_case: GdUnitTestCase) -> void:
-			tests_to_execute.append(test_case)
-			GdUnitTestDiscoverSink.discover(test_case)
-		)
-	GdUnitSignals.instance().gdunit_event.emit(GdUnitEventTestDiscoverEnd.new(0, 0))
-	GdUnitTestDiscoverer.console_log_discover_results(tests_to_execute)
-
-	# create new runner runner_config for fresh run otherwise use saved one
-	if not rerun:
-		_runner_config.clear().save_config()
-	cmd_run(tests_to_execute, debug)
-
-
-func cmd_run_test_case(script: Script, test_case: String, test_param_index: int, debug: bool, rerun := false) -> void:
-	# Update test discovery
-	var tests_to_execute: Array[GdUnitTestCase] = []
-	GdUnitSignals.instance().gdunit_event.emit(GdUnitEventTestDiscoverStart.new())
-	GdUnitTestDiscoverer.discover_tests(script, func(test: GdUnitTestCase) -> void:
-		# We filter for a single test
-		if test.test_name == test_case:
-			# We only add selected parameterized test to the execution list
-			if test_param_index == -1:
-				tests_to_execute.append(test)
-			elif test.attribute_index == test_param_index:
-				tests_to_execute.append(test)
-			GdUnitTestDiscoverSink.discover(test)
-	)
-	GdUnitSignals.instance().gdunit_event.emit(GdUnitEventTestDiscoverEnd.new(0, 0))
-	GdUnitTestDiscoverer.console_log_discover_results(tests_to_execute)
-
-	# create new runner config for fresh run otherwise use saved one
-	if not rerun:
-		_runner_config.clear().save_config()
-
-	cmd_run(tests_to_execute, debug)
-
-
-func cmd_run_tests(tests_to_execute: Array[GdUnitTestCase], debug: bool) -> void:
-	cmd_run(tests_to_execute, debug)
-
-
-func cmd_run_overall(debug: bool) -> void:
-	var command: GdUnitCommandRunTestsOverall = _commnand_mappings[GdUnitCommandRunTestsOverall.ID]
-	if command.is_running():
-		return
-	command.execute(debug)
-
-
-func cmd_run(tests_to_execute: Array[GdUnitTestCase], debug: bool) -> void:
-	var command: GdUnitCommandTestSession = _commnand_mappings[GdUnitCommandTestSession.ID]
-	if command.is_running():
-		return
-	command.execute(tests_to_execute, debug)
-
-
 func cmd_stop() -> void:
 	var command: GdUnitCommandStopTestSession = _commnand_mappings[GdUnitCommandStopTestSession.ID]
 	# don't stop if is already stopped
@@ -315,17 +235,6 @@ func _on_settings_changed(property: GdUnitProperty) -> void:
 	for command: GdUnitBaseCommand in _commnand_mappings.values():
 		command.update_shortcut()
 
-	# deprecated
-	if SETTINGS_SHORTCUT_MAPPING.has(property.name()):
-		var shortcut :GdUnitShortcut.ShortCut = SETTINGS_SHORTCUT_MAPPING.get(property.name())
-		var value: PackedInt32Array = property.value()
-		var input_event := create_shortcut_input_even(value)
-		prints("Shortcut changed: '%s' to '%s'" % [GdUnitShortcut.ShortCut.keys()[shortcut], input_event.as_text()])
-		var action := get_shortcut_action(shortcut)
-		if action != null:
-			action.update_shortcut(input_event)
-		else:
-			register_shortcut(shortcut, input_event)
 	if property.name() == GdUnitSettings.TEST_DISCOVER_ENABLED:
 		var timer :SceneTreeTimer = (Engine.get_main_loop() as SceneTree).create_timer(3)
 		@warning_ignore("return_value_discarded")

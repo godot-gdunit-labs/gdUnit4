@@ -22,6 +22,8 @@ func test_command_shortcut() -> void:
 	assert_str(_handler.command_shortcut(GdUnitCommandScriptEditorRunTests.ID).get_as_text()).is_equal("Ctrl+Alt+F5")
 	assert_str(_handler.command_shortcut(GdUnitCommandScriptEditorDebugTests.ID).get_as_text()).is_equal("Ctrl+Alt+F6")
 	assert_str(_handler.command_shortcut(GdUnitCommandScriptEditorCreateTest.ID).get_as_text()).is_equal("Ctrl+Alt+F10")
+	assert_str(_handler.command_shortcut(GdUnitCommandFileSystemRunTests.ID).get_as_text()).is_equal("Shift+Alt+F5")
+	assert_str(_handler.command_shortcut(GdUnitCommandFileSystemDebugTests.ID).get_as_text()).is_equal("Shift+Alt+F6")
 
 
 ## actually needs to comment out, it produces a lot of leaked instances

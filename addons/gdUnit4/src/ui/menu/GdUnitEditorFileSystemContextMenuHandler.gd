@@ -9,46 +9,31 @@ func _init() -> void:
 		if script == null:
 			return false
 		return GdUnitTestSuiteScanner.is_test_suite(script) == is_ts
-	var command_handler := GdUnitCommandHandler.instance()
 	_context_menus.append(GdUnitContextMenuItem.new(
-		"GdUnitContextMenuItem.MENU_ID.TEST_RUN",
+		GdUnitCommandFileSystemRunTests.ID,
 		"Run Testsuites",
 		is_test_suite.bind(true),
-		command_handler.get_command(GdUnitCommandHandler.CMD_RUN_TESTSUITE)
+		null
 	))
 	_context_menus.append(GdUnitContextMenuItem.new(
-		"GdUnitContextMenuItem.MENU_ID.TEST_DEBUG",
+		GdUnitCommandFileSystemDebugTests.ID,
 		"Debug Testsuites",
 		is_test_suite.bind(true),
-		command_handler.get_command(GdUnitCommandHandler.CMD_RUN_TESTSUITE_DEBUG)
+		null
 	))
 
 	# setup shortcuts
 	for menu_item in _context_menus:
-		var cb := func call(files: Array) -> void:
-			menu_item.execute([files])
-		add_menu_shortcut(menu_item.shortcut(), cb)
+		if menu_item.shortcut():
+			var cb := func call(...files: Array) -> void:
+				var paths: Array = files[0]
+				menu_item.execute.callv(paths)
+			add_menu_shortcut(menu_item.shortcut(), cb)
 
 
 func _popup_menu(paths: PackedStringArray) -> void:
-	var test_suites: Array[Script] = []
-	var suite_scaner := GdUnitTestSuiteScanner.new()
-
-	for resource_path in paths:
-		# directories and test-suites are valid to enable the menu
-		if DirAccess.dir_exists_absolute(resource_path):
-			test_suites.append_array(suite_scaner.scan_directory(resource_path))
-			continue
-
-		var file_type := resource_path.get_extension()
-		if file_type == "gd" or file_type == "cs":
-			var script: Script = ResourceLoader.load(resource_path, "Script", ResourceLoader.CACHE_MODE_REUSE)
-			if GdUnitTestSuiteScanner.is_test_suite(script):
-				test_suites.append(script)
-
-	# no direcory or test-suites selected?
-	if test_suites.is_empty():
-		return
-
 	for menu_item in _context_menus:
-		add_context_menu_item(menu_item.name, menu_item.execute.bind(test_suites).unbind(1), menu_item.icon)
+		if menu_item.shortcut():
+			add_context_menu_item_from_shortcut(menu_item.name, menu_item.shortcut(), menu_item.icon)
+		else:
+			add_context_menu_item(menu_item.name, menu_item.execute.bindv(paths).unbind(1), menu_item.icon)

@@ -9,7 +9,6 @@ signal select_flaky_next()
 signal select_flaky_prevous()
 signal select_skipped_next()
 signal select_skipped_prevous()
-signal request_discover_tests()
 
 @warning_ignore("unused_signal")
 signal tree_view_mode_changed(flat :bool)
@@ -186,8 +185,8 @@ func _on_btn_skipped_down_pressed() -> void:
 	select_skipped_next.emit()
 
 
-func _on_tree_sync_pressed() -> void:
-	request_discover_tests.emit()
+func _on_btn_tree_sync_pressed() -> void:
+	await GdUnitTestDiscoverer.run()
 
 
 func _on_sort_mode_changed(index: int) -> void:

@@ -27,8 +27,3 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	_command_handler._do_process()
-
-
-@warning_ignore("redundant_await")
-func _on_status_bar_request_discover_tests() -> void:
-	await _command_handler.cmd_discover_tests()

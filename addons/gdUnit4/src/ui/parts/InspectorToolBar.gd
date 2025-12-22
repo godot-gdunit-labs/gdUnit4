@@ -78,7 +78,7 @@ func _on_button_pressed(source: BaseButton) -> void:
 
 
 func _on_wiki_pressed() -> void:
-	var status := OS.shell_open("https://mikeschulze.github.io/gdUnit4/%s" % GdUnit4Version.current().documentation_version())
+	var status := OS.shell_open("https://godot-gdunit-labs.github.io/gdUnit4/latest")
 	if status != OK:
 		push_error("Can't open GdUnit4 documentaion page: %s" % error_string(status))
 

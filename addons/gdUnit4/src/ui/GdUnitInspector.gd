@@ -4,6 +4,7 @@ extends Panel
 
 
 var _command_handler := GdUnitCommandHandler.instance()
+var _wait_time := 0.0
 
 
 func _ready() -> void:
@@ -25,5 +26,9 @@ func _ready() -> void:
 	@warning_ignore("unsafe_property_access", "unsafe_method_access")
 	%MainPanel.test_counters_changed.connect(%ProgressBar._on_test_counter_changed)
 
-func _process(_delta: float) -> void:
-	_command_handler._do_process()
+
+func _process(delta: float) -> void:
+	_wait_time += delta
+	if _wait_time > 5.0:
+		_wait_time = 0
+		_command_handler._do_process()

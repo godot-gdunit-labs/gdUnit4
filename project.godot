@@ -8,11 +8,15 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="gdUnit4"
 config/tags=PackedStringArray("addon", "godot4", "testing")
-config/features=PackedStringArray("4.5", "C#")
+config/features=PackedStringArray("4.5", "4.6", "C#")
 config/icon="res://icon.png"
 
 [audio]
@@ -22,7 +26,10 @@ default_bus_layout=""
 [debug]
 
 file_logging/enable_file_logging=true
-gdscript/warnings/exclude_addons=false
+gdscript/warnings/directory_rules={
+"res://addons": 1,
+"res://addons/gdUnit4": 0
+}
 gdscript/warnings/untyped_declaration=2
 gdscript/warnings/unsafe_property_access=1
 gdscript/warnings/unsafe_method_access=1

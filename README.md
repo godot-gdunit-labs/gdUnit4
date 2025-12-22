@@ -25,6 +25,9 @@
   </thead>
   <tbody>
     <tr>
+      <td>master (upcoming v6.1)</td><td>v4.6.beta2</td>
+    </tr>
+    <tr>
       <td>v6.x+</td><td>v4.5, v4.5.1</td>
     </tr>
     <tr>

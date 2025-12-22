@@ -45,7 +45,8 @@ func _notification(what: int) -> void:
 
 
 func _do_process() -> void:
-	if test_session_command.is_running() and not EditorInterface.is_playing_scene():
+	# Do stop test execution when the user has stoped the main scene manually
+	if test_session_command._is_debug and test_session_command.is_running() and not EditorInterface.is_playing_scene():
 		if GdUnitSettings.is_verbose_assert_warnings():
 			print_debug("Test Runner scene was stopped manually, force stopping the current test run!")
 		command_execute(GdUnitCommandStopTestSession.ID)

@@ -12,14 +12,12 @@ func _init() -> void:
 	_context_menus.append(GdUnitContextMenuItem.new(
 		GdUnitCommandFileSystemRunTests.ID,
 		"Run Testsuites",
-		is_test_suite.bind(true),
-		null
+		is_test_suite.bind(true)
 	))
 	_context_menus.append(GdUnitContextMenuItem.new(
 		GdUnitCommandFileSystemDebugTests.ID,
 		"Debug Testsuites",
-		is_test_suite.bind(true),
-		null
+		is_test_suite.bind(true)
 	))
 
 	# setup shortcuts

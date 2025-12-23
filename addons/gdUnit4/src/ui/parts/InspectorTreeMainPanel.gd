@@ -6,12 +6,6 @@ signal test_counters_changed(index: int, total: int, state: GdUnitInspectorTreeC
 signal tree_item_selected(item: TreeItem)
 
 
-const CONTEXT_MENU_RUN_ID := 0
-const CONTEXT_MENU_DEBUG_ID := 1
-const CONTEXT_MENU_COLLAPSE_ALL := 3
-const CONTEXT_MENU_EXPAND_ALL := 4
-
-
 @onready var _tree: Tree = $Panel/Tree
 @onready var _report_list: Node = $report/ScrollContainer/list
 @onready var _report_template: RichTextLabel = $report/report_template
@@ -197,12 +191,6 @@ func _ready() -> void:
 		var base_control := EditorInterface.get_base_control()
 		base_control.set_meta("GdUnit4Inspector", self)
 
-		_init_context_menu(CONTEXT_MENU_RUN_ID, GdUnitCommandInspectorRunTests.ID)
-		_init_context_menu(CONTEXT_MENU_DEBUG_ID, GdUnitCommandInspectorDebugTests.ID)
-
-	_context_menu.set_item_icon(CONTEXT_MENU_EXPAND_ALL, GdUnitUiTools.get_icon("ExpandTree"))
-	_context_menu.set_item_icon(CONTEXT_MENU_COLLAPSE_ALL, GdUnitUiTools.get_icon("CollapseTree"))
-
 	_spinner.icon = GdUnitUiTools.get_spinner()
 	init_tree()
 	GdUnitSignals.instance().gdunit_settings_changed.connect(_on_settings_changed)
@@ -212,13 +200,6 @@ func _ready() -> void:
 	GdUnitSignals.instance().gdunit_test_discover_modified.connect(on_test_case_discover_modified)
 	if _run_test_recovery:
 		GdUnitTestDiscoverer.restore_last_session()
-
-
-func _init_context_menu(context_menu_id: int, comand_id: String) -> void:
-	var command_handler := GdUnitCommandHandler.instance()
-	_context_menu.set_item_metadata(context_menu_id, comand_id)
-	_context_menu.set_item_icon(context_menu_id, command_handler.command_icon(comand_id))
-	_context_menu.set_item_shortcut(context_menu_id, command_handler.command_shortcut(comand_id))
 
 
 # we need current to manually redraw bacause of the animation bug
@@ -1126,9 +1107,14 @@ func collect_test_cases(item: TreeItem, tests: Array[GdUnitTestCase] = []) -> Ar
 	return tests
 
 
+func test_session_start() -> void:
+	_context_menu.disable_items()
+	reset_tree_state(_tree_root)
+	clear_reports()
+
+
 func test_session_stop() -> void:
-	_context_menu.set_item_disabled(CONTEXT_MENU_RUN_ID, false)
-	_context_menu.set_item_disabled(CONTEXT_MENU_DEBUG_ID, false)
+	_context_menu.enable_items()
 	abort_running()
 	sort_tree_items(_tree_root)
 	# wait until the tree redraw
@@ -1147,12 +1133,8 @@ func _on_tree_item_mouse_selected(mouse_position: Vector2, mouse_button_index: i
 
 
 func _on_Tree_item_selected() -> void:
-	# only show report checked manual item selection
-	# we need to check the run mode here otherwise it will be called every selection
-	if not _context_menu.is_item_disabled(CONTEXT_MENU_RUN_ID):
-		var selected_item: TreeItem = _tree.get_selected()
-		show_failed_report(selected_item)
 	_current_selected_item = _tree.get_selected()
+	show_failed_report(_current_selected_item)
 	tree_item_selected.emit(_current_selected_item)
 
 
@@ -1182,12 +1164,6 @@ func _on_Tree_item_activated() -> void:
 ################################################################################
 # external signal receiver
 ################################################################################
-func _on_gdunit_runner_start() -> void:
-	_context_menu.set_item_disabled(CONTEXT_MENU_RUN_ID, true)
-	_context_menu.set_item_disabled(CONTEXT_MENU_DEBUG_ID, true)
-	reset_tree_state(_tree_root)
-	clear_reports()
-
 
 func _on_gdunit_event(event: GdUnitEvent) -> void:
 	match event.type():
@@ -1203,9 +1179,6 @@ func _on_gdunit_event(event: GdUnitEvent) -> void:
 			_tree_root.visible = true
 			#_dump_tree_as_json("tree_example_discovered")
 
-		GdUnitEvent.INIT:
-			_on_gdunit_runner_start()
-
 		GdUnitEvent.TESTCASE_BEFORE:
 			update_test_case(event)
 
@@ -1218,19 +1191,11 @@ func _on_gdunit_event(event: GdUnitEvent) -> void:
 		GdUnitEvent.TESTSUITE_AFTER:
 			update_test_suite(event)
 
+		GdUnitEvent.SESSION_START:
+			test_session_start()
+
 		GdUnitEvent.SESSION_CLOSE:
 			await test_session_stop()
-
-
-func _on_context_m_index_pressed(index: int) -> void:
-	match index:
-		CONTEXT_MENU_EXPAND_ALL:
-			do_collapse_all(false)
-		CONTEXT_MENU_COLLAPSE_ALL:
-			do_collapse_all(true)
-		_:
-			var command_id: String = _context_menu.get_item_metadata(index)
-			GdUnitCommandHandler.instance().command_execute(command_id)
 
 
 func _on_settings_changed(property :GdUnitProperty) -> void:

@@ -8,11 +8,13 @@ const ID := "Start Test Session"
 var _current_runner_process_id: int
 var _is_running: bool
 var _is_debug: bool
+var _is_fail_fast: bool
 
 
 func _init() -> void:
 	super(ID, GdUnitShortcut.ShortCut.NONE)
 	_is_running = false
+	_is_fail_fast = false
 
 
 func is_running() -> bool:
@@ -59,6 +61,7 @@ func _prepare_test_session(tests_to_execute: Array[GdUnitTestCase]) -> void:
 	var server_port: int = Engine.get_meta("gdunit_server_port")
 	var result := GdUnitRunnerConfig.new() \
 		.set_server_port(server_port) \
+		.do_fail_fast(_is_fail_fast) \
 		.add_test_cases(tests_to_execute) \
 		.save_config()
 	if result.is_error():

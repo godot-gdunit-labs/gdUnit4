@@ -101,16 +101,22 @@ func is_signal_exists(signal_name :String) -> GdUnitSignalAssert:
 # Verifies that given signal is emitted until waiting time
 func is_emitted(name :String, args := []) -> GdUnitSignalAssert:
 	_line_number = GdUnitAssertions.get_line_number()
-	return await _wail_until_signal(name, args, false)
+	return await _wait_until_signal(name, args, false)
+
+
+# Verifies that given signal is emitted (with any arguments) until waiting time
+func is_emitted_with_any_args(name :String) -> GdUnitSignalAssert:
+       _line_number = GdUnitAssertions.get_line_number()
+       return await _wait_until_signal(name, [], false, true)
 
 
 # Verifies that given signal is NOT emitted until waiting time
 func is_not_emitted(name :String, args := []) -> GdUnitSignalAssert:
 	_line_number = GdUnitAssertions.get_line_number()
-	return await _wail_until_signal(name, args, true)
+	return await _wait_until_signal(name, args, true)
 
 
-func _wail_until_signal(signal_name :String, expected_args :Array, expect_not_emitted: bool) -> GdUnitSignalAssert:
+func _wait_until_signal(signal_name :String, expected_args :Array, expect_not_emitted: bool, is_any_args_ok := false) -> GdUnitSignalAssert:
 	if _emitter == null:
 		return report_error("Can't wait for signal checked a NULL object.")
 	# first verify the signal is defined
@@ -129,7 +135,9 @@ func _wail_until_signal(signal_name :String, expected_args :Array, expect_not_em
 	while not _interrupted and not is_signal_emitted:
 		await (Engine.get_main_loop() as SceneTree).process_frame
 		if is_instance_valid(_emitter):
-			is_signal_emitted = _signal_collector.match(_emitter, signal_name, expected_args)
+			is_signal_emitted = _signal_collector.match(_emitter, signal_name, expected_args) \
+				if not is_any_args_ok \
+				else _signal_collector.match_name(_emitter, signal_name)
 			if is_signal_emitted and expect_not_emitted:
 				@warning_ignore("return_value_discarded")
 				report_error(GdAssertMessages.error_signal_emitted(signal_name, expected_args, LocalTime.elapsed(int(_timeout-timer.time_left*1000))))

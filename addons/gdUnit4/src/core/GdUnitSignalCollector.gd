@@ -118,6 +118,13 @@ func match(emitter :Object, signal_name :String, args :Array) -> bool:
 	return false
 
 
+func match_name(emitter :Object, signal_name :String) -> bool:
+	#prints("match", signal_name,  _collected_signals[emitter][signal_name]);
+	if _collected_signals.is_empty() or not _collected_signals.has(emitter):
+		return false
+	return _collected_signals[emitter][signal_name].size() > 0
+
+
 func _debug_signal_list(message :String) -> void:
 	prints("-----", message, "-------")
 	prints("senders {")

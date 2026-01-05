@@ -31,7 +31,7 @@ func _execute(context :GdUnitExecutionContext) -> void:
 			var test_case_context := GdUnitExecutionContext.of_test_case(context, test_case)
 			await _stage_test.execute(test_case_context)
 			# stop on first error or if fail fast is enabled
-			if _fail_fast and not test_case_context.is_success():
+			if test_case.is_terminated() or (_fail_fast and not test_case_context.is_success()):
 				break
 			if test_case.is_interupted():
 				# it needs to go this hard way to kill the outstanding awaits of a test case when the test timed out

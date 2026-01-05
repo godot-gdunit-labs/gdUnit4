@@ -7,13 +7,20 @@ class_name GdUnitTestSuiteExecutor
 var _assertions := GdUnitAssertions.new()
 var _executeStage := GdUnitTestSuiteExecutionStage.new()
 var _debug_mode : bool
+var _terminated := false
 
-func _init(debug_mode :bool = false) -> void:
+func _init(debug_mode: bool = false) -> void:
 	_executeStage.set_debug_mode(debug_mode)
 	_debug_mode = debug_mode
+	GdUnitSignals.instance().gdunit_test_session_terminate.connect(_on_testsession_terminated)
 
 
-func execute(test_suite :GdUnitTestSuite) -> void:
+func _on_testsession_terminated() -> void:
+	_terminated = true
+	GdUnitThreadManager.interrupt()
+
+
+func execute(test_suite: GdUnitTestSuite) -> void:
 	var orphan_detection_enabled := GdUnitSettings.is_verbose_orphans()
 	if not orphan_detection_enabled:
 		prints("!!! Reporting orphan nodes is disabled. Please check GdUnit settings.")
@@ -32,6 +39,8 @@ func run_and_wait(tests: Array[GdUnitTestCase]) -> void:
 	)
 	var scanner := GdUnitTestSuiteScanner.new()
 	for suite_path: String in grouped_by_suites.keys():
+		if _terminated:
+			break
 		@warning_ignore("unsafe_call_argument")
 		var suite_tests: Array[GdUnitTestCase] = Array(grouped_by_suites[suite_path], TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 		var script := GdUnitTestSuiteScanner.load_with_disabled_warnings(suite_path)

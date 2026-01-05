@@ -24,18 +24,68 @@ func is_running() -> bool:
 func stop() -> void:
 	if not is_running():
 		return
+	_is_running = false
 
 	if _is_debug:
-		EditorInterface.stop_playing_scene()
+		if not force_pause_scene():
+			push_warning("GdUnitCommandTestSession: fallback to 'stop_playing_scene'")
+			EditorInterface.stop_playing_scene()
+		else:
+			GdUnitSignals.instance().gdunit_test_session_terminate.emit()
+			# Give the API time to commit terminate to the client
+			await get_tree().create_timer(.5).timeout
 	else:
 		if OS.is_process_running(_current_runner_process_id):
 			var result := OS.kill(_current_runner_process_id)
 			if result != OK:
 				push_error("ERROR checked stopping GdUnit Test Runner. error code: %s" % result)
 			_current_runner_process_id = -1
-	_is_running = false
 	# We need finaly to send the test session close event because the current run is hard aborted.
 	GdUnitSignals.instance().gdunit_event.emit(GdUnitSessionClose.new())
+
+
+## Forces the running scene to unpause when the debugger hits a breakpoint.[br]
+## [br]
+## When the Godot debugger stops at a breakpoint during test execution, it blocks[br]
+## the main thread. This prevents signals and TCP communications from being processed,[br]
+## which can cause GdUnit4 tests to hang or fail to communicate properly with the[br]
+## test runner. This function programmatically unpauses the scene to restore[br]
+## main thread execution while maintaining debugger functionality. [br]
+## [br]
+## [b]Technical Background:[/b][br]
+## - Debugger breakpoints freeze the main thread to allow inspection[br]
+## - Frozen main thread blocks signal processing and network communications[br]
+## - GdUnit4 requires active signal/TCP processing for test coordination[br]
+## - This function finds and triggers the editor's pause button to resume execution[br]
+## [br]
+## [b]How It Works:[/b][br]
+## 1. Locates the EditorRunBar in the Godot editor UI hierarchy[br]
+## 2. Searches for the pause button by matching its icon[br]
+## 3. Unpresses the button if it's currently pressed (paused state)[br]
+## 4. Manually triggers the button's connected callbacks to resume execution[br]
+func force_pause_scene() -> bool:
+	var nodes := EditorInterface.get_base_control().find_children("*", "EditorRunBar", true, false)
+	if nodes.size() != 1:
+		push_error("GdUnitCommandTestSession:force_pause_scene() Can't find Editor component 'EditorRunBar'")
+		return false
+	var editor_run_bar := nodes[0]
+	var containers := editor_run_bar.find_children("*", "HBoxContainer", true, false)
+	var pause_icon := GdUnitUiTools.get_icon("Pause")
+
+	for container in containers:
+		for child in container.get_children():
+			if child is Button:
+				var button: Button = child
+				if pause_icon == button.icon:
+					button.set_pressed(false)
+
+					var connected_signals := button.get_signal_connection_list("pressed")
+					if not connected_signals.is_empty():
+						for signal_ in connected_signals:
+							var cb: Callable = signal_["callable"]
+							cb.call()
+						return true
+	return false
 
 
 func execute(...parameters: Array) -> void:

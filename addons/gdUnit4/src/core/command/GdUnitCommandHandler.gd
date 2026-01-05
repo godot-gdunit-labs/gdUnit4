@@ -82,7 +82,7 @@ func command_execute(...parameters: Array) -> void:
 		push_error("GdUnitCommandHandler:command_execute(): No command id '%s' is registered." % command_id)
 		print_stack()
 		return
-	_commnand_mappings[command_id].callv("execute", parameters)
+	await _commnand_mappings[command_id].callv("execute", parameters)
 
 
 func _register_command(command: GdUnitBaseCommand) -> void:

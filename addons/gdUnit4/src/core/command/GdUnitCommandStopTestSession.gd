@@ -18,4 +18,4 @@ func is_running() -> bool:
 
 
 func execute(..._parameters: Array) -> void:
-	_test_session_command.stop()
+	await _test_session_command.stop()

@@ -77,6 +77,11 @@ func dispose_sub_contexts() -> void:
 	_sub_context.clear()
 
 
+func terminate() -> void:
+	if test_case:
+		test_case.do_terminate()
+
+
 static func of(pe: GdUnitExecutionContext) -> GdUnitExecutionContext:
 	var context := GdUnitExecutionContext.new(pe._test_case_name, pe)
 	context._test_case_name = pe._test_case_name

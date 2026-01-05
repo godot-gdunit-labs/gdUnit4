@@ -74,7 +74,7 @@ func _on_gdunit_event(event: GdUnitEvent) -> void:
 
 func _on_button_pressed(source: BaseButton) -> void:
 	var command_id: String = source.get_meta("GdUnitCommand")
-	command_handler.command_execute(command_id)
+	await command_handler.command_execute(command_id)
 
 
 func _on_wiki_pressed() -> void:

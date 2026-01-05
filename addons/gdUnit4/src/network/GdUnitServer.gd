@@ -3,7 +3,7 @@ extends Node
 
 var _client_id: int
 
-@onready var _server :GdUnitTcpServer = $TcpServer
+@onready var _server: GdUnitTcpServer = $TcpServer
 
 
 @warning_ignore("return_value_discarded")

@@ -20,6 +20,7 @@ func before_test() -> void:
 	assert_inital_key_state()
 	# reset to inital state
 	reset(_scene_spy)
+	verify_no_more_interactions(_scene_spy)
 
 
 # asserts to action strings
@@ -126,7 +127,6 @@ func test_simulate_action_release() -> void:
 			.override_failure_message("Expect the action '%s' is NOT pressed" % action).is_false()
 
 
-
 func test_simulate_key_press() -> void:
 	# iterate over some example keys
 	for key :int in [KEY_A, KEY_D, KEY_X, KEY_0]:
@@ -152,31 +152,269 @@ func test_simulate_key_press() -> void:
 	assert_that(Input.is_key_pressed(KEY_1)).is_false()
 
 
-func test_simulate_key_press_with_modifiers() -> void:
-	# press shift key + A
+# Simulates pressing shift+A
+# Verified with "res://addons/gdUnit4/test/core/InputEventTestScene.tscn"
+func test_simulate_key_press_SHIFT_and_A() -> void:
+	# press shift + A
 	_runner.simulate_key_press(KEY_SHIFT)
 	_runner.simulate_key_press(KEY_A)
 	await _runner.await_input_processed()
 
-	# results in two events, first is the shift key is press
+	# We expect key A is pressed and also the modifier shift key
+	assert_that(Input.is_key_pressed(KEY_A)).is_true()
+	assert_that(Input.is_key_pressed(KEY_SHIFT)).is_true()
+	assert_that(Input.is_key_pressed(KEY_ALT)).is_false()
+	assert_that(Input.is_key_pressed(KEY_CTRL)).is_false()
+	assert_that(Input.is_key_pressed(KEY_META)).is_false()
+
+	# In addition we need to verify we emit two input events:
+	# first the shift key is pressing (Shift)
 	var event := InputEventKey.new()
 	event.keycode = KEY_SHIFT
 	event.physical_keycode = KEY_SHIFT
 	event.unicode = KEY_SHIFT as int
 	event.pressed = true
-	event.shift_pressed = true
+	event.shift_pressed = false
+	event.alt_pressed = false
+	event.ctrl_pressed = false
+	event.meta_pressed = false
 	verify(_scene_spy, 1)._input(event)
 
-	# second is the comnbination of current press shift and key A
+	# second in addition the key A is pressing (Shift+A)
 	event = InputEventKey.new()
 	event.keycode = KEY_A
 	event.physical_keycode = KEY_A
 	event.unicode = KEY_A as int
 	event.pressed = true
 	event.shift_pressed = true
+	event.alt_pressed = false
+	event.ctrl_pressed = false
+	event.meta_pressed = false
 	verify(_scene_spy, 1)._input(event)
-	assert_that(Input.is_key_pressed(KEY_SHIFT)).is_true()
+	verify_no_more_interactions(_scene_spy)
+
+
+# Simulate pressing key A and shift
+# Verified with "res://addons/gdUnit4/test/core/InputEventTestScene.tscn"
+func test_simulate_key_press_A_and_SHIFT() -> void:
+	# press key A + shift
+	_runner.simulate_key_press(KEY_A)
+	_runner.simulate_key_press(KEY_SHIFT)
+	await _runner.await_input_processed()
+
+	# We expect key A is pressed and also the modifier shift key
 	assert_that(Input.is_key_pressed(KEY_A)).is_true()
+	assert_that(Input.is_key_pressed(KEY_SHIFT)).is_true()
+	assert_that(Input.is_key_pressed(KEY_ALT)).is_false()
+	assert_that(Input.is_key_pressed(KEY_CTRL)).is_false()
+	assert_that(Input.is_key_pressed(KEY_META)).is_false()
+
+	# In addition we need to verify we emit two input events:
+	# first the shift a is pressing (A)
+	var event := InputEventKey.new()
+	event.keycode = KEY_A
+	event.physical_keycode = KEY_A
+	event.unicode = KEY_A as int
+	event.pressed = true
+	event.shift_pressed = false
+	event.alt_pressed = false
+	event.ctrl_pressed = false
+	event.meta_pressed = false
+	verify(_scene_spy, 1)._input(event)
+
+	# second in addition the key shift is pressing (Shift)
+	event = InputEventKey.new()
+	event.keycode = KEY_SHIFT
+	event.physical_keycode = KEY_SHIFT
+	event.unicode = KEY_SHIFT as int
+	event.pressed = true
+	event.shift_pressed = false
+	event.alt_pressed = false
+	event.ctrl_pressed = false
+	event.meta_pressed = false
+	verify(_scene_spy, 1)._input(event)
+	verify_no_more_interactions(_scene_spy)
+
+
+# Simulate releasing key shift+A
+# Verified with "res://addons/gdUnit4/test/core/InputEventTestScene.tscn"
+func test_simulate_key_released_SHIFT_and_A() -> void:
+	# release shift + A
+	_runner.simulate_key_release(KEY_SHIFT)
+	_runner.simulate_key_release(KEY_A)
+	await _runner.await_input_processed()
+
+	# We expect key A is NOT pressed (it was released) and no modifier keys
+	assert_that(Input.is_key_pressed(KEY_A)).is_false()
+	assert_that(Input.is_key_pressed(KEY_SHIFT)).is_false()
+	assert_that(Input.is_key_pressed(KEY_ALT)).is_false()
+	assert_that(Input.is_key_pressed(KEY_CTRL)).is_false()
+	assert_that(Input.is_key_pressed(KEY_META)).is_false()
+
+	# In addition we need to verify we emit two input events:
+	# first the shift+a key is released (Shift+A)
+	var event := InputEventKey.new()
+	event.keycode = KEY_A
+	event.physical_keycode = KEY_A
+	event.unicode = KEY_A as int
+	event.pressed = false
+	event.shift_pressed = true
+	event.alt_pressed = false
+	event.ctrl_pressed = false
+	event.meta_pressed = false
+	verify(_scene_spy, 1)._input(event)
+
+	# second in addition the shift is released (Shift)
+	event = InputEventKey.new()
+	event.keycode = KEY_SHIFT
+	event.physical_keycode = KEY_SHIFT
+	event.unicode = KEY_SHIFT as int
+	event.pressed = false
+	event.shift_pressed = false
+	event.alt_pressed = false
+	event.ctrl_pressed = false
+	event.meta_pressed = false
+	verify(_scene_spy, 1)._input(event)
+	verify_no_more_interactions(_scene_spy)
+
+
+# Simulate pressed key shift+A
+# Verified with "res://addons/gdUnit4/test/core/InputEventTestScene.tscn"
+func test_simulate_key_pressed_SHIFT_and_A() -> void:
+	# release shift + A
+	await _runner.simulate_key_pressed(KEY_SHIFT)
+	await _runner.simulate_key_pressed(KEY_A)
+
+	# We expect key A is NOT pressed (it was press and released) and no modifier keys
+	assert_that(Input.is_key_pressed(KEY_A)).is_false()
+	assert_that(Input.is_key_pressed(KEY_SHIFT)).is_false()
+	assert_that(Input.is_key_pressed(KEY_ALT)).is_false()
+	assert_that(Input.is_key_pressed(KEY_CTRL)).is_false()
+	assert_that(Input.is_key_pressed(KEY_META)).is_false()
+
+	# In addition, we need to check whether we output two input events:
+	# first the shift key is pressing (Shift+A)
+	var event := InputEventKey.new()
+	event.keycode = KEY_A
+	event.physical_keycode = KEY_A
+	event.unicode = KEY_A as int
+	event.pressed = true
+	event.shift_pressed = true
+	event.alt_pressed = false
+	event.ctrl_pressed = false
+	event.meta_pressed = false
+	verify(_scene_spy, 1)._input(event)
+
+	# second in addition the key A is released (Shift+A)
+	event = InputEventKey.new()
+	event.keycode = KEY_A
+	event.physical_keycode = KEY_A
+	event.unicode = KEY_A as int
+	event.pressed = false
+	event.shift_pressed = true
+	event.alt_pressed = false
+	event.ctrl_pressed = false
+	event.meta_pressed = false
+	verify(_scene_spy, 1)._input(event)
+
+
+# Simulate pressing key A + set shift modifier
+# @deprecated
+func test_simulate_key_press_A_with_shift_modifier() -> void:
+	# press key A + modifier shift
+	_runner.simulate_key_press(KEY_A, true)
+	await _runner.await_input_processed()
+
+	# We expect key A is pressing only and no modifier keys
+	assert_that(Input.is_key_pressed(KEY_A)).is_true()
+	assert_that(Input.is_key_pressed(KEY_SHIFT)).is_false()
+	assert_that(Input.is_key_pressed(KEY_ALT)).is_false()
+	assert_that(Input.is_key_pressed(KEY_CTRL)).is_false()
+	assert_that(Input.is_key_pressed(KEY_META)).is_false()
+
+	# In addition we need to verify we emit one input events:
+	# the key A + modifier shift is pressing (Shift+A)
+	var event := InputEventKey.new()
+	event = InputEventKey.new()
+	event.keycode = KEY_A
+	event.physical_keycode = KEY_A
+	event.unicode = KEY_A as int
+	event.pressed = true
+	event.shift_pressed = true
+	event.alt_pressed = false
+	event.ctrl_pressed = false
+	event.meta_pressed = false
+	verify(_scene_spy, 1)._input(event)
+	verify_no_more_interactions(_scene_spy)
+
+
+# Simulate releasing key A + set shift modifier
+# @deprecated
+func test_simulate_key_released_A_with_shift_modifier() -> void:
+	# release key A + modifiere shift
+	_runner.simulate_key_release(KEY_A, true)
+	await _runner.await_input_processed()
+
+	# We expect key A is NOT pressing and also no modifier keys
+	assert_that(Input.is_key_pressed(KEY_A)).is_false()
+	assert_that(Input.is_key_pressed(KEY_SHIFT)).is_false()
+	assert_that(Input.is_key_pressed(KEY_ALT)).is_false()
+	assert_that(Input.is_key_pressed(KEY_CTRL)).is_false()
+	assert_that(Input.is_key_pressed(KEY_META)).is_false()
+
+	# In addition we need to verify we emit one input events:
+	# The key A and modifier shift is released (Shift+A)
+	var event := InputEventKey.new()
+	event.keycode = KEY_A
+	event.physical_keycode = KEY_A
+	event.unicode = KEY_A as int
+	event.pressed = false
+	event.shift_pressed = true
+	event.alt_pressed = false
+	event.ctrl_pressed = false
+	event.meta_pressed = false
+	verify(_scene_spy, 1)._input(event)
+	verify_no_more_interactions(_scene_spy)
+
+
+# Simulate pressed key A + set shift modifier
+# @deprecated
+func test_simulate_key_pressed_A_with_shift_modifier() -> void:
+	# release key A + modifier shift
+	await _runner.simulate_key_pressed(KEY_A, true)
+
+	# We expect key A is NOT pressing (was press and released) and also no modifier keys
+	assert_that(Input.is_key_pressed(KEY_SHIFT)).is_false()
+	assert_that(Input.is_key_pressed(KEY_ALT)).is_false()
+	assert_that(Input.is_key_pressed(KEY_CTRL)).is_false()
+	assert_that(Input.is_key_pressed(KEY_META)).is_false()
+	assert_that(Input.is_key_pressed(KEY_A)).is_false()
+
+	# In addition, we need to check whether we output two input events:
+	# first the key a + modifier shift is pressing (Shift+A)
+	var event := InputEventKey.new()
+	event.keycode = KEY_A
+	event.physical_keycode = KEY_A
+	event.unicode = KEY_A as int
+	event.pressed = true
+	event.shift_pressed = true
+	event.alt_pressed = false
+	event.ctrl_pressed = false
+	event.meta_pressed = false
+	verify(_scene_spy, 1)._input(event)
+
+	# second in addition  the key a + modifier shift is released (Shift+A)
+	event = InputEventKey.new()
+	event.keycode = KEY_A
+	event.physical_keycode = KEY_A
+	event.unicode = KEY_A as int
+	event.pressed = false
+	event.shift_pressed = true
+	event.alt_pressed = false
+	event.ctrl_pressed = false
+	event.meta_pressed = false
+	verify(_scene_spy, 1)._input(event)
+	verify_no_more_interactions(_scene_spy)
 
 
 func test_simulate_many_keys_press() -> void:
@@ -229,6 +467,7 @@ func test_simulate_keypressed_as_action() -> void:
 	# test a key event is not trigger the custom action event
 	# simulate press only space+ctrl
 	runner._reset_input_to_default()
+	# @deprecated
 	runner.simulate_key_pressed(KEY_SPACE, false, true)
 	# it is important do not wait for next frame here, otherwise the input action cache is cleared and can't be use to verify
 	assert_bool(Input.is_action_just_released("player_jump", true)).is_false()

@@ -40,22 +40,40 @@ static func input_event_as_text(event :InputEvent) -> String:
 	var text := ""
 	if event is InputEventKey:
 		var key_event := event as InputEventKey
-		text += "InputEventKey : key='%s', pressed=%s, keycode=%d, physical_keycode=%s" % [
-					event.as_text(), key_event.pressed, key_event.keycode, key_event.physical_keycode]
+		text += """
+			InputEventKey : keycode=%s (%s) pressed: %s
+				physical_keycode: %s
+				location: %s
+				echo: %s""" % [
+					key_event.keycode,
+					event.as_text_keycode(),
+					key_event.pressed,
+					key_event.physical_keycode,
+					key_event.location,
+					key_event.echo]
 	else:
 		text += event.as_text()
 	if event is InputEventMouse:
 		var mouse_event := event as InputEventMouse
-		text += ", global_position %s" % mouse_event.global_position
+		text += """
+				global_position: %s""" % mouse_event.global_position
 	if event is InputEventWithModifiers:
 		var mouse_event := event as InputEventWithModifiers
-		text += ", shift=%s, alt=%s, control=%s, meta=%s, command=%s" % [
+		text += """
+				--------
+				mods: %s
+				shift: %s
+				alt: %s
+				control: %s
+				meta: %s
+				command: %s""" % [
+					mouse_event.get_modifiers_mask(),
 					mouse_event.shift_pressed,
 					mouse_event.alt_pressed,
 					mouse_event.ctrl_pressed,
 					mouse_event.meta_pressed,
 					mouse_event.command_or_control_autoremap]
-	return text
+	return text.dedent()
 
 
 static func _colored_string_div(characters: String) -> String:

@@ -142,14 +142,14 @@ func simulate_action_release(action: String, event_index := -1) -> GdUnitSceneRu
 
 
 @warning_ignore("return_value_discarded")
-func simulate_key_pressed(key_code: int, shift_pressed := false, ctrl_pressed := false) -> GdUnitSceneRunner:
-	simulate_key_press(key_code, shift_pressed, ctrl_pressed)
+func simulate_key_pressed(key_code: int, shift_pressed := false, ctrl_pressed := false, meta_pressed := false) -> GdUnitSceneRunner:
+	simulate_key_press(key_code, shift_pressed, ctrl_pressed, meta_pressed)
 	await _scene_tree().process_frame
-	simulate_key_release(key_code, shift_pressed, ctrl_pressed)
+	simulate_key_release(key_code, shift_pressed, ctrl_pressed, meta_pressed)
 	return self
 
 
-func simulate_key_press(key_code: int, shift_pressed := false, ctrl_pressed := false) -> GdUnitSceneRunner:
+func simulate_key_press(key_code: int, shift_pressed := false, ctrl_pressed := false, meta_pressed := false) -> GdUnitSceneRunner:
 	__print_current_focus()
 	var event := InputEventKey.new()
 	event.pressed = true
@@ -159,12 +159,13 @@ func simulate_key_press(key_code: int, shift_pressed := false, ctrl_pressed := f
 	event.alt_pressed = key_code == KEY_ALT
 	event.shift_pressed = shift_pressed or key_code == KEY_SHIFT
 	event.ctrl_pressed = ctrl_pressed or key_code == KEY_CTRL
+	event.meta_pressed = meta_pressed or key_code == KEY_META
 	_apply_input_modifiers(event)
 	_key_on_press.append(key_code)
 	return _handle_input_event(event)
 
 
-func simulate_key_release(key_code: int, shift_pressed := false, ctrl_pressed := false) -> GdUnitSceneRunner:
+func simulate_key_release(key_code: int, shift_pressed := false, ctrl_pressed := false, meta_pressed := false) -> GdUnitSceneRunner:
 	__print_current_focus()
 	var event := InputEventKey.new()
 	event.pressed = false
@@ -174,6 +175,7 @@ func simulate_key_release(key_code: int, shift_pressed := false, ctrl_pressed :=
 	event.alt_pressed = key_code == KEY_ALT
 	event.shift_pressed = shift_pressed or key_code == KEY_SHIFT
 	event.ctrl_pressed = ctrl_pressed or key_code == KEY_CTRL
+	event.meta_pressed = meta_pressed or key_code == KEY_META
 	_apply_input_modifiers(event)
 	_key_on_press.erase(key_code)
 	return _handle_input_event(event)

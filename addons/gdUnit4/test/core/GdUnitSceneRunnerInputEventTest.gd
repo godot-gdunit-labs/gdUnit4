@@ -200,6 +200,86 @@ func test_simulate_many_keys_press() -> void:
 	assert_that(Input.is_physical_key_pressed(KEY_Z)).is_true()
 
 
+func test_simulate_key_press_with_meta() -> void:
+	# press meta key + A
+	_runner.simulate_key_press(KEY_META)
+	_runner.simulate_key_press(KEY_A)
+	await _runner.await_input_processed()
+
+	# results in two events, first is the meta key is press
+	var event := InputEventKey.new()
+	event.keycode = KEY_META
+	event.physical_keycode = KEY_META
+	event.unicode = KEY_META as int
+	event.pressed = true
+	event.meta_pressed = true
+	verify(_scene_spy, 1)._input(event)
+
+	# second is the combination of current press meta and key A
+	event = InputEventKey.new()
+	event.keycode = KEY_A
+	event.physical_keycode = KEY_A
+	event.unicode = KEY_A as int
+	event.pressed = true
+	event.meta_pressed = true
+	verify(_scene_spy, 1)._input(event)
+	assert_that(Input.is_key_pressed(KEY_META)).is_true()
+	assert_that(Input.is_key_pressed(KEY_A)).is_true()
+
+
+func test_simulate_key_pressed_with_meta_parameter() -> void:
+	# simulate key C with meta modifier using the parameter
+	_runner.simulate_key_pressed(KEY_C, false, false, true)
+	await _runner.await_input_processed()
+
+	# verify the event was created with meta_pressed set to true
+	var event := InputEventKey.new()
+	event.keycode = KEY_C
+	event.physical_keycode = KEY_C
+	event.unicode = KEY_C as int
+	event.pressed = true
+	event.meta_pressed = true
+	verify(_scene_spy, 1)._input(event)
+
+	# verify release event also has meta_pressed set
+	event = InputEventKey.new()
+	event.keycode = KEY_C
+	event.physical_keycode = KEY_C
+	event.unicode = KEY_C as int
+	event.pressed = false
+	event.meta_pressed = true
+	verify(_scene_spy, 1)._input(event)
+	assert_that(Input.is_key_pressed(KEY_C)).is_false()
+
+
+func test_simulate_key_press_release_with_meta_parameter() -> void:
+	# simulate key press with meta modifier
+	_runner.simulate_key_press(KEY_D, false, false, true)
+	await _runner.await_input_processed()
+
+	var event := InputEventKey.new()
+	event.keycode = KEY_D
+	event.physical_keycode = KEY_D
+	event.unicode = KEY_D as int
+	event.pressed = true
+	event.meta_pressed = true
+	verify(_scene_spy, 1)._input(event)
+	assert_that(Input.is_key_pressed(KEY_D)).is_true()
+
+	# now release with meta modifier
+	_runner.simulate_key_release(KEY_D, false, false, true)
+	await _runner.await_input_processed()
+
+	event = InputEventKey.new()
+	event.keycode = KEY_D
+	event.physical_keycode = KEY_D
+	event.unicode = KEY_D as int
+	event.pressed = false
+	event.meta_pressed = true
+	verify(_scene_spy, 1)._input(event)
+	assert_that(Input.is_key_pressed(KEY_D)).is_false()
+
+
 @warning_ignore("unsafe_property_access")
 func test_simulate_keypressed_as_action() -> void:
 	# add custom action `player_jump` for key 'Space' is pressed

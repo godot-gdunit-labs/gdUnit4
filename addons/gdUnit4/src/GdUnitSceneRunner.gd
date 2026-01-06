@@ -25,28 +25,31 @@ extends RefCounted
 
 ## Simulates that a key has been pressed.[br]
 ## [member key_code] : the key code e.g. [constant KEY_ENTER][br]
-## [member shift_pressed] : false by default set to true if simmulate shift is press[br]
-## [member ctrl_pressed] : false by default set to true if simmulate control is press[br]
+## [member shift_pressed] : whether shift is pressed (default: false)[br]
+## [member ctrl_pressed] : whether control is pressed (default: false)[br]
+## [member meta_pressed] : whether meta is pressed (default: false)[br]
 ## [codeblock]
 ##    func test_key_presssed():
 ##       var runner = scene_runner("res://scenes/simple_scene.tscn")
 ##       await runner.simulate_key_pressed(KEY_SPACE)
 ## [/codeblock]
-@abstract func simulate_key_pressed(key_code: int, shift_pressed := false, ctrl_pressed := false) -> GdUnitSceneRunner
+@abstract func simulate_key_pressed(key_code: int, shift_pressed := false, ctrl_pressed := false, meta_pressed := false) -> GdUnitSceneRunner
 
 
 ## Simulates that a key is pressed.[br]
 ## [member key_code] : the key code e.g. [constant KEY_ENTER][br]
-## [member shift_pressed] : false by default set to true if simmulate shift is press[br]
-## [member ctrl_pressed] : false by default set to true if simmulate control is press[br]
-@abstract func simulate_key_press(key_code: int, shift_pressed := false, ctrl_pressed := false) -> GdUnitSceneRunner
+## [member shift_pressed] : whether shift is pressed (default: false)[br]
+## [member ctrl_pressed] : whether control is pressed (default: false)[br]
+## [member meta_pressed] : whether meta is pressed (default: false)[br]
+@abstract func simulate_key_press(key_code: int, shift_pressed := false, ctrl_pressed := false, meta_pressed := false) -> GdUnitSceneRunner
 
 
 ## Simulates that a key has been released.[br]
 ## [member key_code] : the key code e.g. [constant KEY_ENTER][br]
-## [member shift_pressed] : false by default set to true if simmulate shift is press[br]
-## [member ctrl_pressed] : false by default set to true if simmulate control is press[br]
-@abstract func simulate_key_release(key_code: int, shift_pressed := false, ctrl_pressed := false) -> GdUnitSceneRunner
+## [member shift_pressed] : whether shift is pressed (default: false)[br]
+## [member ctrl_pressed] : whether control is pressed (default: false)[br]
+## [member meta_pressed] : whether meta is pressed (default: false)[br]
+@abstract func simulate_key_release(key_code: int, shift_pressed := false, ctrl_pressed := false, meta_pressed := false) -> GdUnitSceneRunner
 
 
 ## Sets the mouse position to the specified vector, provided in pixels and relative to an origin at the upper left corner of the currently focused Window Manager game window.[br]

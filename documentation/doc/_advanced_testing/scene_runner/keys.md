@@ -81,7 +81,8 @@ It takes the following arguments:
 # key_code: an integer value representing the key code of the key being pressed, e.g. KEY_ENTER for the enter key.
 # shift: a boolean value indicating whether the shift key should be simulated as being pressed along with the main key. It is false by default.
 # control: a boolean value indicating whether the control key should be simulated as being pressed along with the main key. It is false by default.
-func simulate_key_pressed(key_code: int, shift := false, control := false) -> GdUnitSceneRunner:
+# meta: a boolean value indicating whether the meta key should be simulated as being pressed along with the main key. It is false by default.
+func simulate_key_pressed(key_code: int, shift := false, control := false, meta := false) -> GdUnitSceneRunner:
 ```
 
 Here is an example of how to use simulate_key_pressed:
@@ -110,8 +111,9 @@ It takes the following arguments:
 /// <param name="keyCode">an integer value representing the key code of the key being pressed, e.g. KEY_ENTER for the enter key.</param>
 /// <param name="shift">a boolean value indicating whether the shift key should be simulated as being pressed along with the main key. It is false by default.</param>
 /// <param name="control">a boolean value indicating whether the control key should be simulated as being pressed along with the main key. It is false by default.</param>
+/// <param name="meta">a boolean value indicating whether the meta key should be simulated as being pressed along with the main key. It is false by default.</param>
 /// <returns>SceneRunner</returns>
-ISceneRunner SimulateKeyPressed(KeyList keyCode, bool shift = false, bool control = false);
+ISceneRunner SimulateKeyPressed(KeyList keyCode, bool shift = false, bool control = false, bool meta = false);
 ```
 
 Here is an example of how to use SimulateKeyPressed:
@@ -148,7 +150,8 @@ It takes the following arguments:
 # key_code : an integer value representing the key code of the key being press e.g. KEY_ENTER for the enter key.
 # shift : a boolean value indicating whether the shift key should be simulated as being press along with the main key. It is false by default.
 # control : a boolean value indicating whether the control key should be simulated as being press along with the main key. It is false by default.
-func simulate_key_press(key_code: int, shift := false, control := false) -> GdUnitSceneRunner:
+# meta : a boolean value indicating whether the meta key should be simulated as being press along with the main key. It is false by default.
+func simulate_key_press(key_code: int, shift := false, control := false, meta := false) -> GdUnitSceneRunner:
 ```
 
 Here is an example of how to use simulate_key_press:
@@ -183,8 +186,9 @@ It takes the following arguments:
 /// <param name="keyCode">an integer value representing the key code of the key being press, e.g. KeyList.Enter for the enter key.</param>
 /// <param name="shift">a boolean value indicating whether the shift key should be simulated as being press along with the main key. It is false by default.</param>
 /// <param name="control">a boolean value indicating whether the control key should be simulated as being press along with the main key. It is false by default.</param>
+/// <param name="meta">a boolean value indicating whether the meta key should be simulated as being press along with the main key. It is false by default.</param>
 /// <returns>SceneRunner</returns>
-ISceneRunner SimulateKeyPress(KeyList keyCode, bool shift = false, bool control = false);
+ISceneRunner SimulateKeyPress(KeyList keyCode, bool shift = false, bool control = false, bool meta = false);
 ```
 
 Here is an example of how to use SimulateKeyPress:
@@ -226,8 +230,9 @@ It takes the following arguments:
 ```gd
 # key_code : an integer value representing the key code of the key being released, e.g. KEY_ENTER for the enter key.
 # shift : a boolean value indicating whether the shift key should be simulated as being released along with the main key. It is false by default.
-# control : fa boolean value indicating whether the control key should be simulated as being released along with the main key. It is false by default.
-func simulate_key_release(key_code: int, shift := false, control := false) -> GdUnitSceneRunner:
+# control : a boolean value indicating whether the control key should be simulated as being released along with the main key. It is false by default.
+# meta : a boolean value indicating whether the meta key should be simulated as being released along with the main key. It is false by default.
+func simulate_key_release(key_code: int, shift := false, control := false, meta := false) -> GdUnitSceneRunner:
 ```
 
 Here is an example of how to use simulate_key_release:
@@ -262,8 +267,9 @@ It takes the following arguments:
 /// <param name="keyCode">an integer value representing the key code of the key being released, e.g. KeyList.Enter for the enter key.</param>
 /// <param name="shift">a boolean value indicating whether the shift key should be simulated as being released along with the main key. It is false by default.</param>
 /// <param name="control">a boolean value indicating whether the control key should be simulated as being released along with the main key. It is false by default.</param>
+/// <param name="meta">a boolean value indicating whether the meta key should be simulated as being released along with the main key. It is false by default.</param>
 /// <returns>SceneRunner</returns>
-ISceneRunner SimulateKeyRelease(KeyList keyCode, bool shift = false, bool control = false);
+ISceneRunner SimulateKeyRelease(KeyList keyCode, bool shift = false, bool control = false, bool meta = false);
 ```
 
 Here is an example of how to use SimulateKeyRelease:

@@ -11,9 +11,11 @@ const GdUnitTools = preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
 
 class TestEmitter extends Node:
-	signal test_signal_counted(value :int)
-	signal test_signal(value :int)
+	signal test_signal_counted(value: int)
+	signal test_signal(value: int)
+	signal test_signal_without_value()
 	signal test_signal_a(value: String)
+	signal test_signal_arry_value(values: Array)
 	@warning_ignore("unused_signal")
 	signal test_signal_unused()
 
@@ -31,6 +33,8 @@ class TestEmitter extends Node:
 			test_signal.emit(10)
 			test_signal.emit(20)
 			test_signal_a.emit("foo")
+			test_signal_without_value.emit()
+			test_signal_arry_value.emit(1, 2, 3)
 		_count += 1
 
 	func reset_trigger(trigger_count := 10) -> void:
@@ -38,7 +42,7 @@ class TestEmitter extends Node:
 		_count = 0
 
 
-var signal_emitter :TestEmitter
+var signal_emitter: TestEmitter
 
 
 func before_test() -> void:
@@ -61,24 +65,50 @@ func test_unknown_signal() -> void:
 	).has_message("Can't wait for non-existion signal 'unknown' checked object 'Node'.")
 
 
+func test_signal_is_emitted_by_signal_name() -> void:
+	await assert_signal(signal_emitter).is_emitted("test_signal_without_value")
+	await assert_signal(signal_emitter).is_emitted("test_signal_counted", 20)
+
+
+func test_signal_is_emitted_by_signal_type() -> void:
+	await assert_signal(signal_emitter).is_emitted(signal_emitter.test_signal_without_value)
+	await assert_signal(signal_emitter).is_emitted(signal_emitter.test_signal_counted, 20)
+
+
+func test_signal_is_emitted_by_invalid_type() -> void:
+	(
+		await assert_failure_await(func() -> void: await assert_signal(signal_emitter).is_emitted(10))
+	).has_message("Invalid signal_name: expected String or Signal, but is 'int'")
+
+
 func test_signal_is_emitted_without_args() -> void:
 	# wait until signal 'test_signal_counted' without args
-	await assert_signal(signal_emitter).is_emitted("test_signal", [10])
-	await assert_signal(signal_emitter).is_emitted("test_signal", [20])
+	await assert_signal(signal_emitter).is_emitted("test_signal_without_value")
 	# wait until signal 'test_signal_unused' where is never emitted
-
 	(
 		await assert_failure_await(func() -> void: await assert_signal(signal_emitter).wait_until(500).is_emitted("test_signal_unused"))
 	).has_message("Expecting emit signal: 'test_signal_unused()' but timed out after 500ms")
 
 
-func test_signal_is_emitted_with_args() -> void:
+func test_signal_is_emitted_with_array_args() -> void:
 	# wait until signal 'test_signal_counted' is emitted with value 20
 	await assert_signal(signal_emitter).is_emitted("test_signal_counted", [20])
 
 	(
 		await assert_failure_await(func() -> void: await assert_signal(signal_emitter).wait_until(50).is_emitted("test_signal_counted", [500]))
 	).has_message("Expecting emit signal: 'test_signal_counted([500])' but timed out after 50ms")
+
+
+func test_signal_is_emitted_with_variadic_args() -> void:
+	await assert_signal(signal_emitter).is_emitted("test_signal_counted", 20)
+
+	(
+		await assert_failure_await(func() -> void: await assert_signal(signal_emitter).wait_until(50).is_emitted("test_signal_counted", 500))
+	).has_message("Expecting emit signal: 'test_signal_counted([500])' but timed out after 50ms")
+
+
+func test_signal_is_emitted_with_any_args() -> void:
+	await assert_signal(signal_emitter).is_emitted("test_signal_counted", any())
 
 
 func test_signal_is_emitted_use_argument_matcher() -> void:
@@ -96,15 +126,37 @@ func test_signal_is_emitted_use_argument_matcher() -> void:
 	).has_message("Expecting emit signal: 'test_signal_counted([any_string()])' but timed out after 50ms")
 
 
-func test_signal_is_not_emitted() -> void:
-	# wait to verify signal 'test_signal_counted()' is not emitted until the first 50ms
+func test_signal_is_not_emitted_by_signal_name() -> void:
 	await assert_signal(signal_emitter).wait_until(50).is_not_emitted("test_signal_counted")
-	# wait to verify signal 'test_signal_counted(50)' is not emitted until the NEXT first 80ms
+	await assert_signal(signal_emitter).wait_until(30).is_not_emitted("test_signal_counted", 50)
+
+
+func test_signal_is_not_emitted_by_signal_type() -> void:
+	await assert_signal(signal_emitter).wait_until(50).is_not_emitted(signal_emitter.test_signal_counted)
+	await assert_signal(signal_emitter).wait_until(30).is_not_emitted(signal_emitter.test_signal_counted, 50)
+
+
+func test_signal_is_not_emitted() -> void:
+	# wait to verify signal 'test_signal_counted()' is not emitted until the first 50 ms
+	await assert_signal(signal_emitter).wait_until(50).is_not_emitted("test_signal_counted")
+	# wait to verify signal 'test_signal_counted(50)' is not emitted until the NEXT 30 ms
 	await assert_signal(signal_emitter).wait_until(30).is_not_emitted("test_signal_counted", [50])
 
-	# until the next 500ms the signal is emitted and ends in a failure
+	# until the next 500 ms the signal is emitted and ends in a failure
 	(
 		await assert_failure_await(func() -> void: await assert_signal(signal_emitter).wait_until(1000).is_not_emitted("test_signal_counted", [50]))
+	).starts_with_message("Expecting do not emit signal: 'test_signal_counted([50])' but is emitted after")
+
+
+func test_signal_is_not_emitted_use_varargs() -> void:
+	# wait to verify signal 'test_signal_counted()' is not emitted until the first 50 ms
+	await assert_signal(signal_emitter).wait_until(50).is_not_emitted("test_signal_counted")
+	# wait to verify signal 'test_signal_counted(50)' is not emitted until the NEXT 30 ms
+	await assert_signal(signal_emitter).wait_until(30).is_not_emitted("test_signal_counted", 50)
+
+	# until the next 500 ms the signal is emitted and ends in a failure
+	(
+		await assert_failure_await(func() -> void: await assert_signal(signal_emitter).wait_until(1000).is_not_emitted("test_signal_counted", 50))
 	).starts_with_message("Expecting do not emit signal: 'test_signal_counted([50])' but is emitted after")
 
 
@@ -116,6 +168,17 @@ func test_signal_is_not_emitted_use_argument_matcher() -> void:
 	# until the next 500ms the signal is emitted and ends in a failure
 	(
 		await assert_failure_await(func() -> void: await assert_signal(signal_emitter).wait_until(1000).is_not_emitted("test_signal_counted", [any()]))
+	).starts_with_message("Expecting do not emit signal: 'test_signal_counted([any()])' but is emitted after")
+
+
+func test_signal_is_not_emitted_use_variadic_argument_matcher() -> void:
+	# wait until signal 'test_signal_counted' is NOT emitted by using any_int() matcher for signal arguments
+	await assert_signal(signal_emitter).wait_until(10).is_not_emitted("test_signal_counted", any())
+	await assert_signal(signal_emitter).wait_until(10).is_not_emitted("test_signal_counted", any_int())
+
+	# until the next 500ms the signal is emitted and ends in a failure
+	(
+		await assert_failure_await(func() -> void: await assert_signal(signal_emitter).wait_until(1000).is_not_emitted("test_signal_counted", any()))
 	).starts_with_message("Expecting do not emit signal: 'test_signal_counted([any()])' but is emitted after")
 
 
@@ -175,14 +238,14 @@ func test_node_changed_emitting_signals() -> void:
 
 
 func test_is_signal_exists() -> void:
-	var node :Node2D = auto_free(Node2D.new())
+	var node: Node2D = auto_free(Node2D.new())
 
 	assert_signal(node).is_signal_exists("visibility_changed")\
 		.is_signal_exists("draw")\
 		.is_signal_exists("visibility_changed")\
 		.is_signal_exists("tree_entered")\
-		.is_signal_exists("tree_exiting")\
-		.is_signal_exists("tree_exited")
+		.is_signal_exists(node.tree_exiting)\
+		.is_signal_exists(node.tree_exited)
 
 	(
 		await assert_failure_await(func() -> void: assert_signal(node).is_signal_exists("not_existing_signal"))

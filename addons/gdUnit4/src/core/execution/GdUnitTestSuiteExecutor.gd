@@ -20,19 +20,14 @@ func _on_testsession_terminated() -> void:
 	GdUnitThreadManager.interrupt()
 
 
-func execute(test_suite: GdUnitTestSuite) -> void:
+func run_and_wait(tests: Array[GdUnitTestCase]) -> void:
+	if !_debug_mode:
+		GdUnitSignals.instance().gdunit_event.emit(GdUnitInit.new())
+
 	var orphan_detection_enabled := GdUnitSettings.is_verbose_orphans()
 	if not orphan_detection_enabled:
 		prints("!!! Reporting orphan nodes is disabled. Please check GdUnit settings.")
 
-	(Engine.get_main_loop() as SceneTree).root.call_deferred("add_child", test_suite)
-	await (Engine.get_main_loop() as SceneTree).process_frame
-	await _executeStage.execute(GdUnitExecutionContext.of_test_suite(test_suite))
-
-
-func run_and_wait(tests: Array[GdUnitTestCase]) -> void:
-	if !_debug_mode:
-		GdUnitSignals.instance().gdunit_event.emit(GdUnitInit.new())
 	# first we group all tests by resource path
 	var grouped_by_suites := GdArrayTools.group_by(tests, func(test: GdUnitTestCase) -> String:
 		return test.suite_resource_path
@@ -45,8 +40,12 @@ func run_and_wait(tests: Array[GdUnitTestCase]) -> void:
 		var suite_tests: Array[GdUnitTestCase] = Array(grouped_by_suites[suite_path], TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 		var script := GdUnitTestSuiteScanner.load_with_disabled_warnings(suite_path)
 		if script.get_class() == "GDScript":
+			var context := GdUnitExecutionContext.new(suite_path)
 			var test_suite := scanner.load_suite(script as GDScript, suite_tests)
-			await execute(test_suite)
+			context.test_suite = test_suite
+			(Engine.get_main_loop() as SceneTree).root.add_child(test_suite)
+			await _executeStage.execute(context)
+			context.dispose()
 		else:
 			await GdUnit4CSharpApiLoader.execute(suite_tests)
 	if !_debug_mode:

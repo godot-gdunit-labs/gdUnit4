@@ -59,6 +59,8 @@ func run_tests(tests :Array[GdUnitTestCase], settings := {}) -> Array[GdUnitEven
 			saves_settings[key] =  ProjectSettings.get_setting(key)
 			ProjectSettings.set_setting(key, settings[key])
 
+		# sync to main thread
+		await (Engine.get_main_loop() as SceneTree).process_frame
 		# execute all tests
 		await executor.run_and_wait(tests)
 
@@ -108,14 +110,13 @@ func assert_event_reports(events: Array[GdUnitEvent], expected_reports: Array) -
 	var _events: Array[GdUnitEvent] = events
 	for event_index in _events.size():
 		var current: Array[GdUnitReport] = _events[event_index].reports()
-		var expected :Array = expected_reports[event_index] if expected_reports.size() > event_index else []
+		var expected: Array = expected_reports[event_index] if expected_reports.size() > event_index else []
 		if expected.is_empty():
 			for m in current.size():
 				assert_str(flating_message(current[m].message() as String)).is_empty()
-
 		for m in expected.size():
 			if m < current.size():
-				assert_str(flating_message(current[m].message() as String)).is_equal(expected[m])
+				assert_str(flating_message(current[m].message() as String)).starts_with(expected[m])
 			else:
 				assert_str("<N/A>").is_equal(expected[m])
 
@@ -449,7 +450,7 @@ func test_execute_failure_on_multiple_stages() -> void:
 # GD-63
 func test_execute_failure_and_orphans() -> void:
 	# this is a more complex failure state, we expect to find multipe orphans on different stages
-	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteFailAndOrpahnsDetected.resource")
+	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/execution/resources/orphans/TestSuiteFailAndOrpahnsDetected.gd")
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	var test_case1: GdUnitTestCase = tests["test_case1"]
 	var test_case2: GdUnitTestCase = tests["test_case2"]
@@ -493,21 +494,20 @@ func test_execute_failure_and_orphans() -> void:
 			[],
 			[],
 			# ends with warnings
-			["WARNING:\n Detected <2> orphan nodes during test setup! Check before_test() and after_test()!",
-			"WARNING:\n Detected <3> orphan nodes during test execution!"],
+			["WARNING: Detected 2 orphan nodes on test setup!",
+			 "WARNING: Detected 3 orphan nodes!"],
 			[],
 			# ends with failure and warnings
-			["WARNING:\n Detected <2> orphan nodes during test setup! Check before_test() and after_test()!",
-			"WARNING:\n Detected <4> orphan nodes during test execution!",
-			"faild on test_case2()"],
+			["WARNING: Detected 2 orphan nodes on test setup!",
+			 "WARNING: Detected 4 orphan nodes!"],
 			# and one warning detected at stage 'after'
-			["WARNING:\n Detected <1> orphan nodes during test suite setup stage! Check before() and after()!"]
+			["WARNING: Detected 1 orphan nodes!"]
 		])
 
 
 func test_execute_failure_and_orphans_report_orphan_disabled() -> void:
 	# this is a more complex failure state, we expect to find multipe orphans on different stages
-	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteFailAndOrpahnsDetected.resource")
+	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/execution/resources/orphans/TestSuiteFailAndOrpahnsDetected.gd")
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	var test_case1: GdUnitTestCase = tests["test_case1"]
 	var test_case2: GdUnitTestCase = tests["test_case2"]

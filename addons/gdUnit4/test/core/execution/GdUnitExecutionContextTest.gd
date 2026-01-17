@@ -19,14 +19,14 @@ func after() -> void:
 
 
 func test_collect_report_statistics_with_errors() -> void:
-	# setup
+	# setup execution context tree like is build by the executor run
+	var ctx_suite := GdUnitExecutionContext.new("")
 	var ts :GdUnitTestSuite = auto_free(GdUnitTestSuite.new())
 	var tc :_TestCase = auto_free(create_test_case("test_case1", 0, ""))
 	ts.add_child(tc)
+	ctx_suite.test_suite = ts
 
-	# setup execution context tree like is build by the executor run
 	# suite execution (GdUnitTestSuiteExecutor)
-	var ctx_suite := GdUnitExecutionContext.of_test_suite(ts)
 	if ctx_suite != null:
 		var suite_err1 := ctx_suite.add_report(GdUnitReport.new().create(GdUnitReport.FAILURE, 1, "suite before error"))
 
@@ -89,14 +89,14 @@ func test_collect_report_statistics_with_errors() -> void:
 
 
 func test_collect_report_statistics_with_errors_on_suite_hooks() -> void:
-	# setup
+	# setup execution context tree like is build by the executor run
+	var ctx_suite := GdUnitExecutionContext.new("")
 	var ts :GdUnitTestSuite = auto_free(GdUnitTestSuite.new())
 	var tc :_TestCase = auto_free(create_test_case("test_case1", 0, ""))
 	ts.add_child(tc)
+	ctx_suite.test_suite = ts
 
-	# setup execution context tree like is build by the executor run
 	# suite execution (GdUnitTestSuiteExecutor)
-	var ctx_suite := GdUnitExecutionContext.of_test_suite(ts)
 	if ctx_suite != null:
 		var suite_err1 := ctx_suite.add_report(GdUnitReport.new().create(GdUnitReport.FAILURE, 1, "suite before error"))
 
@@ -154,16 +154,15 @@ func test_collect_report_statistics_with_errors_on_suite_hooks() -> void:
 
 
 func test_collect_report_statistics_only_errors_on_test_hooks() -> void:
-	# setup
+	# setup execution context tree like is build by the executor run
+	var ctx_suite := GdUnitExecutionContext.new("")
 	var ts :GdUnitTestSuite = auto_free(GdUnitTestSuite.new())
 	var tc :_TestCase = auto_free(create_test_case("test_case1", 0, ""))
 	ts.add_child(tc)
+	ctx_suite.test_suite = ts
 
-	# setup execution context tree like is build by the executor run
 	# suite execution (GdUnitTestSuiteExecutor)
-	var ctx_suite := GdUnitExecutionContext.of_test_suite(ts)
 	if ctx_suite != null:
-
 		# test execution (GdUnitTestSuiteExecutionStage)
 		var ctx_test := GdUnitExecutionContext.of_test_case(ctx_suite, tc)
 		if ctx_test != null:
@@ -218,14 +217,14 @@ func test_collect_report_statistics_only_errors_on_test_hooks() -> void:
 
 
 func test_collect_report_statistics_all_tests_skipped() -> void:
-	# setup
+	# setup execution context tree like is build by the executor run
+	var ctx_suite := GdUnitExecutionContext.new("")
 	var ts :GdUnitTestSuite = auto_free(GdUnitTestSuite.new())
 	var tc :_TestCase = auto_free(create_test_case("test_case1", 0, ""))
 	ts.add_child(tc)
+	ctx_suite.test_suite = ts
 
-	# setup execution context tree like is build by the executor run
 	# suite execution (GdUnitTestSuiteExecutor)
-	var ctx_suite := GdUnitExecutionContext.of_test_suite(ts)
 	if ctx_suite != null:
 		# test execution (GdUnitTestSuiteExecutionStage)
 		# simulate 10 test running as skipped
@@ -282,12 +281,13 @@ func test_simmulate_flaky_test(retry_count: int, is_flaky: bool, is_failed: bool
 	[1, false, true],
 	[2, false, true],
 	[3, true, false],]) -> void:
-	# setup
+	# setup execution context tree like is build by the executor run
+	var ctx_suite := GdUnitExecutionContext.new("")
 	var ts :GdUnitTestSuite = auto_free(GdUnitTestSuite.new())
 	var tc :_TestCase = auto_free(create_test_case("test_case1", 0, ""))
 	ts.add_child(tc)
-	# setup execution context tree like is build by the executor run
-	var ctx_suite := GdUnitExecutionContext.of_test_suite(ts)
+	ctx_suite.test_suite = ts
+
 	if ctx_suite != null:
 		# test execution
 		var ctx_test := GdUnitExecutionContext.of_test_case(ctx_suite, tc)

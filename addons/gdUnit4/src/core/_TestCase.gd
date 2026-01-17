@@ -207,11 +207,6 @@ func test_name() -> String:
 	return _test_case.test_name
 
 
-@warning_ignore("native_method_override")
-func get_name() -> StringName:
-	return _test_case.test_name
-
-
 func line_number() -> int:
 	return _test_case.line_number
 

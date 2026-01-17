@@ -26,7 +26,7 @@ static func run(name :String, cb :Callable) -> Variant:
 
 
 static func interrupt() -> void:
-	for thread_context in instance()._thread_context_by_id.values():
+	for thread_context: GdUnitThreadContext in instance()._thread_context_by_id.values():
 		thread_context.terminate()
 
 

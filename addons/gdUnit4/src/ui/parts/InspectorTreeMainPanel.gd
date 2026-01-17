@@ -746,7 +746,9 @@ func show_failed_report(selected_item: TreeItem) -> void:
 	for report in get_item_reports(selected_item):
 		var reportNode: RichTextLabel = _report_template.duplicate()
 		_report_list.add_child(reportNode)
+		reportNode.push_color(Color.DARK_TURQUOISE)
 		reportNode.append_text(report.to_string())
+		reportNode.pop()
 		reportNode.visible = true
 
 

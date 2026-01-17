@@ -72,6 +72,7 @@ func _init(p_scene: Variant, p_verbose: bool, p_hide_push_errors := false) -> vo
 		return
 
 	_scene_tree().root.add_child(_current_scene)
+	Engine.set_meta("GdUnitSceneRunner", self)
 	# do finally reset all open input events when the scene is removed
 	@warning_ignore("return_value_discarded")
 	_scene_tree().root.child_exiting_tree.connect(func f(child: Node) -> void:
@@ -101,6 +102,7 @@ func _notification(what: int) -> void:
 				_current_scene.free()
 		_is_disposed = true
 		_current_scene = null
+		Engine.remove_meta("GdUnitSceneRunner")
 
 
 func _scene_tree() -> SceneTree:

@@ -188,6 +188,10 @@ func await_millis(timeout: int) -> void:
 	await __awaiter.await_millis(timeout)
 
 
+func collect_orphan_node_details() -> void:
+	GdUnitThreadManager.get_current_context().get_execution_context().orphan_monitor_collect()
+
+
 ## Creates a new scene runner to allow simulate interactions checked a scene.[br]
 ## The runner will manage the scene instance and release after the runner is released[br]
 ## example:[br]

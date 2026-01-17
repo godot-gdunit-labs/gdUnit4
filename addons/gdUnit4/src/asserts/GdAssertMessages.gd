@@ -137,6 +137,10 @@ static func _nerror(number :Variant) -> String:
 			return "[color=%s]%s[/color]" % [ERROR_COLOR, str(number)]
 
 
+static func _colored(value: Variant, color: Color) -> String:
+	return "[color=%s]%s[/color]" % [color.to_html(), value]
+
+
 static func _colored_value(value :Variant) -> String:
 	match typeof(value):
 		TYPE_STRING, TYPE_STRING_NAME:
@@ -179,19 +183,52 @@ static func _index_report_as_table(index_reports :Array) -> String:
 	return table.replace("$cells", cells)
 
 
-static func orphan_detected_on_suite_setup(count :int) -> String:
-	return "%s\n Detected <%d> orphan nodes during test suite setup stage! [b]Check before() and after()![/b]" % [
-		_warning("WARNING:"), count]
+
+static func orphan_warning(orphans_count: int) -> String:
+	return """%s: Found %s possible orphan nodes.
+			Add %s to the end of the test to collect details.""".dedent() % [
+			_warning("WARNING:"),
+			_nerror(orphans_count),
+			_colored_value("collect_orphan_node_details()")
+		]
+
+static func orphan_detected_on_suite_setup(orphans: Array[GdUnitOrphanNodeInfo]) -> String:
+	return """
+		%s Detected %s orphan nodes!
+			[b]Verify your test suite setup.[/b]
+		%s""".dedent().trim_prefix("\n") % [
+		_warning("WARNING:"),
+		_nerror(orphans.size()),
+		_build_orphan_node_stacktrace(orphans)]
 
 
-static func orphan_detected_on_test_setup(count :int) -> String:
-	return "%s\n Detected <%d> orphan nodes during test setup! [b]Check before_test() and after_test()![/b]" % [
-		_warning("WARNING:"), count]
+static func orphan_detected_on_test_setup(orphans: Array[GdUnitOrphanNodeInfo]) -> String:
+	return """
+			%s Detected %s orphan nodes on test setup!
+				[b]Check before_test() and after_test()![/b]
+			%s""".dedent().trim_prefix("\n") % [
+				_warning("WARNING:"),
+				_nerror(orphans.size()),
+				_build_orphan_node_stacktrace(orphans)
+			]
 
 
-static func orphan_detected_on_test(count :int) -> String:
-	return "%s\n Detected <%d> orphan nodes during test execution!" % [
-		_warning("WARNING:"), count]
+static func orphan_detected_on_test(orphans: Array[GdUnitOrphanNodeInfo]) -> String:
+	return """
+		%s Detected %s orphan nodes!
+		%s""".dedent().trim_prefix("\n") % [
+			_warning("WARNING:"),
+			_nerror(orphans.size()),
+			_build_orphan_node_stacktrace(orphans)
+		]
+
+
+static func _build_orphan_node_stacktrace(orphans: Array[GdUnitOrphanNodeInfo]) -> String:
+	var stack_trace := "\n"
+	for orphan in orphans:
+		stack_trace += orphan.as_trace(orphan, true) + "\n"
+	return stack_trace.indent("    ")
+
 
 
 static func fuzzer_interuped(iterations: int, error: String) -> String:

@@ -188,6 +188,41 @@ func await_millis(timeout: int) -> void:
 	await __awaiter.await_millis(timeout)
 
 
+## Collects detailed information about orphaned nodes for debugging purposes.[br]
+##
+## This function gathers comprehensive details about nodes that remain in memory
+## after test execution (orphans). It provides debugging information to help
+## identify the source of memory leaks in tests. Must be manually called in
+## tests when orphan nodes are detected.[br]
+## [br]
+## [b]When to Use:[/b][br]
+## - When GdUnit4 reports orphan nodes after test execution[br]
+## - For debugging memory leaks in test scenarios[br]
+## - To get detailed information about unreleased nodes[br]
+## [br]
+## [b]Usage Pattern:[/b][br]
+## Add this call at the end of tests that are suspected to create orphans,
+## or when the test runner reports orphan detection.[br]
+## [br]
+## [b]Examples:[/b]
+## [codeblock]
+## func test_scene_management():
+##     # Test code that might create orphan nodes
+##     var scene = preload("res://TestScene.tscn").instantiate()
+##     add_child(scene)
+##
+##     # Do test operations
+##     scene.some_method()
+##
+##     # Clean up (but might miss some nodes)
+##     scene.queue_free()
+##
+##     # Collect orphan details if any are detected
+##     collect_orphan_node_details()
+## [/codeblock]
+## [br]
+## [b]Note:[/b] This is a debugging utility function that should be removed
+## or commented out once orphan issues are resolved.
 func collect_orphan_node_details() -> void:
 	GdUnitThreadManager.get_current_context().get_execution_context().orphan_monitor_collect()
 

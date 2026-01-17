@@ -185,12 +185,13 @@ static func _index_report_as_table(index_reports :Array) -> String:
 
 
 static func orphan_warning(orphans_count: int) -> String:
-	return """%s: Found %s possible orphan nodes.
-			Add %s to the end of the test to collect details.""".dedent() % [
-			_warning("WARNING:"),
-			_nerror(orphans_count),
-			_colored_value("collect_orphan_node_details()")
-		]
+	return """
+		%s: Found %s possible orphan nodes.
+			Add %s to the end of the test to collect details.""".dedent().trim_prefix("\n") % [
+		_warning("WARNING:"),
+		_nerror(orphans_count),
+		_colored_value("collect_orphan_node_details()")
+	]
 
 static func orphan_detected_on_suite_setup(orphans: Array[GdUnitOrphanNodeInfo]) -> String:
 	return """

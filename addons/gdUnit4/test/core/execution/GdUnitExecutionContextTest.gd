@@ -25,6 +25,7 @@ func test_collect_report_statistics_with_errors() -> void:
 	var tc :_TestCase = auto_free(create_test_case("test_case1", 0, ""))
 	ts.add_child(tc)
 	ctx_suite.test_suite = ts
+	ctx_suite.orphan_monitor_start()
 
 	# suite execution (GdUnitTestSuiteExecutor)
 	if ctx_suite != null:
@@ -95,6 +96,7 @@ func test_collect_report_statistics_with_errors_on_suite_hooks() -> void:
 	var tc :_TestCase = auto_free(create_test_case("test_case1", 0, ""))
 	ts.add_child(tc)
 	ctx_suite.test_suite = ts
+	ctx_suite.orphan_monitor_start()
 
 	# suite execution (GdUnitTestSuiteExecutor)
 	if ctx_suite != null:
@@ -160,6 +162,7 @@ func test_collect_report_statistics_only_errors_on_test_hooks() -> void:
 	var tc :_TestCase = auto_free(create_test_case("test_case1", 0, ""))
 	ts.add_child(tc)
 	ctx_suite.test_suite = ts
+	ctx_suite.orphan_monitor_start()
 
 	# suite execution (GdUnitTestSuiteExecutor)
 	if ctx_suite != null:
@@ -223,6 +226,7 @@ func test_collect_report_statistics_all_tests_skipped() -> void:
 	var tc :_TestCase = auto_free(create_test_case("test_case1", 0, ""))
 	ts.add_child(tc)
 	ctx_suite.test_suite = ts
+	ctx_suite.orphan_monitor_start()
 
 	# suite execution (GdUnitTestSuiteExecutor)
 	if ctx_suite != null:
@@ -287,6 +291,7 @@ func test_simmulate_flaky_test(retry_count: int, is_flaky: bool, is_failed: bool
 	var tc :_TestCase = auto_free(create_test_case("test_case1", 0, ""))
 	ts.add_child(tc)
 	ctx_suite.test_suite = ts
+	ctx_suite.orphan_monitor_start()
 
 	if ctx_suite != null:
 		# test execution

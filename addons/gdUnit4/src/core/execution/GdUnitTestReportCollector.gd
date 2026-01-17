@@ -46,7 +46,7 @@ static func count_orphans(reports_: Array[GdUnitReport]) -> int:
 	var orphan_reports := reports_.filter(__filter_is_orphan)
 	if orphan_reports.is_empty():
 		return 0
-	## Collect orphan cout from the messages
+	## Collect orphan count from the reports
 	var orphans := 0
 	for report: GdUnitReport in orphan_reports:
 		orphans += report._current_value

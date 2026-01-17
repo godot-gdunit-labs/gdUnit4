@@ -47,18 +47,18 @@ func stop() -> void:
 	# Collect only new detected orphan id's, we want only to collect orphans between start and stop time
 	_orphan_ids_at_stop = _get_orphan_node_ids().filter(func(element: int) -> bool:
 		# Excluding sub monitores orphans
-		if _sub_monitor_orphans_ids().has(element):
+		if _collect_child_orphan_ids().has(element):
 			return false
 		# Excluding orphans at start
 		return not _orphan_ids_at_start.has(element) and not _initial_orphans.has(element)
 	)
 
 
-func _sub_monitor_orphans_ids() -> Array[int]:
+func _collect_child_orphan_ids() -> Array[int]:
 	var collected_ids: Array[int] = []
 	for child_monitor in _child_monitors:
 		collected_ids.append_array(child_monitor._orphan_ids_at_stop)
-		collected_ids.append_array(child_monitor._sub_monitor_orphans_ids())
+		collected_ids.append_array(child_monitor._collect_child_orphan_ids())
 	return collected_ids
 
 

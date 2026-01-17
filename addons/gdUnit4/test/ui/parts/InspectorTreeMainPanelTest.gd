@@ -397,7 +397,7 @@ func test_update_test_case_on_multiple_test_suite_with_same_name() -> void:
 
 # Test coverage for issue GD-278: GdUnit Inspector: Test marks as passed if both warning and error
 func test_update_icon_state() -> void:
-	var suite_script := GdUnitTestResourceLoader.load_gd_script("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteFailAndOrpahnsDetected.resource", true)
+	var suite_script := GdUnitTestResourceLoader.load_gd_script("res://addons/gdUnit4/test/core/execution/resources/orphans/TestSuiteFailAndOrpahnsDetected.gd", true)
 	var discovered_tests := {}
 	GdUnitTestDiscoverer.discover_tests(suite_script, func(discover_test: GdUnitTestCase) -> void:
 		discover_sink(discover_test)

@@ -25,5 +25,5 @@ func  	 test_b21 		 ( 	 ) 	 	  -> void:
 # finally verify all tests are found
 func after() -> void:
 	assert_array(get_children())\
-		.extract("get_name")\
+		.extract("test_name")\
 		.contains_exactly(["test_example", "test_b", "test_b2", "test_b21"])

@@ -1,7 +1,7 @@
 extends GdUnitTestSuite
 
 
-var _catched_events :Array[GdUnitEvent] = []
+var _catched_events: Array[GdUnitEvent] = []
 
 
 func test_assert_method_with_enabled_global_error_report() -> void:
@@ -14,28 +14,20 @@ func test_assert_method_with_disabled_global_error_report() -> void:
 	await assert_error(do_a_fail).is_runtime_error('Assertion failed: test')
 
 
-@warning_ignore("assert_always_false")
 func do_a_fail() -> void:
-	if OS.is_debug_build():
-		# On debug level we need to simulate the assert log entry, otherwise we stuck on a breakpoint
-		if Engine.get_version_info().hex >= 0x40400:
-			prints("""
-			SCRIPT ERROR: Assertion failed: test
-			   at: do_a_fail (res://addons/gdUnit4/test/asserts/GdUnitErrorAssertTest.gd:20)""".dedent())
-		else:
-			prints("""
-			USER SCRIPT ERROR: Assertion failed: test
-			   at: do_a_fail (res://addons/gdUnit4/test/asserts/GdUnitErrorAssertTest.gd:20)""".dedent())
-	else:
-		@warning_ignore("assert_always_false")
-		assert(3 == 1, 'test')
+	@warning_ignore("assert_always_false")
+	assert(3 == 1, 'test')
 
 
 func catch_test_events(event :GdUnitEvent) -> void:
 	_catched_events.append(event)
 
 
-func before() -> void:
+func before(
+	_do_skip := Engine.is_embedded_in_editor() or OS.is_debug_build(),
+	_skip_reason  := "Is skipped because the test will holt on script error in debug mode"
+	) -> void:
+
 	GdUnitSignals.instance().gdunit_event.connect(catch_test_events)
 
 

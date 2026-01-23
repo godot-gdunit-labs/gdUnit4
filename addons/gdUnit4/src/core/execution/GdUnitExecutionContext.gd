@@ -127,7 +127,7 @@ func error_monitor_start() -> void:
 
 
 func error_monitor_stop() -> void:
-	await error_monitor.scan()
+	error_monitor.stop()
 	for error_report in error_monitor.to_reports():
 		if error_report.is_error():
 			_report_collector.push_back(error_report)

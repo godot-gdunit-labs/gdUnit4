@@ -1,0 +1,35 @@
+name: cleanup-workflow-runs
+
+on: # yamllint disable-line rule:truthy
+  schedule:
+    - cron: "0 0 * * *" # GMT
+  workflow_dispatch:
+    inputs:
+      days_to_keep:
+        description: 'Number of days to keep workflow runs'
+        required: false
+        default: '14'
+        type: string
+      dry_run:
+        description: 'Enable dry run mode'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: write
+      contents: read
+#timeout-minutes: 60
+
+    steps:
+      - name: Delete outdated release workflow runs
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: ${{ github.event.inputs.days_to_keep || '14' }}
+          keep_minimum_runs: 24
+          dry_run: ${{ github.event.inputs.dry_run || false }}

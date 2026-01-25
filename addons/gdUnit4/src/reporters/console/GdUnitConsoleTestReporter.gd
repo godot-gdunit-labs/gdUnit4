@@ -147,6 +147,9 @@ func _print_failure_report(reports: Array[GdUnitReport]) -> void:
 			for line in text.split("\n", false):
 				_writer.indent(2).color(Color.DARK_TURQUOISE).println_message(line)
 
+			# TODO verify usage
+			_writer.print_bbcode(report.message())
+
 	if not reports.is_empty():
 		println_message("")
 

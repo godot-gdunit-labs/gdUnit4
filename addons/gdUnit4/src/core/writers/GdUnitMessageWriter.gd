@@ -169,6 +169,11 @@ func print_at(message: String, cursor_pos: int) -> void:
 	reset()
 
 
+## Prints a message using bbcode
+func print_bbcode(_message: String) -> void:
+	pass
+
+
 ## Internal implementation of print_message.[br]
 ## [br]
 ## To be overridden by concrete formatters.[br]

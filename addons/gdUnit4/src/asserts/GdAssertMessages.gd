@@ -278,6 +278,48 @@ static func error_is_not_null() -> String:
 	return "%s %s" % [_error("Expecting: not to be"), _colored_value(null)]
 
 
+static func error_is_equal_screen_shot(error_info: Dictionary) -> String:
+	var metrics := """
+		[color=#1E90FF][font_size=16][b]Metrics:[/b][/font_size]
+			[b]Component:[/b] <{node_name}>
+			[b]Node Path:[/b] {node_path}
+			[b]Resolution:[/b] {resolution} pixels
+			[b]Config:[/b] {config}
+				- pixel tolerance: {config.pixel_tolerance}%
+				- difference threshold: {config.difference_threshold}%
+				- ignore alpha: {config.is_ignore_alpha}
+			- {different_pixels} pixels of total {total_pixels} differs ({different_pixels_percentage}% of total)
+			- Avg color distance: {average_color_distance} (threshold: {difference_threshold})
+			[/color]""".format(error_info)
+
+	return """{0}
+		{1}
+		[color=#1E90FF][font_size=16][b]Comparision:[/b][/font_size][/color]
+			[table=3]
+			[cell border=gray][center]Expected[/center][/cell][cell border=gray][center]Actual[/center][/cell][cell border=gray][center]Difference[/center][/cell]
+			[cell border=gray][img]{2}[/img][/cell][cell border=gray][img]{3}[/img][/cell][cell border=gray][img]{4}[/img][/cell]
+			[/table]
+		""".format([
+			_error("Visual regression detected in '{0}':".format([error_info["node_name"]])),
+			metrics,
+			error_info["reference_image_path"],
+			error_info["captured_image_path"],
+			error_info["difference_image_path"],
+		])
+
+
+static func error_is_equal_screen_shot_diff_size(error_info: Dictionary) -> String:
+	return """
+		{0}
+		 {1}
+		 but was
+		 {2}""".format([
+			_error("Expecting same component size:"),
+			error_info["actual_size"],
+			error_info["reference_size"]
+		])
+
+
 static func error_equal(current :Variant, expected :Variant, index_reports :Array = []) -> String:
 	var report := """
 		%s

@@ -313,9 +313,9 @@ func reset(obj: Variant) -> void:
 ##	[/codeblock]
 func monitor_signals(source: Object, _auto_free := true) -> Object:
 	@warning_ignore("unsafe_method_access")
-	__lazy_load("res://addons/gdUnit4/src/core/thread/GdUnitThreadManager.gd")\
-		.get_current_context()\
-		.get_signal_collector()\
+	__lazy_load("res://addons/gdUnit4/src/core/thread/GdUnitThreadManager.gd") \
+		.get_current_context() \
+		.get_signal_collector() \
 		.register_emitter(source, true) # force recreate to start with a fresh monitoring
 	return auto_free(source) if _auto_free else source
 
@@ -533,7 +533,7 @@ func any_packed_color_array() -> GdUnitArgumentMatcher:
 
 
 ## Argument matcher to match any instance of given class
-func any_class(clazz :Object) -> GdUnitArgumentMatcher:
+func any_class(clazz: Object) -> GdUnitArgumentMatcher:
 	@warning_ignore("unsafe_method_access")
 	return __gdunit_argument_matchers().any_class(clazz)
 
@@ -593,8 +593,8 @@ func assert_that(current: Variant) -> GdUnitAssert:
 			return assert_vector(current, false)
 		TYPE_DICTIONARY:
 			return assert_dict(current)
-		TYPE_ARRAY, TYPE_PACKED_BYTE_ARRAY, TYPE_PACKED_INT32_ARRAY, TYPE_PACKED_INT64_ARRAY,\
-		TYPE_PACKED_FLOAT32_ARRAY, TYPE_PACKED_FLOAT64_ARRAY, TYPE_PACKED_STRING_ARRAY,\
+		TYPE_ARRAY, TYPE_PACKED_BYTE_ARRAY, TYPE_PACKED_INT32_ARRAY, TYPE_PACKED_INT64_ARRAY, \
+		TYPE_PACKED_FLOAT32_ARRAY, TYPE_PACKED_FLOAT64_ARRAY, TYPE_PACKED_STRING_ARRAY, \
 		TYPE_PACKED_VECTOR2_ARRAY, TYPE_PACKED_VECTOR3_ARRAY, TYPE_PACKED_COLOR_ARRAY:
 			return assert_array(current, false)
 		TYPE_OBJECT, TYPE_NIL:
@@ -651,6 +651,11 @@ func assert_file(current: Variant) -> GdUnitFileAssert:
 ## An assertion tool to verify Objects.
 func assert_object(current: Variant) -> GdUnitObjectAssert:
 	return __lazy_load("res://addons/gdUnit4/src/asserts/GdUnitObjectAssertImpl.gd").new(current)
+
+
+## An assertion for UI and visual testing of Godot nodes
+func assert_ui(current: Node) -> GdUnitUIAssert:
+	return __lazy_load("res://addons/gdUnit4/src/asserts/GdUnitUIAssertImpl.gd").new(current)
 
 
 func assert_result(current: Variant) -> GdUnitResultAssert:

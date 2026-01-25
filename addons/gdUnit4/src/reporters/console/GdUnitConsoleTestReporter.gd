@@ -143,12 +143,7 @@ func _print_failure_report(reports: Array[GdUnitReport]) -> void:
 				.color(Color.DARK_TURQUOISE) \
 				.style(GdUnitMessageWriter.BOLD | GdUnitMessageWriter.UNDERLINE) \
 				.println_message("Report:")
-			var text := str(report)
-			for line in text.split("\n", false):
-				_writer.indent(2).color(Color.DARK_TURQUOISE).println_message(line)
-
-			# TODO verify usage
-			_writer.print_bbcode(report.message())
+			_writer.indent(1).print_bbcode(report.to_string())
 
 	if not reports.is_empty():
 		println_message("")

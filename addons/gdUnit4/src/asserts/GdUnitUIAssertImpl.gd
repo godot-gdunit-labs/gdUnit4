@@ -61,7 +61,7 @@ func is_not_null() -> GdUnitUIAssert:
 	return self
 
 
-func is_equal(expected :Variant) -> GdUnitUIAssert:
+func is_equal(expected: Variant) -> GdUnitUIAssert:
 	var current := current_value()
 	if current == null:
 		return report_error(GdAssertMessages.error_equal(current, expected))
@@ -69,11 +69,16 @@ func is_equal(expected :Variant) -> GdUnitUIAssert:
 	if not expected is Node:
 		return report_error("Unexpected type <%s> used for argument 'expected'." % GdObjects.typeof_as_string(expected))
 
-	var expected_node :Node = expected
+	var expected_node: Node = expected
 
 	if expected_node.get_path() != current.get_path():
 		return report_error(GdAssertMessages.error_equal(current.get_path(), expected_node.get_path()))
 	return report_success()
+
+
+func is_not_equal(expected: Variant) -> GdUnitUIAssert:
+	assert(false, "is_not_equal() is not yet implemented!")
+	return self
 
 
 func is_equal_screenshot(reference_image: Image, config: GdUnitUIConfig = GdUnitUIConfig.strict()) -> GdUnitUIAssert:
@@ -98,6 +103,22 @@ func is_equal_screenshot(reference_image: Image, config: GdUnitUIConfig = GdUnit
 		return report_error(GdAssertMessages.error_is_equal_screen_shot_diff_size(result))
 
 	return report_success()
+
+
+
+func is_equal_position2D(expected_position: Vector2) -> GdUnitUIAssert:
+	assert(false, "is_equal_position2D() is not yet implemented!")
+	return self
+
+
+func is_equal_position3D(expected_position: Vector3) -> GdUnitUIAssert:
+	assert(false, "is_equal_position3D() is not yet implemented!")
+	return self
+
+
+func is_visible() -> GdUnitUIAssert:
+	assert(false, "is_visible() is not yet implemented!")
+	return self
 
 
 func _compare_images(node: Node, reference_image: Image, actual_image: Image, config: GdUnitUIConfig) -> Dictionary:

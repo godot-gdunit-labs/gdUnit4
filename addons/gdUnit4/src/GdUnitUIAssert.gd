@@ -26,7 +26,7 @@
 ##     assert_ui(dialog).is_equal_size(Vector2i(400, 300))
 ##     assert_ui(dialog).is_visible()
 ## [/codeblock]
-class_name GdUnitUIAssert
+@abstract class_name GdUnitUIAssert
 extends GdUnitAssert
 
 
@@ -260,11 +260,7 @@ class GdUnitUIConfig extends RefCounted:
 ## var expected = load("res://test/screenshots/button.png")
 ## assert_ui(button).is_equal_screenshot(expected, GdUnitUIConfig.ui_testing())
 ## [/codeblock]
-@warning_ignore("unused_parameter")
-func is_equal_screenshot(expected: Image, config: GdUnitUIConfig = GdUnitUIConfig.strict()) -> GdUnitUIAssert:
-	@warning_ignore("assert_always_true")
-	assert(true, "'is_equal_screenshot' is not implemented!")
-	return self
+@abstract func is_equal_screenshot(expected: Image, config: GdUnitUIConfig = GdUnitUIConfig.strict()) -> GdUnitUIAssert
 
 
 ## Asserts that the 2D node is at the expected position.[br]
@@ -287,11 +283,7 @@ func is_equal_screenshot(expected: Image, config: GdUnitUIConfig = GdUnitUIConfi
 ## [codeblock]
 ## assert_ui(button).is_equal_position2D(Vector2(100, 50))
 ## [/codeblock]
-@warning_ignore("unused_parameter")
-func is_equal_position2D(expected_position: Vector2) -> GdUnitUIAssert:
-	@warning_ignore("assert_always_true")
-	assert(true, "'is_equal_position2D' is not implemented!")
-	return self
+@abstract func is_equal_position2D(expected_position: Vector2) -> GdUnitUIAssert
 
 
 ## Asserts that the 3D node is at the expected position.[br]
@@ -314,11 +306,7 @@ func is_equal_position2D(expected_position: Vector2) -> GdUnitUIAssert:
 ## [codeblock]
 ## assert_ui(player_model).is_equal_position3D(Vector3(0, 5, 10))
 ## [/codeblock]
-@warning_ignore("unused_parameter")
-func is_equal_position3D(expected_position: Vector3) -> GdUnitUIAssert:
-	@warning_ignore("assert_always_true")
-	assert(true, "'is_equal_position3D' is not implemented!")
-	return self
+@abstract func is_equal_position3D(expected_position: Vector3) -> GdUnitUIAssert
 
 
 ## Asserts that the node is visible.[br]
@@ -340,7 +328,4 @@ func is_equal_position3D(expected_position: Vector3) -> GdUnitUIAssert:
 ## [codeblock]
 ## assert_ui(popup_dialog).is_visible()
 ## [/codeblock]
-func is_visible() -> GdUnitUIAssert:
-	@warning_ignore("assert_always_true")
-	assert(true, "'is_visible' is not implemented!")
-	return self
+@abstract func is_visible() -> GdUnitUIAssert

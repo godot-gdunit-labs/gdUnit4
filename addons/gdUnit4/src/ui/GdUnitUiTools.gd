@@ -114,6 +114,7 @@ static func set_report_message(reportNode: RichTextLabel, message: String) -> vo
 		message = message.replace(img_tag, "^")
 
 	var image_index := 0
+	reportNode.push_color(Color.DARK_TURQUOISE)
 	for text in message.split("^"):
 		reportNode.append_text(text)
 		reportNode.newline()
@@ -125,6 +126,7 @@ static func set_report_message(reportNode: RichTextLabel, message: String) -> vo
 				reportNode.add_image(texture_image)
 			reportNode.newline()
 		image_index += 1
+	reportNode.pop()
 
 
 static func _modulate_texture(texture: Texture2D, color: Color) -> Texture2D:

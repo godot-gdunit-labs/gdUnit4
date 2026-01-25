@@ -746,10 +746,6 @@ func show_failed_report(selected_item: TreeItem) -> void:
 	for report in get_item_reports(selected_item):
 		var reportNode: RichTextLabel = _report_template.duplicate()
 		_report_list.add_child(reportNode)
-		reportNode.push_color(Color.DARK_TURQUOISE)
-		reportNode.append_text(report.to_string())
-		reportNode.pop()
-		# Verify usage
 		GdUnitUiTools.set_report_message(reportNode, report.to_string())
 		reportNode.visible = true
 
@@ -757,11 +753,9 @@ func show_failed_report(selected_item: TreeItem) -> void:
 func update_test_suite(event: GdUnitEvent) -> void:
 	var item := _find_tree_item_by_test_suite(_tree_root, event.resource_path(), event.suite_name())
 	if not item:
-		push_error("[InspectorTreeMainPanel.gd:765] Internal Error: Can't find tree item for\n %s" % event)
+		push_error("[InspectorTreeMainPanel#update_test_suite] Internal Error: Can't find test suite item '{_suite_name}' for {_resource_path} ".format(event))
 		return
-	if event.type() == GdUnitEvent.TESTSUITE_BEFORE:
-		set_state_running(item)
-		return
+
 	if event.type() == GdUnitEvent.TESTSUITE_AFTER:
 		update_item_elapsed_time_counter(item, event.elapsed_time())
 		update_state(item, event)

@@ -1,17 +1,31 @@
 class_name GodotGdErrorMonitor
 extends GdUnitMonitor
 
-var _report_enabled := false
+
 var _logger: GdUnitLogger
 
 
 class GdUnitLogger extends Logger:
 	var _entries: Array[ErrorLogEntry] = []
 	var _line_number: int
+	var _is_report_push_errors: bool
+	var _is_report_script_errors: bool
+
+
+	func _init(is_report_push_errors: bool, is_report_script_errors: bool) -> void:
+		_is_report_push_errors = is_report_push_errors
+		_is_report_script_errors = is_report_script_errors
+		OS.add_logger(self)
 
 
 	func entries() -> Array[ErrorLogEntry]:
 		return _entries
+
+	func erase_log_entry(log_entry: ErrorLogEntry) -> void:
+		for entry in _entries:
+			if entry._type == log_entry._type and entry._message == log_entry._message:
+				_entries.erase(entry)
+				return
 
 
 	func _log_error(
@@ -26,16 +40,19 @@ class GdUnitLogger extends Logger:
 		) -> void:
 		match error_type:
 			ErrorType.ERROR_TYPE_WARNING:
-				var stack_trace := _build_stack_trace(script_backtraces)
-				_entries.append(ErrorLogEntry.of_push_warning(_line_number, message, stack_trace))
+				if _is_report_push_errors:
+					var stack_trace := _build_stack_trace(script_backtraces)
+					_entries.append(ErrorLogEntry.of_push_warning(_line_number, message, stack_trace))
 
 			ErrorType.ERROR_TYPE_ERROR:
-				var stack_trace := _build_stack_trace(script_backtraces)
-				_entries.append(ErrorLogEntry.of_push_error(_line_number, message, stack_trace))
+				if _is_report_push_errors:
+					var stack_trace := _build_stack_trace(script_backtraces)
+					_entries.append(ErrorLogEntry.of_push_error(_line_number, message, stack_trace))
 
 			ErrorType.ERROR_TYPE_SCRIPT:
-				var stack_trace := _build_stack_trace(script_backtraces)
-				_entries.append(ErrorLogEntry.of_script_error(_line_number, message, stack_trace))
+				if _is_report_script_errors:
+					var stack_trace := _build_stack_trace(script_backtraces)
+					_entries.append(ErrorLogEntry.of_script_error(_line_number, message, stack_trace))
 
 			ErrorType.ERROR_TYPE_SHADER:
 				pass
@@ -62,15 +79,7 @@ class GdUnitLogger extends Logger:
 
 func _init() -> void:
 	super("GdUnitLoggerMonitor")
-	_report_enabled = _is_reporting_enabled()
-	_logger = GdUnitLogger.new()
-	OS.add_logger(_logger)
-
-
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_PREDELETE:
-		if _logger:
-			OS.remove_logger(_logger)
+	_logger = GdUnitLogger.new(GdUnitSettings.is_report_push_errors(), GdUnitSettings.is_report_script_errors())
 
 
 func start() -> void:
@@ -85,10 +94,14 @@ func log_entries() -> Array[ErrorLogEntry]:
 	return _logger.entries()
 
 
+func erase_log_entry(log_entry: ErrorLogEntry) -> void:
+	_logger.erase_log_entry(log_entry)
+
+
 func to_reports() -> Array[GdUnitReport]:
 	var reports_: Array[GdUnitReport] = []
-	if _report_enabled:
-		reports_.assign(log_entries().map(_to_report))
+
+	reports_.assign(log_entries().map(_to_report))
 
 	return reports_
 
@@ -107,15 +120,3 @@ static func _to_report(errorLog: ErrorLogEntry) -> GdUnitReport:
 
 func clear_logs() -> void:
 	log_entries().clear()
-
-
-func _is_reporting_enabled() -> bool:
-	return _is_report_script_errors() or _is_report_push_errors()
-
-
-func _is_report_push_errors() -> bool:
-	return GdUnitSettings.is_report_push_errors()
-
-
-func _is_report_script_errors() -> bool:
-	return GdUnitSettings.is_report_script_errors()

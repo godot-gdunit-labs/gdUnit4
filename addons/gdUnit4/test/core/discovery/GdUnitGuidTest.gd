@@ -11,7 +11,7 @@ const __source = 'res://addons/gdUnit4/src/core/discovery/GdUnitGUID.gd'
 func test_initialization() -> void:
 	# Test initialization with empty string
 	var guid_a := GdUnitGUID.new()
-	assert_that(guid_a._guid).is_not_empty()
+	assert_str(guid_a._guid).is_not_empty()
 
 	# Test initialization with existing GUID
 	var existing_guid := "12345678-abcd-efgh-ijkl-mnopqrstuvwx"

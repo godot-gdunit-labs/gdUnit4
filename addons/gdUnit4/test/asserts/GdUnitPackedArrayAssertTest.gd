@@ -1,3 +1,4 @@
+@warning_ignore_start("unsafe_method_access")
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
 
@@ -5,8 +6,7 @@ extends GdUnitTestSuite
 const __source = 'res://addons/gdUnit4/src/asserts/GdUnitArrayAssertImpl.gd'
 
 
-@warning_ignore("unused_parameter")
-func test_is_array_assert(_test :String, array :Variant, test_parameters := [
+func test_is_array_assert(_test: String, array: Variant, _test_parameters := [
 	["Array", Array()],
 	["PackedByteArray", PackedByteArray()],
 	["PackedInt32Array", PackedInt32Array()],
@@ -22,8 +22,7 @@ func test_is_array_assert(_test :String, array :Variant, test_parameters := [
 	assert_object(assert_).is_instanceof(GdUnitArrayAssert)
 
 
-@warning_ignore("unused_parameter")
-func test_is_null(_test :String, value :Variant, test_parameters := [
+func test_is_null(_test: String, value: Variant, _test_parameters := [
 	["Array", Array()],
 	["PackedByteArray", PackedByteArray()],
 	["PackedInt32Array", PackedInt32Array()],
@@ -41,8 +40,7 @@ func test_is_null(_test :String, value :Variant, test_parameters := [
 		.has_message("Expecting: '<null>' but was '%s'" % GdDefaultValueDecoder.decode(value))
 
 
-@warning_ignore("unused_parameter")
-func test_is_not_null(_test :String, array :Variant, test_parameters := [
+func test_is_not_null(_test: String, array: Variant, _test_parameters := [
 	["Array", Array()],
 	["PackedByteArray", PackedByteArray()],
 	["PackedInt32Array", PackedInt32Array()],
@@ -61,8 +59,7 @@ func test_is_not_null(_test :String, array :Variant, test_parameters := [
 		.has_message("Expecting: not to be '<null>'")
 
 
-@warning_ignore("unused_parameter", "unsafe_method_access", "unsafe_call_argument")
-func test_is_equal(_test :String, array :Variant, test_parameters := [
+func test_is_equal(_test: String, array: Variant, _test_parameters := [
 	["Array", Array([1, 2, 3, 4, 5])],
 	["PackedByteArray", PackedByteArray([1, 2, 3, 4, 5])],
 	["PackedInt32Array", PackedInt32Array([1, 2, 3, 4, 5])],
@@ -94,8 +91,7 @@ func test_is_equal(_test :String, array :Variant, test_parameters := [
 			.replace("$value", str(array[2]) ) % [GdArrayTools.as_string(other, false), GdArrayTools.as_string(array, false)])
 
 
-@warning_ignore("unused_parameter", "unsafe_method_access")
-func test_is_not_equal(_test :String, array :Variant, test_parameters := [
+func test_is_not_equal(_test: String, array: Variant, _test_parameters := [
 	["Array", Array([1, 2, 3, 4, 5])],
 	["PackedByteArray", PackedByteArray([1, 2, 3, 4, 5])],
 	["PackedInt32Array", PackedInt32Array([1, 2, 3, 4, 5])],
@@ -123,8 +119,7 @@ func test_is_not_equal(_test :String, array :Variant, test_parameters := [
 			.trim_prefix("\n") % [GdDefaultValueDecoder.decode(array), GdDefaultValueDecoder.decode(array)])
 
 
-@warning_ignore("unused_parameter", "unsafe_method_access")
-func test_is_empty(_test :String, array :Variant, test_parameters := [
+func test_is_empty(_test: String, array: Variant, _test_parameters := [
 	["Array", Array([1, 2, 3, 4, 5])],
 	["PackedByteArray", PackedByteArray([1, 2, 3, 4, 5])],
 	["PackedInt32Array", PackedInt32Array([1, 2, 3, 4, 5])],
@@ -151,8 +146,7 @@ func test_is_empty(_test :String, array :Variant, test_parameters := [
 			.trim_prefix("\n") % GdDefaultValueDecoder.decode(array))
 
 
-@warning_ignore("unused_parameter", "unsafe_method_access")
-func test_is_not_empty(_test :String, array :Variant, test_parameters := [
+func test_is_not_empty(_test: String, array: Variant, _test_parameters := [
 	["Array", Array([1, 2, 3, 4, 5])],
 	["PackedByteArray", PackedByteArray([1, 2, 3, 4, 5])],
 	["PackedInt32Array", PackedInt32Array([1, 2, 3, 4, 5])],
@@ -174,8 +168,7 @@ func test_is_not_empty(_test :String, array :Variant, test_parameters := [
 		.has_message("Expecting:\n must not be empty")
 
 
-@warning_ignore("unused_parameter", "unsafe_method_access")
-func test_is_same(value :Variant, test_parameters := [
+func test_is_same(value: Variant, _test_parameters := [
 	[[0]],
 	[PackedByteArray([0])],
 	[PackedFloat32Array([0.0])],
@@ -201,8 +194,7 @@ func test_is_same(value :Variant, test_parameters := [
 			.trim_prefix("\n") % [v, v])
 
 
-@warning_ignore("unused_parameter", "unsafe_method_access")
-func test_is_not_same(value :Variant, test_parameters := [
+func test_is_not_same(value: Variant, _test_parameters := [
 	[[0]],
 	[PackedByteArray([0])],
 	[PackedFloat32Array([0.0])],
@@ -221,8 +213,7 @@ func test_is_not_same(value :Variant, test_parameters := [
 		.has_message("Expecting not same:\n '%s'" % GdDefaultValueDecoder.decode(value))
 
 
-@warning_ignore("unused_parameter", "unsafe_method_access")
-func test_has_size(_test :String, array :Variant, test_parameters := [
+func test_has_size(_test: String, array: Variant, _test_parameters := [
 	["Array", Array([1, 2, 3, 4, 5])],
 	["PackedByteArray", PackedByteArray([1, 2, 3, 4, 5])],
 	["PackedInt32Array", PackedInt32Array([1, 2, 3, 4, 5])],
@@ -248,8 +239,7 @@ func test_has_size(_test :String, array :Variant, test_parameters := [
 			.trim_prefix("\n"))
 
 
-@warning_ignore("unused_parameter")
-func test_contains(_test :String, array :Variant, test_parameters := [
+func test_contains(_test: String, array: Variant, _test_parameters := [
 	["Array", Array([1, 2, 3, 4, 5])],
 	["PackedByteArray", PackedByteArray([1, 2, 3, 4, 5])],
 	["PackedInt32Array", PackedInt32Array([1, 2, 3, 4, 5])],
@@ -281,8 +271,7 @@ func test_contains(_test :String, array :Variant, test_parameters := [
 		)
 
 
-@warning_ignore("unused_parameter", "unsafe_method_access")
-func test_contains_exactly(_test :String, array :Variant, test_parameters := [
+func test_contains_exactly(_test: String, array: Variant, _test_parameters := [
 	["Array", Array([1, 2, 3, 4, 5])],
 	["PackedByteArray", PackedByteArray([1, 2, 3, 4, 5])],
 	["PackedInt32Array", PackedInt32Array([1, 2, 3, 4, 5])],
@@ -317,8 +306,8 @@ func test_contains_exactly(_test :String, array :Variant, test_parameters := [
 			.replace("$contains", GdDefaultValueDecoder.decode(shuffled))
 		)
 
-@warning_ignore("unused_parameter")
-func test_override_failure_message(_test :String, array :Variant, test_parameters := [
+
+func test_override_failure_message(_test: String, array: Variant, _test_parameters := [
 	["Array", Array()],
 	["PackedByteArray", PackedByteArray()],
 	["PackedInt32Array", PackedInt32Array()],

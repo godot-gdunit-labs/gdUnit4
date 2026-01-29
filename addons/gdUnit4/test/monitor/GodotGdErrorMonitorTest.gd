@@ -40,8 +40,8 @@ func test_monitor_push_error() -> void:
 	prints(reports[0].message())
 	assert_str(reports[0].message())\
 		.contains("Test GodotGdErrorMonitor 'push_error' reporting")\
-		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:77")\
-		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:72")\
+		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:78")\
+		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:73")\
 		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:35")
 	assert_int(reports[0].line_number()).is_equal(35)
 
@@ -69,6 +69,7 @@ func test_fail_by_push_error(_do_skip := true, _skip_reason := "disabled to not 
 
 
 func forcet_push_error() -> void:
+	@warning_ignore("redundant_await")
 	await forcet_push_error2()
 
 

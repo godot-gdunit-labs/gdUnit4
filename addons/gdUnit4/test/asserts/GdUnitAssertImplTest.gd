@@ -63,9 +63,9 @@ func test_get_line_number_multiline() -> void:
 		.has_message("Expecting:\n '42'\n but was\n '10'")
 
 
-@warning_ignore("unsafe_method_access")
 func test_get_line_number_verify() -> void:
 	var obj :Variant = mock(RefCounted)
+	@warning_ignore("unsafe_method_access")
 	assert_failure(func() -> void: verify(obj, 1).get_reference_count()) \
 		.is_failed() \
 		.has_line(69) \

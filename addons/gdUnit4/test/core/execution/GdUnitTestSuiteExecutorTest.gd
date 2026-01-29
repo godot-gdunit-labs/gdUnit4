@@ -116,7 +116,7 @@ func assert_event_reports(events: Array[GdUnitEvent], expected_reports: Array) -
 				assert_str(flating_message(current[m].message() as String)).is_empty()
 		for m in expected.size():
 			if m < current.size():
-				assert_str(flating_message(current[m].message() as String)).starts_with(expected[m])
+				assert_str(flating_message(current[m].message() as String)).starts_with(str(expected[m]))
 			else:
 				assert_str("<N/A>").is_equal(expected[m])
 

@@ -9,7 +9,7 @@ signal tree_item_selected(item: TreeItem)
 @onready var _tree: Tree = $Panel/Tree
 @onready var _report_list: Node = $report/ScrollContainer/list
 @onready var _report_template: RichTextLabel = $report/report_template
-@onready var _context_menu: PopupMenu = $contextMenu
+@onready var _context_menu: GdUnitInspectorContextMenu = $contextMenu
 @onready var _discover_hint: Control = %discover_hint
 @onready var _spinner: Button = %spinner
 

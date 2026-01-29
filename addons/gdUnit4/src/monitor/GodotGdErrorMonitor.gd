@@ -2,7 +2,7 @@ class_name GodotGdErrorMonitor
 extends GdUnitMonitor
 
 var _report_enabled := false
-var _logger: Logger
+var _logger: GdUnitLogger
 
 
 class GdUnitLogger extends Logger:
@@ -14,26 +14,35 @@ class GdUnitLogger extends Logger:
 		return _entries
 
 
-	func _log_error(function: String, file: String, line: int, message: String, rationale: String, editor_notify: bool, error_type: int, script_backtraces: Array[ScriptBacktrace]) -> void:
+	func _log_error(
+		_function: String,
+		_file: String,
+		_line: int,
+		message: String,
+		_rationale: String,
+		_editor_notify: bool,
+		error_type: int,
+		script_backtraces: Array[ScriptBacktrace]
+		) -> void:
 		match error_type:
 			ErrorType.ERROR_TYPE_WARNING:
 				var stack_trace := _build_stack_trace(script_backtraces)
-				_entries.append(ErrorLogEntry.of_push_warning(file, _line_number, message, stack_trace))
+				_entries.append(ErrorLogEntry.of_push_warning(_line_number, message, stack_trace))
 
 			ErrorType.ERROR_TYPE_ERROR:
 				var stack_trace := _build_stack_trace(script_backtraces)
-				_entries.append(ErrorLogEntry.of_push_error(file, _line_number, message, stack_trace))
+				_entries.append(ErrorLogEntry.of_push_error(_line_number, message, stack_trace))
 
 			ErrorType.ERROR_TYPE_SCRIPT:
 				var stack_trace := _build_stack_trace(script_backtraces)
-				_entries.append(ErrorLogEntry.of_script_error(file, _line_number, message, stack_trace))
+				_entries.append(ErrorLogEntry.of_script_error(_line_number, message, stack_trace))
 
 			ErrorType.ERROR_TYPE_SHADER:
 				pass
 			_:
 				prints("Unknwon log type", message)
 
-	func _log_message(message: String, error: bool) -> void:
+	func _log_message(_message: String, _error: bool) -> void:
 		pass
 
 	func _build_stack_trace(script_backtraces: Array[ScriptBacktrace]) -> PackedStringArray:

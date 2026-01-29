@@ -1,15 +1,13 @@
 # GdUnit generated TestSuite
 class_name GdArrayToolsTest
 extends GdUnitTestSuite
-@warning_ignore('unused_parameter')
-@warning_ignore('return_value_discarded')
+
 
 # TestSuite generated from
 const __source = 'res://addons/gdUnit4/src/core/GdArrayTools.gd'
 
 
-@warning_ignore('unused_parameter')
-func test_as_string(_test :String, value :Variant, expected :String, test_parameters := [
+func test_as_string(_test: String, value: Variant, expected: String, _test_parameters := [
 	['Array', Array([1, 2]), '[1, 2]'],
 	['Array', Array([1.0, 2.212]), '[1.000000, 2.212000]'],
 	['Array', Array([true, false]), '[true, false]'],
@@ -48,8 +46,7 @@ func test_as_string_simple_format() -> void:
 	assert_that(GdArrayTools.as_string(value, false)).is_equal('[a, b]')
 
 
-@warning_ignore("unused_parameter")
-func test_is_array_type(_test :String, value :Variant, expected :bool, test_parameters := [
+func test_is_array_type(_test: String, value: Variant, expected: bool, _test_parameters := [
 	['bool', true, false],
 	['int', 42, false],
 	['float', 1.21, false],
@@ -88,17 +85,15 @@ func test_is_array_type(_test :String, value :Variant, expected :bool, test_para
 	assert_that(GdArrayTools.is_array_type(value)).is_equal(expected)
 
 
-@warning_ignore("unsafe_method_access")
 func test_is_type_array() -> void:
 	for type :int in [TYPE_NIL, TYPE_MAX]:
 		if type in [TYPE_ARRAY, TYPE_PACKED_COLOR_ARRAY]:
-			assert_that(GdArrayTools.is_type_array(type)).is_true()
+			assert_bool(GdArrayTools.is_type_array(type)).is_true()
 		else:
-			assert_that(GdArrayTools.is_type_array(type)).is_false()
+			assert_bool(GdArrayTools.is_type_array(type)).is_false()
 
 
-@warning_ignore("unused_parameter")
-func test_filter_value(value :Variant, expected_type :int, test_parameters := [
+func test_filter_value(value: Variant, expected_type: int, _test_parameters := [
 	[[1, 2, 3, 1], TYPE_ARRAY],
 	[Array([1, 2, 3, 1]) as Array[int], TYPE_ARRAY],
 	[PackedByteArray([1, 2, 3, 1]), TYPE_PACKED_BYTE_ARRAY],

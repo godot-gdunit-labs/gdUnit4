@@ -1,4 +1,4 @@
-@warning_ignore_start("redundant_await")
+@warning_ignore_start("redundant_await", "unsafe_method_access")
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
 
@@ -26,19 +26,19 @@ func before_test() -> void:
 # asserts to action strings
 func assert_initial_action_state() -> void:
 	for action in InputMap.get_actions():
-		assert_that(Input.is_action_pressed(action, true)).is_false()
+		assert_bool(Input.is_action_pressed(action, true)).is_false()
 
 
 # asserts to KeyList Enums
 func assert_inital_key_state() -> void:
 	# scacode 4194304-4194415
 	for key in range(KEY_SPECIAL, KEY_LAUNCHF):
-		assert_that(Input.is_key_pressed(key)).is_false()
-		assert_that(Input.is_physical_key_pressed(key)).is_false()
+		assert_bool(Input.is_key_pressed(key)).is_false()
+		assert_bool(Input.is_physical_key_pressed(key)).is_false()
 	# keycode 32-255
 	for key in range(KEY_SPACE, KEY_SECTION):
-		assert_that(Input.is_key_pressed(key)).is_false()
-		assert_that(Input.is_physical_key_pressed(key)).is_false()
+		assert_bool(Input.is_key_pressed(key)).is_false()
+		assert_bool(Input.is_physical_key_pressed(key)).is_false()
 
 
 #asserts to Mouse ButtonList Enums
@@ -54,7 +54,7 @@ func assert_inital_mouse_state() -> void:
 		MOUSE_BUTTON_WHEEL_LEFT,
 		MOUSE_BUTTON_WHEEL_RIGHT,
 		]:
-		assert_that(Input.is_mouse_button_pressed(button))\
+		assert_bool(Input.is_mouse_button_pressed(button))\
 			.override_failure_message("Expecting mouse button %s is not pressed state!" % 1)\
 			.is_false()
 	assert_that(Input.get_mouse_button_mask())\
@@ -72,32 +72,32 @@ func test_reset_to_inital_state_on_release() -> void:
 	runner.simulate_key_press(KEY_0)
 	runner.simulate_key_press(KEY_X)
 	await await_idle_frame()
-	assert_that(Input.is_action_pressed("ui_up")).is_true()
-	assert_that(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_true()
-	assert_that(Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)).is_true()
-	assert_that(Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE)).is_true()
-	assert_that(Input.is_key_pressed(KEY_0)).is_true()
-	assert_that(Input.is_key_pressed(KEY_X)).is_true()
+	assert_bool(Input.is_action_pressed("ui_up")).is_true()
+	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_true()
+	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)).is_true()
+	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE)).is_true()
+	assert_bool(Input.is_key_pressed(KEY_0)).is_true()
+	assert_bool(Input.is_key_pressed(KEY_X)).is_true()
 	# unreference the scene runner to enforce reset to initial Input state
 	runner._notification(NOTIFICATION_PREDELETE)
 	await await_idle_frame()
-	assert_that(Input.is_action_pressed("ui_up")).is_false()
-	assert_that(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_false()
-	assert_that(Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)).is_false()
-	assert_that(Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE)).is_false()
-	assert_that(Input.is_key_pressed(KEY_0)).is_false()
-	assert_that(Input.is_key_pressed(KEY_X)).is_false()
+	assert_bool(Input.is_action_pressed("ui_up")).is_false()
+	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_false()
+	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)).is_false()
+	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_0)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_X)).is_false()
 
 
 func test_simulate_action_press() -> void:
 	# iterate over some example actions
 	var actions_to_simmulate :Array[String] = ["ui_up", "ui_down", "ui_left", "ui_right"]
 	for action in actions_to_simmulate:
-		assert_that(InputMap.has_action(action)).is_true()
+		assert_bool(InputMap.has_action(action)).is_true()
 		_runner.simulate_action_press(action)
 		await _runner.await_input_processed()
 
-		assert_that(Input.is_action_pressed(action))\
+		assert_bool(Input.is_action_pressed(action))\
 			.override_failure_message("Expect the action '%s' is pressed" % action).is_true()
 		assert_float(Input.get_action_strength(action))\
 			.is_equal_approx(1.0, 0.1)
@@ -106,7 +106,7 @@ func test_simulate_action_press() -> void:
 
 	# other actions are not pressed
 	for action :String in ["ui_accept", "ui_select", "ui_cancel"]:
-		assert_that(Input.is_action_pressed(action))\
+		assert_bool(Input.is_action_pressed(action))\
 			.override_failure_message("Expect the action '%s' is NOT pressed" % action).is_false()
 
 
@@ -114,16 +114,16 @@ func test_simulate_action_release() -> void:
 	# iterate over some example actions
 	var actions_to_simmulate :Array[String] = ["ui_up", "ui_down", "ui_left", "ui_right"]
 	for action in actions_to_simmulate:
-		assert_that(InputMap.has_action(action)).is_true()
+		assert_bool(InputMap.has_action(action)).is_true()
 		_runner.simulate_action_press(action)
 		await await_idle_frame()
 		_runner.simulate_action_release(action)
 
-		assert_that(Input.is_action_just_released(action))\
+		assert_bool(Input.is_action_just_released(action))\
 			.override_failure_message("Expect the action '%s' is released" % action).is_true()
 	# other actions are not pressed
 	for action :String in ["ui_accept", "ui_select", "ui_cancel"]:
-		assert_that(Input.is_action_pressed(action))\
+		assert_bool(Input.is_action_pressed(action))\
 			.override_failure_message("Expect the action '%s' is NOT pressed" % action).is_false()
 
 
@@ -139,17 +139,17 @@ func test_simulate_key_press() -> void:
 		event.unicode = key
 		event.pressed = true
 		verify(_scene_spy, 1)._input(event)
-		assert_that(Input.is_key_pressed(key)).is_true()
+		assert_bool(Input.is_key_pressed(key)).is_true()
 	# verify all this keys are still handled as pressed
-	assert_that(Input.is_key_pressed(KEY_A)).is_true()
-	assert_that(Input.is_key_pressed(KEY_D)).is_true()
-	assert_that(Input.is_key_pressed(KEY_X)).is_true()
-	assert_that(Input.is_key_pressed(KEY_0)).is_true()
+	assert_bool(Input.is_key_pressed(KEY_A)).is_true()
+	assert_bool(Input.is_key_pressed(KEY_D)).is_true()
+	assert_bool(Input.is_key_pressed(KEY_X)).is_true()
+	assert_bool(Input.is_key_pressed(KEY_0)).is_true()
 	# other keys are not pressed
-	assert_that(Input.is_key_pressed(KEY_B)).is_false()
-	assert_that(Input.is_key_pressed(KEY_G)).is_false()
-	assert_that(Input.is_key_pressed(KEY_Z)).is_false()
-	assert_that(Input.is_key_pressed(KEY_1)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_B)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_G)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_Z)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_1)).is_false()
 
 
 # Simulates pressing shift+A
@@ -161,11 +161,11 @@ func test_simulate_key_press_SHIFT_and_A() -> void:
 	await _runner.await_input_processed()
 
 	# We expect key A is pressed and also the modifier shift key
-	assert_that(Input.is_key_pressed(KEY_A)).is_true()
-	assert_that(Input.is_key_pressed(KEY_SHIFT)).is_true()
-	assert_that(Input.is_key_pressed(KEY_ALT)).is_false()
-	assert_that(Input.is_key_pressed(KEY_CTRL)).is_false()
-	assert_that(Input.is_key_pressed(KEY_META)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_A)).is_true()
+	assert_bool(Input.is_key_pressed(KEY_SHIFT)).is_true()
+	assert_bool(Input.is_key_pressed(KEY_ALT)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_CTRL)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_META)).is_false()
 
 	# In addition we need to verify we emit two input events:
 	# first the shift key is pressing (Shift)
@@ -203,11 +203,11 @@ func test_simulate_key_press_A_and_SHIFT() -> void:
 	await _runner.await_input_processed()
 
 	# We expect key A is pressed and also the modifier shift key
-	assert_that(Input.is_key_pressed(KEY_A)).is_true()
-	assert_that(Input.is_key_pressed(KEY_SHIFT)).is_true()
-	assert_that(Input.is_key_pressed(KEY_ALT)).is_false()
-	assert_that(Input.is_key_pressed(KEY_CTRL)).is_false()
-	assert_that(Input.is_key_pressed(KEY_META)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_A)).is_true()
+	assert_bool(Input.is_key_pressed(KEY_SHIFT)).is_true()
+	assert_bool(Input.is_key_pressed(KEY_ALT)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_CTRL)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_META)).is_false()
 
 	# In addition we need to verify we emit two input events:
 	# first the shift a is pressing (A)
@@ -245,11 +245,11 @@ func test_simulate_key_released_SHIFT_and_A() -> void:
 	await _runner.await_input_processed()
 
 	# We expect key A is NOT pressed (it was released) and no modifier keys
-	assert_that(Input.is_key_pressed(KEY_A)).is_false()
-	assert_that(Input.is_key_pressed(KEY_SHIFT)).is_false()
-	assert_that(Input.is_key_pressed(KEY_ALT)).is_false()
-	assert_that(Input.is_key_pressed(KEY_CTRL)).is_false()
-	assert_that(Input.is_key_pressed(KEY_META)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_A)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_SHIFT)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_ALT)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_CTRL)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_META)).is_false()
 
 	# In addition we need to verify we emit two input events:
 	# first the shift+a key is released (Shift+A)
@@ -286,11 +286,11 @@ func test_simulate_key_pressed_SHIFT_and_A() -> void:
 	await _runner.simulate_key_pressed(KEY_A)
 
 	# We expect key A is NOT pressed (it was press and released) and no modifier keys
-	assert_that(Input.is_key_pressed(KEY_A)).is_false()
-	assert_that(Input.is_key_pressed(KEY_SHIFT)).is_false()
-	assert_that(Input.is_key_pressed(KEY_ALT)).is_false()
-	assert_that(Input.is_key_pressed(KEY_CTRL)).is_false()
-	assert_that(Input.is_key_pressed(KEY_META)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_A)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_SHIFT)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_ALT)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_CTRL)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_META)).is_false()
 
 	# In addition, we need to check whether we output two input events:
 	# first the shift key is pressing (Shift+A)
@@ -326,11 +326,11 @@ func test_simulate_key_press_A_with_shift_modifier() -> void:
 	await _runner.await_input_processed()
 
 	# We expect key A is pressing only and no modifier keys
-	assert_that(Input.is_key_pressed(KEY_A)).is_true()
-	assert_that(Input.is_key_pressed(KEY_SHIFT)).is_false()
-	assert_that(Input.is_key_pressed(KEY_ALT)).is_false()
-	assert_that(Input.is_key_pressed(KEY_CTRL)).is_false()
-	assert_that(Input.is_key_pressed(KEY_META)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_A)).is_true()
+	assert_bool(Input.is_key_pressed(KEY_SHIFT)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_ALT)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_CTRL)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_META)).is_false()
 
 	# In addition we need to verify we emit one input events:
 	# the key A + modifier shift is pressing (Shift+A)
@@ -356,11 +356,11 @@ func test_simulate_key_released_A_with_shift_modifier() -> void:
 	await _runner.await_input_processed()
 
 	# We expect key A is NOT pressing and also no modifier keys
-	assert_that(Input.is_key_pressed(KEY_A)).is_false()
-	assert_that(Input.is_key_pressed(KEY_SHIFT)).is_false()
-	assert_that(Input.is_key_pressed(KEY_ALT)).is_false()
-	assert_that(Input.is_key_pressed(KEY_CTRL)).is_false()
-	assert_that(Input.is_key_pressed(KEY_META)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_A)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_SHIFT)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_ALT)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_CTRL)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_META)).is_false()
 
 	# In addition we need to verify we emit one input events:
 	# The key A and modifier shift is released (Shift+A)
@@ -384,11 +384,11 @@ func test_simulate_key_pressed_A_with_shift_modifier() -> void:
 	await _runner.simulate_key_pressed(KEY_A, true)
 
 	# We expect key A is NOT pressing (was press and released) and also no modifier keys
-	assert_that(Input.is_key_pressed(KEY_SHIFT)).is_false()
-	assert_that(Input.is_key_pressed(KEY_ALT)).is_false()
-	assert_that(Input.is_key_pressed(KEY_CTRL)).is_false()
-	assert_that(Input.is_key_pressed(KEY_META)).is_false()
-	assert_that(Input.is_key_pressed(KEY_A)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_SHIFT)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_ALT)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_CTRL)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_META)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_A)).is_false()
 
 	# In addition, we need to check whether we output two input events:
 	# first the key a + modifier shift is pressing (Shift+A)
@@ -423,19 +423,19 @@ func test_simulate_many_keys_press() -> void:
 	_runner.simulate_key_press(KEY_Z)
 	await _runner.await_input_processed()
 
-	assert_that(Input.is_key_pressed(KEY_W)).is_true()
-	assert_that(Input.is_physical_key_pressed(KEY_W)).is_true()
-	assert_that(Input.is_key_pressed(KEY_Z)).is_true()
-	assert_that(Input.is_physical_key_pressed(KEY_Z)).is_true()
+	assert_bool(Input.is_key_pressed(KEY_W)).is_true()
+	assert_bool(Input.is_physical_key_pressed(KEY_W)).is_true()
+	assert_bool(Input.is_key_pressed(KEY_Z)).is_true()
+	assert_bool(Input.is_physical_key_pressed(KEY_Z)).is_true()
 
 	#now release key w
 	_runner.simulate_key_release(KEY_W)
 	await _runner.await_input_processed()
 
-	assert_that(Input.is_key_pressed(KEY_W)).is_false()
-	assert_that(Input.is_physical_key_pressed(KEY_W)).is_false()
-	assert_that(Input.is_key_pressed(KEY_Z)).is_true()
-	assert_that(Input.is_physical_key_pressed(KEY_Z)).is_true()
+	assert_bool(Input.is_key_pressed(KEY_W)).is_false()
+	assert_bool(Input.is_physical_key_pressed(KEY_W)).is_false()
+	assert_bool(Input.is_key_pressed(KEY_Z)).is_true()
+	assert_bool(Input.is_physical_key_pressed(KEY_Z)).is_true()
 
 
 @warning_ignore("unsafe_property_access")
@@ -540,7 +540,7 @@ func test_simulate_set_mouse_pos_with_modifiers() -> void:
 			event.button_index = mouse_button as MouseButton
 			event.button_mask = GdUnitSceneRunnerImpl.MAP_MOUSE_BUTTON_MASKS.get(mouse_button)
 			verify(_scene_spy, 1)._input(event)
-			assert_that(Input.is_mouse_button_pressed(mouse_button)).is_true()
+			assert_bool(Input.is_mouse_button_pressed(mouse_button)).is_true()
 			# finally release it
 			_runner.simulate_mouse_button_release(mouse_button)
 			await _runner.await_input_processed()
@@ -615,7 +615,7 @@ func test_simulate_mouse_button_press_left() -> void:
 	event.button_index = MOUSE_BUTTON_LEFT
 	event.button_mask = GdUnitSceneRunnerImpl.MAP_MOUSE_BUTTON_MASKS.get(MOUSE_BUTTON_LEFT)
 	verify(_scene_spy, 1)._input(event)
-	assert_that(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_true()
+	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_true()
 
 
 func test_simulate_mouse_button_press_left_doubleclick() -> void:
@@ -632,7 +632,7 @@ func test_simulate_mouse_button_press_left_doubleclick() -> void:
 	event.button_index = MOUSE_BUTTON_LEFT
 	event.button_mask = GdUnitSceneRunnerImpl.MAP_MOUSE_BUTTON_MASKS.get(MOUSE_BUTTON_LEFT)
 	verify(_scene_spy, 1)._input(event)
-	assert_that(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_true()
+	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_true()
 
 
 func test_simulate_mouse_button_press_right() -> void:
@@ -648,7 +648,7 @@ func test_simulate_mouse_button_press_right() -> void:
 	event.button_index = MOUSE_BUTTON_RIGHT
 	event.button_mask = GdUnitSceneRunnerImpl.MAP_MOUSE_BUTTON_MASKS.get(MOUSE_BUTTON_RIGHT)
 	verify(_scene_spy, 1)._input(event)
-	assert_that(Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)).is_true()
+	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)).is_true()
 
 
 func test_simulate_mouse_button_press_left_and_right() -> void:
@@ -675,8 +675,8 @@ func test_simulate_mouse_button_press_left_and_right() -> void:
 	event.button_index = MOUSE_BUTTON_RIGHT
 	event.button_mask = MOUSE_BUTTON_MASK_LEFT|MOUSE_BUTTON_MASK_RIGHT
 	verify(_scene_spy, 1)._input(event)
-	assert_that(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_true()
-	assert_that(Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)).is_true()
+	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_true()
+	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)).is_true()
 	assert_that(Input.get_mouse_button_mask()).is_equal(MOUSE_BUTTON_MASK_LEFT|MOUSE_BUTTON_MASK_RIGHT)
 
 
@@ -705,8 +705,8 @@ func test_simulate_mouse_button_press_left_and_right_and_release() -> void:
 	event.button_index = MOUSE_BUTTON_RIGHT
 	event.button_mask = MOUSE_BUTTON_MASK_LEFT|MOUSE_BUTTON_MASK_RIGHT
 	verify(_scene_spy, 1)._input(event)
-	assert_that(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_true()
-	assert_that(Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)).is_true()
+	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_true()
+	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)).is_true()
 	assert_that(Input.get_mouse_button_mask()).is_equal(MOUSE_BUTTON_MASK_LEFT|MOUSE_BUTTON_MASK_RIGHT)
 
 	# now release the right button
@@ -721,8 +721,8 @@ func test_simulate_mouse_button_press_left_and_right_and_release() -> void:
 	event.button_index = MOUSE_BUTTON_RIGHT
 	event.button_mask = MOUSE_BUTTON_MASK_LEFT
 	verify(_scene_spy, 1)._input(event)
-	assert_that(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_true()
-	assert_that(Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)).is_false()
+	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_true()
+	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)).is_false()
 	assert_that(Input.get_mouse_button_mask()).is_equal(MOUSE_BUTTON_MASK_LEFT)
 
 	# finally relase left button
@@ -737,8 +737,8 @@ func test_simulate_mouse_button_press_left_and_right_and_release() -> void:
 	event.button_index = MOUSE_BUTTON_LEFT
 	event.button_mask = 0
 	verify(_scene_spy, 1)._input(event)
-	assert_that(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_false()
-	assert_that(Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)).is_false()
+	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_false()
+	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)).is_false()
 	assert_that(Input.get_mouse_button_mask()).is_equal(0)
 
 
@@ -765,7 +765,7 @@ func test_simulate_mouse_button_pressed() -> void:
 		event.button_index = mouse_button as MouseButton
 		event.button_mask = 0
 		verify(_scene_spy, 1)._input(event)
-		assert_that(Input.is_mouse_button_pressed(mouse_button)).is_false()
+		assert_bool(Input.is_mouse_button_pressed(mouse_button)).is_false()
 		verify(_scene_spy, 2)._input(any_class(InputEventMouseButton))
 		reset(_scene_spy)
 
@@ -795,7 +795,7 @@ func test_simulate_mouse_button_pressed_doubleclick() -> void:
 		event.button_index = mouse_button as MouseButton
 		event.button_mask = 0
 		verify(_scene_spy, 1)._input(event)
-		assert_that(Input.is_mouse_button_pressed(mouse_button)).is_false()
+		assert_bool(Input.is_mouse_button_pressed(mouse_button)).is_false()
 		verify(_scene_spy, 2)._input(any_class(InputEventMouseButton))
 		reset(_scene_spy)
 
@@ -814,7 +814,7 @@ func test_simulate_mouse_button_press_and_release() -> void:
 		event.button_index = mouse_button as MouseButton
 		event.button_mask = GdUnitSceneRunnerImpl.MAP_MOUSE_BUTTON_MASKS.get(mouse_button)
 		verify(_scene_spy, 1)._input(event)
-		assert_that(Input.is_mouse_button_pressed(mouse_button)).is_true()
+		assert_bool(Input.is_mouse_button_pressed(mouse_button)).is_true()
 
 		# now simulate mouse button release
 		gmp = _runner.get_global_mouse_position()
@@ -828,7 +828,7 @@ func test_simulate_mouse_button_press_and_release() -> void:
 		event.button_index = mouse_button as MouseButton
 		#event.button_mask = 0
 		verify(_scene_spy, 1)._input(event)
-		assert_that(Input.is_mouse_button_pressed(mouse_button)).is_false()
+		assert_bool(Input.is_mouse_button_pressed(mouse_button)).is_false()
 
 
 #####################################################################################################################
@@ -1049,7 +1049,7 @@ func test_text_input_processing() -> void:
 
 	# Focus the text input and clear any existing content
 	lineEdit.grab_focus()
-	assert_that(lineEdit.has_focus()).is_true()
+	assert_bool(lineEdit.has_focus()).is_true()
 	lineEdit.text = ""
 
 	# Type individual characters

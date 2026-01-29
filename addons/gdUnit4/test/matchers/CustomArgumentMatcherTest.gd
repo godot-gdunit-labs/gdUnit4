@@ -1,3 +1,4 @@
+@warning_ignore_start("unsafe_method_access")
 extends GdUnitTestSuite
 
 
@@ -23,4 +24,3 @@ func test_custom_matcher() -> void:
 	verify(mocked_test_class, 3).set_value(CustomArgumentMatcher.new(1000))
 	# counts 2002 = 1 times
 	verify(mocked_test_class, 1).set_value(CustomArgumentMatcher.new(2000))
-

@@ -7,7 +7,7 @@ func test_serde_suite_before() -> void:
 	var event := GdUnitEvent.new().suite_before("path", "test_suite_a", 22)
 	var serialized := event.serialize()
 	var deserialized := GdUnitEvent.new().deserialize(serialized)
-	assert_that(deserialized).is_instanceof(GdUnitEvent)
+	assert_object(deserialized).is_instanceof(GdUnitEvent)
 	assert_that(deserialized).is_equal(event)
 
 

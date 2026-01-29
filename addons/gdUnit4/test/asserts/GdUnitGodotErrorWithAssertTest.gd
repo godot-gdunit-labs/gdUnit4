@@ -6,12 +6,12 @@ var _catched_events: Array[GdUnitEvent] = []
 
 func test_assert_method_with_enabled_global_error_report() -> void:
 	ProjectSettings.set_setting(GdUnitSettings.REPORT_SCRIPT_ERRORS, true)
-	await assert_error(do_a_fail).is_runtime_error('Assertion failed: test')
+	assert_error(do_a_fail).is_runtime_error('Assertion failed: test')
 
 
 func test_assert_method_with_disabled_global_error_report() -> void:
 	ProjectSettings.set_setting(GdUnitSettings.REPORT_SCRIPT_ERRORS, false)
-	await assert_error(do_a_fail).is_runtime_error('Assertion failed: test')
+	assert_error(do_a_fail).is_runtime_error('Assertion failed: test')
 
 
 func do_a_fail() -> void:

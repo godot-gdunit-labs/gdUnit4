@@ -1,3 +1,4 @@
+@warning_ignore_start("unsafe_method_access")
 # GdUnit generated TestSuite
 class_name CmdCommandHandlerTest
 extends GdUnitTestSuite
@@ -137,7 +138,6 @@ func test_execute_commands_no_cb_registered() -> void:
 	assert_result(cmd_handler.execute([CmdCommand.new("-a")])).is_success()
 
 
-@warning_ignore("unsafe_method_access")
 func test_execute_commands_with_cb_registered() -> void:
 	var cmd_handler: = CmdCommandHandler.new(_cmd_options)
 	var cmd_spy: TestCommands = spy(_cmd_instance)
@@ -147,6 +147,7 @@ func test_execute_commands_with_cb_registered() -> void:
 	cmd_handler.register_cb("-a", cmd_spy.cmd_no_arg)
 
 	assert_result(cmd_handler.execute([CmdCommand.new("-a")])).is_success()
+
 	verify(cmd_spy).cmd_no_arg()
 	verify_no_more_interactions(cmd_spy)
 

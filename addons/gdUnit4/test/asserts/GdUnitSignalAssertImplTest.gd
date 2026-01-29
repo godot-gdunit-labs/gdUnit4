@@ -269,8 +269,8 @@ class MyEmitter extends Node:
 @warning_ignore("unsafe_method_access")
 func test_monitor_signals() -> void:
 	# start to watch on the emitter to collect all emitted signals
-	var emitter_a := monitor_signals(MyEmitter.new())
-	var emitter_b := monitor_signals(MyEmitter.new())
+	var emitter_a: MyEmitter = monitor_signals(MyEmitter.new())
+	var emitter_b: MyEmitter = monitor_signals(MyEmitter.new())
 
 	# verify the signals are not emitted initial
 	await assert_signal(emitter_a).wait_until(50).is_not_emitted('my_signal_a')

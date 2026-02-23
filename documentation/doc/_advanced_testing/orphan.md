@@ -24,6 +24,14 @@ If no orphan nodes are detected, a green icon is displayed, but if orphan nodes 
 You can use the button to jump to the first orphan node to inspect it. Orphan nodes are reported and marked in yellow for each test step,
 including **before()**, **before_test()**, and the test itself.
 
+### Detailed Orphan Reporting (since v6.1)
+
+Since **v6.1** (requires Godot 4.5+), orphan detection reports a full **stack trace** for each orphan node,
+including the variable name, script path, and line number where the node was created.
+This makes it significantly easier to locate the source of a leak without manual investigation.
+
+![orphan_nodes_example_step3]({{site.baseurl}}/assets/images/monitoring/orphan_nodes_example_step3.png){:.centered}
+
 {% include advice.html
 content="If any orphan nodes are detected, I recommend reviewing your implementation to find and fix the issue."
 %}

@@ -4,7 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Project Is
 
-GdUnit4 is a Godot 4 embedded unit testing framework (Godot plugin) supporting GDScript and C#. The plugin lives entirely under `addons/gdUnit4/` and is self-tested — the framework uses itself to run its own test suite.
+GdUnit4 is a Godot 4 embedded unit testing framework (Godot plugin) supporting GDScript and C#.
+The plugin lives entirely under `addons/gdUnit4/` and is self-tested — the framework uses itself to run its own test suite.
 
 Supported Godot versions: 4.3–4.6. C# targets net9.0 with .NET SDK 9.0.308 (pinned in `global.json`).
 
@@ -50,11 +51,19 @@ gdlint addons/gdUnit4/src/network
 gdlint addons/gdUnit4/src/asserts
 ```
 
+### Markdown Linting
+
+Run markdownlint-cli2 locally before pushing to catch formatting issues early:
+
+```bash
+markdownlint-cli2 --config .github/actions/formatting_checks/.markdownlint.jsonc "**/*.md"
+```
+
 ## Architecture
 
 ### Plugin Structure
 
-```
+```text
 addons/gdUnit4/
 ├── plugin.cfg          # Plugin metadata and version
 ├── plugin.gd           # Plugin entry point (EditorPlugin)
@@ -66,7 +75,7 @@ addons/gdUnit4/
 ### Source Modules (`addons/gdUnit4/src/`)
 
 | Directory | Purpose |
-|-----------|---------|
+| --------- | ------- |
 | `asserts/` | Fluent assertion implementations (one file per type: Array, String, Signal, etc.) |
 | `core/` | Test case execution, discovery, events, attributes, versioning |
 | `doubler/` | Test double (mock/stub) code generation |
@@ -85,6 +94,7 @@ addons/gdUnit4/
 ### Test Organization
 
 Tests in `addons/gdUnit4/test/` mirror the `src/` structure. For example:
+
 - `src/asserts/GdUnitArrayAssertImpl.gd` → `test/asserts/GdUnitArrayAssertImplTest.gd`
 - `src/cmd/CmdArgumentParser.gd` → `test/cmd/CmdArgumentParserTest.gd`
 
@@ -100,7 +110,9 @@ C#-specific tests live under `test/dotnet/`.
 
 ## Coding Style
 
-**GDScript:** Follow [Godot's GDScript style guide](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_styleguide.html). Enforced by gdlint with these key limits (`.gdlintrc`):
+**GDScript:** Follow [Godot's GDScript style guide](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_styleguide.html).
+Enforced by gdlint with these key limits (`.gdlintrc`):
+
 - Max line length: 140
 - Max file lines: 1000
 - Max public methods: 40
@@ -110,14 +122,15 @@ C#-specific tests live under `test/dotnet/`.
 
 ## Documentation
 
-The `documentation/` folder is a Jekyll site built with the [just-the-docs](https://just-the-docs.com/) theme (Ruby 3.4.7, Jekyll ~4.4.1). It is published to GitHub Pages via `.github/workflows/deploy-gh-pages.yml`, triggered on release events or manual dispatch.
+The `documentation/` folder is a Jekyll site built with the [just-the-docs](https://just-the-docs.com/) theme (Ruby 3.4.7, Jekyll ~4.4.1).
+It is published to GitHub Pages via `.github/workflows/deploy-gh-pages.yml`, triggered on release events or manual dispatch.
 
 ### Structure
 
 Markdown source files live under `documentation/doc/` in Jekyll collections:
 
 | Collection | Path | Content |
-|------------|------|---------|
+| ---------- | ---- | ------- |
 | `first_steps` | `doc/_first_steps/` | Installation, running tests, settings |
 | `csharp_project_setup` | `doc/_csharp_project_setup/` | C# setup, VSTest adapter |
 | `testing` | `doc/_testing/` | Test suites, test cases, all assert types |
@@ -137,7 +150,10 @@ The site is served at `http://localhost:4000/gdUnit4`.
 
 ### Deployment
 
-The workflow deploys docs to the `gh-pages` branch under versioned paths (e.g., `/gdUnit4/v6.1.x/`) and `/gdUnit4/latest/` for the latest overall release. Only the newest patch in a major.minor series is deployed (e.g., v6.1.2 won't be overwritten by v6.1.1). The `current_version` in `documentation/_config.yml` should be updated when releasing a new minor version.
+The workflow deploys docs to the `gh-pages` branch under versioned paths (e.g., `/gdUnit4/v6.1.x/`)
+and `/gdUnit4/latest/` for the latest overall release.
+Only the newest patch in a major.minor series is deployed (e.g., v6.1.2 won't be overwritten by v6.1.1).
+The `current_version` in `documentation/_config.yml` should be updated when releasing a new minor version.
 
 ## Branch and PR Conventions
 
@@ -148,7 +164,7 @@ The workflow deploys docs to the `gh-pages` branch under versioned paths (e.g., 
 
 PR descriptions must include these two sections:
 
-```
+```markdown
 # Why
 <explain the motivation or problem being solved>
 

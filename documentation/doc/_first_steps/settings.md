@@ -32,6 +32,10 @@ To access these settings, simply press the 'tools' button located in the GdUnit 
   * **Flaky Max Retries**<br>
     This setting is used to configure the number of retries that a test should perform if it fails.
 
+  * **Rerun Until Failure Retries**<br>
+    This setting configures the maximum number of times a test is rerun when using **Run Tests Until Fail** from the Inspector Context Menu.
+    Once the limit is reached or a failure occurs, the run stops. The default value is **10**.
+
   * **Test Discovery**<br>
    This setting configures the auto-discovery of tests. If enabled, it will scan the configured Test Root Folder for available tests at startup.
 
@@ -170,7 +174,7 @@ The text field at the bottom displays contextual information about the selected 
 
 * **Inspector**<br>
   In this section, you can customize the keyboard shortcuts for the GdUnit inspector in Godot. You can customize shortcuts for various actions,
-  such as running tests, debugging tests, running overall tests, and stopping the current test run.
+  such as running tests, debugging tests, running overall tests, stopping the current test run, and rerunning tests until failure.
 
 ---
 

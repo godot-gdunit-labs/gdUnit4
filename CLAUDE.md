@@ -162,6 +162,27 @@ The `current_version` in `documentation/_config.yml` should be updated when rele
 - PRs must link to an issue and pass all CI checks before merging
 - CI runs format checks, gdlint, and tests against Godot 4.5, 4.5.1, and 4.6
 
+### Before Pushing
+
+Run all linting locally before pushing to avoid CI failures:
+
+```bash
+# GDScript lint (mirrors .github/workflows/gdlint.yml)
+gdlint addons/gdUnit4/bin/
+gdlint addons/gdUnit4/src/cmd/
+gdlint addons/gdUnit4/src/reporters/
+gdlint addons/gdUnit4/src/network
+gdlint addons/gdUnit4/src/asserts
+
+# Markdown lint
+markdownlint-cli2 --config .github/actions/formatting_checks/.markdownlint.jsonc "**/*.md"
+
+# C# format check (if C# files changed)
+dotnet format gdUnit4.csproj --verify-no-changes --verbosity diagnostic
+```
+
+### PR Description
+
 PR descriptions must include these two sections:
 
 ```markdown

@@ -17,6 +17,10 @@ The `assert_signal()` an Assertion Tool to verify for emitted signals until a ce
 the assertion fails with a timeout error.<br>
 For more details show [assert_signal]({{site.baseurl}}/testing/assert-signal/#signal-assertions)
 
+Since **v6.1**, `is_emitted()` and `is_not_emitted()` accept signal arguments as **variadic parameters**
+instead of an array, and `signal_name` accepts either a **`Signal` reference** (type-safe, recommended)
+or a **`String`**.
+
 Here's an example of using `assert_signal()`:
 
 {% tabs assert_signal %}
@@ -53,18 +57,20 @@ func before_test():
 
 
 func test_signal_emitted() -> void:
-    # wait until signal 'test_signal' without args is emitted
+    # wait until signal 'test_signal' is emitted — using a Signal reference (type-safe, recommended)
+    await assert_signal(signal_emitter).is_emitted(signal_emitter.test_signal)
+    # or using a String name
     await assert_signal(signal_emitter).is_emitted("test_signal")
 
 
 func test_signal_is_emitted_with_args() -> void:
-    # wait until signal 'test_signal_counted' is emitted with value 20
-    await assert_signal(signal_emitter).is_emitted("test_signal_counted", [20])    
+    # wait until 'test_signal_counted' is emitted with value 20 (variadic args since v6.1)
+    await assert_signal(signal_emitter).is_emitted(signal_emitter.test_signal_counted, 20)
 
 
 func test_signal_is_not_emitted() -> void:
     # wait to verify signal 'test_signal_counted()' is not emitted until the first 50ms
-    await assert_signal(signal_emitter).wait_until(50).is_not_emitted("test_signal_counted")
+    await assert_signal(signal_emitter).wait_until(50).is_not_emitted(signal_emitter.test_signal_counted)
 
 
 func test_is_signal_exists() -> void:
@@ -201,29 +207,30 @@ class MyEmitter extends Node:
 
 func test_monitor_signals() -> void:
     # start monitoring on the emitter to collect all emitted signals
-    var emitter_a := monitor_signals(MyEmitter.new())
-    var emitter_b := monitor_signals(MyEmitter.new())
+    # use typed variables to enable Signal reference syntax (since v6.1)
+    var emitter_a: MyEmitter = monitor_signals(MyEmitter.new())
+    var emitter_b: MyEmitter = monitor_signals(MyEmitter.new())
 
     # verify the signals are not emitted initial
-    await assert_signal(emitter_a).wait_until(50).is_not_emitted('my_signal_a')
-    await assert_signal(emitter_a).wait_until(50).is_not_emitted('my_signal_b')
-    await assert_signal(emitter_b).wait_until(50).is_not_emitted('my_signal_a')
-    await assert_signal(emitter_b).wait_until(50).is_not_emitted('my_signal_b')
+    await assert_signal(emitter_a).wait_until(50).is_not_emitted(emitter_a.my_signal_a)
+    await assert_signal(emitter_a).wait_until(50).is_not_emitted(emitter_a.my_signal_b)
+    await assert_signal(emitter_b).wait_until(50).is_not_emitted(emitter_b.my_signal_a)
+    await assert_signal(emitter_b).wait_until(50).is_not_emitted(emitter_b.my_signal_b)
 
     # emit signal `my_signal_a` on emitter_a
     emitter_a.do_emit_a()
-    await assert_signal(emitter_a).is_emitted('my_signal_a')
+    await assert_signal(emitter_a).is_emitted(emitter_a.my_signal_a)
 
-    # emit signal `my_signal_b` on emitter_a
+    # emit signal `my_signal_b` on emitter_a (variadic args since v6.1)
     emitter_a.do_emit_b()
-    await assert_signal(emitter_a).is_emitted('my_signal_b', ["foo"])
+    await assert_signal(emitter_a).is_emitted(emitter_a.my_signal_b, "foo")
     # verify emitter_b still has nothing emitted
-    await assert_signal(emitter_b).wait_until(50).is_not_emitted('my_signal_a')
-    await assert_signal(emitter_b).wait_until(50).is_not_emitted('my_signal_b')
+    await assert_signal(emitter_b).wait_until(50).is_not_emitted(emitter_b.my_signal_a)
+    await assert_signal(emitter_b).wait_until(50).is_not_emitted(emitter_b.my_signal_b)
 
     # now verify emitter b
     emitter_b.do_emit_a()
-    await assert_signal(emitter_b).wait_until(50).is_emitted('my_signal_a')
+    await assert_signal(emitter_b).wait_until(50).is_emitted(emitter_b.my_signal_a)
 
 ```
 

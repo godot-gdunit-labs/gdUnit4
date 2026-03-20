@@ -35,14 +35,12 @@ func _update_focus_relations() -> void:
 	var row_count := _hooks_list.get_child_count()
 	for hook_index in row_count:
 		var current_hook: Control = _hooks_list.get_child(hook_index)
-		var previous_node: Control = null if hook_index==0 else _hooks_list.get_child(hook_index-1)
-		var next_node: Control = null if hook_index<=row_count else _hooks_list.get_child(hook_index+1)
-		if previous_node:
-			current_hook.focus_neighbor_top = previous_node.get_path()
-			current_hook.set_focus_previous(previous_node.get_path())
-		if next_node:
-			current_hook.focus_neighbor_bottom = next_node.get_path()
-			current_hook.set_focus_next(next_node.get_path())
+		var previous_hook: Control = current_hook if hook_index == 0 else _hooks_list.get_child(hook_index - 1)
+		var next_hook: Control = current_hook if hook_index >= row_count - 1 else _hooks_list.get_child(hook_index + 1)
+		current_hook.focus_neighbor_top = previous_hook.get_path()
+		current_hook.set_focus_previous(previous_hook.get_path())
+		current_hook.focus_neighbor_bottom = next_hook.get_path()
+		current_hook.set_focus_next(next_hook.get_path())
 
 
 func _create_hook_row(hook: GdUnitTestSessionHook) -> Control:
@@ -52,6 +50,7 @@ func _create_hook_row(hook: GdUnitTestSessionHook) -> Control:
 	panel.visible = true
 	panel.set_meta("hook", hook)
 	panel.tooltip_text = "System hook - (Read-only)" if is_system else "User hook"
+	panel.focus_entered.connect(_select_row.bind(panel))
 	panel.gui_input.connect(func(event: InputEvent) -> void:
 		@warning_ignore("unsafe_property_access")
 		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -139,7 +138,7 @@ static func _get_hook(row: Control) -> GdUnitTestSessionHook:
 static func _is_system_hook(hook: GdUnitTestSessionHook) -> bool:
 	if hook == null:
 		return false
-	return hook.get_meta("SYSTEM_HOOK")
+	return hook.get_meta("SYSTEM_HOOK", false)
 
 
 func _on_btn_add_hook_pressed() -> void:
@@ -167,6 +166,7 @@ func _on_select_hook_dlg_confirmed() -> void:
 		return
 
 	var row := _create_hook_row(hook)
+	_update_focus_relations()
 	_select_row(row)
 
 
@@ -174,10 +174,12 @@ func _on_btn_delete_hook_pressed() -> void:
 	if _selected_row == null:
 		return
 	GdUnitTestSessionHookService.instance().unregister(_get_hook(_selected_row))
+
+	_hooks_list.remove_child(_selected_row)
 	_selected_row.queue_free()
-	_selected_row = null
-	_update_hook_buttons()
-	_update_hook_description()
+
+	_update_focus_relations()
+	_select_row(_hooks_list.find_next_valid_focus())
 
 
 func _on_btn_move_up_pressed() -> void:
@@ -188,8 +190,8 @@ func _on_btn_move_up_pressed() -> void:
 		return
 	var prev: Control = _hooks_list.get_child(idx)
 	_hooks_list.move_child(_selected_row, idx)
-	GdUnitTestSessionHookService.instance()\
-		.move_before(_get_hook(_selected_row), _get_hook(prev))
+	GdUnitTestSessionHookService.instance().move_before(_get_hook(_selected_row), _get_hook(prev))
+	_update_focus_relations()
 	_update_hook_buttons()
 
 
@@ -201,6 +203,6 @@ func _on_btn_move_down_pressed() -> void:
 		return
 	var next: Control = _hooks_list.get_child(idx)
 	_hooks_list.move_child(_selected_row, idx)
-	GdUnitTestSessionHookService.instance()\
-		.move_after(_get_hook(_selected_row), _get_hook(next))
+	GdUnitTestSessionHookService.instance().move_after(_get_hook(_selected_row), _get_hook(next))
+	_update_focus_relations()
 	_update_hook_buttons()

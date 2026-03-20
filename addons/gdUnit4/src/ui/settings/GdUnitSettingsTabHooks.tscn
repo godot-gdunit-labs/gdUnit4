@@ -217,6 +217,7 @@ text = "SYSTEM"
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Enable/Disable the Hook"
+focus_mode = 0
 
 [connection signal="pressed" from="HBoxContainer/hook_actions/btn_move_up" to="." method="_on_btn_move_up_pressed"]
 [connection signal="pressed" from="HBoxContainer/hook_actions/btn_move_down" to="." method="_on_btn_move_down_pressed"]

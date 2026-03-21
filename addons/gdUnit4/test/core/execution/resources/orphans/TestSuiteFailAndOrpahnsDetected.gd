@@ -2,7 +2,7 @@
 extends GdUnitTestSuite
 
 
-var _orphans: Array = Array()
+var _orphans: Array[Node] = []
 @warning_ignore("untyped_declaration")
 var before_n1
 
@@ -44,6 +44,6 @@ func test_case2() -> void:
 # we manually freeing the orphans from the simulated testsuite to prevent memory leaks here
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
-		for orphan :Variant in _orphans:
+		for orphan in _orphans:
 			orphan.free()
 		_orphans.clear()

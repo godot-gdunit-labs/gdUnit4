@@ -17,20 +17,20 @@ class InnerTestRefCountedClass extends RefCounted:
 
 func test_free_instance() -> void:
 	# on valid instances
-	assert_that(await GdUnitTools.free_instance(RefCounted.new())).is_true()
-	assert_that(await GdUnitTools.free_instance(Node.new())).is_true()
-	assert_that(await GdUnitTools.free_instance(JavaClass.new())).is_true()
-	assert_that(await GdUnitTools.free_instance(InnerTestNodeClass.new())).is_true()
-	assert_that(await GdUnitTools.free_instance(InnerTestRefCountedClass.new())).is_true()
+	assert_bool(await GdUnitTools.free_instance(RefCounted.new())).is_true()
+	assert_bool(await GdUnitTools.free_instance(Node.new())).is_true()
+	assert_bool(await GdUnitTools.free_instance(JavaClass.new())).is_true()
+	assert_bool(await GdUnitTools.free_instance(InnerTestNodeClass.new())).is_true()
+	assert_bool(await GdUnitTools.free_instance(InnerTestRefCountedClass.new())).is_true()
 
 	# on invalid instances
-	assert_that(await GdUnitTools.free_instance(null)).is_false()
-	assert_that(await GdUnitTools.free_instance(RefCounted)).is_false()
+	assert_bool(await GdUnitTools.free_instance(null)).is_false()
+	assert_bool(await GdUnitTools.free_instance(RefCounted)).is_false()
 
 	# on already freed instances
 	var node := Node.new()
 	node.free()
-	assert_that(await GdUnitTools.free_instance(node)).is_false()
+	assert_bool(await GdUnitTools.free_instance(node)).is_false()
 
 
 func test_richtext_normalize() -> void:

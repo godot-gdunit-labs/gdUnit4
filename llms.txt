@@ -1,0 +1,137 @@
+# GdUnit4
+
+> A Godot 4 embedded unit testing framework (plugin) supporting GDScript and C#.
+
+GdUnit4 v6.1.2 — supports Godot 4.3–4.6. C# targets net9.0 (.NET SDK 9.0.308). The framework is self-tested: it uses itself to run its own test suite. The plugin lives entirely under `addons/gdUnit4/`.
+
+**License:** MIT
+
+Keywords: Godot unit testing, GDScript testing framework, Godot 4 plugin, game testing, test-driven development, TDD, Godot C# testing, automated testing, unit test, integration test, scene testing, signal testing, mock, spy, stub, fuzzing, parameterized tests, CI/CD, GitHub Actions, JUnit XML, HTML report
+
+## Why GdUnit4
+
+GdUnit4 is a feature-rich testing framework for Godot 4, designed to make writing and running tests enjoyable for both GDScript and C# developers.
+
+- **Dual-language support** — GDScript and C# in a single framework
+- **Fluent assertion API** — chainable, type-aware assertions with descriptive failure messages
+- **Full mock/stub/spy support** — isolate dependencies and verify interactions
+- **Scene Runner** — simulate user input (keyboard, mouse, actions) on live nodes/UI in tests
+- **Signal assertions** — await and assert signal emissions with timeout support
+- **Fuzzing / parameterized tests** — data-driven test cases with built-in fuzzers
+- **CI/CD ready** — JUnit XML and HTML reports, headless mode, GitHub Actions integration
+- **Godot editor integration** — Test Inspector panel with run/re-run, green/red tree, filtering
+- **Test hooks** — `before`/`after` (suite-level) and `before_test`/`after_test` (per-test) setup and teardown callbacks
+- **Session hooks** — global setup and teardown logic that runs once per test session via `GdUnitTestSessionHook`
+- **Integrated update tool** — check for and install new releases directly from the Godot editor
+- **Asset Library** — installable directly from the Godot Editor Asset Library
+
+## Installation
+
+**Via Godot Asset Library** (recommended): Search for "GdUnit4" in the Godot Editor → AssetLib tab.
+
+**Via release download**: Download the latest `.zip` from [GitHub releases](https://github.com/MikeSchulze/gdUnit4/releases), extract into your project's `addons/` folder, then enable the plugin in *Project → Project Settings → Plugins*.
+
+## Quick Start (GDScript)
+
+```gdscript
+extends GdUnitTestSuite
+
+
+func test_string_contains() -> void:
+    assert_str("Hello GdUnit4").contains("GdUnit4")
+
+
+func test_array_has_size() -> void:
+    assert_array([1, 2, 3]).has_size(3).contains(1, 2)
+
+
+func test_signal_emitted() -> void:
+    var timer := auto_free(Timer.new())
+    add_child(timer)
+    timer.start(0.1)
+    await assert_signal(timer).is_emitted("timeout")
+
+
+func test_mock_example() -> void:
+    var mock_node := mock(Node)
+    mock_node.get_name()
+    verify(mock_node).get_name()
+
+
+func test_scene_runner() -> void:
+    # load a scene and wrap it in a runner
+    var runner := scene_runner("res://scenes/MyGame.tscn")
+    # simulate a key press and advance frames
+    runner.simulate_key_pressed(KEY_SPACE)
+    await runner.simulate_frames(30)
+    # assert expected scene state
+    assert_object(runner.find_child("Player")).is_not_null()
+```
+
+## Quick Start (C#)
+
+```csharp
+using GdUnit4;
+using static GdUnit4.Assertions;
+
+[TestSuite]
+public class MyTest
+{
+    [TestCase]
+    public void StringContains()
+        => AssertThat("Hello GdUnit4").Contains("GdUnit4");
+
+    [TestCase]
+    public void ArrayHasSize()
+        => AssertThat(new[] { 1, 2, 3 }).HasSize(3);
+
+    // Parameterized test — each [TestCase] attribute is one run
+    [TestCase("foo", 3)]
+    [TestCase("hello", 5)]
+    public void StringLength(string value, int expectedLength)
+        => AssertThat(value).HasLength(expectedLength);
+}
+```
+
+For C# signal assertions, mocking, and scene runner see the [documentation site](https://godot-gdunit-labs.github.io/gdUnit4/latest/).
+
+## Organisation
+
+GdUnit4 is part of the **[godot-gdunit-labs](https://github.com/godot-gdunit-labs)** GitHub organisation, which bundles all related projects:
+
+- **[GdUnit4](https://github.com/godot-gdunit-labs/gdUnit4)** — the core Godot plugin (GDScript + C# via GDNative bindings)
+- **[GdUnit4Net](https://github.com/godot-gdunit-labs/gdUnit4Net)** — standalone .NET / C# test adapter and NuGet package
+- **[gdUnit4NetExamples](https://github.com/godot-gdunit-labs/gdUnit4NetExamples)** — example projects showing C# test setup and patterns
+- **[gdUnit4-action](https://github.com/godot-gdunit-labs/gdUnit4-action)** — GitHub Action for running GdUnit4 tests in CI pipelines
+
+## Docs
+
+- [Documentation site](https://godot-gdunit-labs.github.io/gdUnit4/latest/): Full reference — assertions, mocking, spying, scene runner, fuzzing, CI setup
+- [GitHub organisation](https://github.com/godot-gdunit-labs): All related repositories
+- [CONTRIBUTING.md](https://github.com/MikeSchulze/gdUnit4/blob/master/CONTRIBUTING.md): Contribution guidelines
+- [Discord server](https://discord.gg/rdq36JwuaJ): Community support and general discussion
+- [Patreon](https://www.patreon.com/cw/GodotGdUnitLabs): Support the project
+
+## Running Tests (CLI)
+
+```bash
+# Set Godot binary, then run all tests
+export GODOT_BIN=/path/to/godot
+./addons/gdUnit4/runtest.sh
+
+# Run a specific path
+./addons/gdUnit4/runtest.sh --godot_binary /path/to/godot -a res://addons/gdUnit4/test/asserts/
+```
+
+## Plugin Structure
+
+```
+addons/gdUnit4/
+├── plugin.cfg          # Plugin metadata and version
+├── plugin.gd           # EditorPlugin entry point
+├── bin/                # CLI tools (GdUnitCmdTool.gd, GdUnitCopyLog.gd)
+├── src/                # All framework source code
+└── test/               # Self-tests (mirrors src/ structure)
+```
+
+For full source module breakdown, coding conventions, and contributor guidelines see [llms-full.txt](llms-full.txt).

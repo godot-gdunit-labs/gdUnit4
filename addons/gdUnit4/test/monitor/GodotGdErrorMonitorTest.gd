@@ -24,7 +24,7 @@ func after() -> void:
 
 func test_monitor_push_error() -> void:
 	var monitor := GodotGdErrorMonitor.new()
-	monitor._report_enabled = true
+	monitor._logger._is_report_push_errors = true
 	# no errors reported
 	monitor.start()
 	monitor.stop()
@@ -40,15 +40,15 @@ func test_monitor_push_error() -> void:
 	prints(reports[0].message())
 	assert_str(reports[0].message())\
 		.contains("Test GodotGdErrorMonitor 'push_error' reporting")\
-		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:77")\
-		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:72")\
+		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:78")\
+		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:73")\
 		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:35")
 	assert_int(reports[0].line_number()).is_equal(35)
 
 
 func test_monitor_push_waring() -> void:
 	var monitor := GodotGdErrorMonitor.new()
-	monitor._report_enabled = true
+	monitor._logger._is_report_push_errors = true
 
 	# push error
 	monitor.start()
@@ -64,11 +64,12 @@ func test_monitor_push_waring() -> void:
 
 
 func test_fail_by_push_error(_do_skip := true, _skip_reason := "disabled to not produce errors, enable only for direct testing") -> void:
-	GdUnitThreadManager.get_current_context().get_execution_context().error_monitor._report_enabled = true
+	GdUnitThreadManager.get_current_context().get_execution_context().error_monitor._logger._is_report_push_errors = true
 	push_error("test error")
 
 
 func forcet_push_error() -> void:
+	@warning_ignore("redundant_await")
 	await forcet_push_error2()
 
 

@@ -745,7 +745,8 @@ AssertThat(new object[] { new Reference(), 2, new AStar(), AutoFree(new Node()) 
 Extracts all values by given extractor's into a new ArrayAssert, a maximum of teen extractors currently supported.
 If the elements not extractable than the value is converted to `"n.a"`, expecting null values
 
-To check multiple extracted values you must use `tuple`, a tuple can hold two up to ten values
+To check multiple extracted values you must use `tuple`, which accepts any number of values (since v6.1 truly variadic, no longer limited to ten).
+For programmatic or data-driven usage you can also construct a tuple from an existing array with `GdUnitTuple.of(array)`.
 {% tabs assert-array-extractv %}
 {% tab assert-array-extractv GdScript %}
 ```gd

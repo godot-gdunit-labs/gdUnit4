@@ -1,4 +1,4 @@
-
+@warning_ignore_start("unsafe_method_access")
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
 

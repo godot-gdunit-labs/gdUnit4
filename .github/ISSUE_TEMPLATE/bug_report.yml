@@ -23,8 +23,11 @@ body:
       label: The used GdUnit4 version
       description: Which GdUnit4 version are you using?
       options:
-        - 6.1.0 (Pre Release/Master branch)
-        - 6.0.3 (Latest Release)
+        - 6.1.3 (Pre Release/Master branch)
+        - 6.1.2 (Latest Release)
+        - 6.1.1 
+        - 6.1.0
+        - 6.0.3
         - 6.0.2
         - 6.0.1
         - 6.0.0

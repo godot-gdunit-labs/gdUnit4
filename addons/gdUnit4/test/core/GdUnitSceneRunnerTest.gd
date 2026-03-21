@@ -1,5 +1,5 @@
 # GdUnit generated TestSuite
-@warning_ignore_start("redundant_await")
+@warning_ignore_start("redundant_await", "unsafe_method_access")
 class_name GdUnitSceneRunnerTest
 extends GdUnitTestSuite
 
@@ -9,6 +9,7 @@ const __source = 'res://addons/gdUnit4/src/core/GdUnitSceneRunnerImpl.gd'
 
 # loads the test runner and register for auto freeing after test
 func load_test_scene() -> Node:
+	@warning_ignore("unsafe_method_access")
 	return auto_free(load("res://addons/gdUnit4/test/mocker/resources/scenes/TestScene.tscn").instantiate())
 
 
@@ -203,9 +204,9 @@ func test_await_signal_without_time_factor() -> void:
 	await runner.await_signal("panel_color_change", [box1, Color.GREEN])
 	(
 		# should be interrupted is will never change to Color.KHAKI
-		await assert_failure_await(func x() -> void: await runner.await_signal("panel_color_change", [box1, Color.KHAKI], 300))
-	).has_message("await_signal_on(panel_color_change, [%s, %s]) timed out after 300ms" % [str(box1), str(Color.KHAKI)]) \
-		.has_line(206)
+		await assert_failure_await(func x() -> void: await runner.await_signal( "panel_color_change", [box1, Color.KHAKI], 300))
+	).has_message("await_signal_on(panel_color_change, [%s, %s]) timed out after 300ms" % [str(box1), str(Color.KHAKI)])\
+		.has_line(207)
 
 
 func test_await_signal_with_time_factor() -> void:
@@ -221,8 +222,8 @@ func test_await_signal_with_time_factor() -> void:
 	(
 		# should be interrupted is will never change to Color.KHAKI
 		await assert_failure_await(func x() -> void: await runner.await_signal("panel_color_change", [box1, Color.KHAKI], 30))
-	).has_message("await_signal_on(panel_color_change, [%s, %s]) timed out after 30ms" % [str(box1), str(Color.KHAKI)]) \
-		.has_line(223)
+	).has_message("await_signal_on(panel_color_change, [%s, %s]) timed out after 30ms" % [str(box1), str(Color.KHAKI)])\
+		.has_line(224)
 
 
 func test_simulate_until_signal() -> void:

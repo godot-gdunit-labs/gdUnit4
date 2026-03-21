@@ -13,6 +13,7 @@ This section lists known problems and possible solutions/workarounds.
 - [Script/Resource Errors after the plugin is installed]({{site.baseurl}}/faq/solutions/#scriptresource-errors-after-the-plugin-is-installed)
 - [Modifying the Game Engine State 'mainLoop.Paused = true' during Tests]({{site.baseurl}}/faq/solutions/#modifying-the-game-engine-state-mainlooppaused--true-during-tests)
 - [Export Failures with GdUnit4 Plugin Installed]({{site.baseurl}}/faq/solutions/#export-failures-with-gdunit4-plugin-installed)
+- [How to Exclude Directories from Test Discovery]({{site.baseurl}}/faq/solutions/#how-to-exclude-directories-from-test-discovery)
 
 ---
 
@@ -121,3 +122,24 @@ This allows you to keep the plugin active for development while ensuring clean e
   during development
 - The GdUnit4 addon is designed for development and testing environments and should not be included in production builds
 - After applying the exclusion filters, test your export to ensure it works correctly
+
+---
+
+### How to Exclude Directories from Test Discovery
+
+When your project contains directories that should not be scanned for tests — such as third-party plugins,
+subprojects, or generated content — you can prevent GdUnit4 from scanning them by placing a `.gdignore` file
+in those directories.
+
+GdUnit4's test discovery scanner respects `.gdignore` files the same way Godot does: any directory containing
+a `.gdignore` file is skipped entirely during the scan.
+
+<h4> Solution </h4>
+
+Create an empty `.gdignore` file in any directory you want to exclude from test discovery:
+
+```shell
+touch addons/some_other_plugin/.gdignore
+```
+
+GdUnit4 will no longer scan that directory or any of its subdirectories for test suites.

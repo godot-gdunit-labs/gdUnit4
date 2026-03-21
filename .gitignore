@@ -38,3 +38,6 @@ reports/
 
 # jekyll build
 documentation/_site/
+
+# Claude Code local settings
+.claude/settings.local.json

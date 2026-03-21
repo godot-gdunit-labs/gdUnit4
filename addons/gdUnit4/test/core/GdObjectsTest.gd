@@ -320,7 +320,7 @@ func test_extract_class_name_from_instance() -> void:
 	assert_result(extract_class_name(Person.new())).is_equal("Person")
 	assert_result(extract_class_name(ClassWithNameA.new())).is_equal("ClassWithNameA")
 	assert_result(extract_class_name(ClassWithNameB.new())).is_equal("ClassWithNameB")
-	var classWithoutNameA := load("res://addons/gdUnit4/test/mocker/resources/ClassWithoutNameA.gd")
+	var classWithoutNameA: GDScript = load("res://addons/gdUnit4/test/mocker/resources/ClassWithoutNameA.gd")
 	assert_result(extract_class_name(classWithoutNameA.new())).is_equal("ClassWithoutNameA")
 	assert_result(extract_class_name(CustomNodeTestClass.new())).is_equal("CustomNodeTestClass")
 	assert_result(extract_class_name(CustomResourceTestClass.new())).is_equal("CustomResourceTestClass")
@@ -445,7 +445,7 @@ func test_is_instance_scene() -> void:
 	assert_bool(GdObjects.is_instance_scene(auto_free(Control.new()))).is_false()
 
 	# now check checked a loaded scene
-	var resource := load("res://addons/gdUnit4/test/mocker/resources/scenes/TestScene.tscn")
+	var resource: PackedScene = load("res://addons/gdUnit4/test/mocker/resources/scenes/TestScene.tscn")
 	assert_bool(GdObjects.is_instance_scene(resource)).is_false()
 	# checked a instance of a scene
 	assert_bool(GdObjects.is_instance_scene(auto_free(resource.instantiate()))).is_true()
@@ -521,6 +521,7 @@ class ObjectWithSceneReferece:
 
 
 func test_is_equal_on_scene_embedded_script() -> void:
+	@warning_ignore("unsafe_method_access")
 	var node: Node = auto_free(load("res://addons/gdUnit4/test/core/resources/scenes/SceneWithEmbeddedScript.tscn").instantiate())
 
 	GdObjects.equals(ObjectWithSceneReferece.new(node), ObjectWithSceneReferece.new(node), false)

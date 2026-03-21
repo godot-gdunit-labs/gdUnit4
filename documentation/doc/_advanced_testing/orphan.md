@@ -24,6 +24,14 @@ If no orphan nodes are detected, a green icon is displayed, but if orphan nodes 
 You can use the button to jump to the first orphan node to inspect it. Orphan nodes are reported and marked in yellow for each test step,
 including **before()**, **before_test()**, and the test itself.
 
+### Detailed Orphan Reporting
+
+Orphan detection reports a full **stack trace** for each orphan node (requires Godot 4.5+),
+including the variable name, script path, and line number where the node was created.
+This makes it significantly easier to locate the source of a leak without manual investigation.
+
+![orphan_nodes_example_step3]({{site.baseurl}}/assets/images/monitoring/orphan_nodes_example_step3.png){:.centered}
+
 {% include advice.html
 content="If any orphan nodes are detected, I recommend reviewing your implementation to find and fix the issue."
 %}
@@ -41,6 +49,7 @@ Finding the code location where the orphaned nodes are located can be a little d
 If you are not an expert and have no idea what the problem is, we recommend a step-by-step approach to find and fix orphan nodes.
 
 Here is a small example of a class with an orphan node:
+
 ```gd
 class_name TestOrpahnDetection
 extends GdUnitTestSuite
@@ -59,6 +68,7 @@ class MyClass extends Node:
         var t := MyClass.new()
         assert_object(t).is_not_null()
 ```
+
 When we execute the testcase `test_orphan_detected` we will see no failures but it ends with warnings by detect two orphan node.
 
 ![orphan_nodes_example]({{site.baseurl}}/assets/images/monitoring/orphan_nodes_example.png)
@@ -76,6 +86,7 @@ To fix orphan nodes, it is important to ensure that all nodes used in a test cas
 This ensures that any nodes created during the test case are cleaned up properly.
 
 Here is an example of how to fix the test case from the previous section:
+
 ```gd
 class_name TestOrpahnDetection
 extends GdUnitTestSuite
@@ -94,6 +105,7 @@ func test_orphan_detected():
     var t :MyClass = auto_free(MyClass.new())
     assert_object(t).is_not_null()
 ```
+
 We added the **auto_free** around the instantiation of MyClass to register the automatic release after the test execution.
 
 If we run the `test_orphan_detected` test case again, we will see that we have fixed an orphaned node, but there is still one present.
@@ -107,6 +119,7 @@ The best way to fix orphan nodes is to ensure that all nodes are added as childr
 all of its child nodes are also freed.
 
 Here is an example of how to fix the MyClass example above:
+
 ```gd
 class_name TestOrpahnDetection
 extends GdUnitTestSuite
@@ -126,6 +139,7 @@ func test_orphan_detected():
 var t :MyClass = auto_free(MyClass.new())
 assert_object(t).is_not_null()
 ```
+
 In this fixed version of MyClass, the orphan_node is added as a child of a parent_node. When the instance of MyClass is destroyed,
 the parent_node and orphan_node will also be freed.
 

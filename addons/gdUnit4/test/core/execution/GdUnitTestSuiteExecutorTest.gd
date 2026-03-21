@@ -116,7 +116,7 @@ func assert_event_reports(events: Array[GdUnitEvent], expected_reports: Array) -
 				assert_str(flating_message(current[m].message() as String)).is_empty()
 		for m in expected.size():
 			if m < current.size():
-				assert_str(flating_message(current[m].message() as String)).starts_with(expected[m])
+				assert_str(flating_message(current[m].message() as String)).starts_with(str(expected[m]))
 			else:
 				assert_str("<N/A>").is_equal(expected[m])
 
@@ -927,6 +927,46 @@ func test_execute_test_case_is_flaky_and_success() -> void:
 		tuple(GdUnitEvent.TESTCASE_AFTER, test_fuzzed_flaky_fail.guid, FLAKY, SUCCEEDED),
 		tuple(GdUnitEvent.TESTSUITE_AFTER, any_class(GdUnitGUID), !FLAKY, SUCCEEDED),
 	])
+
+
+func test_execute_push_error_monitoring_disabled() -> void:
+	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/execution/resources/error_monitoring/TestSuiteWithPushErrorTests.gd")
+	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
+	# execute all tests
+	var events := await run_tests(all_tests, {
+		GdUnitSettings.REPORT_PUSH_ERRORS : false
+	})
+
+	assert_array(events).extractv(extr("type"), extr("test_name"), extr("is_success"))\
+		.contains([
+			tuple(GdUnitEvent.TESTCASE_AFTER, "test_without_push_errors", SUCCEEDED),
+			tuple(GdUnitEvent.TESTCASE_AFTER, "test_with_push_error", SUCCEEDED),
+			tuple(GdUnitEvent.TESTCASE_AFTER, "test_with_push_error_is_catched", SUCCEEDED),
+			tuple(GdUnitEvent.TESTCASE_AFTER, "test_without_push_warning", SUCCEEDED),
+			tuple(GdUnitEvent.TESTCASE_AFTER, "test_with_push_warning", SUCCEEDED),
+			tuple(GdUnitEvent.TESTCASE_AFTER, "test_push_warning_is_catched", SUCCEEDED),
+			tuple(GdUnitEvent.TESTSUITE_AFTER, "after", SUCCEEDED),
+		])
+
+
+func test_execute_push_error_monitoring_enabled() -> void:
+	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/execution/resources/error_monitoring/TestSuiteWithPushErrorTests.gd")
+	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
+	# execute all tests
+	var events := await run_tests(all_tests, {
+		GdUnitSettings.REPORT_PUSH_ERRORS : true
+	})
+
+	assert_array(events).extractv(extr("type"), extr("test_name"), extr("is_success"))\
+		.contains([
+			tuple(GdUnitEvent.TESTCASE_AFTER, "test_without_push_errors", SUCCEEDED),
+			tuple(GdUnitEvent.TESTCASE_AFTER, "test_with_push_error", FAILED),
+			tuple(GdUnitEvent.TESTCASE_AFTER, "test_with_push_error_is_catched", SUCCEEDED),
+			tuple(GdUnitEvent.TESTCASE_AFTER, "test_without_push_warning", SUCCEEDED),
+			tuple(GdUnitEvent.TESTCASE_AFTER, "test_with_push_warning", FAILED),
+			tuple(GdUnitEvent.TESTCASE_AFTER, "test_push_warning_is_catched", SUCCEEDED),
+			tuple(GdUnitEvent.TESTSUITE_AFTER, "after", SUCCEEDED),
+		])
 
 
 func filter_by_test_case(events:  Array[GdUnitEvent], test: GdUnitTestCase) -> Array[GdUnitEvent]:

@@ -1,0 +1,66 @@
+# GdUnit4 — Full Reference
+
+> Extended reference for contributors and advanced users. See [llms.txt](llms.txt) for the user-facing overview.
+
+## Source Modules (`addons/gdUnit4/src/`)
+
+- `asserts/` — Fluent assertion implementations per type (Array, String, Signal, Vector, Dictionary, etc.)
+- `core/` — Test case execution, discovery, events, attributes, versioning
+- `core/execution/` — Test execution pipeline
+- `core/discovery/` — Test discovery logic
+- `core/event/` — Test event system
+- `core/hooks/` — Test and session hook infrastructure (`GdUnitTestSessionHook`)
+- `cmd/` — Command-line argument parsing (CmdArgumentParser, CmdCommandHandler)
+- `doubler/` — Test double (mock/stub) code generation
+- `mocking/` — Mock framework logic
+- `spy/` — Spy/verification implementation
+- `matchers/` — Argument matchers used in mock assertions
+- `fuzzers/` — Fuzzy/parameterized test support
+- `extractors/` — Value extraction utilities for assertions
+- `monitor/` — Error and signal monitoring during test execution
+- `network/` — Client/server for distributed test reporting
+- `reporters/` — HTML and JUnit XML report generation
+- `ui/` — Godot editor UI (Test Inspector panel)
+- `dotnet/` — C#-specific integration layer
+- `update/` — Integrated update tool
+
+## Test File Conventions
+
+Tests mirror `src/` structure under `test/`. Example:
+- `src/asserts/GdUnitArrayAssertImpl.gd` → `test/asserts/GdUnitArrayAssertImplTest.gd`
+- C#-specific tests: `test/dotnet/`
+
+## C# Build
+
+```bash
+dotnet build --debug
+dotnet format gdUnit4.csproj --verify-no-changes --verbosity diagnostic
+```
+
+## Coding Conventions
+
+**GDScript** — enforced by gdlint (gdscript-toolkit 4.5.0):
+- Max line length: 140 characters
+- Max file lines: 1000
+- Max public methods: 40
+- Max function arguments: 11
+
+**C#** — StyleCop.Analyzers, `TreatWarningsAsErrors = true`, nullable reference types enabled, C# 13.0.
+
+## GDScript Linting
+
+```bash
+gdlint addons/gdUnit4/bin/
+gdlint addons/gdUnit4/src/cmd/
+gdlint addons/gdUnit4/src/reporters/
+gdlint addons/gdUnit4/src/network
+gdlint addons/gdUnit4/src/asserts
+```
+
+## Branch and PR Conventions
+
+- Main branch: `master`
+- Feature branches named after issue number (e.g. `GD-111`)
+- PRs must link to an issue and pass all CI checks
+- CI runs format checks, gdlint, and tests against Godot 4.5, 4.5.1, and 4.6
+- PR descriptions must include `# Why` and `# What` sections

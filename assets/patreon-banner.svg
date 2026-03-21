@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 90" width="800" height="90">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stop-color="#1c1041"/>
+      <stop offset="100%" stop-color="#2a1760"/>
+    </linearGradient>
+    <linearGradient id="btnGrad" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stop-color="#7a57d6"/>
+      <stop offset="100%" stop-color="#9878e8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="90" rx="8" fill="url(#bg)"/>
+
+  <!-- Top + bottom purple accent lines -->
+  <rect width="800" height="3" rx="1.5" fill="#7a57d6"/>
+  <rect y="87" width="800" height="3" rx="1.5" fill="#7a57d6"/>
+
+  <!-- Megaphone icon -->
+  <rect x="14" y="37" width="14" height="16" rx="2" fill="url(#btnGrad)"/>
+  <polygon points="28,37 52,26 52,64 28,53" fill="url(#btnGrad)"/>
+  <!-- Sound waves -->
+  <path d="M58,34 Q70,45 58,56" fill="none" stroke="url(#btnGrad)" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M64,28 Q81,45 64,62" fill="none" stroke="url(#btnGrad)" stroke-width="2.5" stroke-linecap="round" opacity="0.65"/>
+  <path d="M71,22 Q93,45 71,68" fill="none" stroke="url(#btnGrad)" stroke-width="2" stroke-linecap="round" opacity="0.35"/>
+
+  <!-- Title -->
+  <text x="106" y="36" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" fill="#ffffff">Stay Connected &amp; Updated</text>
+
+  <!-- Subtitle -->
+  <text x="106" y="57" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#9887c4">Get the latest news, tutorials, dev updates and early previews — never miss a post!</text>
+
+  <!-- Patreon pill button -->
+  <rect x="106" y="66" width="185" height="18" rx="9" fill="url(#btnGrad)"/>
+  <circle cx="120" cy="75" r="7" fill="white" opacity="0.9"/>
+  <text x="120" y="79" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="900" fill="#7a57d6" text-anchor="middle">P</text>
+  <text x="209" y="79" font-family="Arial, Helvetica, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle">Follow on Patreon</text>
+</svg>

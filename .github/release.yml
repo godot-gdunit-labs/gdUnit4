@@ -7,17 +7,21 @@ changelog:
 
   categories:
     - title: Improvements
-      type:
+      labels:
         - enhancement
-
     - title: Bug Fixes
-      type:
+      labels:
         - bug
-
-    - title: Documentaion
-      type:
-        - documentaion
-
+    - title: Refactorings
+      labels:
+        - refactoring
+    - title: Documentation
+      labels:
+        - documentation
+    - title: CI/PR Workflow
+      labels:
+        - ci
+        - pr
     - title: Other Changes
-      type:
+      labels:
         - "*"

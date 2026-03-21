@@ -79,7 +79,7 @@ func set_test_state(test_cases: Array[GdUnitTestCase], state: InspectorTreeMainP
 	for test in test_cases:
 		var item := _inspector._find_tree_item_by_id(_inspector._tree_root, test.guid)
 		var parent := item.get_parent()
-		var test_event := GdUnitEvent.new().test_after(test.guid)
+		var test_event := GdUnitEvent.new().test_after(test.guid, "test")
 		match state:
 			ERROR:
 				_inspector.set_state_error(parent)
@@ -330,23 +330,23 @@ func test_suite_text_responds_to_test_case_events() -> void:
 	var test_ac: GdUnitTestCase = discovered_tests_suite_a["test_ac"]
 	var test_ad: GdUnitTestCase = discovered_tests_suite_a["test_ad"]
 	var test_ae: GdUnitTestCase = discovered_tests_suite_a["test_ae"]
-	var success_aa := GdUnitEvent.new().test_after(test_aa.guid)
+	var success_aa := GdUnitEvent.new().test_after(test_aa.guid, "test_aa")
 	_inspector._on_gdunit_event(success_aa)
 	assert_str(suite_a_item.get_text(0)).is_equal("(1/5) ExampleTestSuiteA")
 
-	var error_ad := GdUnitEvent.new().test_after(test_ad.guid, {GdUnitEvent.ERRORS: true})
+	var error_ad := GdUnitEvent.new().test_after(test_ad.guid, "test_ad", {GdUnitEvent.ERRORS: true})
 	_inspector._on_gdunit_event(error_ad)
 	assert_str(suite_a_item.get_text(0)).is_equal("(1/5) ExampleTestSuiteA")
 
-	var failure_ab := GdUnitEvent.new().test_after(test_ab.guid, {GdUnitEvent.FAILED: true})
+	var failure_ab := GdUnitEvent.new().test_after(test_ab.guid, "test_ab", {GdUnitEvent.FAILED: true})
 	_inspector._on_gdunit_event(failure_ab)
 	assert_str(suite_a_item.get_text(0)).is_equal("(1/5) ExampleTestSuiteA")
 
-	var skipped_ac := GdUnitEvent.new().test_after(test_ac.guid, {GdUnitEvent.SKIPPED: true})
+	var skipped_ac := GdUnitEvent.new().test_after(test_ac.guid, "test_ac", {GdUnitEvent.SKIPPED: true})
 	_inspector._on_gdunit_event(skipped_ac)
 	assert_str(suite_a_item.get_text(0)).is_equal("(2/5) ExampleTestSuiteA")
 
-	var success_ae := GdUnitEvent.new().test_after(test_ae.guid)
+	var success_ae := GdUnitEvent.new().test_after(test_ae.guid, "test_ae")
 	_inspector._on_gdunit_event(success_ae)
 	assert_str(suite_a_item.get_text(0)).is_equal("(3/5) ExampleTestSuiteA")
 
@@ -382,8 +382,8 @@ func test_update_test_case_on_multiple_test_suite_with_same_name() -> void:
 	assert_int(get_item_state(suite_a_item, "test_ab")).is_equal(_inspector.STATE.INITIAL)
 
 	# finish the tests with success
-	_inspector._on_gdunit_event(GdUnitEvent.new().test_after(test_aa.guid))
-	_inspector._on_gdunit_event(GdUnitEvent.new().test_after(test_ab.guid))
+	_inspector._on_gdunit_event(GdUnitEvent.new().test_after(test_aa.guid, "test_aa"))
+	_inspector._on_gdunit_event(GdUnitEvent.new().test_after(test_ab.guid, "test_bb"))
 
 	# verify updated state checked suite_a_item
 	assert_str(suite_item.get_text(0)).is_equal("(2/5) ExampleTestSuiteA")
@@ -425,11 +425,11 @@ func test_update_icon_state() -> void:
 
 	# Simulate test processed and fails on test_case2
 	# test_case1 succeeded
-	_inspector._on_gdunit_event(GdUnitEvent.new().test_after(test_case1.guid))
+	_inspector._on_gdunit_event(GdUnitEvent.new().test_after(test_case1.guid, "test_case1"))
 	# test_case2 is failing by an orphan warning and an failure
-	_inspector._on_gdunit_event(GdUnitEvent.new().test_after(test_case2.guid, {GdUnitEvent.FAILED: true}))
+	_inspector._on_gdunit_event(GdUnitEvent.new().test_after(test_case2.guid, "test_case2", {GdUnitEvent.FAILED: true}))
 	# We check whether a test event with a warning does not overwrite a higher object status, e.g. an error.
-	_inspector._on_gdunit_event(GdUnitEvent.new().test_after(test_case2.guid, {GdUnitEvent.WARNINGS: true}))
+	_inspector._on_gdunit_event(GdUnitEvent.new().test_after(test_case2.guid, "test_case2", {GdUnitEvent.WARNINGS: true}))
 
 	# Verify the final state
 	assert_str(suite_item.get_text(0)).is_equal("(2/2) " + suite_name)

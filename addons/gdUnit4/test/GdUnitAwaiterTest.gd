@@ -16,7 +16,7 @@ func after_test() -> void:
 	for node in get_children():
 		if node is Timer:
 			remove_child(node)
-			node.stop()
+			(node as Timer).stop()
 			node.free()
 
 

@@ -19,10 +19,6 @@ func _notification(event :int) -> void:
 			_base = null
 
 
-func failure_message() -> String:
-	return _base.failure_message()
-
-
 func current_value() -> Variant:
 	return _base.current_value()
 

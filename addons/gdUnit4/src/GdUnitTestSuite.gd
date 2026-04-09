@@ -28,7 +28,7 @@ var __awaiter := __gdunit_awaiter()
 ### in order to noticeably reduce the loading time of the test suite.
 # We go this hard way to increase the loading performance to avoid reparsing all the used scripts
 # for more detailed info -> https://github.com/godotengine/godot/issues/67400
-func __lazy_load(script_path: String) -> GDScript:
+static func __lazy_load(script_path: String) -> GDScript:
 	return GdUnitAssertions.__lazy_load(script_path)
 
 
@@ -604,7 +604,7 @@ func assert_that(current: Variant) -> GdUnitAssert:
 
 
 ## An assertion tool to verify boolean values.
-func assert_bool(current: Variant) -> GdUnitBoolAssert:
+static func assert_bool(current: Variant) -> GdUnitBoolAssert:
 	return __lazy_load("res://addons/gdUnit4/src/asserts/GdUnitBoolAssertImpl.gd").new(current)
 
 

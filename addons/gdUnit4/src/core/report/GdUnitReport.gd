@@ -17,6 +17,15 @@ var _type :int
 var _line_number :int
 var _message :String
 var _current_value: Variant
+var _error: GdUnitError
+
+
+func from_error(p_type: int, error: GdUnitError) -> GdUnitReport:
+	_type = p_type
+	_line_number = error._line_number
+	_message = error._message
+	_error = error
+	return self
 
 
 func create(p_type :int, p_line_number :int, p_message :String) -> GdUnitReport:

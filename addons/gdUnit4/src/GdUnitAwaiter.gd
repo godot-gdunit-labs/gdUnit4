@@ -10,7 +10,8 @@ extends RefCounted
 func await_signal_on(source :Object, signal_name :String, args :Array = [], timeout_millis :int = 2000) -> Variant:
 	# fail fast if the given source instance invalid
 	var assert_that := GdUnitAssertImpl.new(signal_name)
-	var line_number := GdUnitAssertions.get_line_number()
+	var stack_trace := GdUnitStackTrace.new()
+	var line_number := stack_trace.get_line_number()
 	if not is_instance_valid(source):
 		@warning_ignore("return_value_discarded")
 		assert_that.report_error(GdAssertMessages.error_await_signal_on_invalid_instance(source, signal_name, args), line_number)
@@ -35,7 +36,7 @@ func await_signal_on(source :Object, signal_name :String, args :Array = [], time
 # args: the expected signal arguments as an array
 # timeout: the timeout in ms, default is set to 2000ms
 func await_signal_idle_frames(source :Object, signal_name :String, args :Array = [], timeout_millis :int = 2000) -> Variant:
-	var line_number := GdUnitAssertions.get_line_number()
+	var line_number := GdUnitStackTrace.new().get_line_number()
 	# fail fast if the given source instance invalid
 	if not is_instance_valid(source):
 		@warning_ignore("return_value_discarded")

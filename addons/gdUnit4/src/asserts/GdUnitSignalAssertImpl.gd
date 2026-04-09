@@ -4,7 +4,6 @@ const DEFAULT_TIMEOUT := 2000
 
 var _signal_collector :GdUnitSignalCollector
 var _emitter :Object
-var _current_failure_message :String = ""
 var _custom_failure_message :String = ""
 var _additional_failure_message: String = ""
 var _line_number := -1
@@ -17,7 +16,7 @@ func _init(emitter :Object) -> void:
 	var context := GdUnitThreadManager.get_current_context()
 	context.set_assert(self)
 	_signal_collector = context.get_signal_collector()
-	_line_number = GdUnitAssertions.get_line_number()
+	_line_number = GdUnitStackTrace.new().get_line_number()
 	_emitter =  emitter
 	GdAssertReports.reset_last_error_line_number()
 
@@ -36,18 +35,14 @@ func report_success() -> GdUnitAssert:
 
 
 func report_warning(message :String) -> GdUnitAssert:
-	GdAssertReports.report_warning(message, GdUnitAssertions.get_line_number())
+	GdAssertReports.report_warning(message, GdUnitStackTrace.new().get_line_number())
 	return self
 
 
 func report_error(failure :String) -> GdUnitAssert:
-	_current_failure_message = GdAssertMessages.build_failure_message(failure, _additional_failure_message, _custom_failure_message)
-	GdAssertReports.report_error(_current_failure_message, _line_number)
+	var failure_message := GdAssertMessages.build_failure_message(failure, _additional_failure_message, _custom_failure_message)
+	GdAssertReports.report_error(GdUnitError.new(failure_message, _line_number, GdUnitStackTrace.new()))
 	return self
-
-
-func failure_message() -> String:
-	return _current_failure_message
 
 
 func override_failure_message(message: String) -> GdUnitSignalAssert:
@@ -105,7 +100,7 @@ func is_signal_exists(signal_or_name: Variant) -> GdUnitSignalAssert:
 
 # Verifies that given signal is emitted until waiting time
 func is_emitted(signal_name: Variant, ...signal_args: Array) -> GdUnitSignalAssert:
-	_line_number = GdUnitAssertions.get_line_number()
+	_line_number = GdUnitStackTrace.new().get_line_number()
 	@warning_ignore("unsafe_call_argument")
 	return await _wail_until_signal(
 		signal_name,
@@ -115,7 +110,7 @@ func is_emitted(signal_name: Variant, ...signal_args: Array) -> GdUnitSignalAsse
 
 # Verifies that given signal is NOT emitted until waiting time
 func is_not_emitted(signal_name: Variant, ...signal_args: Array) -> GdUnitSignalAssert:
-	_line_number = GdUnitAssertions.get_line_number()
+	_line_number = GdUnitStackTrace.new().get_line_number()
 	@warning_ignore("unsafe_call_argument")
 	return await _wail_until_signal(
 		signal_name,

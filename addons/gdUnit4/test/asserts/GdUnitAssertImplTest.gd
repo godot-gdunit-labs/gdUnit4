@@ -7,7 +7,7 @@ const __source = 'res://addons/gdUnit4/src/asserts/GdUnitAssertImpl.gd'
 
 
 func before() -> void:
-	assert_int(GdUnitAssertions.get_line_number()).is_equal(10)
+
 	assert_failure(func() -> void: assert_int(10).is_equal(42)) \
 		.is_failed() \
 		.has_line(11) \

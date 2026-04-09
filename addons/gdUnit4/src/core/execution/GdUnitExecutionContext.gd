@@ -22,6 +22,7 @@ var _name: String
 var _test_execution_iteration: int = 0
 var _flaky_test_check := GdUnitSettings.is_test_flaky_check_enabled()
 var _flaky_test_retries := GdUnitSettings.get_flaky_max_retries()
+var _last_error: GdUnitError = null
 
 
 var error_monitor: GodotGdErrorMonitor = null:
@@ -152,6 +153,18 @@ func add_report(report: GdUnitReport) -> GdUnitReport:
 
 func reports() -> Array[GdUnitReport]:
 	return _report_collector.reports()
+
+
+func set_error(error: GdUnitError) -> void:
+	_last_error = error
+
+
+func last_error() -> GdUnitError:
+	if _report_collector.reports().is_empty():
+		return _last_error
+
+	var last_report: GdUnitReport = _report_collector.reports()[-1]
+	return last_report._error if last_report != null else _last_error
 
 
 func collect_reports(recursive: bool) -> Array[GdUnitReport]:

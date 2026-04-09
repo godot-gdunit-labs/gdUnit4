@@ -40,6 +40,10 @@ extends GdUnitAssert
 @abstract func has_line(expected: int) -> GdUnitFailureAssert
 
 
+## Verifies the failure stack trace is equal to expected one.
+@abstract func has_stack_trace(stack_trace: Array[GdUnitStackTraceElement]) -> GdUnitFailureAssert
+
+
 ## Verifies the failure message is equal to expected one.
 @abstract func has_message(expected: String) -> GdUnitFailureAssert
 

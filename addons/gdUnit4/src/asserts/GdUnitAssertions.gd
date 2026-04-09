@@ -37,32 +37,3 @@ static func __lazy_load(script_path :String) -> GDScript:
 
 static func validate_value_type(value :Variant, type :Variant.Type) -> bool:
 	return value == null or typeof(value) == type
-
-
-# Scans the current stack trace for the root cause to extract the line number
-static func get_line_number() -> int:
-	var stack_trace := get_stack()
-	if stack_trace == null or stack_trace.is_empty():
-		return -1
-	for index in stack_trace.size():
-		var stack_info :Dictionary = stack_trace[index]
-		var function :String = stack_info.get("function")
-		# we catch helper asserts to skip over to return the correct line number
-		if function.begins_with("assert_"):
-			continue
-		if function.begins_with("test_"):
-			return stack_info.get("line")
-		var source :String = stack_info.get("source")
-		if source.is_empty() \
-			or source.begins_with("user://") \
-			or source.ends_with("GdUnitAssert.gd") \
-			or source.ends_with("GdUnitAssertions.gd") \
-			or source.ends_with("AssertImpl.gd") \
-			or source.ends_with("GdUnitTestSuite.gd") \
-			or source.ends_with("GdUnitSceneRunnerImpl.gd") \
-			or source.ends_with("GdUnitObjectInteractions.gd") \
-			or source.ends_with("GdUnitObjectInteractionsVerifier.gd") \
-			or source.ends_with("GdUnitAwaiter.gd"):
-			continue
-		return stack_info.get("line")
-	return -1

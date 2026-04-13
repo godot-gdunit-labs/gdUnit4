@@ -39,3 +39,12 @@ func test_mock_on_class_with_custom_class_name() -> void:
 	assert_that(script.get_instance_base_type()).is_equal("Resource")
 	# finally check the mocked script is valid
 	assert_int(script.reload()).is_equal(OK)
+
+
+func test_mock_on_script_with_multilines() -> void:
+	var instance :Object = (load("res://addons/gdUnit4/test/mocker/resources/ClassWithMultilineBlocks.gd") as GDScript).new()
+	var script := GdUnitMockBuilder.mock_on_script(instance, instance.get_script(), [], false);
+	assert_str(script.resource_name).starts_with("MockClassWithMultilineBlocks")
+	assert_that(script.get_instance_base_type()).is_equal("RefCounted")
+	# finally check the mocked script is valid
+	assert_int(script.reload()).is_equal(OK)

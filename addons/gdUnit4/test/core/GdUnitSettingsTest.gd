@@ -5,6 +5,12 @@ extends GdUnitTestSuite
 # TestSuite generated from
 const __source = 'res://addons/gdUnit4/src/core/GdUnitSettings.gd'
 
+const IGNORE := GdUnitSettings.GdScriptWarningMode.IGNORE
+const WARN := GdUnitSettings.GdScriptWarningMode.WARN
+const ERROR := GdUnitSettings.GdScriptWarningMode.ERROR
+const EXCLUDE := GdUnitSettings.GdScriptWarningDirectoryMode.EXCLUDE
+const INCLUDE := GdUnitSettings.GdScriptWarningDirectoryMode.INCLUDE
+
 const MAIN_CATEGORY = "unit_test"
 const CATEGORY_A = MAIN_CATEGORY + "/category_a"
 const CATEGORY_B = MAIN_CATEGORY + "/category_b"
@@ -131,6 +137,107 @@ func test_migrate_property_change_value() -> void:
 	assert_str(new_property.help()).is_equal(old_property.help())
 	# cleanup
 	ProjectSettings.clear(new_property_X)
+
+
+func test_validate_is_inferred_declaration_enabled_when_disabled() -> void:
+	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_INFERRED_DECLARATION, IGNORE)
+	assert_result(GdUnitSettings.validate_is_inferred_declaration_enabled())\
+		.is_success()
+
+
+func test_validate_is_inferred_declaration_enabled_when_warning_and_addon_excluded() -> void:
+	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_INFERRED_DECLARATION, WARN)
+	if Engine.get_version_info().hex >= 0x40600:
+		ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES, {"res://addons/gdUnit4": EXCLUDE})
+	else:
+		ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_EXCLUDE_ADDONS, true)
+	assert_result(GdUnitSettings.validate_is_inferred_declaration_enabled())\
+		.is_success()
+
+
+func test_validate_is_inferred_declaration_enabled_when_warning_and_parent_dir_excluded() -> void:
+	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_INFERRED_DECLARATION, WARN)
+	if Engine.get_version_info().hex >= 0x40600:
+		# Godot's default: all plugins are excluded, covers gdUnit4 via parent path
+		ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES, {"res://addons": EXCLUDE})
+	else:
+		ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_EXCLUDE_ADDONS, true)
+	assert_result(GdUnitSettings.validate_is_inferred_declaration_enabled())\
+		.is_success()
+
+
+func test_validate_is_inferred_declaration_enabled_when_warning_and_addon_excluded_but_parent_included() -> void:
+	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_INFERRED_DECLARATION, WARN)
+	if Engine.get_version_info().hex >= 0x40600:
+		# parent addons dir is included (warnings active) but gdUnit4 is specifically excluded
+		ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES, {"res://addons": INCLUDE, "res://addons/gdUnit4": EXCLUDE})
+	else:
+		ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_EXCLUDE_ADDONS, true)
+	assert_result(GdUnitSettings.validate_is_inferred_declaration_enabled())\
+		.is_success()
+
+
+func test_validate_is_inferred_declaration_enabled_when_warning_and_only_parent_included() -> void:
+	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_INFERRED_DECLARATION, WARN)
+	var expected_message: String
+	if Engine.get_version_info().hex >= 0x40600:
+		# only "res://addons" is included (warnings active), gdUnit4 has no explicit exclusion
+		ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES, {"res://addons": INCLUDE})
+		expected_message = """
+			GdUnit4: 'inferred_declaration' is set to Warning/Error!
+			GdUnit4 is not 'inferred_declaration' safe, you have to exclude the addon (debug/gdscript/warnings/directory_rules)
+			""".dedent().strip_edges()
+	else:
+		ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_EXCLUDE_ADDONS, false)
+		expected_message = """
+			GdUnit4: 'inferred_declaration' is set to Warning/Error!
+			GdUnit4 is not 'inferred_declaration' safe, you have to exclude addons (debug/gdscript/warnings/exclude_addons)
+			""".dedent().strip_edges()
+	assert_result(GdUnitSettings.validate_is_inferred_declaration_enabled())\
+		.is_error()\
+		.contains_message(expected_message)
+
+
+func test_validate_is_inferred_declaration_enabled_when_warning_and_addon_not_excluded() -> void:
+	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_INFERRED_DECLARATION, WARN)
+	var expected_message: String
+	if Engine.get_version_info().hex >= 0x40600:
+		# default + gdUnit4 explicitly re-included: addon is not excluded from warnings
+		ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES, {"res://addons": EXCLUDE, "res://addons/gdUnit4": INCLUDE})
+		expected_message = """
+			GdUnit4: 'inferred_declaration' is set to Warning/Error!
+			GdUnit4 is not 'inferred_declaration' safe, you have to exclude the addon (debug/gdscript/warnings/directory_rules)
+			""".dedent().strip_edges()
+	else:
+		ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_EXCLUDE_ADDONS, false)
+		expected_message = """
+			GdUnit4: 'inferred_declaration' is set to Warning/Error!
+			GdUnit4 is not 'inferred_declaration' safe, you have to exclude addons (debug/gdscript/warnings/exclude_addons)
+			""".dedent().strip_edges()
+	assert_result(GdUnitSettings.validate_is_inferred_declaration_enabled())\
+		.is_error()\
+		.contains_message(expected_message)
+
+
+func test_validate_is_inferred_declaration_enabled_when_error_and_addon_not_excluded() -> void:
+	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_INFERRED_DECLARATION, ERROR)
+	var expected_message: String
+	if Engine.get_version_info().hex >= 0x40600:
+		# default + gdUnit4 explicitly re-included: addon is not excluded from warnings
+		ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES, {"res://addons": EXCLUDE, "res://addons/gdUnit4": INCLUDE})
+		expected_message = """
+			GdUnit4: 'inferred_declaration' is set to Warning/Error!
+			GdUnit4 is not 'inferred_declaration' safe, you have to exclude the addon (debug/gdscript/warnings/directory_rules)
+			""".dedent().strip_edges()
+	else:
+		ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_EXCLUDE_ADDONS, false)
+		expected_message = """
+			GdUnit4: 'inferred_declaration' is set to Warning/Error!
+			GdUnit4 is not 'inferred_declaration' safe, you have to exclude addons (debug/gdscript/warnings/exclude_addons)
+			""".dedent().strip_edges()
+	assert_result(GdUnitSettings.validate_is_inferred_declaration_enabled())\
+		.is_error()\
+		.contains_message(expected_message)
 
 
 const TEST_ROOT_FOLDER := "gdunit4/settings/test/test_root_folder"

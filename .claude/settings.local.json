@@ -1,0 +1,40 @@
+{
+  "env": {
+    "GODOT_BIN": "D:/development/Godot_v4.5-stable_mono_win64/Godot_v4.5-stable_mono_win64.exe"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(PATH=\"/c/Program Files/Git/cmd:$PATH\" git diff:*)",
+      "Bash(gh issue:*)",
+      "WebFetch(domain:docs.godotengine.org)",
+      "Read(//mnt/d/development/workspace/**)",
+      "Bash(gdlint:*)",
+      "Bash(xargs basename:*)",
+      "Bash(markdownlint-cli2 --config .github/actions/formatting_checks/.markdownlint.jsonc \"CLAUDE.md\")",
+      "Bash(markdownlint-cli2.cmd --config .github/actions/formatting_checks/.markdownlint.jsonc \"CLAUDE.md\")",
+      "Bash(markdownlint-cli2.cmd --config .github/actions/formatting_checks/.markdownlint.jsonc \"CLAUDE.md\" \"addons/gdUnit4/src/asserts/CLAUDE.md\")",
+      "Skill(update-config)",
+      "Bash(ls:*)",
+      "WebSearch",
+      "Bash(gh api:*)",
+      "Bash(gh search:*)",
+      "Bash(bash addons/gdUnit4/runtest.sh:*)",
+      "Bash(markdownlint-cli2.cmd --config .github/actions/formatting_checks/.markdownlint.jsonc \"CLAUDE.md\" \"addons/gdUnit4/src/asserts/CLAUDE.md\" \"addons/gdUnit4/test/CLAUDE.md\")"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \".claude/run-aligned-tests.sh\"",
+            "timeout": 180,
+            "statusMessage": "Running aligned tests..."
+          }
+        ]
+      }
+    ]
+  }
+}

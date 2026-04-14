@@ -7,7 +7,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 GdUnit4 is a Godot 4 embedded unit testing framework (Godot plugin) supporting GDScript and C#.
 The plugin lives entirely under `addons/gdUnit4/` and is self-tested — the framework uses itself to run its own test suite.
 
-Supported Godot versions: 4.3–4.6. C# targets net9.0 with .NET SDK 9.0.308 (pinned in `global.json`).
+Supported Godot versions: (read the **Compatibility Overview** table in `README.md`
+and find the row whose GdUnit4 version contains `master`). C# targets net9.0 with .NET SDK 9.0.308 (pinned in `global.json`).
 
 ## Commands
 
@@ -118,7 +119,45 @@ Enforced by gdlint with these key limits (`.gdlintrc`):
 - Max public methods: 40
 - Function argument count: 11
 
+After every GDScript change, lint the modified file with gdlint before considering the task done:
+
+```bash
+gdlint path/to/changed_file.gd
+```
+
+Before running gdlint, verify it is installed:
+
+```bash
+gdlint --version
+```
+
+If gdlint is not installed, **stop and tell the user** to install it:
+
+```text
+gdlint is not installed. Please install it with:
+  pip install gdtoolkit==4.5.0
+```
+
+Do not skip linting or proceed without it.
+
 **C#:** StyleCop.Analyzers enforced. `TreatWarningsAsErrors = true`. Nullable reference types enabled. C# language version 13.0.
+
+## Godot API Compatibility
+
+Before using any Godot API function, class, or feature, read the **Compatibility Overview** table in `README.md`
+and find the row whose GdUnit4 version contains `master`. That row lists the exact Godot versions that must be supported.
+
+All Godot API usage must be compatible with **every** version listed in that row. If an API is not available in
+all of them, it cannot be used without a version guard. When uncertain, check the
+[Godot class reference changelog](https://docs.godotengine.org/en/stable/classes/) or the Godot GitHub commit history.
+
+## Testing Requirements
+
+Every code change must be accompanied by new or updated tests. Tests live under `addons/gdUnit4/test/` and mirror
+the `src/` structure (e.g. `src/core/Foo.gd` → `test/core/FooTest.gd`).
+
+See `addons/gdUnit4/test/CLAUDE.md` for the full GdUnit4 fluent assertion syntax, test suite skeleton,
+section grouping conventions, mocking, scene runner, and auto-free usage.
 
 ## Documentation
 
@@ -181,9 +220,24 @@ markdownlint-cli2 --config .github/actions/formatting_checks/.markdownlint.jsonc
 dotnet format gdUnit4.csproj --verify-no-changes --verbosity diagnostic
 ```
 
+### Commit Messages
+
+The subject line must start with the issue/branch number (e.g. `GD-1234`) followed by a short
+meaningful title describing what the commit is about. The body must include these two sections:
+
+```markdown
+GD-1234: Short meaningful title
+
+# Why
+<explain the motivation or problem being solved>
+
+# What
+<describe the changes made>
+```
+
 ### PR Description
 
-PR descriptions must include these two sections:
+The PR title must start with the issue/branch number (e.g. `GD-1234`) followed by a short meaningful title. The description must include these two sections:
 
 ```markdown
 # Why
@@ -192,3 +246,17 @@ PR descriptions must include these two sections:
 # What
 <describe the changes made>
 ```
+
+## Task Progress Display
+
+For any multi-step task (more than one distinct action), always start the response by
+printing a numbered plan with checkboxes, then update each item to ✅ as it completes:
+
+```text
+- [ ] Step 1 — description
+- [ ] Step 2 — description
+- [ ] Step 3 — description
+```
+
+Reprint the list (with completed items marked ✅) before each major step so the
+developer can see live progress. Keep step descriptions short (one line each).

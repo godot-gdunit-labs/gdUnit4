@@ -40,4 +40,4 @@ reports/
 documentation/_site/
 
 # Claude Code local settings
-.claude/settings.local.json
+# .claude/settings.local.json

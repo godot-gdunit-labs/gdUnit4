@@ -37,6 +37,67 @@ review and discuss code changes.
    - Ensure that the continuous integration (CI) process passes successfully.
 6. Submit the pull request!
 
+## Project Setup (For contributions)
+
+This project includes optional C# support. If you plan to work with C# parts of the codebase, ensure your environment is correctly configured for it.
+Otherwise you can use the standard Godot version.
+
+### Prerequisites
+
+You should be comfortable with:
+
+- Basic Godot usage (Scenes, nodes, scripts, etc...)
+- Reading and writing simple GDScript
+- Basic Git workflow
+
+### Required Versions
+
+- Godot 4.6.x **Mono build**
+- .NET SDK version specified in [global.json](./global.json)
+
+### Install .NET SDK
+
+The **required** .NET SDK version is pinned via [global.json](./global.json).
+
+[.NET installation instructions](https://learn.microsoft.com/en-us/dotnet/core/install/)
+
+### Verify the Installation
+
+Open a terminal from the project root:
+
+Check the SDK(s) is installed on your system:  
+`dotnet --list-sdks`
+
+Build the C# project:  
+`dotnet build`  
+
+The terminal should print "Build succeeded".
+If Godot shows a generic error such as:  
+`Build error: Failed to build project. Check MSBuild panel for details.`  
+This can occur due to CI rules. Check the terminal output for details and ensure your changes comply with them.
+
+### Setup GDScript Linting
+
+GDScript linting uses `gdtoolkit` (`gdlint`).
+
+[Install GDlint](https://github.com/Scony/godot-gdscript-toolkit)
+
+Run `gdlint` on the project root to check your changes.
+
+### Project Structure
+
+For a high-level overview of the repository, see:
+
+- [llms.txt](./llms.txt)
+- [llms-full.txt](./llms-full.txt)
+
+### Notes for contributors
+
+- Basic understanding of object-oriented concepts (interfaces, inheritance) is recommended
+- C# knowledge is helpful but not required for GDScript-only contributions
+- The goal is to apply linting across the entire project, but currently only part of the source tree is fully lint-clean
+- Please follow existing project rules and CI expectations for the files you modify
+
 ## License
 
 By contributing to this project, you agree that your contributions will be licensed under the same
@@ -49,3 +110,4 @@ To maintain code consistency, please adhere to the following coding style guides
 
 - <a href='https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_styleguide.html' target="_blank">Godot's GDScript Conventions</a>
 - <a href='https://docs.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions' target="_blank">C# Coding Conventions</h>
+

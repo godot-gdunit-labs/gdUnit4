@@ -37,44 +37,49 @@ review and discuss code changes.
    - Ensure that the continuous integration (CI) process passes successfully.
 6. Submit the pull request!
 
-## Project Setup (For contributions)
+## Project Setup (for contributions)
 
-This project includes optional C# support. If you plan to work with C# parts of the codebase, ensure your environment is correctly configured for it.
-Otherwise you can use the standard Godot version.
+Most contributions can be made using the standard (non-Mono) Godot version.  
+C# support is only required when working on the C# API.
 
 ### Prerequisites
 
 You should be comfortable with:
 
-- Basic Godot usage (Scenes, nodes, scripts, etc...)
+- Basic Godot usage (scenes, nodes, scripts, etc...)
 - Reading and writing simple GDScript
 - Basic Git workflow
 
 ### Required Versions
 
-- Godot 4.6.x **Mono build**
-- .NET SDK version specified in [global.json](./global.json)
+- Godot 4.6.x (standard version)
 
-### Install .NET SDK
+For C# API contributions, additional setup is required.  
+[See Optional C# Setup](#optional-c-setup).
 
-The **required** .NET SDK version is pinned via [global.json](./global.json).
+### Optional C# Setup
+
+Only required if you want to contribute to the C# API.
+
+- Use Godot 4.6.x **Mono build**
+- Install the .NET SDK version specified in [global.json](./global.json)
 
 [.NET installation instructions](https://learn.microsoft.com/en-us/dotnet/core/install/)
 
-### Verify the Installation
-
-Open a terminal from the project root:
+#### Verify your setup:
 
 Check the SDK(s) is installed on your system:  
 `dotnet --list-sdks`
 
 Build the C# project:  
-`dotnet build`  
+`dotnet build`
 
 The terminal should print "Build succeeded".
 If Godot shows a generic error such as:  
 `Build error: Failed to build project. Check MSBuild panel for details.`  
 This can occur due to CI rules. Check the terminal output for details and ensure your changes comply with them.
+
+For more details, refer to the GdUnit4Net repository.
 
 ### Setup GDScript Linting
 
@@ -82,7 +87,8 @@ GDScript linting uses `gdtoolkit` (`gdlint`).
 
 [Install GDlint](https://github.com/Scony/godot-gdscript-toolkit)
 
-Run `gdlint` on the project root to check your changes.
+You can optionally run `gdlint` locally to check your changes before submitting a PR.  
+Linting is enforced by CI.
 
 ### Project Structure
 
@@ -97,6 +103,7 @@ For a high-level overview of the repository, see:
 - C# knowledge is helpful but not required for GDScript-only contributions
 - The goal is to apply linting across the entire project, but currently only part of the source tree is fully lint-clean
 - Please follow existing project rules and CI expectations for the files you modify
+- Do not commit local `project.godot` changes caused by opening the project with a different Godot setup
 
 ## License
 

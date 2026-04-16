@@ -26,7 +26,7 @@ review and discuss code changes.
 2. Fork the repository and create a branch from the `master` branch.
    - Use the issue number as the branch name, e.g., GD-111.
 3. If you have made changes to the code that should be tested, please include appropriate tests.
-4. If you have modified any APIs, ensure that the documentation is updated accordingly.
+4. If you have implemented new features or modified any APIs, ensure that the documentation is updated accordingly.
 5. Create a pull request and provide information in the "Why" and "What" sections:
    - Link the pull request to the corresponding issue.<br>
    ![Alt text](./assets/link-issue.png)
@@ -37,7 +37,24 @@ review and discuss code changes.
    - Ensure that the continuous integration (CI) process passes successfully.
 6. Submit the pull request!
 
-## Project Setup (for contributions)
+### Pull Request Rules
+
+A pull request should:
+
+- Be linked to a single issue
+- Clearly explain the "Why" and "What" of the change
+- Stay focused and minimal in scope
+- Include related documentation updates when applicable
+
+### AI Usage
+
+The use of AI is permitted, but you remain fully responsible for your contributions.
+
+- Follow the project-specific rules defined in the claude files: [CLAUDE.md](./CLAUDE.md).
+- Never commit AI-generated code without understanding it yourself
+- Avoid unnecessary class or function documentation when names are already self-explanatory
+
+## Project Setup
 
 Most contributions can be made using the standard (non-Mono) Godot version.  
 C# support is only required when working on the C# API.
@@ -52,21 +69,21 @@ You should be comfortable with:
 
 ### Required Versions
 
-- Godot 4.6.x (standard version)
+Refer to [README.MD](./README.md) to use a correct version of Godot.
 
-For C# API contributions, additional setup is required.  
+To contribute to the C# API, additional settings are required.  
 [See Optional C# Setup](#optional-c-setup).
 
 ### Optional C# Setup
 
 Only required if you want to contribute to the C# API.
 
-- Use Godot 4.6.x **Mono build**
+- Use a correct Godot **Mono build version** specified in [README.MD](./README.md)
 - Install the .NET SDK version specified in [global.json](./global.json)
 
 [.NET installation instructions](https://learn.microsoft.com/en-us/dotnet/core/install/)
 
-#### Verify your setup:
+#### Verify your setup
 
 Check the SDK(s) is installed on your system:  
 `dotnet --list-sdks`
@@ -97,13 +114,16 @@ For a high-level overview of the repository, see:
 - [llms.txt](./llms.txt)
 - [llms-full.txt](./llms-full.txt)
 
+These files provide a structured overview of the codebase to help contributors understand the project layout and navigate it more easily.
+
 ### Notes for contributors
 
 - Basic understanding of object-oriented concepts (interfaces, inheritance) is recommended
 - C# knowledge is helpful but not required for GDScript-only contributions
 - The goal is to apply linting across the entire project, but currently only part of the source tree is fully lint-clean
 - Please follow existing project rules and CI expectations for the files you modify
-- Do not commit local `project.godot` changes caused by opening the project with a different Godot setup
+- Never commit changes to `project.godot` unless we need to update the C# API dependencies
+- Follow the repository configuration and formatting rules defined in files such as [.gdlintrc](./.gdlintrc), [.editorconfig](./.editorconfig), [.markdownlint.jsonc](./.github/actions/formatting_checks/.markdownlint.jsonc), and [.yamllint.yml](./.github/actions/formatting_checks/.yamllint.yml)
 
 ## License
 

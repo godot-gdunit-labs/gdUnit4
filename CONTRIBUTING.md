@@ -75,18 +75,20 @@ You should be comfortable with:
 - Reading and writing simple GDScript
 - Basic Git workflow
 
-### Required Versions
+### Compatibility & Supported Versions
 
-Refer to [README.MD](./README.md) to use a correct version of Godot.
+All contributions must be compatible with the Godot versions currently supported by this project:
 
-To contribute to the C# API, additional settings are required.  
-[See Optional C# Setup](#optional-c-setup).
+- **Target Versions:** Please refer to the [Compatibility Overview](./README.md#compatibility-overview) for the list of supported Godot versions on the master branch.
+- **Verification:** You are responsible for ensuring that your changes are fully functional across these versions.
+- **Testing:** We recommend testing your changeset locally in the oldest and newest supported versions listed to avoid compatibility regressions.
 
-### Optional C# Setup
 
-Only required if you want to contribute to the C# API.
+### C# Setup - (Optional)
 
-- Use a correct Godot **Mono build version** specified in [README.MD](./README.md)
+To contribute to the C# API, additional settings are required.
+
+- Use a correct Godot **Mono build version** specified in [README.MD](./README.md#compatibility-overview)d)
 - Install the .NET SDK version specified in [global.json](./global.json)
 
 [.NET installation instructions](https://learn.microsoft.com/en-us/dotnet/core/install/)

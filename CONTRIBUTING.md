@@ -41,8 +41,12 @@ review and discuss code changes.
 
 A pull request should:
 
-- Be linked to a single issue
-- Clearly explain the "Why" and "What" of the change
+- Be linked to a single issue ![Alt text](./assets/link-issue.png)
+- The PR description must contain sections:
+  # Why  
+  clean description why we need this changeset
+  # What
+  describe exactly what you have changed and what the effects are
 - Stay focused and minimal in scope
 - Include related documentation updates when applicable
 

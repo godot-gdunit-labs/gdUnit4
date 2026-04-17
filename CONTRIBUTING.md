@@ -37,18 +37,22 @@ review and discuss code changes.
    - Ensure that the continuous integration (CI) process passes successfully.
 6. Submit the pull request!
 
-### Pull Request Rules
+# Pull Request Rules
 
-A pull request should:
+To ensure a smooth review process, every Pull Request (PR) must meet the following criteria:
 
-- Be linked to a single issue ![Alt text](./assets/link-issue.png)
-- The PR description must contain sections:
-  # Why  
-  clean description why we need this changeset
-  # What
-  describe exactly what you have changed and what the effects are
-- Stay focused and minimal in scope
-- Include related documentation updates when applicable
+1. Naming & Linking
+   - PR Title: Must start with the issue number followed by a concise summary:
+     e.g., GD-1234: Add support for multithreaded test execution
+   - Branch Naming: Start with the issue number (e.g., GD-1234 or GD-1234-feature-name).
+     Link Issue: Every PR must be linked to a single corresponding issue.
+2. Content & Style
+   - Grammar: Both the title and description must be written in the present tense (e.g., "Add feature" instead of "Added feature").
+   - Required Sections: The PR description must include:
+     - **# Why** - A clear explanation of the need for this change.
+     - **# What** - A detailed description of the changes and their effects.
+   - Scope: Keep changes minimal and focused. Include documentation updates where applicable.
+
 
 ### AI Usage
 

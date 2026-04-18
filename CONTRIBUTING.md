@@ -37,7 +37,7 @@ review and discuss code changes.
    - Ensure that the continuous integration (CI) process passes successfully.
 6. Submit the pull request!
 
-# Pull Request Rules
+## Pull Request Rules
 
 To ensure a smooth review process, every Pull Request (PR) must meet the following criteria:
 
@@ -52,7 +52,6 @@ To ensure a smooth review process, every Pull Request (PR) must meet the followi
      - **# Why** - A clear explanation of the need for this change.
      - **# What** - A detailed description of the changes and their effects.
    - Scope: Keep changes minimal and focused. Include documentation updates where applicable.
-
 
 ### AI Usage
 
@@ -82,7 +81,6 @@ All contributions must be compatible with the Godot versions currently supported
 - **Target Versions:** Please refer to the [Compatibility Overview](./README.md#compatibility-overview) for the list of supported Godot versions on the master branch.
 - **Verification:** You are responsible for ensuring that your changes are fully functional across these versions.
 - **Testing:** We recommend testing your changeset locally in the oldest and newest supported versions listed to avoid compatibility regressions.
-
 
 ### C# Setup - (Optional)
 
@@ -128,7 +126,6 @@ To help AI tools like ChatGPT or Claude provide more accurate answers about our 
 Why? Standard websites contain too much "noise" (menus, layouts) for AI. Our files provide clean, structured content for maximum precision and lower token usage.
 Why the name? The naming follows the emerging standard for Large Language Models (LLMs). Similar to robots.txt for search engines, the llms prefix signals that these files are specifically designed for AI consumption.
 In short: We eliminate the clutter so the AI can find the right answers faster.
-
 
 ### Notes for contributors
 

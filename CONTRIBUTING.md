@@ -124,7 +124,8 @@ For a high-level overview of the repository, see:
 
 To help AI tools like ChatGPT or Claude provide more accurate answers about our project, we offer optimized formats:
 Why? Standard websites contain too much "noise" (menus, layouts) for AI. Our files provide clean, structured content for maximum precision and lower token usage.
-Why the name? The naming follows the emerging standard for Large Language Models (LLMs). Similar to robots.txt for search engines, the llms prefix signals that these files are specifically designed for AI consumption.
+Why the name? The naming follows the emerging standard for Large Language Models (LLMs). Similar to robots.txt for search engines, the llms prefix signals that these
+files are specifically designed for AI consumption.
 In short: We eliminate the clutter so the AI can find the right answers faster.
 
 ### Notes for contributors
@@ -134,7 +135,8 @@ In short: We eliminate the clutter so the AI can find the right answers faster.
 - The goal is to apply linting across the entire project, but currently only part of the source tree is fully lint-clean
 - Please follow existing project rules and CI expectations for the files you modify
 - Never commit changes to `project.godot` unless we need to update the C# API dependencies
-- Follow the repository configuration and formatting rules defined in files such as [.gdlintrc](./.gdlintrc), [.editorconfig](./.editorconfig), [.markdownlint.jsonc](./.github/actions/formatting_checks/.markdownlint.jsonc), and [.yamllint.yml](./.github/actions/formatting_checks/.yamllint.yml)
+- Follow the repository configuration and formatting rules defined in files such as [.gdlintrc](./.gdlintrc), [.editorconfig](./.editorconfig),
+  [.markdownlint.jsonc](./.github/actions/formatting_checks/.markdownlint.jsonc), and [.yamllint.yml](./.github/actions/formatting_checks/.yamllint.yml)
 
 ## License
 
@@ -148,4 +150,3 @@ To maintain code consistency, please adhere to the following coding style guides
 
 - <a href='https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_styleguide.html' target="_blank">Godot's GDScript Conventions</a>
 - <a href='https://docs.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions' target="_blank">C# Coding Conventions</h>
-

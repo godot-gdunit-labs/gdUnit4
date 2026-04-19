@@ -124,8 +124,8 @@ For a high-level overview of the repository, see:
 
 To help AI tools like ChatGPT or Claude provide more accurate answers about our project, we offer optimized formats:
 Why? Standard websites contain too much "noise" (menus, layouts) for AI. Our files provide clean, structured content for maximum precision and lower token usage.
-Why the name? The naming follows the emerging standard for Large Language Models (LLMs). Similar to robots.txt for search engines, the llms prefix signals that these
-files are specifically designed for AI consumption.
+Why the name? The naming follows the emerging standard for Large Language Models (LLMs). Similar to robots.txt for search engines, the llms prefix signals
+that these files are specifically designed for AI consumption.
 In short: We eliminate the clutter so the AI can find the right answers faster.
 
 ### Notes for contributors

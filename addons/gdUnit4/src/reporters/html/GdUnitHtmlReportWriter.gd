@@ -21,7 +21,7 @@ func write(report_path: String, report: GdUnitReportSummary) -> String:
 
 
 func _apply_path_reports(report_dir: String, template: String, report_summaries: Array) -> String:
-	#Dictionary[String, Array[GdUnitReportSummary]]
+	# Dictionary[String, Array[GdUnitReportSummary]]
 	var path_report_mapping := GdUnitByPathReport.sort_reports_by_path(report_summaries)
 	var table_records := PackedStringArray()
 	var paths: Array[String] = []
@@ -45,7 +45,7 @@ func _apply_testsuite_reports(report_dir: String, template: String, test_suite_r
 	return template.replace(GdUnitHtmlPatterns.TABLE_BY_TESTSUITES, "\n".join(table_records))
 
 
-func _write(report_dir :String, report: GdUnitTestSuiteReport) -> String:
+func _write(report_dir: String, report: GdUnitTestSuiteReport) -> String:
 	var template := GdUnitHtmlPatterns.load_template("res://addons/gdUnit4/src/reporters/html/template/suite_report.html")
 	template = GdUnitHtmlPatterns.build(template, report, "", GdUnitHtmlPatterns.get_path_as_link(report))
 

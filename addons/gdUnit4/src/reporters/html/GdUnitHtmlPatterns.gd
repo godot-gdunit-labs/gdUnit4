@@ -79,8 +79,8 @@ ${failure-report}
 """
 
 const CHARACTERS_TO_ENCODE := {
-	'<' : '&lt;',
-	'>' : '&gt;'
+	'<': '&lt;',
+	'>': '&gt;'
 }
 
 const TABLE_BY_PATHS = "${report_table_paths}"
@@ -147,7 +147,7 @@ static func build(template: String, report: GdUnitReportSummary, report_link: St
 		.replace(BUILD_DATE, current_date())
 
 
-static func load_template(template_name :String) -> String:
+static func load_template(template_name: String) -> String:
 	return FileAccess.open(template_name, FileAccess.READ).get_as_text()
 
 
@@ -199,7 +199,7 @@ static func create_suite_record(report_link: String, report: GdUnitTestSuiteRepo
 	return GdUnitHtmlPatterns.build(GdUnitHtmlPatterns.TABLE_RECORD_TESTSUITE, report, report_link)
 
 
-static func create_test_failure_report(_report_dir :String, report: GdUnitTestCaseReport) -> String:
+static func create_test_failure_report(_report_dir: String, report: GdUnitTestCaseReport) -> String:
 	return GdUnitHtmlPatterns.TABLE_RECORD_TESTCASE\
 		.replace(GdUnitHtmlPatterns.REPORT_STATE, report.report_state().to_lower())\
 		.replace(GdUnitHtmlPatterns.REPORT_STATE_LABEL, report.report_state())\

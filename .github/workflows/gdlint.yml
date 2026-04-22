@@ -44,6 +44,7 @@ jobs:
           gdlint addons/gdUnit4/src/reporters/ | tee reports/gdlint/report.txt
           gdlint addons/gdUnit4/src/network | tee reports/gdlint/gdlint_networkcode.txt
           gdlint addons/gdUnit4/src/asserts | tee reports/gdlint/gdlint_asserts.txt
+          gdlint addons/gdUnit4/src/reporters/html | tee reports/gdlint/html_reporters.txt
 
       - name: Upload GDLint Report
         if: failure()

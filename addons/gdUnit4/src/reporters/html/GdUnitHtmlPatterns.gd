@@ -3,7 +3,7 @@ extends RefCounted
 
 const TABLE_RECORD_TESTSUITE = """
 								<tr class="${report_state}">
-									<td><a href=${report_link}>${testsuite_name}</a></td>
+									<td><a href="${report_link}">${testsuite_name}</a></td>
 									<td><span class="status status-${report_state}">${report_state_label}</span></td>
 									<td>${test_count}</td>
 									<td>${skipped_count}</td>
@@ -121,10 +121,10 @@ static func current_date() -> String:
 	return Time.get_datetime_string_from_system(true, true)
 
 
-static func build(template: String, report: GdUnitReportSummary, report_link: String) -> String:
+static func build(template: String, report: GdUnitReportSummary, report_link: String, breadcrumb_path_link := "") -> String:
 	return template\
 		.replace(PATH, get_report_path(report))\
-		.replace(BREADCRUMP_PATH_LINK, get_path_as_link(report))\
+		.replace(BREADCRUMP_PATH_LINK, breadcrumb_path_link)\
 		.replace(RESOURCE_PATH, report.get_resource_path())\
 		.replace(TESTSUITE_NAME, html_encoded(report.name()))\
 		.replace(TESTSUITE_COUNT, str(report.suite_count()))\
@@ -151,8 +151,28 @@ static func load_template(template_name :String) -> String:
 	return FileAccess.open(template_name, FileAccess.READ).get_as_text()
 
 
+static func normalize_path(path: String) -> String:
+	return path.replace("/", ".").replace(" ", "_")
+
+
+static func create_suite_output_path(report_dir: String, path: String, name: String) -> String:
+	return "%s/test_suites/%s.%s.html" % [report_dir, normalize_path(path), name]
+
+
+static func create_path_output_path(report_dir: String, path: String) -> String:
+	return "%s/path/%s.html" % [report_dir, normalize_path(path)]
+
+
+static func write_html_file(output_path: String, content: String) -> void:
+	var dir := output_path.get_base_dir()
+	if not DirAccess.dir_exists_absolute(dir):
+		@warning_ignore("return_value_discarded")
+		DirAccess.make_dir_recursive_absolute(dir)
+	FileAccess.open(output_path, FileAccess.WRITE).store_string(content)
+
+
 static func get_path_as_link(report: GdUnitReportSummary) -> String:
-	return "../path/%s.html" % report.path().replace("/", ".")
+	return "../path/%s.html" % normalize_path(report.path())
 
 
 static func get_report_path(report: GdUnitReportSummary) -> String:

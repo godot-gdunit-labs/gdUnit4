@@ -25,7 +25,6 @@ func before() -> void:
 
 func after() -> void:
 	GdUnitSignals.instance().gdunit_event_debug.disconnect(_on_test_event)
-	ProjectSettings.set_setting(GdUnitSettings.TEST_FLAKY_CHECK, false)
 #endregion
 
 

@@ -7,22 +7,11 @@ extends GdUnitTestSuite
 # TestSuite generated from
 const __source = 'res://addons/gdUnit4/src/asserts/GdUnitGodotErrorAssertImpl.gd'
 
-var _save_is_report_push_errors :bool
-var _save_is_report_script_errors :bool
-
-
 # skip see https://github.com/godotengine/godot/issues/80292
 func before() -> void:
-	_save_is_report_push_errors = GdUnitSettings.is_report_push_errors()
-	_save_is_report_script_errors = GdUnitSettings.is_report_script_errors()
 	# disable default error reporting for testing
 	ProjectSettings.set_setting(GdUnitSettings.REPORT_PUSH_ERRORS, false)
 	ProjectSettings.set_setting(GdUnitSettings.REPORT_SCRIPT_ERRORS, false)
-
-
-func after() -> void:
-	ProjectSettings.set_setting(GdUnitSettings.REPORT_PUSH_ERRORS, _save_is_report_push_errors)
-	ProjectSettings.set_setting(GdUnitSettings.REPORT_SCRIPT_ERRORS, _save_is_report_script_errors)
 
 
 func after_test() -> void:

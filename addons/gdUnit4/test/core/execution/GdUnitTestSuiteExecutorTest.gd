@@ -22,18 +22,14 @@ const WARNINGS = true
 const NO_WARNING = false
 
 var _collected_events: Array[GdUnitEvent] = []
-var _saved_flack_check: bool
-
 func before() -> void:
 	GdUnitSignals.instance().gdunit_event_debug.connect(_on_gdunit_event_debug)
 	# we run without flaky check
-	_saved_flack_check = GdUnitSettings.get_setting(GdUnitSettings.TEST_FLAKY_CHECK, false)
 	ProjectSettings.set_setting(GdUnitSettings.TEST_FLAKY_CHECK, false)
 
 
 func after() -> void:
 	GdUnitSignals.instance().gdunit_event_debug.disconnect(_on_gdunit_event_debug)
-	ProjectSettings.set_setting(GdUnitSettings.TEST_FLAKY_CHECK, _saved_flack_check)
 
 
 func after_test() -> void:

@@ -120,7 +120,6 @@ enum NAMING_CONVENTIONS {
 
 const _VALUE_SET_SEPARATOR = "\f" # ASCII Form-feed character (AKA page break)
 
-
 static func setup() -> void:
 	create_property_if_need(UPDATE_NOTIFICATION_ENABLED, true, "Show notification if new gdUnit4 version is found")
 	# test settings
@@ -474,18 +473,3 @@ static func migrate_property(old_property :String, new_property :String, default
 	set_help(new_property, value, help)
 	ProjectSettings.clear(old_property)
 	prints("Successfully migrated property '%s' -> '%s' value: %s" % [old_property, new_property, value])
-
-
-static func dump_to_tmp() -> void:
-	@warning_ignore("return_value_discarded")
-	ProjectSettings.save_custom("user://project_settings.godot")
-
-
-static func restore_dump_from_tmp() -> void:
-	# Only restore if the current project.godot differs from the backup to avoid
-	# triggering a "file newer on disk" dialog in the editor
-	var backup := FileAccess.get_file_as_bytes("user://project_settings.godot")
-	var current := FileAccess.get_file_as_bytes("res://project.godot")
-	if backup == current:
-		return
-	var _error := DirAccess.copy_absolute("user://project_settings.godot", "res://project.godot")

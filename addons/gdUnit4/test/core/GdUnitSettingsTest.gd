@@ -23,14 +23,6 @@ const TEST_PROPERTY_F = CATEGORY_B + "/c/prop_f"
 const TEST_PROPERTY_G = CATEGORY_B + "/a/prop_g"
 
 
-func before() -> void:
-	GdUnitSettings.dump_to_tmp()
-
-
-func after() -> void:
-	GdUnitSettings.restore_dump_from_tmp()
-
-
 func before_test() -> void:
 	GdUnitSettings.create_property_if_need(TEST_PROPERTY_A, true, "helptext TEST_PROPERTY_A.")
 	GdUnitSettings.create_property_if_need(TEST_PROPERTY_B, false, "helptext TEST_PROPERTY_B.")

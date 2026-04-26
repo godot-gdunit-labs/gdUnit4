@@ -11,78 +11,139 @@ const ERROR := GdUnitSettings.GdScriptWarningMode.ERROR
 const EXCLUDE := GdUnitSettings.GdScriptWarningDirectoryMode.EXCLUDE
 const INCLUDE := GdUnitSettings.GdScriptWarningDirectoryMode.INCLUDE
 
-const MAIN_CATEGORY = "unit_test"
-const CATEGORY_A = MAIN_CATEGORY + "/category_a"
-const CATEGORY_B = MAIN_CATEGORY + "/category_b"
-const TEST_PROPERTY_A = CATEGORY_A + "/a/prop_a"
-const TEST_PROPERTY_B = CATEGORY_A + "/a/prop_b"
-const TEST_PROPERTY_C = CATEGORY_A + "/a/prop_c"
-const TEST_PROPERTY_D = CATEGORY_B + "/prop_d"
-const TEST_PROPERTY_E = CATEGORY_B + "/c/prop_e"
-const TEST_PROPERTY_F = CATEGORY_B + "/c/prop_f"
-const TEST_PROPERTY_G = CATEGORY_B + "/a/prop_g"
+
+static func get_godot_property_info(property_name: String) -> Dictionary:
+	for property: Dictionary in ProjectSettings.get_property_list():
+		if property["name"] == property_name:
+			return property
+	return {}
 
 
-func before_test() -> void:
-	GdUnitSettings.create_property_if_need(TEST_PROPERTY_A, true, "helptext TEST_PROPERTY_A.")
-	GdUnitSettings.create_property_if_need(TEST_PROPERTY_B, false, "helptext TEST_PROPERTY_B.")
-	GdUnitSettings.create_property_if_need(TEST_PROPERTY_C, 100, "helptext TEST_PROPERTY_C.")
-	GdUnitSettings.create_property_if_need(TEST_PROPERTY_D, true, "helptext TEST_PROPERTY_D.")
-	GdUnitSettings.create_property_if_need(TEST_PROPERTY_E, false, "helptext TEST_PROPERTY_E.")
-	GdUnitSettings.create_property_if_need(TEST_PROPERTY_F, "abc", "helptext TEST_PROPERTY_F.")
-	GdUnitSettings.create_property_if_need(TEST_PROPERTY_G, 200, "helptext TEST_PROPERTY_G.")
-
-
-func after_test() -> void:
-	ProjectSettings.clear(TEST_PROPERTY_A)
-	ProjectSettings.clear(TEST_PROPERTY_B)
-	ProjectSettings.clear(TEST_PROPERTY_C)
-	ProjectSettings.clear(TEST_PROPERTY_D)
-	ProjectSettings.clear(TEST_PROPERTY_E)
-	ProjectSettings.clear(TEST_PROPERTY_F)
-	ProjectSettings.clear(TEST_PROPERTY_G)
-
-
+#region list_settings
 func test_list_settings() -> void:
-	var settingsA := GdUnitSettings.list_settings(CATEGORY_A)
-	assert_array(settingsA).extractv(extr("name"), extr("type"), extr("value"), extr("default"), extr("help"))\
+	var report_errors := "unit_test/settings/report_errors"
+	var report_warnings := "unit_test/settings/report_warnings"
+	var max_retries := "unit_test/settings/max_retries"
+	var enable_logging := "unit_test/network/enable_logging"
+	var verbose_output := "unit_test/network/verbose_output"
+	var log_path := "unit_test/network/log_path"
+	var timeout_seconds := "unit_test/network/timeout_seconds"
+	GdUnitSettings.create_property_if_need(report_errors, true, "Report errors as failures")
+	GdUnitSettings.create_property_if_need(report_warnings, false, "Report warnings as failures")
+	GdUnitSettings.create_property_if_need(max_retries, 3, "Maximum retry count on test failure")
+	GdUnitSettings.create_property_if_need(enable_logging, true, "Enable test run logging")
+	GdUnitSettings.create_property_if_need(verbose_output, false, "Show verbose test output")
+	GdUnitSettings.create_property_if_need(log_path, "logs/", "Path to store log files")
+	GdUnitSettings.create_property_if_need(timeout_seconds, 30, "Connection timeout in seconds")
+
+	var settings_settings := GdUnitSettings.list_settings("unit_test/settings")
+	assert_array(settings_settings)\
+		.extractv(extr("name"), extr("type"), extr("value"), extr("default"), extr("help"), extr("value_set"))\
 		.contains_exactly_in_any_order([
-		tuple(TEST_PROPERTY_A, TYPE_BOOL, true, true, "helptext TEST_PROPERTY_A."),
-		tuple(TEST_PROPERTY_B, TYPE_BOOL,false, false, "helptext TEST_PROPERTY_B."),
-		tuple(TEST_PROPERTY_C, TYPE_INT, 100, 100, "helptext TEST_PROPERTY_C.")
-	])
-	var settingsB := GdUnitSettings.list_settings(CATEGORY_B)
-	assert_array(settingsB).extractv(extr("name"), extr("type"), extr("value"), extr("default"), extr("help"))\
+			tuple(report_errors, TYPE_BOOL, true, true, "Report errors as failures", PackedStringArray()),
+			tuple(report_warnings, TYPE_BOOL, false, false, "Report warnings as failures", PackedStringArray()),
+			tuple(max_retries, TYPE_INT, 3, 3, "Maximum retry count on test failure", PackedStringArray()),
+		])
+	var settings_network := GdUnitSettings.list_settings("unit_test/network")
+	assert_array(settings_network)\
+		.extractv(extr("name"), extr("type"), extr("value"), extr("default"), extr("help"), extr("value_set"))\
 		.contains_exactly_in_any_order([
-		tuple(TEST_PROPERTY_D, TYPE_BOOL, true, true, "helptext TEST_PROPERTY_D."),
-		tuple(TEST_PROPERTY_E, TYPE_BOOL, false, false, "helptext TEST_PROPERTY_E."),
-		tuple(TEST_PROPERTY_F, TYPE_STRING, "abc", "abc", "helptext TEST_PROPERTY_F."),
-		tuple(TEST_PROPERTY_G, TYPE_INT, 200, 200, "helptext TEST_PROPERTY_G.")
-	])
+			tuple(enable_logging, TYPE_BOOL, true, true, "Enable test run logging", PackedStringArray()),
+			tuple(verbose_output, TYPE_BOOL, false, false, "Show verbose test output", PackedStringArray()),
+			tuple(log_path, TYPE_STRING, "logs/", "logs/", "Path to store log files", PackedStringArray()),
+			tuple(timeout_seconds, TYPE_INT, 30, 30, "Connection timeout in seconds", PackedStringArray()),
+		])
+#endregion
 
 
-func test_enum_property() -> void:
-	var value_set :PackedStringArray = GdUnitSettings.NAMING_CONVENTIONS.keys()
-	GdUnitSettings.create_property_if_need("test/enum", GdUnitSettings.NAMING_CONVENTIONS.AUTO_DETECT, "help", value_set)
+#region property info
+func test_property_bool_info() -> void:
+	var property_name := "unit_test/property/update_notification_enabled"
+	GdUnitSettings.create_property_if_need(property_name, true, "Show notification when a new version is found")
 
-	var property := GdUnitSettings.get_property("test/enum")
-	assert_that(property.default()).is_equal(GdUnitSettings.NAMING_CONVENTIONS.AUTO_DETECT)
-	assert_that(property.value()).is_equal(GdUnitSettings.NAMING_CONVENTIONS.AUTO_DETECT)
-	assert_that(property.type()).is_equal(TYPE_INT)
-	assert_that(property.help()).is_equal('help')
-	assert_that(property.value_set()).is_equal(value_set)
+	var property := GdUnitSettings.get_property(property_name)
+	assert_bool(property.value()).is_true()
+	assert_bool(property.default()).is_true()
+	assert_int(property.type()).is_equal(TYPE_BOOL)
+	assert_array(property.value_set()).is_empty()
+	assert_str(property.help()).is_equal("Show notification when a new version is found")
+	# verify Godot property API
+	var info := get_godot_property_info(property_name)
+	assert_dict(info)\
+		.contains_key_value("type", TYPE_BOOL)\
+		.contains_key_value("hint", PROPERTY_HINT_NONE)\
+		.contains_key_value("hint_string", "")
+	assert_that(ProjectSettings.property_get_revert(property_name)).is_equal(true)
 
 
+func test_property_int_info() -> void:
+	var property_name := "unit_test/property/server_timeout_minutes"
+	GdUnitSettings.create_property_if_need(property_name, 30, "Server connection timeout in minutes")
+
+	var property := GdUnitSettings.get_property(property_name)
+	assert_int(property.value()).is_equal(30)
+	assert_int(property.default()).is_equal(30)
+	assert_int(property.type()).is_equal(TYPE_INT)
+	assert_array(property.value_set()).is_empty()
+	assert_str(property.help()).is_equal("Server connection timeout in minutes")
+	# verify Godot property API
+	var info := get_godot_property_info(property_name)
+	assert_dict(info)\
+		.contains_key_value("type", TYPE_INT)\
+		.contains_key_value("hint", PROPERTY_HINT_NONE)\
+		.contains_key_value("hint_string", "")
+	assert_that(ProjectSettings.property_get_revert(property_name)).is_equal(30)
+
+
+func test_property_string_info() -> void:
+	var property_name := "unit_test/property/test_lookup_folder"
+	GdUnitSettings.create_property_if_need(property_name, "test", "Subfolder where test suites are located")
+
+	var property := GdUnitSettings.get_property(property_name)
+	assert_str(property.value()).is_equal("test")
+	assert_str(property.default()).is_equal("test")
+	assert_int(property.type()).is_equal(TYPE_STRING)
+	assert_array(property.value_set()).is_empty()
+	assert_str(property.help()).is_equal("Subfolder where test suites are located")
+	# verify Godot property API
+	var info := get_godot_property_info(property_name)
+	assert_dict(info)\
+		.contains_key_value("type", TYPE_STRING)\
+		.contains_key_value("hint", PROPERTY_HINT_NONE)\
+		.contains_key_value("hint_string", "")
+	assert_that(ProjectSettings.property_get_revert(property_name)).is_equal("test")
+
+
+func test_property_enum_info() -> void:
+	var property_name := "unit_test/property/naming_convention"
+	var value_set: PackedStringArray = GdUnitSettings.NAMING_CONVENTIONS.keys()
+	GdUnitSettings.create_property_if_need(property_name, GdUnitSettings.NAMING_CONVENTIONS.AUTO_DETECT, "Naming convention for test suite generation", value_set)
+
+	var property := GdUnitSettings.get_property(property_name)
+	assert_int(property.value()).is_equal(GdUnitSettings.NAMING_CONVENTIONS.AUTO_DETECT)
+	assert_int(property.default()).is_equal(GdUnitSettings.NAMING_CONVENTIONS.AUTO_DETECT)
+	assert_int(property.type()).is_equal(TYPE_INT)
+	assert_array(property.value_set()).is_equal(value_set)
+	assert_str(property.help()).is_equal("Naming convention for test suite generation")
+	# verify Godot property API
+	var info := get_godot_property_info(property_name)
+	assert_dict(info)\
+		.contains_key_value("type", TYPE_INT)\
+		.contains_key_value("hint", PROPERTY_HINT_ENUM)\
+		.contains_key_value("hint_string", ",".join(value_set))
+	assert_that(ProjectSettings.property_get_revert(property_name)).is_equal(GdUnitSettings.NAMING_CONVENTIONS.AUTO_DETECT)
+#endregion
+
+
+#region migrate_property
 func test_migrate_property_change_key() -> void:
-	# setup old property
-	var old_property_X := "/category_patch/group_old/name"
-	var new_property_X := "/category_patch/group_new/name"
+	var old_property_X := "/category_patch/migrate_key/old_name"
+	var new_property_X := "/category_patch/migrate_key/new_name"
 	GdUnitSettings.create_property_if_need(old_property_X, "foo")
 	assert_str(GdUnitSettings.get_setting(old_property_X, null)).is_equal("foo")
 	assert_str(GdUnitSettings.get_setting(new_property_X, null)).is_null()
 	var old_property := GdUnitSettings.get_property(old_property_X)
 
-	# migrate
 	GdUnitSettings.migrate_property(old_property.name(),\
 		new_property_X,\
 		old_property.default(),\
@@ -98,20 +159,15 @@ func test_migrate_property_change_key() -> void:
 	assert_str(new_property.default()).is_equal(old_property.default())
 	assert_str(new_property.help()).is_equal(old_property.help())
 
-	# cleanup
-	ProjectSettings.clear(new_property_X)
-
 
 func test_migrate_property_change_value() -> void:
-	# setup old property
-	var old_property_X := "/category_patch/group_old/name"
-	var new_property_X := "/category_patch/group_new/name"
+	var old_property_X := "/category_patch/migrate_value/old_name"
+	var new_property_X := "/category_patch/migrate_value/new_name"
 	GdUnitSettings.create_property_if_need(old_property_X, "foo", "help to foo")
 	assert_str(GdUnitSettings.get_setting(old_property_X, null)).is_equal("foo")
 	assert_str(GdUnitSettings.get_setting(new_property_X, null)).is_null()
 	var old_property := GdUnitSettings.get_property(old_property_X)
 
-	# migrate property
 	GdUnitSettings.migrate_property(old_property.name(),\
 		new_property_X,\
 		old_property.default(),\
@@ -127,10 +183,10 @@ func test_migrate_property_change_value() -> void:
 	assert_int(new_property.type()).is_equal(old_property.type())
 	assert_str(new_property.default()).is_equal(old_property.default())
 	assert_str(new_property.help()).is_equal(old_property.help())
-	# cleanup
-	ProjectSettings.clear(new_property_X)
+#endregion
 
 
+#region validate_is_inferred_declaration_enabled
 func test_validate_is_inferred_declaration_enabled_when_disabled() -> void:
 	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_INFERRED_DECLARATION, IGNORE)
 	assert_result(GdUnitSettings.validate_is_inferred_declaration_enabled())\
@@ -230,25 +286,22 @@ func test_validate_is_inferred_declaration_enabled_when_error_and_addon_not_excl
 	assert_result(GdUnitSettings.validate_is_inferred_declaration_enabled())\
 		.is_error()\
 		.contains_message(expected_message)
+#endregion
 
 
-const TEST_ROOT_FOLDER := "gdunit4/settings/test/test_root_folder"
-const HELP_TEST_ROOT_FOLDER := "Sets the root folder where test-suites located/generated."
-
+#region migrate_properties
 func test_migrate_properties_v215() -> void:
-	# rebuild original settings
-	GdUnitSettings.create_property_if_need(TEST_ROOT_FOLDER, "test", HELP_TEST_ROOT_FOLDER)
-	ProjectSettings.set_setting(TEST_ROOT_FOLDER, "xxx")
+	var old_property := "gdunit4/settings/test/test_root_folder"
+	GdUnitSettings.create_property_if_need(old_property, "test", "Sets the root folder where test-suites located/generated.")
+	ProjectSettings.set_setting(old_property, "tests")
 
-	# migrate
 	GdUnitSettings.migrate_properties()
 
-	# verify
 	var property := GdUnitSettings.get_property(GdUnitSettings.TEST_LOOKUP_FOLDER)
-	assert_str(property.value()).is_equal("xxx")
+	assert_str(property.value()).is_equal("tests")
 	assert_array(property.value_set()).is_empty()
 	assert_int(property.type()).is_equal(TYPE_STRING)
 	assert_str(property.default()).is_equal(GdUnitSettings.DEFAULT_TEST_LOOKUP_FOLDER)
 	assert_str(property.help()).is_equal(GdUnitSettings.HELP_TEST_LOOKUP_FOLDER)
-	assert_that(GdUnitSettings.get_property(TEST_ROOT_FOLDER)).is_null()
-	ProjectSettings.clear(GdUnitSettings.TEST_LOOKUP_FOLDER)
+	assert_that(GdUnitSettings.get_property(old_property)).is_null()
+#endregion

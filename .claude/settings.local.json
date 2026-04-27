@@ -20,7 +20,10 @@
       "Skill(update-config)",
       "WebFetch(domain:docs.godotengine.org)",
       "WebSearch",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git rm *)",
+      "Bash(git push *)",
+      "Bash(git commit -m ' *)"
     ]
   },
   "hooks": {

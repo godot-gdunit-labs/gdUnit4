@@ -15,7 +15,7 @@ gh pr view --repo godot-gdunit-labs/gdUnit4 \
 ```
 
 If no PR exists for the current branch, inform the user and ask whether they want to create one.
-- If yes: create the PR using `gh pr create` with a `# Why` / `# What` body. Do **not** add a `Closes #` or `Fixes #` line — the issue is linked via the branch name and `closingIssuesReferences`. Then continue with Step 1 using the newly created PR.
+- If yes: create the PR using `gh pr create` with a `# Why` / `# What` body followed by `Closes #<issue-number>` on its own line. Then continue with Step 1 using the newly created PR.
 - If no: stop.
 
 Use the resolved PR number for all subsequent `gh` calls.
@@ -90,10 +90,11 @@ Based on the issue body, PR diff, and existing description, generate suggestions
 Provide three alternative titles following `<ISSUE-ID>: <Title>`.
 Titles should be concise (under 72 characters), specific, and action-oriented.
 
-### Why options — 1, 2, 3
+### Description options — 1, 2, 3
 
-Provide three alternative single-sentence motivations for the `# Why` section.
-Each should explain the root problem or user impact that drove the change.
+Provide three alternative descriptions. Each option shows the **full** `# Why` / `# What` block
+as it would appear in the PR — not just the Why sentence in isolation. The `# What` content may
+vary slightly between options if different framings call for it, but keep it grounded in the diff.
 
 Present them like this:
 
@@ -103,10 +104,32 @@ TITLE OPTIONS
   B) GD-XXXX: <option B>
   C) GD-XXXX: <option C>
 
-WHY OPTIONS
-  1) <motivation sentence 1>
-  2) <motivation sentence 2>
-  3) <motivation sentence 3>
+DESCRIPTION OPTIONS
+
+  1)
+  # Why
+  <motivation paragraph 1>
+
+  # What
+  <what paragraph/bullets 1>
+
+  ---
+
+  2)
+  # Why
+  <motivation paragraph 2>
+
+  # What
+  <what paragraph/bullets 2>
+
+  ---
+
+  3)
+  # Why
+  <motivation paragraph 3>
+
+  # What
+  <what paragraph/bullets 3>
 
 Enter a combination (e.g. A2):
 ```
@@ -122,8 +145,9 @@ Take the user's combination (e.g. `B2`) and construct the updated PR.
 Keep the existing `# What` section unchanged unless it is missing or clearly wrong,
 in which case generate a concise bullet-point summary from the PR diff.
 
-Do **not** add a `Closes #` or `Fixes #` line — the issue is already linked via
-`closingIssuesReferences` and a redundant closing reference clutters the description.
+Always include `Closes #<issue-number>` as the last line of the body — GitHub requires
+this keyword to populate `closingIssuesReferences` and link the issue. Derive the issue
+number from the `closingIssuesReferences` already on the PR, or from the issue ID in the title.
 
 Apply the update:
 
@@ -132,10 +156,12 @@ gh pr edit <pr-number> --repo godot-gdunit-labs/gdUnit4 \
   --title "<selected title>" \
   --body "$(cat <<'EOF'
 # Why
-<selected why sentence>
+<selected why>
 
 # What
 <existing or generated what section>
+
+Closes #<issue-number>
 EOF
 )"
 ```

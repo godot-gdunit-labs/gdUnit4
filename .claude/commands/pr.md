@@ -15,7 +15,7 @@ gh pr view --repo godot-gdunit-labs/gdUnit4 \
 ```
 
 If no PR exists for the current branch, inform the user and ask whether they want to create one.
-- If yes: run `/pr-create` to create the PR, then continue with Step 1 using the newly created PR.
+- If yes: create the PR using `gh pr create` with a `# Why` / `# What` body. Do **not** add a `Closes #` or `Fixes #` line — the issue is linked via the branch name and `closingIssuesReferences`. Then continue with Step 1 using the newly created PR.
 - If no: stop.
 
 Use the resolved PR number for all subsequent `gh` calls.
@@ -121,6 +121,9 @@ Take the user's combination (e.g. `B2`) and construct the updated PR.
 
 Keep the existing `# What` section unchanged unless it is missing or clearly wrong,
 in which case generate a concise bullet-point summary from the PR diff.
+
+Do **not** add a `Closes #` or `Fixes #` line — the issue is already linked via
+`closingIssuesReferences` and a redundant closing reference clutters the description.
 
 Apply the update:
 

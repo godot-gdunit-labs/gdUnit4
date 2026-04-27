@@ -12,6 +12,7 @@ This section lists known problems and possible solutions/workarounds.
 
 - [Script/Resource Errors after the plugin is installed]({{site.baseurl}}/faq/solutions/#scriptresource-errors-after-the-plugin-is-installed)
 - [Modifying the Game Engine State 'mainLoop.Paused = true' during Tests]({{site.baseurl}}/faq/solutions/#modifying-the-game-engine-state-mainlooppaused--true-during-tests)
+- [Modifying ProjectSettings during Tests]({{site.baseurl}}/faq/solutions/#modifying-projectsettings-during-tests)
 - [Export Failures with GdUnit4 Plugin Installed]({{site.baseurl}}/faq/solutions/#export-failures-with-gdunit4-plugin-installed)
 - [How to Exclude Directories from Test Discovery]({{site.baseurl}}/faq/solutions/#how-to-exclude-directories-from-test-discovery)
 
@@ -83,6 +84,70 @@ public void GamePaused()
     // The following lines cause the GdUnit4 test window to remain open even after tests are complete
     mainLoop.Paused = true;
     AssertThat(mainLoop.Paused).IsTrue();
+}
+```
+
+{% endtab %}
+{% endtabs %}
+
+---
+
+### Modifying ProjectSettings during Tests
+
+When a test modifies `ProjectSettings` — for example changing a warning mode or a feature flag — those changes
+persist across tests within the same Godot session and can cause later tests to behave unexpectedly.
+
+<h4> Solution </h4>
+
+GdUnit4 automatically snapshots all `ProjectSettings` before each test suite and each individual test, and
+restores any changed values afterwards. There is no need to manually save and restore settings in `after` hooks:
+
+{% tabs projectsettings_isolation %}
+{% tab projectsettings_isolation GDScript %}
+
+```gdscript
+# unnecessary — the framework restores ProjectSettings automatically
+func before() -> void:
+    _saved = ProjectSettings.get_setting("debug/gdscript/warnings/inferred_declaration")
+    ProjectSettings.set_setting("debug/gdscript/warnings/inferred_declaration", 0)
+
+func after() -> void:
+    ProjectSettings.set_setting("debug/gdscript/warnings/inferred_declaration", _saved)
+```
+
+Simply set what the tests need — the original value is restored automatically:
+
+```gdscript
+func before() -> void:
+    ProjectSettings.set_setting("debug/gdscript/warnings/inferred_declaration", 0)
+```
+
+{% endtab %}
+{% tab projectsettings_isolation C# %}
+
+```csharp
+// unnecessary — the framework restores ProjectSettings automatically
+[Before]
+public void Setup()
+{
+    _saved = ProjectSettings.GetSetting("debug/gdscript/warnings/inferred_declaration");
+    ProjectSettings.SetSetting("debug/gdscript/warnings/inferred_declaration", 0);
+}
+
+[After]
+public void TearDown()
+{
+    ProjectSettings.SetSetting("debug/gdscript/warnings/inferred_declaration", _saved);
+}
+```
+
+Simply set what the tests need — the original value is restored automatically:
+
+```csharp
+[Before]
+public void Setup()
+{
+    ProjectSettings.SetSetting("debug/gdscript/warnings/inferred_declaration", 0);
 }
 ```
 

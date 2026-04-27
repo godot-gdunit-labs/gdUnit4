@@ -5,21 +5,10 @@ class_name GodotGdErrorMonitorTest
 extends GdUnitTestSuite
 
 
-var _save_is_report_push_errors :bool
-var _save_is_report_script_errors :bool
-
-
 func before() -> void:
-	_save_is_report_push_errors = GdUnitSettings.is_report_push_errors()
-	_save_is_report_script_errors = GdUnitSettings.is_report_script_errors()
 	# disable default error reporting for testing
 	ProjectSettings.set_setting(GdUnitSettings.REPORT_PUSH_ERRORS, false)
 	ProjectSettings.set_setting(GdUnitSettings.REPORT_SCRIPT_ERRORS, false)
-
-
-func after() -> void:
-	ProjectSettings.set_setting(GdUnitSettings.REPORT_PUSH_ERRORS, _save_is_report_push_errors)
-	ProjectSettings.set_setting(GdUnitSettings.REPORT_SCRIPT_ERRORS, _save_is_report_script_errors)
 
 
 func test_monitor_push_error() -> void:
@@ -40,10 +29,10 @@ func test_monitor_push_error() -> void:
 	prints(reports[0].message())
 	assert_str(reports[0].message())\
 		.contains("Test GodotGdErrorMonitor 'push_error' reporting")\
-		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:78")\
-		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:73")\
-		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:35")
-	assert_int(reports[0].line_number()).is_equal(35)
+		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:67")\
+		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:62")\
+		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:24")
+	assert_int(reports[0].line_number()).is_equal(24)
 
 
 func test_monitor_push_waring() -> void:
@@ -59,8 +48,8 @@ func test_monitor_push_waring() -> void:
 	assert_array(reports).has_size(1)
 	assert_str(reports[0].message())\
 		.contains("Test GodotGdErrorMonitor 'push_warning' reporting")\
-		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:55")
-	assert_int(reports[0].line_number()).is_equal(55)
+		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:44")
+	assert_int(reports[0].line_number()).is_equal(44)
 
 
 func test_fail_by_push_error(_do_skip := true, _skip_reason := "disabled to not produce errors, enable only for direct testing") -> void:

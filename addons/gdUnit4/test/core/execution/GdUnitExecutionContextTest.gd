@@ -5,17 +5,8 @@ extends GdUnitTestSuite
 @warning_ignore('return_value_discarded')
 
 
-var _flaky_settings: bool
-
 func before() -> void:
-	# register to receive test reports
-	_flaky_settings = ProjectSettings.get_setting(GdUnitSettings.TEST_FLAKY_CHECK, false)
 	ProjectSettings.set_setting(GdUnitSettings.TEST_FLAKY_CHECK, false)
-
-
-func after() -> void:
-	# Restore original project settings
-	ProjectSettings.set_setting(GdUnitSettings.TEST_FLAKY_CHECK, _flaky_settings)
 
 
 func test_collect_report_statistics_with_errors() -> void:

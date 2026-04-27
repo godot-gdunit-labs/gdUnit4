@@ -39,6 +39,8 @@ For information about Session Hooks, see [Testing with Hooks]({{site.baseurl}}/a
 {% endtab %}
 {% endtabs %}
 
+> **ProjectSettings isolation is automatic.** GdUnit4 snapshots all `ProjectSettings` before each suite and each test case, and restores any changed values afterwards. Tests can modify `ProjectSettings` freely in any hook or test body — no manual save/restore is needed. See [Manually Saving and Restoring ProjectSettings](#6-manually-saving-and-restoring-projectsettings) and [FAQ: Modifying ProjectSettings during Tests]({{site.baseurl}}/faq/solutions/#modifying-projectsettings-during-tests).
+
 ## When to Use Each Hook
 
 Choosing the right hook level is crucial for test performance and maintainability:
@@ -344,6 +346,26 @@ func after_test():
 ### 5. Incorrect Hook Choice
 **Problem:** Using `before()` for data that each test modifies.  
 **Solution:** Follow the "When to Use Each Hook" guide above.
+
+### 6. Manually Saving and Restoring ProjectSettings
+**Problem:** Tests that change `ProjectSettings` (e.g. warning modes, feature flags) leak those changes to later tests, causing unpredictable failures.  
+**Solution:** GdUnit4 automatically snapshots all `ProjectSettings` before each suite and each test, and restores any changed values afterwards. There is no need to save the previous value and restore it in an `after` hook:
+
+```gdscript
+# unnecessary — the framework restores ProjectSettings automatically
+func before():
+    _saved = ProjectSettings.get_setting("some/setting")
+    ProjectSettings.set_setting("some/setting", true)
+
+func after():
+    ProjectSettings.set_setting("some/setting", _saved)
+```
+
+```gdscript
+# correct — just set what the tests need
+func before():
+    ProjectSettings.set_setting("some/setting", true)
+```
 
 ---
 

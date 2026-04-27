@@ -15,8 +15,6 @@ var test_retries := {
 	"test_fuzzed_flaky_fail" = 0
 }
 
-var _max_retries := 0
-var _flaky_check_enabled: bool
 var _run_with_reries := 5
 
 
@@ -28,16 +26,11 @@ class ValueSetFuzzer extends Fuzzer:
 
 
 func before(_do_skip := true, _skip_reason := "Do only activate for internal testing!") -> void:
-	_max_retries = GdUnitSettings.get_flaky_max_retries()
-	_flaky_check_enabled = GdUnitSettings.is_test_flaky_check_enabled()
 	ProjectSettings.set_setting(GdUnitSettings.TEST_FLAKY_CHECK, true)
 	ProjectSettings.set_setting(GdUnitSettings.TEST_FLAKY_MAX_RETRIES, _run_with_reries)
 
 
 func after() -> void:
-	ProjectSettings.set_setting(GdUnitSettings.TEST_FLAKY_CHECK, _flaky_check_enabled)
-	ProjectSettings.set_setting(GdUnitSettings.TEST_FLAKY_MAX_RETRIES, _max_retries)
-
 	var retry_count: int = test_retries["test_flaky_success"]
 	assert_int(retry_count)\
 		.override_failure_message("Expecting 3 retries to succeed for test 'test_flaky_success'\n but was %d" % retry_count)\

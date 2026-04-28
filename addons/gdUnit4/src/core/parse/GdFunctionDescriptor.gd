@@ -169,13 +169,14 @@ static func extract_from(descriptor :Dictionary, is_engine_ := true) -> GdFuncti
 	var is_static_: bool = function_flags & METHOD_FLAG_STATIC
 	var is_vararg_: bool = function_flags & METHOD_FLAG_VARARG
 
+	var return_type := _extract_return_type(return_descriptor)
 	return GdFunctionDescriptor.new(
 		func_name,
 		-1,
 		is_virtual_,
 		is_static_,
 		is_engine_,
-		_extract_return_type(return_descriptor),
+		return_type,
 		clazz_name,
 		_extract_args(descriptor),
 		_build_varargs(is_vararg_)
@@ -208,11 +209,11 @@ const enum_fix := [
 static func _extract_return_type(return_info :Dictionary) -> int:
 	var type :int = return_info["type"]
 	var usage :int = return_info["usage"]
-	if type == TYPE_INT and usage & PROPERTY_USAGE_CLASS_IS_ENUM:
+	if usage & PROPERTY_USAGE_CLASS_IS_ENUM:
 		return GdObjects.TYPE_ENUM
-	if type == TYPE_NIL and usage & PROPERTY_USAGE_NIL_IS_VARIANT:
+	if usage & PROPERTY_USAGE_NIL_IS_VARIANT:
 		return GdObjects.TYPE_VARIANT
-	if type == TYPE_NIL and usage == 6:
+	if type == TYPE_NIL:
 		return GdObjects.TYPE_VOID
 	return type
 

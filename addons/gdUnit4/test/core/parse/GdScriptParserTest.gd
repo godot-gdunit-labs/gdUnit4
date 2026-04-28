@@ -10,28 +10,6 @@ const TYPE_FUZZER = GdObjects.TYPE_FUZZER
 const TYPE_ENUM = GdObjects.TYPE_ENUM
 
 
-static func build_tmp_script(source_code: String) -> GDScript:
-	var script := GDScript.new()
-	script.source_code = source_code.dedent()
-	script.resource_path = GdUnitFileAccess.temp_dir() + "/tmp_%d.gd" % script.get_instance_id()
-	var file := FileAccess.open(script.resource_path, FileAccess.WRITE)
-	file.store_string(script.source_code)
-	file.close()
-
-	var unsafe_method_access: Variant = ProjectSettings.get_setting("debug/gdscript/warnings/unsafe_method_access")
-	var unused_parameter: Variant = ProjectSettings.get_setting("debug/gdscript/warnings/unused_parameter")
-	# disable and load the script
-	ProjectSettings.set_setting("debug/gdscript/warnings/unsafe_method_access", 0)
-	ProjectSettings.set_setting("debug/gdscript/warnings/unused_parameter", 0)
-	var error := script.reload()
-	ProjectSettings.set_setting("debug/gdscript/warnings/unsafe_method_access", unsafe_method_access)
-	ProjectSettings.set_setting("debug/gdscript/warnings/unused_parameter", unused_parameter)
-	if error:
-		push_error("Can't load temp script '%s', error: %s" % [source_code, error_string(error)])
-		return null
-	return script
-
-
 func before() -> void:
 	_parser = GdScriptParser.new()
 
@@ -478,7 +456,7 @@ func test_strip_leading_spaces() -> void:
 
 
 func test_parse_func_description() -> void:
-	var script := build_tmp_script("""
+	var script := GdScriptTestHelper.build_tmp_script("""
 
 		@warning_ignore("untyped_declaration")
 		func foo0():
@@ -628,7 +606,7 @@ func test_extract_func_signature_multiline() -> void:
 
 
 func test_parse_func_description_paramized_test() -> void:
-	var script := build_tmp_script("""
+	var script := GdScriptTestHelper.build_tmp_script("""
 		@warning_ignore("unused_parameter")
 		func test_parameterized(a: int, b: int, c: int, expected: int, test_parameters: Array = [[1,2,3,6],[3,4,5,11],[6,7,8,21]]) -> Variant:
 			return null
@@ -674,7 +652,7 @@ func test_parse_func_description_paramized_test_with_comments() -> void:
 
 func test_parse_func_descriptor_with_fuzzers() -> void:
 	# using a mixure of typed and untyped default values
-	var script := build_tmp_script("""
+	var script := GdScriptTestHelper.build_tmp_script("""
 		func fuzz_a() -> Fuzzer:
 			return Fuzzers.rangef(0, 10)
 

@@ -5,19 +5,75 @@ extends GdUnitTestSuite
 # TestSuite generated from
 const __source = 'res://addons/gdUnit4/src/core/parse/GdFunctionDescriptor.gd'
 
+const RETURN_TYPE_VARIANTS_SOURCE := """
+	enum MyEnum { A, B }
 
-# helper to get method descriptor
-func get_method_description(clazz_name :String, method_name :String) -> Dictionary:
-	var method_list :Array = ClassDB.class_get_method_list(clazz_name)
-	for method_descriptor :Dictionary in method_list:
-		if method_descriptor["name"] == method_name:
-			return method_descriptor
-	return Dictionary()
+	@warning_ignore("untyped_declaration")
+	func inferred_void_pass():
+		pass
+
+	func explicit_void_pass() -> void:
+		pass
+
+	@warning_ignore("untyped_declaration")
+	func inferred_void_return():
+		return
+
+	func explicit_void_return() -> void:
+		return
+
+	@warning_ignore("untyped_declaration")
+	func inferred_int():
+		return 42
+
+	func explicit_int() -> int:
+		return 42
+
+	@warning_ignore("untyped_declaration")
+	func inferred_bool():
+		return true
+
+	func explicit_bool() -> bool:
+		return true
+
+	@warning_ignore("untyped_declaration")
+	func inferred_double():
+		return 4.7
+
+	func explicit_double() -> float:
+		return 4.7
+
+	@warning_ignore("untyped_declaration")
+	func inferred_string():
+		return "abc"
+
+	func explicit_string() -> String:
+		return "abc"
+
+	@warning_ignore("untyped_declaration")
+	func inferred_object():
+		return Object.new()
+
+	func explicit_object() -> Object:
+		return Object.new()
+
+	@warning_ignore("untyped_declaration")
+	func inferred_enum():
+		return MyEnum.A
+
+	func explicit_enum() -> MyEnum:
+		return MyEnum.A
+	"""
+
+var _return_type_variants_script: GDScript
+
+func before() -> void:
+	_return_type_variants_script = GdScriptTestHelper.build_tmp_script(RETURN_TYPE_VARIANTS_SOURCE)
 
 
 func test_extract_from_func_without_return_type() -> void:
 	# void add_sibling(sibling: Node, force_readable_name: bool = false)
-	var method_descriptor := get_method_description("Node", "add_sibling")
+	var method_descriptor := GdScriptTestHelper.get_class_method_descriptor("Node", "add_sibling")
 	var fd := GdFunctionDescriptor.extract_from(method_descriptor)
 	assert_str(fd.name()).is_equal("add_sibling")
 	assert_bool(fd.is_virtual()).is_false()
@@ -33,7 +89,7 @@ func test_extract_from_func_without_return_type() -> void:
 
 func test_extract_from_func_with_return_type() -> void:
 	# Node find_child(pattern: String, recursive: bool = true, owned: bool = true) const
-	var method_descriptor := get_method_description("Node", "find_child")
+	var method_descriptor := GdScriptTestHelper.get_class_method_descriptor("Node", "find_child")
 	var fd := GdFunctionDescriptor.extract_from(method_descriptor)
 	assert_str(fd.name()).is_equal("find_child")
 	assert_bool(fd.is_virtual()).is_false()
@@ -50,7 +106,7 @@ func test_extract_from_func_with_return_type() -> void:
 
 func test_extract_from_func_with_vararg() -> void:
 	# Error emit_signal(signal: StringName, ...) vararg
-	var method_descriptor := get_method_description("Node", "emit_signal")
+	var method_descriptor := GdScriptTestHelper.get_class_method_descriptor("Node", "emit_signal")
 	var fd := GdFunctionDescriptor.extract_from(method_descriptor)
 	assert_str(fd.name()).is_equal("emit_signal")
 	assert_bool(fd.is_virtual()).is_false()
@@ -65,7 +121,7 @@ func test_extract_from_func_with_vararg() -> void:
 
 
 func test_extract_from_descriptor_is_virtual_func() -> void:
-	var method_descriptor := get_method_description("Node", "_enter_tree")
+	var method_descriptor := GdScriptTestHelper.get_class_method_descriptor("Node", "_enter_tree")
 	var fd := GdFunctionDescriptor.extract_from(method_descriptor)
 	assert_str(fd.name()).is_equal("_enter_tree")
 	assert_bool(fd.is_virtual()).is_true()
@@ -116,7 +172,7 @@ func test_extract_from_descriptor_is_virtual_func_full_check() -> void:
 
 
 func test_extract_from_func_with_return_type_variant() -> void:
-	var method_descriptor := get_method_description("Node", "get")
+	var method_descriptor := GdScriptTestHelper.get_class_method_descriptor("Node", "get")
 	var fd := GdFunctionDescriptor.extract_from(method_descriptor)
 	assert_str(fd.name()).is_equal("get")
 	assert_bool(fd.is_virtual()).is_false()
@@ -129,16 +185,41 @@ func test_extract_from_func_with_return_type_variant() -> void:
 	])
 
 
-@warning_ignore("unused_parameter")
-func test_extract_return_type(info: String, expected: int, descriptor: Dictionary, test_parameters := [
-	['return_undefined', GdObjects.TYPE_VARIANT, { "name": "", "class_name": &"", "type": 0, "hint": 0, "hint_string": "", "usage": 131072 }],
-	['return_variant', GdObjects.TYPE_VARIANT, { "name": "", "class_name": &"", "type": 0, "hint": 0, "hint_string": "", "usage": 131072 }],
-	['return_int', TYPE_INT, { "name": "", "class_name": &"", "type": 2, "hint": 0, "hint_string": "", "usage": 0 }],
-	['return_string', TYPE_STRING, { "name": "", "class_name": &"", "type": 4, "hint": 0, "hint_string": "", "usage": 0 }],
-	['return_void', GdObjects.TYPE_VOID, { "name": "", "class_name": &"", "type": 0, "hint": 0, "hint_string": "", "usage": 6 }]
+#region extract_from return types
+func test_extract_from_return_types(func_name: String, expected_type: int, _test_parameters := [
+	# Explicit return expression: always the correc type
+	["explicit_bool", TYPE_BOOL],
+	["explicit_double", TYPE_FLOAT],
+	["explicit_enum", GdObjects.TYPE_ENUM],
+	["explicit_int", TYPE_INT],
+	["explicit_object", TYPE_OBJECT],
+	["explicit_string", TYPE_STRING],
+	["explicit_void_pass", GdObjects.TYPE_VOID],
+	["explicit_void_return", GdObjects.TYPE_VOID],
+	# Inferred return expression: always TYPE_VARIANT
+	["inferred_bool", GdObjects.TYPE_VARIANT],
+	["inferred_double", GdObjects.TYPE_VARIANT],
+	["inferred_enum", GdObjects.TYPE_VARIANT],
+	["inferred_int", GdObjects.TYPE_VARIANT],
+	["inferred_object", GdObjects.TYPE_VARIANT],
+	["inferred_string", GdObjects.TYPE_VARIANT],
+	["inferred_void_return", GdObjects.TYPE_VARIANT],
 ]) -> void:
-	var return_type := GdFunctionDescriptor._extract_return_type(descriptor)
-	assert_that(return_type).is_equal(expected)
+	var method_descriptor := GdScriptTestHelper.get_script_method_descriptor(_return_type_variants_script, func_name)
+	var fd := GdFunctionDescriptor.extract_from(method_descriptor, false)
+	assert_int(fd.return_type()).is_equal(expected_type)
+
+
+# Since Godot 4.7 (https://github.com/godotengine/godot/pull/118032), untyped functions
+# correctly report TYPE_VARIANT via PROPERTY_USAGE_NIL_IS_VARIANT. On earlier versions,
+# both untyped and explicit-void pass-body functions report usage=6 and are indistinguishable.
+func test_extract_from_inferred_void_pass() -> void:
+	var method_descriptor := GdScriptTestHelper.get_script_method_descriptor(_return_type_variants_script, "inferred_void_pass")
+	var fd := GdFunctionDescriptor.extract_from(method_descriptor, false)
+	var version := Engine.get_version_info()
+	var expected_type: int = GdObjects.TYPE_VARIANT if version["minor"] >= 7 else GdObjects.TYPE_VOID
+	assert_int(fd.return_type()).is_equal(expected_type)
+#endregion
 
 
 @warning_ignore("unused_parameter")

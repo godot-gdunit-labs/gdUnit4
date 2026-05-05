@@ -8,6 +8,10 @@
 /addons/gdUnit4/test   export-ignore
 /documentation         export-ignore
 
+# Exclude AI agent files from asset library exports
+/addons/gdUnit4/**/CLAUDE.md   export-ignore
+/addons/gdUnit4/**/.claude     export-ignore
+
 
 # Ensure Unix line endings for text files
 * text=auto eol=lf

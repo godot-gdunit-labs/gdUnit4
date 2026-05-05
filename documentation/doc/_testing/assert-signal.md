@@ -84,13 +84,31 @@ await assert_signal(instance).wait_until(500).is_emitted(signal_a, 10)
 public Task<ISignalAssert> IsEmitted(string signal, params object[] args);
 ```
 ```cs
-// waits until the signal "door_opened" is emitted by the instance or fails after default timeout of 2s
-await AssertSignal(instance).IsEmitted("door_opened");
-// waits until the signal "door_opened" is emitted by the instance or fails after given timeout of 200ms
-await AssertSignal(instance).IsEmitted("door_opened").WithTimeout(200);
+[Signal]
+public delegate void SignalAEventHandler(int value);
+[Signal]
+public delegate void SignalBEventHandler(string name, int count);
+
+// Wait for signal emission without checking arguments
+await AssertSignal(instance).IsEmitted(SignalName.SignalA);
+// Using string name (dynamic)
+await AssertSignal(instance).IsEmitted("signal_a");
+
+// Wait for signal emission with specific argument
+await AssertSignal(instance).IsEmitted(SignalName.SignalA, 10);
+
+// Wait for signal with multiple arguments
+await AssertSignal(instance).IsEmitted(SignalName.SignalB, "test", 42);
+
+// Wait max 500ms for signal with argument 10
+await AssertSignal(instance).IsEmitted(SignalName.SignalA, 10).WithTimeout(500);
 ```
 {% endtab %}
 {% endtabs %}
+
+{% include advice.html
+content="Omitting signal_args requires the signal to be emitted with no arguments. If the signal carries arguments, provide them or use argument matchers."
+%}
 
 ## is_not_emitted
 
@@ -137,13 +155,98 @@ await assert_signal(instance).wait_until(500).is_not_emitted(signal_a, 10)
 public Task<ISignalAssert> IsNotEmitted(string signal, params object[] args);
 ```
 ```cs
-// waits until 2s and verifies the signal "door_locked" is not emitted
-await AssertSignal(instance).IsNotEmitted("door_locked");
-// waits until 200ms and verifies the signal "door_locked" is not emitted
-await AssertSignal(instance).IsNotEmitted("door_locked").WithTimeout(200);
+[Signal]
+public delegate void SignalAEventHandler(int value);
+[Signal]
+public delegate void SignalBEventHandler(string name, int count);
+
+// Verify signal is not emitted at all (without checking arguments)
+await AssertSignal(instance).IsNotEmitted(SignalName.SignalA).WithTimeout(500);
+await AssertSignal(instance).IsNotEmitted("signal_a").WithTimeout(500);
+
+// Verify signal is not emitted with specific argument
+await AssertSignal(instance).IsNotEmitted(SignalName.SignalA, 10).WithTimeout(500);
+
+// Verify signal is not emitted with multiple arguments
+await AssertSignal(instance).IsNotEmitted(SignalName.SignalB, "test", 42).WithTimeout(500);
+
+// Can be emitted with different arguments (this passes)
+instance.EmitSignal(SignalName.SignalA, 20);  // Emits with 20, not 10
+await AssertSignal(instance).IsNotEmitted(SignalName.SignalA, 10).WithTimeout(500);
 ```
 {% endtab %}
 {% endtabs %}
+
+## Matching Signal Arguments
+
+Signal arguments can be verified using **exact values** or **argument matchers** for flexible matching.
+
+### Exact argument matching
+
+When arguments are passed to `is_emitted()` or `is_not_emitted()`, the assertion performs an
+exact equality check against every emitted argument in order.
+
+{% tabs assert-signal-exact-args %}
+{% tab assert-signal-exact-args GdScript %}
+```gd
+signal item_added(item_name: String, item_id: int)
+
+# Passes only when the signal is emitted with exactly ("sword", 1)
+await assert_signal(inventory).is_emitted(item_added, "sword", 1)
+
+# Fails — "shield" does not equal "sword"
+await assert_signal(inventory).is_emitted(item_added, "shield", 1)
+```
+{% endtab %}
+{% tab assert-signal-exact-args C# %}
+```cs
+[Signal]
+public delegate void ItemAddedEventHandler(string itemName, int itemId);
+
+// Passes only when the signal is emitted with exactly ("sword", 1)
+await AssertSignal(inventory).IsEmitted(SignalName.ItemAdded, "sword", 1).WithTimeout(200);
+
+// Fails — "shield" does not equal "sword"
+await AssertSignal(inventory).IsEmitted(SignalName.ItemAdded, "shield", 1).WithTimeout(200);
+```
+{% endtab %}
+{% endtabs %}
+
+### Matching with argument matchers
+
+When you care only about the *type* of argument, or want to verify a signal fired without
+constraining every value, use [argument matchers]({{site.baseurl}}/advanced_testing/argument_matchers/).
+
+{% include advice.html
+content="Argument matchers are currently supported for GDScript signal assertions only."
+%}
+
+```gd
+signal health_changed(new_health: int)
+signal player_moved(position: Vector2, speed: float)
+signal item_added(item_name: String, item_id: int)
+
+# any() matches a single argument of any type/value
+await assert_signal(player).is_emitted(health_changed, any())
+
+# Type-specific matcher — passes for any integer value
+await assert_signal(player).is_emitted(health_changed, any_int())
+
+# Mix exact values and matchers:
+# Passes when item_added fires with any String name and exactly item_id=42
+await assert_signal(inventory).is_emitted(item_added, any_string(), 42)
+
+# Match a multi-argument signal regardless of its values
+await assert_signal(player).is_emitted(player_moved, any(), any())
+
+# Use matchers with is_not_emitted as well
+await assert_signal(player).wait_until(200).is_not_emitted(health_changed, any())
+```
+
+See [Argument Matchers]({{site.baseurl}}/advanced_testing/argument_matchers/) for a full list
+of available matchers such as `any()`, `any_int()`, `any_string()`, `any_object()`, and more.
+
+---
 
 ## is_signal_exists
 
@@ -184,8 +287,21 @@ assert_signal(instance) \
 public ISignalAssert IsSignalExists(string signal);
 ```
 ```cs
-// verify the signal 'visibility_changed' exists in the node
-AssertSignal(node).IsSignalExists("visibility_changed");
+[Signal]
+public delegate void MySignalEventHandler(int value);
+[Signal]
+public delegate void AnotherSignalEventHandler();
+
+// Verify signal exists using SignalName
+AssertSignal(instance).IsSignalExists(SignalName.MySignal);
+
+// Verify signal exists using string name
+AssertSignal(instance).IsSignalExists("my_signal");
+
+// Chain with other assertions
+await AssertSignal(instance)
+    .IsSignalExists(SignalName.MySignal)
+    .IsEmitted(SignalName.MySignal, 42);
 ```
 {% endtab %}
 {% endtabs %}
@@ -210,8 +326,11 @@ assert_signal(instance).wait_until(5000).is_emitted(signal_a)
 public static async Task<ISignalAssert> WithTimeout(this Task<ISignalAssert> task, int timeoutMillis);
 ```
 ```cs
-// waits until 5s and verifies the signal "door_locked" is not emitted or fail
-await AssertSignal(instance).IsEmitted("door_closed").WithTimeout(5000);
+[Signal]
+public delegate void SignalAEventHandler();
+
+// Do wait until 5s the instance has emitted the signal `signal_a`
+await AssertSignal(instance).IsEmitted(SignalName.SignalA).WithTimeout(5000);
 ```
 {% endtab %}
 {% endtabs %}

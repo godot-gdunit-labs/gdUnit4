@@ -6,9 +6,16 @@ parent: Asserts
 
 # Signal Assertions
 
-An Assertion Tool to verify for emitted signals until a certain time. When the timeout is reached, the assertion fails with a timeout error.
-The default timeout of 2s can be overridden by wait_until(\<time in ms\>)<br>
-To watch for signals emitted during the test execution you have to use in addition the [monitor_signal]({{site.baseurl}}/advanced_testing/signals/#monitor-signals) tool.
+`assert_signal()` verifies that a signal is emitted — or is **not** emitted — within a time window.
+If the condition is not met before the timeout expires, the assertion fails with a timeout error.
+The default timeout is 2000 ms and can be adjusted with
+[wait_until]({{site.baseurl}}/testing/assert-signal/#wait_until).
+
+To capture signals emitted during test execution, pair `assert_signal()` with
+[monitor_signals]({{site.baseurl}}/advanced_testing/signals/#monitor-signals)
+before the action under test runs.
+
+{% include signal_await_advice.html %}
 
 {% tabs assert-signal-overview %}
 {% tab assert-signal-overview GdScript %}
@@ -177,6 +184,10 @@ await AssertSignal(instance).IsNotEmitted(SignalName.SignalA, 10).WithTimeout(50
 {% endtab %}
 {% endtabs %}
 
+{% include advice.html
+content="Omitting signal_args requires the signal to be emitted with no arguments. If the signal carries arguments, provide them or use argument matchers."
+%}
+
 ## Matching Signal Arguments
 
 Signal arguments can be verified using **exact values** or **argument matchers** for flexible matching.
@@ -277,7 +288,7 @@ assert_signal(instance).is_signal_exists(my_signal)
 assert_signal(instance).is_signal_exists("my_signal")
 
 # Chain with other assertions
-assert_signal(instance) \
+await assert_signal(instance) \
     .is_signal_exists(my_signal) \
     .is_emitted(my_signal, 42)
 ```
@@ -318,7 +329,7 @@ func assert_signal(instance: Object>).wait_until(timeout: int) -> GdUnitSignalAs
 signal signal_a()
 
 # Do wait until 5s the instance has emitted the signal `signal_a`[br]
-assert_signal(instance).wait_until(5000).is_emitted(signal_a)
+await assert_signal(instance).wait_until(5000).is_emitted(signal_a)
 ```
 {% endtab %}
 {% tab assert-signal-wait_until C# %}

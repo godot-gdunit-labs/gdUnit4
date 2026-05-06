@@ -17,9 +17,7 @@ The `assert_signal()` an Assertion Tool to verify for emitted signals until a ce
 the assertion fails with a timeout error.<br>
 For more details show [assert_signal]({{site.baseurl}}/testing/assert-signal/#signal-assertions)
 
-Since **v6.1**, `is_emitted()` and `is_not_emitted()` accept signal arguments as **variadic parameters**
-instead of an array, and `signal_name` accepts either a **`Signal` reference** (type-safe, recommended)
-or a **`String`**.
+{% include signal_await_advice.html %}
 
 Here's an example of using `assert_signal()`:
 
@@ -166,22 +164,24 @@ public partial class SignalAssertTest
 The `monitor_signals()` tool allows you to monitor the emission of signals from a specific object.
 It sets up a signal monitoring system for the specified object, which enables you to capture and analyze the signals emitted during the execution of your test.
 
+{% include signal_await_advice.html %}
+
 {% tabs monitor_signals-overview %}
 {% tab monitor_signals-overview GdScript %}
 ```gd
-    func monitor_signals(source :Object, _auto_free := true) -> Object:
+func monitor_signals(source: Object, _auto_free := true) -> Object:
 ```
 {% endtab %}
 {% tab monitor_signals-overview C# %}
 In C#, the monitor is integrated into the AssertSignal and is generated implicitly the first time an assertion is used on an emitter.
 To visualize this better, you can use StartMonitoring. From this point on, all emitted signals are recorded.
 ```cs
-    /// <summary>
-    /// Starts the monitoring of emitted signals during the test runtime.
-    /// It should be called first if you want to collect all emitted signals after the emitter has been created.
-    /// </summary>
-    /// <returns></returns>
-    public ISignalAssert StartMonitoring();
+/// <summary>
+/// Starts the monitoring of emitted signals during the test runtime.
+/// It should be called first if you want to collect all emitted signals after the emitter has been created.
+/// </summary>
+/// <returns></returns>
+public ISignalAssert StartMonitoring();
 ```
 {% endtab %}
 {% endtabs %}

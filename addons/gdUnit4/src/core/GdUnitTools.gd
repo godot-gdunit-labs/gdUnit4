@@ -116,6 +116,7 @@ static func release_timers() -> void:
 
 # the finally cleaup unfreed resources and singletons
 static func dispose_all(use_call_deferred :bool = false) -> void:
+	prints("Run dispose test resources")
 	release_timers()
 	GdUnitSingleton.dispose(use_call_deferred)
 	GdUnitSignals.dispose()

@@ -20,8 +20,6 @@ extends "res://addons/gdUnit4/src/core/runners/GdUnitTestSessionRunner.gd"
 ## runtest -a <directory> -i <testsuite:test_name>
 ## [/codeblock]
 
-const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
-
 var _console := GdUnitCSIMessageWriter.new()
 var _console_reporter: GdUnitConsoleTestReporter
 var _headless_mode_ignore := false
@@ -113,8 +111,6 @@ func _ready() -> void:
 
 func _notification(what: int) -> void:
 	super(what)
-	if what == NOTIFICATION_PREDELETE:
-		prints("Finallize .. done")
 
 
 func init_runner() -> void:
@@ -131,10 +127,8 @@ func get_exit_code() -> int:
 ## [br]
 ## [param code] The exit code to return.
 func quit(code: int) -> void:
-	_state = EXIT
-	GdUnitTools.dispose_all()
-	await GdUnitMemoryObserver.gc_on_guarded_instances()
 	await super(code)
+	get_tree().quit(code)
 
 
 ## Prints info message to console.[br]

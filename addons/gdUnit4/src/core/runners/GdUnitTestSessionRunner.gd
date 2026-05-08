@@ -13,6 +13,8 @@ extends Node
 ## - [b]GdUnitCLRunner[/b]: A command line interface runner, writes test reports to file[br]
 ## The test runner runs checked default in fail-fast mode, it stops checked first test failure.
 
+const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
+
 ## Overall test run status codes used by the runners
 const RETURN_SUCCESS = 0
 const RETURN_ERROR = 100
@@ -70,6 +72,7 @@ var max_report_history: int = GdUnitConstants.DEFAULT_REPORT_HISTORY_COUNT:
 
 # holds the current test session context
 var _test_session: GdUnitTestSession
+var _is_editor_debug_run: bool
 
 ## Runner state machine
 enum {
@@ -81,7 +84,8 @@ enum {
 }
 
 func _init() -> void:
-	if OS.get_cmdline_args().size() == 1:
+	_is_editor_debug_run = OS.get_cmdline_args().has("--scene")
+	if _is_editor_debug_run:
 		DisplayServer.window_set_title("GdUnit4 Runner (Debug Mode)")
 	else:
 		DisplayServer.window_set_title("GdUnit4 Runner (Release Mode)")
@@ -158,9 +162,15 @@ func get_exit_code() -> int:
 
 ## Quits the test runner with given exit code.
 func quit(code: int) -> void:
+	await GdUnitMemoryObserver.gc_on_guarded_instances()
+
+	if !_is_editor_debug_run:
+		# Only dispose all resources when we not run embedded in the editor
+		GdUnitTools.dispose_all()
+		await get_tree().process_frame
+
 	await get_tree().process_frame
 	await get_tree().physics_frame
-	get_tree().quit(code)
 
 
 func prints_warning(message: String) -> void:

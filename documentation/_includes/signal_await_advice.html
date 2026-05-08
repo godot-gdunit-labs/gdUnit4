@@ -1,0 +1,9 @@
+{% capture signal_await_advice %}
+Always use <code>await</code> with <code>is_emitted()</code> and <code>is_not_emitted()</code>.
+Both are coroutines — <code>await</code> suspends execution until the signal fires or times out.
+Without it, or if any caller in the chain omits it, the test <strong>silently passes</strong>.
+See <a
+  href="https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_basics.html#awaiting-signals-or-coroutines"
+>Awaiting signals or coroutines</a> in the Godot docs.
+{% endcapture %}
+{% include advice.html content=signal_await_advice %}

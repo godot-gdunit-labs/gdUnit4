@@ -32,8 +32,10 @@ Argument matchers can be employed in various scenarios, such as:
 
 2. **Assert Signal:** When you're only interested in whether a signal is emitted, regardless of its arguments:
    ```gd
-   # Waits until signal 'test_signal_counted' is emitted with signal arguments as an integer
-   await assert_signal(signal_emitter).is_emitted("test_signal_counted", [any_int()])
+   # Waits until 'test_signal_counted' is emitted with any integer argument (variadic syntax since v6.1)
+   await assert_signal(signal_emitter).is_emitted("test_signal_counted", any_int())
+   # Waits until 'item_added' is emitted with any String name and exactly item_id=42
+   await assert_signal(signal_emitter).is_emitted("item_added", any_string(), 42)
    ```
 
 3. **Mock Verification:** When verifying function calls with specific argument types:

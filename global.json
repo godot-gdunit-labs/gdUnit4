@@ -5,6 +5,6 @@
     "allowPrerelease": false
   },
   "msbuild-sdks": {
-    "Godot.NET.Sdk": "4.5.1"
+    "Godot.NET.Sdk": "4.6.2"
   }
 }

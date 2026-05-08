@@ -1,4 +1,3 @@
-@tool
 extends "res://addons/gdUnit4/src/core/runners/GdUnitTestSessionRunner.gd"
 ## Runner implementation used by the editor UI.[br]
 ## [br]
@@ -37,16 +36,6 @@ func _ready() -> void:
 	if result.is_error():
 		push_error(result.error_message())
 		return
-
-
-## Cleanup and quit the runner.[br]
-## [br]
-## [param code] The exit code to return.
-func quit(code: int) -> void:
-	if code != RETURN_SUCCESS:
-		_state = EXIT
-	await GdUnitMemoryObserver.gc_on_guarded_instances()
-	await super.quit(code)
 
 
 ## Called when the TCP connection to the GdUnit server fails.[br]

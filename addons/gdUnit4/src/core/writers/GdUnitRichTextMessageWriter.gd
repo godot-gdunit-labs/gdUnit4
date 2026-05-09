@@ -28,6 +28,10 @@ func _init(output: RichTextLabel) -> void:
 	_output = output
 
 
+func print_bbcode(message: String) -> void:
+	GdUnitUiTools.set_report_message(_output, message)
+
+
 ## Applies text style flags by wrapping text in BBCode tags.[br]
 ## [br]
 ## Available styles:[br]

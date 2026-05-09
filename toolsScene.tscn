@@ -1,0 +1,60 @@
+[gd_scene load_steps=2 format=3 uid="uid://csdesvvxk0tby"]
+
+[sub_resource type="GDScript" id="GDScript_6ygey"]
+script/source = "extends Node2D
+
+@onready var rtl :RichTextLabel = %RichTextLabel
+
+func _ready() -> void:
+	var captured_image := Image.new()
+	captured_image.load(ProjectSettings.globalize_path(\"res://icon.png\"))
+
+	# Delete previous created image imports
+	DirAccess.remove_absolute(\"res://test_img/test.png\")
+	DirAccess.remove_absolute(\"res://test_img/test.png.import\")
+
+	# Save new image
+	captured_image.save_png(\"res://test_img/test.png\")
+
+	# Try to force import the image
+	var import_image := Image.new()
+	import_image.take_over_path(\"res://test_img/test.png\")
+	# we need to load the image by this function
+	import_image = Image.load_from_file(\"res://test_img/test.png\")
+
+	var t := ImageTexture.create_from_image(import_image)
+
+	# Set image to the RichTextLabel
+	var use_builder := true
+	if use_builder:
+		rtl.clear()
+		rtl.append_text(\"--- [b]Image[/b] --\")
+		rtl.newline()
+		rtl.add_image(t)
+		rtl.newline()
+		rtl.append_text(\"-------------------\")
+	else:
+		rtl.parse_bbcode(\"\"\"
+			--- [b]Image[/b] --
+			[img]res://test_img/test.png[/img]
+			-------------------
+		\"\"\")
+"
+
+[node name="ToolsScene" type="Node2D"]
+script = SubResource("GDScript_6ygey")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 200)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1142.0
+offset_bottom = 631.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "test"
+scroll_active = false

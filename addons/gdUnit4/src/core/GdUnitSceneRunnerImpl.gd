@@ -353,6 +353,32 @@ func get_screen_touch_drag_position(index: int) -> Vector2:
 	return Vector2.ZERO
 
 
+func capture_initial_screen_shot(source_node: Node, path: String) -> Image:
+	if FileAccess.file_exists(path):
+		var image := Image.new()
+		var err0 := image.load(ProjectSettings.globalize_path(path))
+		if err0 == OK:
+			return image
+		push_warning("Error: '{0}' loading image from path '{1}'!".format([error_string(err0), path]))
+
+	prints("No image resource found at '{0}', capture a fresh screenshot from component '{1}'".format([path, source_node.get_path()]))
+	if DisplayServer.get_name() == "headless":
+		push_error("Can't capture image from node {0} on 'headless' mode!".format([source_node.get_path()]))
+		return null
+
+	if not DirAccess.dir_exists_absolute(path.get_base_dir()):
+		DirAccess.make_dir_recursive_absolute(path.get_base_dir())
+	var captured_image := GdUnitUiTools.capture_image(source_node)
+	if captured_image == null:
+		push_error("Can't capture image from node {0}".format([source_node.get_path()]))
+		return null
+	var err1 := captured_image.save_png(path)
+	if err1 == OK:
+		return captured_image
+	push_warning("Error: '{0}', can't save captured image of {1} to path specified {2}.".format([error_string(err1), source_node.get_path(), path]))
+	return null
+
+
 func is_emulate_mouse_from_touch() -> bool:
 	return ProjectSettings.get_setting("input_devices/pointing/emulate_mouse_from_touch", true)
 

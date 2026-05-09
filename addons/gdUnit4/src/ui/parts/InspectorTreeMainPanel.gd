@@ -243,7 +243,7 @@ func cleanup_tree() -> void:
 	_current_selected_item = null
 
 
-func _free_recursive(items:=_tree_root.get_children()) -> void:
+func _free_recursive(items := _tree_root.get_children()) -> void:
 	for item in items:
 		_free_recursive(item.get_children())
 		item.call_deferred("free")
@@ -311,12 +311,12 @@ static func sort_items_by_execution_time(a: TreeItem, b: TreeItem) -> bool:
 	if type_b == GdUnitType.FOLDER and type_a != GdUnitType.FOLDER:
 		return false
 
-	var execution_time_a :int = a.get_meta(META_GDUNIT_EXECUTION_TIME)
-	var execution_time_b :int = b.get_meta(META_GDUNIT_EXECUTION_TIME)
+	var execution_time_a: int = a.get_meta(META_GDUNIT_EXECUTION_TIME)
+	var execution_time_b: int = b.get_meta(META_GDUNIT_EXECUTION_TIME)
 	# if has same execution time sort by name
 	if execution_time_a == execution_time_b:
-		var name_a :String = a.get_meta(META_GDUNIT_NAME)
-		var name_b :String = b.get_meta(META_GDUNIT_NAME)
+		var name_a: String = a.get_meta(META_GDUNIT_NAME)
+		var name_b: String = b.get_meta(META_GDUNIT_NAME)
 		return name_a.naturalnocasecmp_to(name_b) > 0
 	return execution_time_a > execution_time_b
 
@@ -331,8 +331,8 @@ static func sort_items_by_original_index(a: TreeItem, b: TreeItem) -> bool:
 	if type_b == GdUnitType.FOLDER and type_a != GdUnitType.FOLDER:
 		return false
 
-	var index_a :int = a.get_meta(META_GDUNIT_ORIGINAL_INDEX)
-	var index_b :int = b.get_meta(META_GDUNIT_ORIGINAL_INDEX)
+	var index_a: int = a.get_meta(META_GDUNIT_ORIGINAL_INDEX)
+	var index_b: int = b.get_meta(META_GDUNIT_ORIGINAL_INDEX)
 
 	# Sorting by index
 	return index_a < index_b
@@ -694,7 +694,7 @@ func add_report(item: TreeItem, report: GdUnitReport) -> void:
 	item.set_meta(META_GDUNIT_REPORT, reports)
 
 
-func abort_running(items:=_tree_root.get_children()) -> void:
+func abort_running(items := _tree_root.get_children()) -> void:
 	for item in items:
 		if item.get_icon(0) == ICON_SPINNER:
 			set_state_aborted(item)
@@ -746,9 +746,7 @@ func show_failed_report(selected_item: TreeItem) -> void:
 	for report in get_item_reports(selected_item):
 		var reportNode: RichTextLabel = _report_template.duplicate()
 		_report_list.add_child(reportNode)
-		reportNode.push_color(Color.DARK_TURQUOISE)
-		reportNode.append_text(report.to_string())
-		reportNode.pop()
+		GdUnitUiTools.set_report_message(reportNode, report.to_string())
 		reportNode.visible = true
 
 
@@ -757,6 +755,7 @@ func update_test_suite(event: GdUnitEvent) -> void:
 	if not item:
 		push_error("[InspectorTreeMainPanel#update_test_suite] Internal Error: Can't find test suite item '{_suite_name}' for {_resource_path} ".format(event))
 		return
+
 	if event.type() == GdUnitEvent.TESTSUITE_AFTER:
 		update_item_elapsed_time_counter(item, event.elapsed_time())
 		update_state(item, event)
@@ -803,10 +802,10 @@ func create_item(parent: TreeItem, test: GdUnitTestCase, item_name: String, type
 	return item
 
 
-func set_item_icon_by_state(item :TreeItem) -> void:
+func set_item_icon_by_state(item: TreeItem) -> void:
 	if item == _tree_root:
 		return
-	var state :STATE = item.get_meta(META_GDUNIT_STATE)
+	var state: STATE = item.get_meta(META_GDUNIT_STATE)
 	var is_orphan := is_item_state_orphan(item)
 	var resource_path := get_item_source_file(item)
 	item.set_icon(0, get_icon_by_file_type(resource_path, state, is_orphan))
@@ -905,8 +904,8 @@ func update_item_elapsed_time_counter(item: TreeItem, time: int) -> void:
 	var parent := item.get_parent()
 	if parent == _tree_root:
 		return
-	var elapsed_time :int = parent.get_meta(META_GDUNIT_EXECUTION_TIME) + time
-	var type :GdUnitType = item.get_meta(META_GDUNIT_TYPE)
+	var elapsed_time: int = parent.get_meta(META_GDUNIT_EXECUTION_TIME) + time
+	var type: GdUnitType = item.get_meta(META_GDUNIT_TYPE)
 	match type:
 		GdUnitType.TEST_CASE:
 			return
@@ -966,7 +965,7 @@ func on_test_case_discover_added(test_case: GdUnitTestCase) -> void:
 	# Skip tree structure until test root folder
 	var index := parts.find(test_root_folder)
 	if index != -1:
-		parts = parts.slice(index+1)
+		parts = parts.slice(index + 1)
 
 	match _current_tree_view_mode:
 		GdUnitInspectorTreeConstants.TREE_VIEW_MODE.FLAT:
@@ -1039,7 +1038,7 @@ func on_test_case_discover_deleted(test_case: GdUnitTestCase) -> void:
 		var item_success_count: int = item.get_meta(META_GDUNIT_SUCCESS_TESTS)
 		var item_total_test_count: int = item.get_meta(META_GDUNIT_PROGRESS_COUNT_MAX, 0)
 		var total_test_count: int = parent.get_meta(META_GDUNIT_PROGRESS_COUNT_MAX, 0)
-		parent.set_meta(META_GDUNIT_PROGRESS_COUNT_MAX, total_test_count-item_total_test_count)
+		parent.set_meta(META_GDUNIT_PROGRESS_COUNT_MAX, total_test_count - item_total_test_count)
 
 		# propagate counter update to all parents
 		update_item_total_counter(parent)
@@ -1086,7 +1085,7 @@ func _dump_tree_as_json(dump_name: String) -> void:
 	file.store_string(JSON.stringify(dict, "\t"))
 
 
-func _to_json(parent :TreeItem) -> Dictionary:
+func _to_json(parent: TreeItem) -> Dictionary:
 	var item_as_dict := GdObjects.obj2dict(parent)
 	item_as_dict["TreeItem"]["childrens"] = parent.get_children().map(func(item: TreeItem) -> Dictionary:
 			return _to_json(item))
@@ -1122,7 +1121,7 @@ func test_session_stop() -> void:
 	# wait until the tree redraw
 	await get_tree().process_frame
 	var failure_item := _find_first_item_by_state(_tree_root, STATE.FAILED)
-	select_item( failure_item if failure_item else _current_selected_item)
+	select_item(failure_item if failure_item else _current_selected_item)
 
 
 ################################################################################
@@ -1200,7 +1199,7 @@ func _on_gdunit_event(event: GdUnitEvent) -> void:
 			await test_session_stop()
 
 
-func _on_settings_changed(property :GdUnitProperty) -> void:
+func _on_settings_changed(property: GdUnitProperty) -> void:
 	match property.name():
 		GdUnitSettings.INSPECTOR_TREE_SORT_MODE:
 			sort_tree_items(_tree_root)

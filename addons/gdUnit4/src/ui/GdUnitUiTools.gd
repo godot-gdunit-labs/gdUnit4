@@ -87,6 +87,48 @@ static func get_CSharpScript_icon(status: String, color: Color) -> Texture2D:
 	return ImageTexture.create_from_image(image)
 
 
+static func capture_image(node: Node) -> Image:
+	var image :=  node.get_viewport().get_texture().get_image()
+	if image == null:
+		return null
+	if node is Control:
+		# Crop to control bounds if needed
+		var rect := (node as Control).get_global_rect()
+		if rect.size.x > 0 and rect.size.y > 0:
+			image = image.get_region(rect)
+
+	if node is TextureRect:
+		image = (node as TextureRect).texture.get_image()
+
+	return image
+
+
+static func set_report_message(reportNode: RichTextLabel, message: String) -> void:
+	var regex := RegEx.new()
+	regex.compile(r"\[img\](.*?)\[/img\]")
+
+	var urls: PackedStringArray = []
+	for result in regex.search_all(message):
+		var img_tag := result.get_string(0)
+		urls.append(result.get_string(1))
+		message = message.replace(img_tag, "^")
+
+	var image_index := 0
+	reportNode.push_color(Color.DARK_TURQUOISE)
+	for text in message.split("^"):
+		reportNode.append_text(text)
+		reportNode.newline()
+		if image_index < urls.size():
+			var image := Image.new()
+			image.load(urls[image_index])
+			var texture_image := ImageTexture.create_from_image(image)
+			if texture_image != null:
+				reportNode.add_image(texture_image)
+			reportNode.newline()
+		image_index += 1
+	reportNode.pop()
+
+
 static func _modulate_texture(texture: Texture2D, color: Color) -> Texture2D:
 	var image := _modulate_image(texture.get_image(), color)
 	return ImageTexture.create_from_image(image)

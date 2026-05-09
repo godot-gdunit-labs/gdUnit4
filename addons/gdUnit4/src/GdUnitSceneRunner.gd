@@ -278,7 +278,6 @@ extends RefCounted
 ## [/codeblock]
 @abstract func await_func(func_name: String, ...args: Array) -> GdUnitFuncAssert
 
-
 ## The await_func_on function extends the functionality of await_func by allowing you to specify a source node within the scene.[br]
 ## It waits for a specified function on that node to return a value and returns a [GdUnitFuncAssert] object for assertions.[br]
 ## [member source] : The object where implements the function.[br]
@@ -317,6 +316,16 @@ extends RefCounted
 ## Minimizes the scene window to a windowed mode and brings it to the background.[br]
 ## This ensures that the scene is hidden during testing.
 @abstract func move_window_to_background() -> GdUnitSceneRunner
+
+
+## Loads existing reference screenshot or saves current screenshot as new reference
+## [param path]: Relative path from test file location (e.g., "screenshots/button_normal.png")
+## [param source_node]: Optional node to capture (default: full scene viewport)
+@warning_ignore("unused_parameter")
+func capture_initial_screen_shot(source_node: Node, path: String) -> Image:
+	@warning_ignore("assert_always_true")
+	assert(true, "'initial_screen_shot' is not implemented!")
+	return null
 
 
 ## Return the current value of the property with the name <name>.[br]

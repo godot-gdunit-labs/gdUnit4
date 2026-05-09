@@ -17,6 +17,7 @@ enum {
 	COLOR_RGB
 }
 
+const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 const CSI_BOLD = "[1m"
 const CSI_ITALIC = "[3m"
 const CSI_UNDERLINE = "[4m"
@@ -31,6 +32,13 @@ var _current_pos := 0
 
 # Pre-compiled regex patterns for tag matching
 var _tag_regex: RegEx
+
+
+func print_bbcode(message: String) -> void:
+	var text := GdUnitTools.richtext_normalize(message)
+	#use GdUnitUiTools to write the message
+	for line in text.split("\n", false):
+		indent(2).color(Color.DARK_TURQUOISE).println_message(line)
 
 
 ## Constructs CSI style codes based on flags.[br]

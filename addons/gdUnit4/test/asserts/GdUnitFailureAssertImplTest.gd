@@ -77,3 +77,41 @@ func test_assert_failure_on_assert_result() -> void:
 	var  instance := assert_failure(func() -> void: assert_result(null))
 	assert_object(last_assert()).is_instanceof(GdUnitResultAssert)
 	assert_object(instance).is_instanceof(GdUnitFailureAssert)
+
+
+#region has_stack_trace
+
+func _stack_fail_1() -> void:
+	assert_bool(true).is_false()
+
+
+func _stack_fail_2() -> void:
+	_stack_fail_1()
+
+
+func _stack_fail_3() -> void:
+	_stack_fail_2()
+
+
+func test_has_stack_trace_depth_1() -> void:
+	assert_failure(_stack_fail_1) \
+		.is_failed() \
+		.has_message("Expecting: 'false' but is 'true'") \
+		.has_stack_trace([
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 85, "_stack_fail_1"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 97, "test_has_stack_trace_depth_1"),
+		])
+
+
+func test_has_stack_trace_depth_3() -> void:
+	assert_failure(_stack_fail_3) \
+		.is_failed() \
+		.has_message("Expecting: 'false' but is 'true'") \
+		.has_stack_trace([
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 85, "_stack_fail_1"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 89, "_stack_fail_2"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 93, "_stack_fail_3"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 107, "test_has_stack_trace_depth_3"),
+		])
+
+#endregion

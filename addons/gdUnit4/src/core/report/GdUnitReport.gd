@@ -72,6 +72,12 @@ func is_orphan() -> bool:
 	return _type == ORPHAN
 
 
+func stack_trace() -> GdUnitStackTrace:
+	if _error == null:
+		return null
+	return _error._stack_trace
+
+
 func _to_string() -> String:
 	if _line_number == -1:
 		return "[color=green]line [/color][color=aqua]<n/a>:[/color] %s" % [_message]
@@ -79,15 +85,23 @@ func _to_string() -> String:
 
 
 func serialize() -> Dictionary:
-	return {
-		"type"        :_type,
-		"line_number" :_line_number,
-		"message"     :_message
+	var serialized := {
+		"type"        : _type,
+		"line_number" : _line_number,
+		"message"     : _message
 	}
+	var trace := stack_trace()
+	if trace != null:
+		serialized["stack_trace"] = trace.serialize()
+	return serialized
 
 
-func deserialize(serialized :Dictionary) -> GdUnitReport:
+func deserialize(serialized: Dictionary) -> GdUnitReport:
 	_type        = serialized["type"]
 	_line_number = serialized["line_number"]
 	_message     = serialized["message"]
+	if serialized.has("stack_trace"):
+		@warning_ignore("unsafe_cast")
+		var trace := GdUnitStackTrace.deserialize(serialized["stack_trace"] as String)
+		_error = GdUnitError.new(_message, _line_number, trace)
 	return self

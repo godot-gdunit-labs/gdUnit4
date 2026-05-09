@@ -30,6 +30,25 @@ func print_stack_trace() -> String:
 	return output
 
 
+## Serializes the stack trace to a JSON string.
+func serialize() -> String:
+	var frames: Array[Dictionary] = []
+	for frame in _stack_trace:
+		frames.append({"source": frame._source, "line": frame._line, "function": frame._function})
+	return JSON.stringify(frames)
+
+
+## Reconstructs a [GdUnitStackTrace] from a JSON string produced by [method serialize].
+static func deserialize(json: String) -> GdUnitStackTrace:
+	var data: Variant = JSON.parse_string(json)
+	if not data is Array:
+		return GdUnitStackTrace.of([])
+	var frames: Array[GdUnitStackTraceElement] = []
+	for frame_data: Dictionary in data:
+		frames.append(GdUnitStackTraceElement.of(frame_data))
+	return GdUnitStackTrace.of(frames)
+
+
 ## Creates a [GdUnitStackTrace] from an existing array of [GdUnitStackTraceElement] frames.[br]
 ## Useful for constructing expected stack traces in assertions.
 static func of(stack_trace: Array[GdUnitStackTraceElement]) -> GdUnitStackTrace:

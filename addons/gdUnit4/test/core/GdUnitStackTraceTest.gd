@@ -137,3 +137,40 @@ func test_inner_class_frames_in_stack_trace() -> void:
 			""".dedent().indent("\t").trim_prefix("\n"))
 
 #endregion
+
+
+#region serialize / deserialize
+
+func test_serialize_empty_trace_returns_empty_json_array() -> void:
+	var trace := GdUnitStackTrace.of([])
+	assert_str(trace.serialize()).is_equal("[]")
+
+
+func test_serialize_returns_json_string() -> void:
+	var trace := GdUnitStackTrace.of([
+		GdUnitStackTraceElement.new("res://test.gd", 10, "func_a"),
+		GdUnitStackTraceElement.new("res://test.gd", 20, "func_b"),
+	])
+	var json := trace.serialize()
+	assert_str(json)\
+		.is_not_empty()\
+		.is_equal('[{"function":"func_a","line":10,"source":"res://test.gd"},{"function":"func_b","line":20,"source":"res://test.gd"}]')
+
+
+func test_deserialize_reconstructs_frames() -> void:
+	var json := '[{"source":"res://test.gd","line":10,"function":"func_a"},{"source":"res://test.gd","line":20,"function":"func_b"}]'
+	var trace := GdUnitStackTrace.deserialize(json)
+	assert_that(trace).is_equal(GdUnitStackTrace.of([
+		GdUnitStackTraceElement.new("res://test.gd", 10, "func_a"),
+		GdUnitStackTraceElement.new("res://test.gd", 20, "func_b"),
+	]))
+
+
+func test_serialize_deserialize_round_trip() -> void:
+	var original := GdUnitStackTrace.of([
+		GdUnitStackTraceElement.new("res://my_test.gd", 42, "check_value"),
+		GdUnitStackTraceElement.new("res://my_test.gd", 55, "run_suite"),
+	])
+	var restored := GdUnitStackTrace.deserialize(original.serialize())
+	assert_that(restored).is_equal(original)
+#endregion

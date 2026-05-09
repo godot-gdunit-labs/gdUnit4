@@ -19,6 +19,14 @@ func _init(source: String, line: int, function: String) -> void:
 	_function = function
 
 
+## Creates a [GdUnitStackTraceElement] from a dictionary with keys [code]source[/code], [code]line[/code], and [code]function[/code].
+static func of(data: Dictionary) -> GdUnitStackTraceElement:
+	var source: String = data["source"]
+	var line: int = data["line"]
+	var function: String = data["function"]
+	return GdUnitStackTraceElement.new(source, line, function)
+
+
 ## Returns a human-readable representation in the form [code]basename.function(file:line)[/code].
 func _to_string() -> String:
 	return "%s.%s(%s:%d)" % [_source.get_basename(), _function, _source.get_file(), _line]

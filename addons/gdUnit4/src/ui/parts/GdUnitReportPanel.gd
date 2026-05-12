@@ -53,4 +53,5 @@ func add_stack_trace(message: RichTextLabel, trace: GdUnitStackTrace) -> void:
 
 
 func _on_meta_clicked(meta: Variant) -> void:
-	print_debug("TODO: implement jump to source", "_on_meta_clicked", meta)
+	var frame: GdUnitStackTraceElement = meta
+	ScriptEditorControls.edit_script(frame._source, frame._line)

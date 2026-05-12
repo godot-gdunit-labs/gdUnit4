@@ -58,6 +58,44 @@ func test_show_report_replaces_previous_reports() -> void:
 #endregion
 
 
+#region _on_meta_clicked
+func test_meta_clicked_signal_is_connected_when_stack_trace_has_frames() -> void:
+	var frames: Array[GdUnitStackTraceElement] = [
+		GdUnitStackTraceElement.new("res://test/MyTest.gd", 42, "test_foo"),
+	]
+	var label: RichTextLabel = auto_free(_panel.build_report(_build_report_with_frames("test", frames)))
+	assert_bool(label.meta_clicked.is_connected(_panel._on_meta_clicked)).is_true()
+
+@warning_ignore_start("redundant_await")
+func test_on_meta_clicked_is_called_with_expected_frame_on_click() -> void:
+	# Use a real source path so ScriptEditorControls.edit_script can load() the script
+	var frame1 := GdUnitStackTraceElement.new(
+		"res://test/MyTest.gd", 42, "test_foo"
+	)
+	# Spy on the panel via the scene so that _on_meta_clicked calls are recorded
+	var panel_spy: GdUnitReportPanel = spy("res://addons/gdUnit4/src/ui/parts/GdUnitReportPanel.tscn")
+	var runner := scene_runner(panel_spy)
+
+	# show_report adds the label into the panel's scene tree, giving it a valid rect
+	panel_spy.show_report([_build_report_with_frames("test", [frame1])])
+	await runner.simulate_frames(2)
+
+	# Simulate left mouse click on frame1
+	var label: RichTextLabel = panel_spy.report_list.get_child(0)
+	var label_rect := label.get_global_rect()
+	# Line 0 is the report message; line 1 is the first stack trace entry
+	var click_pos := Vector2(label_rect.position.x + 50, label_rect.position.y + label.get_line_offset(1) + 5)
+	runner.set_mouse_position(click_pos)
+	await runner.simulate_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+
+	# Verify _on_meta_clicked was invoked with the expected stack frame
+	@warning_ignore("unsafe_method_access")
+	verify(panel_spy)._on_meta_clicked(frame1)
+
+@warning_ignore_restore("redundant_await")
+#endregion
+
+
 #region build_report
 func test_build_report_label_is_visible() -> void:
 	var label: RichTextLabel = auto_free(_panel.build_report(_build_report("test message")))

@@ -77,13 +77,14 @@ static func close_open_editor_scripts() -> void:
 # The line and column on which to open the script can also be specified.
 # The script will be open with the user-configured editor for the script's language which may be an external editor.
 static func edit_script(script_path: String, line_number := -1) -> void:
-	var file_system := EditorInterface.get_resource_filesystem()
-	file_system.update_file(script_path)
-	var file_system_dock := EditorInterface.get_file_system_dock()
-	file_system_dock.navigate_to_path(script_path)
-	EditorInterface.select_file(script_path)
-	var script: GDScript = load(script_path)
-	EditorInterface.edit_script(script, line_number)
+	if Engine.is_editor_hint():
+		var file_system := EditorInterface.get_resource_filesystem()
+		file_system.update_file(script_path)
+		var file_system_dock := EditorInterface.get_file_system_dock()
+		file_system_dock.navigate_to_path(script_path)
+		EditorInterface.select_file(script_path)
+		var script: GDScript = load(script_path)
+		EditorInterface.edit_script(script, line_number)
 
 
 static func _menu_popup() -> PopupMenu:

@@ -1,62 +1,59 @@
-[gd_scene load_steps=8 format=3 uid="uid://mpo5o6d4uybu"]
+[gd_scene format=3 uid="uid://mpo5o6d4uybu"]
 
 [ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/parts/InspectorToolBar.tscn" id="1"]
+[ext_resource type="Script" path="res://addons/gdUnit4/src/ui/GdUnitInspector.gd" id="1_j37cs"]
 [ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/parts/InspectorProgressBar.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/parts/InspectorStatusBar.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/parts/InspectorMonitor.tscn" id="4"]
-[ext_resource type="Script" path="res://addons/gdUnit4/src/ui/GdUnitInspector.gd" id="5"]
 [ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/parts/InspectorTreePanel.tscn" id="7"]
 [ext_resource type="PackedScene" path="res://addons/gdUnit4/src/network/GdUnitServer.tscn" id="7_721no"]
 
-[node name="GdUnit" type="Panel"]
-use_parent_material = true
+[node name="GdUnit" type="PanelContainer" unique_id=1659901582]
 clip_contents = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-size_flags_horizontal = 11
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 focus_mode = 2
-script = ExtResource("5")
+script = ExtResource("1_j37cs")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-use_parent_material = true
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1550259230]
 clip_contents = true
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
+layout_mode = 2
 size_flags_vertical = 11
 theme_override_constants/separation = 0
 
-[node name="Header" type="VBoxContainer" parent="VBoxContainer"]
+[node name="Header" type="VBoxContainer" parent="VBoxContainer" unique_id=876343251]
 use_parent_material = true
 clip_contents = true
 layout_mode = 2
-size_flags_horizontal = 9
 size_flags_vertical = 0
 
-[node name="ToolBar" parent="VBoxContainer/Header" instance=ExtResource("1")]
+[node name="ToolBar" parent="VBoxContainer/Header" unique_id=185399834 instance=ExtResource("1")]
 layout_mode = 2
-size_flags_vertical = 1
 
-[node name="ProgressBar" parent="VBoxContainer/Header" instance=ExtResource("2")]
+[node name="ProgressBar" parent="VBoxContainer/Header" unique_id=360281822 instance=ExtResource("2")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 5
 max_value = 0.0
 
-[node name="StatusBar" parent="VBoxContainer/Header" instance=ExtResource("3")]
+[node name="StatusBar" parent="VBoxContainer/Header" unique_id=625414847 instance=ExtResource("3")]
 layout_mode = 2
 size_flags_horizontal = 11
 
-[node name="MainPanel" parent="VBoxContainer" instance=ExtResource("7")]
+[node name="MainPanel" parent="VBoxContainer" unique_id=1133307707 instance=ExtResource("7")]
 unique_name_in_owner = true
+clip_contents = true
 layout_mode = 2
 
-[node name="Monitor" parent="VBoxContainer" instance=ExtResource("4")]
+[node name="Monitor" parent="VBoxContainer" unique_id=1419900107 instance=ExtResource("4")]
 layout_mode = 2
 
-[node name="event_server" parent="." instance=ExtResource("7_721no")]
+[node name="event_server" parent="." unique_id=756999253 instance=ExtResource("7_721no")]
 
 [connection signal="select_error_next" from="VBoxContainer/Header/StatusBar" to="VBoxContainer/MainPanel" method="_on_select_next_item_by_state" binds= [7]]
 [connection signal="select_error_prevous" from="VBoxContainer/Header/StatusBar" to="VBoxContainer/MainPanel" method="_on_select_previous_item_by_state" binds= [7]]

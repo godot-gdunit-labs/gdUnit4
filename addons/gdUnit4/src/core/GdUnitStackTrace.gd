@@ -15,6 +15,11 @@ func _to_string() -> String:
 	return "\n".join(_stack_trace)
 
 
+## Returns all frames in the stack trace, ordered innermost first.
+func get_frames() -> Array[GdUnitStackTraceElement]:
+	return _stack_trace
+
+
 ## Returns the line number of the topmost frame, or [code]-1[/code] if the stack trace is empty.
 func get_line_number() -> int:
 	if _stack_trace.is_empty():

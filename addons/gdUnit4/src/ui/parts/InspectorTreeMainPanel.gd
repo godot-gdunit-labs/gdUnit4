@@ -1,15 +1,14 @@
 @tool
-extends VSplitContainer
+extends PanelContainer
 
 ## Will be emitted when the test index counter is changed
 signal test_counters_changed(index: int, total: int, state: GdUnitInspectorTreeConstants.STATE)
 signal tree_item_selected(item: TreeItem)
 
 
-@onready var _tree: Tree = $Panel/Tree
-@onready var _report_list: Node = $report/ScrollContainer/list
-@onready var _report_template: RichTextLabel = $report/report_template
-@onready var _context_menu: GdUnitInspectorContextMenu = $contextMenu
+@onready var _tree: Tree = %Tree
+@onready var _report_panel: GdUnitReportPanel = %report
+@onready var _context_menu: GdUnitInspectorContextMenu = %contextMenu
 @onready var _discover_hint: Control = %discover_hint
 @onready var _spinner: Button = %spinner
 
@@ -235,7 +234,7 @@ func init_tree() -> void:
 
 
 func cleanup_tree() -> void:
-	clear_reports()
+	_report_panel.clear()
 	if not _tree_root:
 		return
 	_free_recursive()
@@ -732,26 +731,6 @@ func select_first_orphan() -> void:
 					return
 
 
-func clear_reports() -> void:
-	for child in _report_list.get_children():
-		_report_list.remove_child(child)
-		child.queue_free()
-
-
-func show_failed_report(selected_item: TreeItem) -> void:
-	clear_reports()
-	if selected_item == null or not selected_item.has_meta(META_GDUNIT_REPORT):
-		return
-	# add new reports
-	for report in get_item_reports(selected_item):
-		var reportNode: RichTextLabel = _report_template.duplicate()
-		_report_list.add_child(reportNode)
-		reportNode.push_color(Color.DARK_TURQUOISE)
-		reportNode.append_text(report.to_string())
-		reportNode.pop()
-		reportNode.visible = true
-
-
 func update_test_suite(event: GdUnitEvent) -> void:
 	var item := _find_tree_item_by_test_suite(_tree_root, event.resource_path(), event.suite_name())
 	if not item:
@@ -1055,6 +1034,8 @@ func on_test_case_discover_modified(test_case: GdUnitTestCase) -> void:
 
 
 func get_item_reports(item: TreeItem) -> Array[GdUnitReport]:
+	if item == null or not item.has_meta(META_GDUNIT_REPORT):
+		return []
 	return item.get_meta(META_GDUNIT_REPORT)
 
 
@@ -1112,7 +1093,7 @@ func collect_test_cases(item: TreeItem, tests: Array[GdUnitTestCase] = []) -> Ar
 func test_session_start() -> void:
 	_context_menu.disable_items()
 	reset_tree_state(_tree_root)
-	clear_reports()
+	_report_panel.clear()
 
 
 func test_session_stop() -> void:
@@ -1136,7 +1117,8 @@ func _on_tree_item_mouse_selected(mouse_position: Vector2, mouse_button_index: i
 
 func _on_Tree_item_selected() -> void:
 	_current_selected_item = _tree.get_selected()
-	show_failed_report(_current_selected_item)
+	var reports := get_item_reports(_current_selected_item)
+	_report_panel.show_report(reports)
 	tree_item_selected.emit(_current_selected_item)
 
 

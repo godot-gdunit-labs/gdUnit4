@@ -24,8 +24,6 @@ func _ready() -> void:
 
 
 func _notification(what: int) -> void:
-	if what == EditorSettings.NOTIFICATION_EDITOR_SETTINGS_CHANGED:
-		_test_reporter.init_colors()
 	if what == NOTIFICATION_PREDELETE:
 		var instance := GdUnitSignals.instance()
 		if instance.gdunit_event.is_connected(_on_gdunit_event):

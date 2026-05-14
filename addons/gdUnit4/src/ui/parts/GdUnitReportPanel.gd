@@ -23,13 +23,15 @@ func build_report(report: GdUnitReport) -> RichTextLabel:
 	message.push_color(GdUnitEditorColorTheme.text_color)
 	message.append_text(report.message())
 	message.pop()
+	message.newline()
 	add_stack_trace(message, report.stack_trace())
 	message.visible = true
 	return message
 
 
 func add_stack_trace(message: RichTextLabel, trace: GdUnitStackTrace) -> void:
-	message.newline()
+	if trace == null:
+		return
 	for frame in trace.get_frames():
 		message.push_indent(1)
 		message.push_meta(frame, RichTextLabel.META_UNDERLINE_ON_HOVER, frame._source)
@@ -49,7 +51,8 @@ func add_stack_trace(message: RichTextLabel, trace: GdUnitStackTrace) -> void:
 		message.pop() # hint
 		message.pop()
 		message.newline()
-	message.meta_clicked.connect(_on_meta_clicked)
+	if not message.meta_clicked.is_connected(_on_meta_clicked):
+		message.meta_clicked.connect(_on_meta_clicked)
 
 
 func _on_meta_clicked(meta: Variant) -> void:

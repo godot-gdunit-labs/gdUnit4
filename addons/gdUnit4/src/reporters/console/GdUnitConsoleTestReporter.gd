@@ -131,9 +131,11 @@ func _print_failure_report(reports: Array[GdUnitReport]) -> void:
 				.color(Color.DARK_TURQUOISE) \
 				.style(GdUnitMessageWriter.BOLD | GdUnitMessageWriter.UNDERLINE) \
 				.println_message("Report:")
-			var text := str(report)
-			for line in text.split("\n", false):
-				_writer.indent(2).color(Color.DARK_TURQUOISE).println_message(line)
+			_writer.indent(2) \
+				.color(GdUnitEditorColorTheme.text_color) \
+				.println_message(report.message()) \
+				.indent(2) \
+				.print_stack_trace(report.stack_trace())
 
 	if not reports.is_empty():
 		println_message("")

@@ -31,7 +31,7 @@ func get_line_number() -> int:
 func print_stack_trace() -> String:
 	var output := ""
 	for frame in _stack_trace:
-		output += "\tat - %s:%d in function '%s'\n" % [frame._source, frame._line, frame._function]
+		output += "\tat '%s' in %s:%d\n" % [frame._function, frame._source, frame._line]
 	return output
 
 

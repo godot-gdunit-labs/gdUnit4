@@ -12,7 +12,6 @@ const TITLE = "gdUnit4 ${version} Console"
 var _test_reporter: GdUnitConsoleTestReporter
 
 
-@warning_ignore("return_value_discarded")
 func _ready() -> void:
 	GdUnitFonts.init_fonts(output)
 	GdUnit4Version.init_version_label(title)

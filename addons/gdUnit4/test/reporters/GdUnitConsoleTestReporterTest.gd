@@ -3,7 +3,7 @@ class_name GdUnitConsoleTestReporterTest
 extends GdUnitTestSuite
 
 
-var reporter := GdUnitConsoleTestReporter.new(GdUnitMessageWriter.new())
+var reporter := GdUnitConsoleTestReporter.new(GdUnitCSIMessageWriter.new())
 
 
 func before_test() -> void:

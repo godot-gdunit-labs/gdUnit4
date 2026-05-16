@@ -95,17 +95,22 @@ func build_reports(test_report: GdUnitTestCaseReport) -> Array:
 			failure_reports.append(XmlElement.new("failure")\
 				.attribute(ATTR_MESSAGE, "FAILED: %s:%d" % [test_report.get_resource_path(), report.line_number()])\
 				.attribute(ATTR_TYPE, JUnitXmlReportWriter.to_type(report.type()))\
-				.text(convert_rtf_to_text(report.message())))
+				.text(failure_message(report)))
 		elif report.is_error():
 			failure_reports.append(XmlElement.new("error")\
 				.attribute(ATTR_MESSAGE, "ERROR: %s:%d" % [test_report.get_resource_path(), report.line_number()])\
 				.attribute(ATTR_TYPE, JUnitXmlReportWriter.to_type(report.type()))\
-				.text(convert_rtf_to_text(report.message())))
+				.text(failure_message(report)))
 		elif report.is_skipped():
 			failure_reports.append(XmlElement.new("skipped")\
 				.attribute(ATTR_MESSAGE, "SKIPPED: %s:%d" % [test_report.get_resource_path(), report.line_number()])\
 				.text(convert_rtf_to_text(report.message())))
 	return failure_reports
+
+
+func failure_message(report: GdUnitReport) -> String:
+	var stack_trace := "" if report.stack_trace() == null else report.stack_trace().print_stack_trace()
+	return "%s\n%s" % [convert_rtf_to_text(report.message()), stack_trace]
 
 
 func convert_rtf_to_text(bbcode: String) -> String:

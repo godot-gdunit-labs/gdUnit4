@@ -78,10 +78,6 @@ ${failure-report}
 								</tr>
 """
 
-const CHARACTERS_TO_ENCODE := {
-	'<': '&lt;',
-	'>': '&gt;'
-}
 
 const TABLE_BY_PATHS = "${report_table_paths}"
 const TABLE_BY_TESTSUITES = "${report_table_testsuites}"
@@ -126,7 +122,7 @@ static func build(template: String, report: GdUnitReportSummary, report_link: St
 		.replace(PATH, get_report_path(report))\
 		.replace(BREADCRUMP_PATH_LINK, breadcrumb_path_link)\
 		.replace(RESOURCE_PATH, report.get_resource_path())\
-		.replace(TESTSUITE_NAME, html_encoded(report.name()))\
+		.replace(TESTSUITE_NAME, GdUnitHtmlEncoder.encode(report.name()))\
 		.replace(TESTSUITE_COUNT, str(report.suite_count()))\
 		.replace(TESTCASE_COUNT, str(report.test_count()))\
 		.replace(FAILURE_COUNT, str(report.error_count() + report.failure_count()))\
@@ -188,12 +184,6 @@ static func calculate_percentage(p_test_count: int, count: int) -> String:
 	return "%d" % (( 0 if count < 0 else count) * 100.0 / p_test_count) + "%"
 
 
-static func html_encoded(value: String) -> String:
-	for key: String in CHARACTERS_TO_ENCODE.keys():
-		@warning_ignore("unsafe_cast")
-		value = value.replace(key, CHARACTERS_TO_ENCODE[key] as String)
-	return value
-
 
 static func create_suite_record(report_link: String, report: GdUnitTestSuiteReport) -> String:
 	return GdUnitHtmlPatterns.build(GdUnitHtmlPatterns.TABLE_RECORD_TESTSUITE, report, report_link)
@@ -207,7 +197,7 @@ static func create_test_failure_report(_report_dir: String, report: GdUnitTestCa
 		.replace(GdUnitHtmlPatterns.SKIPPED_COUNT, str(report.skipped_count()))\
 		.replace(GdUnitHtmlPatterns.ORPHAN_COUNT, str(report.orphan_count()))\
 		.replace(GdUnitHtmlPatterns.DURATION, LocalTime.elapsed(report._duration))\
-		.replace(GdUnitHtmlPatterns.FAILURE_REPORT, report.failure_report())
+		.replace(GdUnitHtmlPatterns.FAILURE_REPORT, GdUnitHtmlEncoder.encode(report.failure_report()))
 
 
 static func create_suite_failure_report(report: GdUnitTestSuiteReport) -> String:
@@ -216,4 +206,4 @@ static func create_suite_failure_report(report: GdUnitTestSuiteReport) -> String
 		.replace(GdUnitHtmlPatterns.REPORT_STATE_LABEL, report.report_state())\
 		.replace(GdUnitHtmlPatterns.ORPHAN_COUNT, str(report.orphan_count()))\
 		.replace(GdUnitHtmlPatterns.DURATION, LocalTime.elapsed(report._duration))\
-		.replace(GdUnitHtmlPatterns.FAILURE_REPORT, report.failure_report())
+		.replace(GdUnitHtmlPatterns.FAILURE_REPORT, GdUnitHtmlEncoder.encode(report.failure_report()))

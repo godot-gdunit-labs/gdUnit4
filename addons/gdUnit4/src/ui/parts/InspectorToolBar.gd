@@ -1,5 +1,5 @@
 @tool
-extends PanelContainer
+extends Control
 
 
 const  InspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/InspectorTreeMainPanel.gd")

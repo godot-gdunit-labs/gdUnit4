@@ -1,5 +1,5 @@
 @tool
-extends PanelContainer
+extends Control
 
 signal select_failure_next()
 signal select_failure_prevous()
@@ -17,8 +17,6 @@ signal tree_view_mode_changed(flat :bool)
 @onready var _failures: Label = %failure_value
 @onready var _flaky_value: Label = %flaky_value
 @onready var _skipped_value: Label = %skipped_value
-#@onready var _button_failure_up: Button = %btn_failure_up
-#@onready var _button_failure_down: Button = %btn_failure_down
 @onready var _button_sync: Button = %btn_tree_sync
 @onready var _button_view_mode: MenuButton = %btn_tree_mode
 @onready var _button_sort_mode: MenuButton = %btn_tree_sort
@@ -56,14 +54,19 @@ func _ready() -> void:
 	_icon_errors.texture = GdUnitUiTools.get_icon("StatusError", Color.DARK_RED)
 	_icon_flaky.texture = GdUnitUiTools.get_icon("CheckBox", Color.GREEN_YELLOW)
 	_icon_skipped.texture = GdUnitUiTools.get_icon("CheckBox", Color.WEB_GRAY)
-
-	#_button_failure_up.icon = GdUnitUiTools.get_icon("ArrowUp")
-	#_button_failure_down.icon = GdUnitUiTools.get_icon("ArrowDown")
+	_init_up_down_buttons()
 	_button_sync.icon = GdUnitUiTools.get_icon("Loop")
 	_set_sort_mode_menu_options()
 	_set_view_mode_menu_options()
 	GdUnitSignals.instance().gdunit_event.connect(_on_gdunit_event)
 	GdUnitSignals.instance().gdunit_settings_changed.connect(_on_settings_changed)
+
+
+func _init_up_down_buttons() -> void:
+	for button_down: Button in find_children("btn_down", "Button", true, false):
+		button_down.icon = GdUnitUiTools.get_icon("ArrowDown")
+	for button_up: Button in find_children("btn_up", "Button", true, false):
+		button_up.icon = GdUnitUiTools.get_icon("ArrowUp")
 
 
 func _set_sort_mode_menu_options() -> void:

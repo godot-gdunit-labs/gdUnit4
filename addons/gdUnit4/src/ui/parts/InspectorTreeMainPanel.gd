@@ -1,5 +1,5 @@
 @tool
-extends PanelContainer
+extends Control
 
 ## Will be emitted when the test index counter is changed
 signal test_counters_changed(index: int, total: int, state: GdUnitInspectorTreeConstants.STATE)

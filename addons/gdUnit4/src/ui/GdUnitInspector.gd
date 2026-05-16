@@ -1,6 +1,6 @@
 @tool
 class_name GdUnitInspecor
-extends PanelContainer
+extends Control
 
 
 var _command_handler := GdUnitCommandHandler.instance()

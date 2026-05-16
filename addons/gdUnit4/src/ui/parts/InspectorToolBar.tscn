@@ -1,196 +1,152 @@
-[gd_scene load_steps=17 format=3 uid="uid://dx7xy4dgi3wwb"]
+[gd_scene format=3 uid="uid://dx7xy4dgi3wwb"]
 
 [ext_resource type="Script" path="res://addons/gdUnit4/src/ui/parts/InspectorToolBar.gd" id="3"]
 
-[sub_resource type="DPITexture" id="DPITexture_c7rhl"]
-_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M6.973 7.441a4 4 0 1 0-1.414-1.414L3.293 8.293l1.414 1.414zM9 2a2 2 0 0 1 0 4 2 2 0 0 1 0-4zm-9 8v6h2a3 3 0 1 0 0-6zm5 3a3 3 0 1 0 6 0 3 3 0 0 0-6 0zm6 0a3 3 0 0 0 3 3h1v-2h-1a1 1 0 0 1 0-2h1v-2h-1a3 3 0 0 0-3 3zm-9-1a1 1 0 0 1 0 2zm6 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z\"/></svg>
-"
-color_map = {
-Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
-Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
-Color(1, 0.8666667, 0.39607844, 1): Color(1, 0.87, 0.4, 1)
-}
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c7rhl"]
 
-[sub_resource type="DPITexture" id="DPITexture_3erui"]
-_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M4 1 3 3l1 2v4H2v3.5a2.5 2.5 0 0 0 5 0V9H5V5l1-2-1-2zm6 .174a3 3 0 0 0 0 5.652V14a1 1 0 0 0 2 0V6.824a3 3 0 0 0 0-5.648V4a1 1 0 0 1-2 0z\"/></svg>
-"
-color_map = {
-Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
-Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
-Color(1, 0.8666667, 0.39607844, 1): Color(1, 0.87, 0.4, 1)
-}
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3erui"]
 
-[sub_resource type="InputEventKey" id="InputEventKey_p22nw"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p22nw"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_c7rhl"]
 alt_pressed = true
 pressed = true
 keycode = 4194338
 physical_keycode = 4194338
 
-[sub_resource type="Shortcut" id="Shortcut_3lcek"]
-events = [SubResource("InputEventKey_p22nw")]
+[sub_resource type="Shortcut" id="Shortcut_3erui"]
+events = [SubResource("InputEventKey_c7rhl")]
 
-[sub_resource type="Image" id="Image_ndw0i"]
-data = {
-"data": PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 195, 224, 224, 224, 210, 224, 224, 224, 56, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 195, 224, 224, 224, 210, 224, 224, 224, 56, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 253, 224, 224, 224, 139, 224, 224, 224, 8, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 253, 224, 224, 224, 139, 224, 224, 224, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 225, 225, 225, 215, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 225, 225, 225, 215, 224, 224, 224, 56, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 253, 224, 224, 224, 139, 224, 224, 224, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 225, 225, 225, 183, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 225, 225, 225, 182, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 252, 225, 225, 225, 134, 255, 255, 255, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 212, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 212, 226, 226, 226, 52, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 252, 225, 225, 225, 134, 255, 255, 255, 6, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 252, 225, 225, 225, 134, 255, 255, 255, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 225, 225, 225, 191, 224, 224, 224, 206, 226, 226, 226, 52, 0, 0, 0, 0, 0, 0, 0, 0, 225, 225, 225, 191, 224, 224, 224, 206, 226, 226, 226, 52, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-"format": "RGBA8",
-"height": 16,
-"mipmaps": false,
-"width": 16
-}
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3lcek"]
 
-[sub_resource type="ImageTexture" id="ImageTexture_eoihf"]
-image = SubResource("Image_ndw0i")
-
-[sub_resource type="InputEventKey" id="InputEventKey_6gwbs"]
+[sub_resource type="InputEventKey" id="InputEventKey_p22nw"]
 alt_pressed = true
 pressed = true
 keycode = 4194336
 physical_keycode = 4194336
 
-[sub_resource type="Shortcut" id="Shortcut_2i8uq"]
-events = [SubResource("InputEventKey_6gwbs")]
+[sub_resource type="Shortcut" id="Shortcut_3lcek"]
+events = [SubResource("InputEventKey_p22nw")]
 
-[sub_resource type="DPITexture" id="DPITexture_87jj1"]
-_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M4 12a1 1 0 0 0 1.555.832l6-4a1 1 0 0 0 0-1.664l-6-4A1 1 0 0 0 4 4z\"/></svg>
-"
-color_map = {
-Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
-Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
-Color(1, 0.8666667, 0.39607844, 1): Color(1, 0.87, 0.4, 1)
-}
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ndw0i"]
 
-[sub_resource type="InputEventKey" id="InputEventKey_fewwl"]
+[sub_resource type="InputEventKey" id="InputEventKey_ndw0i"]
 alt_pressed = true
 pressed = true
 keycode = 4194337
 physical_keycode = 4194337
 
-[sub_resource type="Shortcut" id="Shortcut_f3lkx"]
-events = [SubResource("InputEventKey_fewwl")]
+[sub_resource type="Shortcut" id="Shortcut_eoihf"]
+events = [SubResource("InputEventKey_ndw0i")]
 
-[sub_resource type="DPITexture" id="DPITexture_7oobd"]
-_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M3 3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zm4.975 0A1 1 0 0 0 7 3.998v8a1 1 0 0 0 1.625.781l5-4a1 1 0 0 0 0-1.56l-5-4A1 1 0 0 0 7.975 3z\"/></svg>
-"
-color_map = {
-Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
-Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
-Color(1, 0.8666667, 0.39607844, 1): Color(1, 0.87, 0.4, 1)
-}
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eoihf"]
 
-[sub_resource type="InputEventKey" id="InputEventKey_lvbnb"]
+[sub_resource type="InputEventKey" id="InputEventKey_6gwbs"]
 alt_pressed = true
 pressed = true
 keycode = 4194339
 physical_keycode = 4194339
 
-[sub_resource type="Shortcut" id="Shortcut_6idxu"]
-events = [SubResource("InputEventKey_lvbnb")]
+[sub_resource type="Shortcut" id="Shortcut_2i8uq"]
+events = [SubResource("InputEventKey_6gwbs")]
 
-[sub_resource type="DPITexture" id="DPITexture_qf2s1"]
-_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><rect width=\"10\" height=\"10\" x=\"3\" y=\"3\" fill=\"#e0e0e0\" rx=\"1\"/></svg>
-"
-color_map = {
-Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
-Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
-Color(1, 0.8666667, 0.39607844, 1): Color(1, 0.87, 0.4, 1)
-}
-
-[node name="ToolBar" type="PanelContainer"]
+[node name="ToolBar" type="Control" unique_id=952982667]
+layout_mode = 3
 anchors_preset = 10
 anchor_right = 1.0
-offset_right = -894.0
 offset_bottom = 24.0
 grow_horizontal = 2
 size_flags_horizontal = 3
-size_flags_vertical = 4
+size_flags_vertical = 3
 script = ExtResource("3")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 2
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=295615556]
+layout_mode = 0
+offset_right = 315.0
+offset_bottom = 24.0
 
-[node name="tools" type="HBoxContainer" parent="HBoxContainer"]
+[node name="tools" type="HBoxContainer" parent="HBoxContainer" unique_id=753222103]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 
-[node name="help" type="Button" parent="HBoxContainer/tools"]
+[node name="help" type="Button" parent="HBoxContainer/tools" unique_id=1834372497]
 unique_name_in_owner = true
 layout_mode = 2
-icon = SubResource("DPITexture_c7rhl")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_c7rhl")
 
-[node name="tool" type="Button" parent="HBoxContainer/tools"]
+[node name="tool" type="Button" parent="HBoxContainer/tools" unique_id=144277615]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "GdUnit Settings"
-icon = SubResource("DPITexture_3erui")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_3erui")
 
-[node name="controls" type="HBoxContainer" parent="HBoxContainer"]
+[node name="controls" type="HBoxContainer" parent="HBoxContainer" unique_id=108317981]
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
 alignment = 1
 
-[node name="VSeparator3" type="VSeparator" parent="HBoxContainer/controls"]
+[node name="VSeparator3" type="VSeparator" parent="HBoxContainer/controls" unique_id=1244151035]
 layout_mode = 2
 
-[node name="run_overall" type="Button" parent="HBoxContainer/controls"]
+[node name="run_overall" type="Button" parent="HBoxContainer/controls" unique_id=95775836]
 unique_name_in_owner = true
 use_parent_material = true
 layout_mode = 2
 tooltip_text = "Run overall tests"
-shortcut = SubResource("Shortcut_3lcek")
-icon = SubResource("ImageTexture_eoihf")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_p22nw")
+shortcut = SubResource("Shortcut_3erui")
 metadata/GdUnitCommand = "Run Tests Overall"
 
-[node name="run" type="Button" parent="HBoxContainer/controls"]
+[node name="run" type="Button" parent="HBoxContainer/controls" unique_id=121281977]
 unique_name_in_owner = true
 use_parent_material = true
 layout_mode = 2
 tooltip_text = "Rerun unit tests"
+theme_override_styles/normal = SubResource("StyleBoxEmpty_3lcek")
 disabled = true
-shortcut = SubResource("Shortcut_2i8uq")
-icon = SubResource("DPITexture_87jj1")
+shortcut = SubResource("Shortcut_3lcek")
 metadata/GdUnitCommand = "Run Inspector Tests"
 
-[node name="debug" type="Button" parent="HBoxContainer/controls"]
+[node name="debug" type="Button" parent="HBoxContainer/controls" unique_id=1188465777]
 unique_name_in_owner = true
 use_parent_material = true
 layout_mode = 2
 tooltip_text = "Rerun unit tests (Debug)"
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ndw0i")
 disabled = true
-shortcut = SubResource("Shortcut_f3lkx")
-icon = SubResource("DPITexture_7oobd")
+shortcut = SubResource("Shortcut_eoihf")
 metadata/GdUnitCommand = "Debug Inspector Tests"
 
-[node name="stop" type="Button" parent="HBoxContainer/controls"]
+[node name="stop" type="Button" parent="HBoxContainer/controls" unique_id=2086070257]
 unique_name_in_owner = true
 use_parent_material = true
 layout_mode = 2
 tooltip_text = "Stops runing unit tests"
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eoihf")
 disabled = true
-shortcut = SubResource("Shortcut_6idxu")
-icon = SubResource("DPITexture_qf2s1")
+shortcut = SubResource("Shortcut_2i8uq")
 metadata/GdUnitCommand = "Stop Test Session"
 
-[node name="VSeparator4" type="VSeparator" parent="HBoxContainer/controls"]
+[node name="VSeparator4" type="VSeparator" parent="HBoxContainer/controls" unique_id=1661024234]
 layout_mode = 2
 
-[node name="CenterContainer" type="HBoxContainer" parent="HBoxContainer"]
+[node name="CenterContainer" type="HBoxContainer" parent="HBoxContainer" unique_id=1521483443]
 use_parent_material = true
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 4
 alignment = 2
 
-[node name="version" type="Label" parent="HBoxContainer/CenterContainer"]
+[node name="version" type="Label" parent="HBoxContainer/CenterContainer" unique_id=558200171]
 unique_name_in_owner = true
 auto_translate_mode = 2
 use_parent_material = true
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 2
 size_flags_vertical = 13
 localize_numeral_system = false
-text = "gdUnit4 6.1.0"
 horizontal_alignment = 1
 justification_flags = 160
 

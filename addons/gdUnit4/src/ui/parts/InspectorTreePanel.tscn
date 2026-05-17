@@ -145,13 +145,15 @@ frame_7/texture = SubResource("DPITexture_pi1kv")
 frame_7/duration = 0.2
 
 [node name="MainPanel" type="Control" unique_id=944258025]
-custom_minimum_size = Vector2(120, 400)
+custom_minimum_size = Vector2(120, 240)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1")
 
 [node name="contextMenu" parent="." unique_id=73764904 instance=ExtResource("2_o6s0p")]
@@ -165,6 +167,7 @@ item_5/icon = SubResource("DPITexture_hed0i")
 
 [node name="split" type="VSplitContainer" parent="." unique_id=1044515559]
 clip_contents = true
+custom_minimum_size = Vector2(0, 160)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -174,10 +177,11 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/autohide = 0
-split_offsets = PackedInt32Array(80)
-split_offset = 80
+split_offsets = PackedInt32Array(120)
+split_offset = 120
 
 [node name="Panel" type="Panel" parent="split" unique_id=290722553]
+custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -222,6 +226,7 @@ alignment = 2
 
 [node name="report" parent="split" unique_id=1465857421 instance=ExtResource("3_miuuy")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 40)
 layout_mode = 2
 
 [connection signal="item_activated" from="split/Panel/Tree" to="." method="_on_Tree_item_activated"]

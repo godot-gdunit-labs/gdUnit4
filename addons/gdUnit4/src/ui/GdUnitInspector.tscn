@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://mpo5o6d4uybu"]
 
-[ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/parts/InspectorToolBar.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/parts/GdUnitInspectorToolBar.tscn" id="1"]
 [ext_resource type="Script" path="res://addons/gdUnit4/src/ui/GdUnitInspector.gd" id="1_j37cs"]
-[ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/parts/InspectorProgressBar.tscn" id="2"]
-[ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/parts/InspectorStatusBar.tscn" id="3"]
-[ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/parts/InspectorMonitor.tscn" id="4"]
-[ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/parts/InspectorTreePanel.tscn" id="7"]
+[ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/parts/GdUnitInspectorProgressBar.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/parts/GdUnitInspectorStatusBar.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/parts/GdUnitInspectorMonitor.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/parts/GdUnitInspectorTreePanel.tscn" id="7"]
 [ext_resource type="PackedScene" path="res://addons/gdUnit4/src/network/GdUnitServer.tscn" id="7_721no"]
 
 [node name="GdUnit" type="Control" unique_id=272268338]

@@ -6,9 +6,9 @@ static func create(source :Script, line_number :int) -> GdUnitResult:
 	var test_suite_path := GdUnitTestSuiteScanner.resolve_test_suite_path(source.resource_path, GdUnitSettings.test_root_folder())
 	# we need to save and close the testsuite and source if is current opened before modify
 	@warning_ignore("return_value_discarded")
-	ScriptEditorControls.save_an_open_script(source.resource_path)
+	GdUnitScriptEditorControls.save_an_open_script(source.resource_path)
 	@warning_ignore("return_value_discarded")
-	ScriptEditorControls.save_an_open_script(test_suite_path, true)
+	GdUnitScriptEditorControls.save_an_open_script(test_suite_path, true)
 	if source.get_class() == "CSharpScript":
 		return GdUnit4CSharpApiLoader.create_test_suite(source.resource_path, line_number+1, test_suite_path)
 	var parser := GdScriptParser.new()

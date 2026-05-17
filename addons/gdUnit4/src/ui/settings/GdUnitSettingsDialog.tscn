@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://addons/gdUnit4/src/ui/settings/GdUnitSettingsDialog.gd" id="2"]
 [ext_resource type="Texture2D" path="res://addons/gdUnit4/src/ui/settings/logo.png" id="3_isfyl"]
-[ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/templates/TestSuiteTemplate.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/templates/GdUnitTestSuiteTemplatePanel.tscn" id="4"]
 [ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/settings/GdUnitSettingsTabHooks.tscn" id="4_nf72w"]
 [ext_resource type="PackedScene" path="res://addons/gdUnit4/src/update/GdUnitUpdateNotify.tscn" id="5_n1jtv"]
 [ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/settings/GdUnitInputCapture.tscn" id="5_xu3j8"]

@@ -68,7 +68,7 @@ func test_meta_clicked_signal_is_connected_when_stack_trace_has_frames() -> void
 
 @warning_ignore_start("redundant_await")
 func test_on_meta_clicked_is_called_with_expected_frame_on_click() -> void:
-	# Use a real source path so ScriptEditorControls.edit_script can load() the script
+	# Use a real source path so GdUnitScriptEditorControls.edit_script can load() the script
 	var frame1 := GdUnitStackTraceElement.new(
 		"res://test/MyTest.gd", 42, "test_foo"
 	)

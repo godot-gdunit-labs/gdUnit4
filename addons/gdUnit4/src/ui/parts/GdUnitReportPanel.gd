@@ -57,4 +57,4 @@ func add_stack_trace(message: RichTextLabel, trace: GdUnitStackTrace) -> void:
 
 func _on_meta_clicked(meta: Variant) -> void:
 	var frame: GdUnitStackTraceElement = meta
-	ScriptEditorControls.edit_script(frame._source, frame._line)
+	GdUnitScriptEditorControls.edit_script(frame._source, frame._line)

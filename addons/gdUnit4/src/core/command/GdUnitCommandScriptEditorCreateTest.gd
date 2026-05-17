@@ -26,7 +26,7 @@ func execute(..._parameters: Array) -> void:
 	var info: Dictionary = result.value()
 	var script_path: String = info.get("path")
 	var script_line: int = info.get("line")
-	ScriptEditorControls.edit_script(script_path, script_line)
+	GdUnitScriptEditorControls.edit_script(script_path, script_line)
 
 
 func _is_active_script_editor() -> bool:

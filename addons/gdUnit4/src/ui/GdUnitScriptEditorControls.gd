@@ -1,5 +1,5 @@
 # A tool to provide extended script editor functionallity
-class_name ScriptEditorControls
+class_name GdUnitScriptEditorControls
 extends RefCounted
 
 # https://github.com/godotengine/godot/blob/master/editor/plugins/script_editor_plugin.h

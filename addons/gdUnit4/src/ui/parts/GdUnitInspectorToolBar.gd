@@ -2,7 +2,7 @@
 extends Control
 
 
-const  InspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/InspectorTreeMainPanel.gd")
+const  GdUnitInspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/GdUnitInspectorTreeMainPanel.gd")
 
 @onready var _version_label: Control = %version
 @onready var _button_wiki: Button = %help
@@ -13,7 +13,7 @@ const  InspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/Insp
 @onready var _button_stop: Button = %stop
 
 
-var inspector: InspectorTreeMainPanel
+var inspector: GdUnitInspectorTreeMainPanel
 var command_handler: GdUnitCommandHandler
 
 

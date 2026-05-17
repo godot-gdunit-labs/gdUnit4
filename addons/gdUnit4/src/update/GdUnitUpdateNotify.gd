@@ -160,7 +160,7 @@ func _on_update_pressed() -> void:
 	_update_button.set_disabled(true)
 	# close all opend scripts before start the update
 	if not _debug_mode:
-		ScriptEditorControls.close_open_editor_scripts()
+		GdUnitScriptEditorControls.close_open_editor_scripts()
 	# copy update source to a temp because the update is deleting the whole gdUnit folder
 	DirAccess.make_dir_absolute("res://addons/.gdunit_update")
 	DirAccess.copy_absolute("res://addons/gdUnit4/src/update/GdUnitUpdate.tscn", "res://addons/.gdunit_update/GdUnitUpdate.tscn")

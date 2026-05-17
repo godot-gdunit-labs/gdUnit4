@@ -119,4 +119,4 @@ func _prepare_test_session(tests_to_execute: Array[GdUnitTestCase]) -> void:
 		push_error(result.error_message())
 		return
 	# before start we have to save all scrpt changes
-	ScriptEditorControls.save_all_open_script()
+	GdUnitScriptEditorControls.save_all_open_script()

@@ -1,17 +1,17 @@
 extends GdUnitTestSuite
 
 
-const InspectorProgressBar := preload("res://addons/gdUnit4/src/ui/parts/InspectorProgressBar.gd")
+const GdUnitInspectorProgressBar := preload("res://addons/gdUnit4/src/ui/parts/GdUnitInspectorProgressBar.gd")
 
 
-var _progress: InspectorProgressBar
+var _progress: GdUnitInspectorProgressBar
 var _status: Label
 var _style: StyleBoxFlat
 
 
 func before_test() -> void:
 	@warning_ignore("unsafe_method_access")
-	_progress = load('res://addons/gdUnit4/src/ui/parts/InspectorProgressBar.tscn').instantiate()
+	_progress = load('res://addons/gdUnit4/src/ui/parts/GdUnitInspectorProgressBar.tscn').instantiate()
 	add_child(_progress)
 
 	_status = _progress.status

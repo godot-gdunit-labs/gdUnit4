@@ -1,7 +1,7 @@
 class_name GdUnitCommandInspectorTreeCollapse
 extends GdUnitBaseCommand
 
-const  InspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/InspectorTreeMainPanel.gd")
+const  GdUnitInspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/GdUnitInspectorTreeMainPanel.gd")
 const ID := "Inspector Tree Collapse"
 
 
@@ -15,7 +15,7 @@ func is_running() -> bool:
 
 
 func execute(..._parameters: Array) -> void:
-	var inspector: InspectorTreeMainPanel = EditorInterface.get_base_control().get_meta("GdUnit4Inspector")
+	var inspector: GdUnitInspectorTreeMainPanel = EditorInterface.get_base_control().get_meta("GdUnit4Inspector")
 	var selected_item := inspector._tree.get_selected()
 	if selected_item == null:
 		selected_item = inspector._tree.get_root()

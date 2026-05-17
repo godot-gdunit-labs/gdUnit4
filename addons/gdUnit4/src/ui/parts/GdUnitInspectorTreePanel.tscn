@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bqfpidewtpeg0"]
 
-[ext_resource type="Script" path="res://addons/gdUnit4/src/ui/parts/InspectorTreeMainPanel.gd" id="1"]
+[ext_resource type="Script" path="res://addons/gdUnit4/src/ui/parts/GdUnitInspectorTreeMainPanel.gd" id="1"]
 [ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/menu/GdUnitInspectorContextMenu.tscn" id="2_o6s0p"]
 [ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/parts/GdUnitReportPanel.tscn" id="3_miuuy"]
 

@@ -3,11 +3,11 @@ class_name InspectorTreeMainPanelTest
 extends GdUnitTestSuite
 
 # TestSuite generated from
-const InspectorTreeMainPanel := preload('res://addons/gdUnit4/src/ui/parts/InspectorTreeMainPanel.gd')
+const GdUnitInspectorTreeMainPanel := preload('res://addons/gdUnit4/src/ui/parts/GdUnitInspectorTreeMainPanel.gd')
 
-const FAILED := InspectorTreeMainPanel.STATE.FAILED
-const ERROR := InspectorTreeMainPanel.STATE.ERROR
-const FLAKY := InspectorTreeMainPanel.STATE.FLAKY
+const FAILED := GdUnitInspectorTreeMainPanel.STATE.FAILED
+const ERROR := GdUnitInspectorTreeMainPanel.STATE.ERROR
+const FLAKY := GdUnitInspectorTreeMainPanel.STATE.FLAKY
 
 
 const META_SCRIPT_PATH := "script_path"
@@ -21,12 +21,12 @@ var discovered_tests_suite_b := {}
 var discovered_tests_suite_c := {}
 
 
-var _inspector: InspectorTreeMainPanel
+var _inspector: GdUnitInspectorTreeMainPanel
 
 
 func before_test() -> void:
 	@warning_ignore("unsafe_method_access")
-	_inspector = load("res://addons/gdUnit4/src/ui/parts/InspectorTreePanel.tscn").instantiate()
+	_inspector = load("res://addons/gdUnit4/src/ui/parts/GdUnitInspectorTreePanel.tscn").instantiate()
 	_inspector.disable_test_recovery()
 	add_child(_inspector)
 	_inspector.init_tree()
@@ -75,7 +75,7 @@ func setup_test_env() -> void:
 	suite_c_item = _inspector._find_tree_item_by_test_suite(_inspector._tree_root, suite_c.resource_path, "ExampleTestSuiteC")
 
 
-func set_test_state(test_cases: Array[GdUnitTestCase], state: InspectorTreeMainPanel.STATE) -> void:
+func set_test_state(test_cases: Array[GdUnitTestCase], state: GdUnitInspectorTreeMainPanel.STATE) -> void:
 	for test in test_cases:
 		var item := _inspector._find_tree_item_by_id(_inspector._tree_root, test.guid)
 		var parent := item.get_parent()
@@ -459,7 +459,7 @@ func test_custom_sort_by_original_index() -> void:
 		# suffle to have a random order
 		tree_root.get_children().shuffle()
 		# sort it by original index
-		InspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SORT_MODE.UNSORTED)
+		GdUnitInspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SORT_MODE.UNSORTED)
 		# verify
 		assert_array(tree_root.get_children()).extractv(ItemNameExtractor.new()).contains_exactly([
 			# folders should be always on top
@@ -483,7 +483,7 @@ func test_custom_sort_by_name_ascending() -> void:
 		# suffle to have a random order
 		tree_root.get_children().shuffle()
 		# sort it by name ascending
-		InspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SORT_MODE.NAME_ASCENDING)
+		GdUnitInspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SORT_MODE.NAME_ASCENDING)
 		# verify
 		assert_array(tree_root.get_children()).extractv(ItemNameExtractor.new()).contains_exactly([
 			# folders should be always on top
@@ -507,7 +507,7 @@ func test_custom_sort_by_name_descending() -> void:
 		# suffle to have a random order
 		tree_root.get_children().shuffle()
 		# sort it by name descending
-		InspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SORT_MODE.NAME_DESCENDING)
+		GdUnitInspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SORT_MODE.NAME_DESCENDING)
 		# verify
 		assert_array(tree_root.get_children()).extractv(ItemNameExtractor.new()).contains_exactly([
 			# folders should be always on top
@@ -530,7 +530,7 @@ func test_custom_sort_by_execution_time() -> void:
 		# suffle to have a random order
 		tree_root.get_children().shuffle()
 		# sort it by execution time
-		InspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SORT_MODE.EXECUTION_TIME)
+		GdUnitInspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SORT_MODE.EXECUTION_TIME)
 		# verify
 		assert_array(tree_root.get_children()).extractv(ItemNameExtractor.new()).contains_exactly([
 			# folders should be always on top
@@ -543,20 +543,20 @@ func test_custom_sort_by_execution_time() -> void:
 func create_test_item(parent: TreeItem, test_name: String, execution_time := 0 ) -> TreeItem:
 	var item := parent.create_child()
 	var index := parent.get_child_count()
-	item.set_meta(InspectorTreeMainPanel.META_GDUNIT_TYPE, InspectorTreeMainPanel.GdUnitType.TEST_CASE)
-	item.set_meta(InspectorTreeMainPanel.META_GDUNIT_NAME, test_name)
-	item.set_meta(InspectorTreeMainPanel.META_GDUNIT_ORIGINAL_INDEX, index)
-	item.set_meta(InspectorTreeMainPanel.META_GDUNIT_EXECUTION_TIME, execution_time)
+	item.set_meta(GdUnitInspectorTreeMainPanel.META_GDUNIT_TYPE, GdUnitInspectorTreeMainPanel.GdUnitType.TEST_CASE)
+	item.set_meta(GdUnitInspectorTreeMainPanel.META_GDUNIT_NAME, test_name)
+	item.set_meta(GdUnitInspectorTreeMainPanel.META_GDUNIT_ORIGINAL_INDEX, index)
+	item.set_meta(GdUnitInspectorTreeMainPanel.META_GDUNIT_EXECUTION_TIME, execution_time)
 	return item
 
 
 func create_folder_item(parent: TreeItem, folder_name: String, execution_time := 0) -> TreeItem:
 	var item := parent.create_child()
 	var index := parent.get_child_count()
-	item.set_meta(InspectorTreeMainPanel.META_GDUNIT_TYPE, InspectorTreeMainPanel.GdUnitType.FOLDER)
-	item.set_meta(InspectorTreeMainPanel.META_GDUNIT_NAME, folder_name)
-	item.set_meta(InspectorTreeMainPanel.META_GDUNIT_ORIGINAL_INDEX, index)
-	item.set_meta(InspectorTreeMainPanel.META_GDUNIT_EXECUTION_TIME, execution_time)
+	item.set_meta(GdUnitInspectorTreeMainPanel.META_GDUNIT_TYPE, GdUnitInspectorTreeMainPanel.GdUnitType.FOLDER)
+	item.set_meta(GdUnitInspectorTreeMainPanel.META_GDUNIT_NAME, folder_name)
+	item.set_meta(GdUnitInspectorTreeMainPanel.META_GDUNIT_ORIGINAL_INDEX, index)
+	item.set_meta(GdUnitInspectorTreeMainPanel.META_GDUNIT_EXECUTION_TIME, execution_time)
 	return item
 
 func test_discover_tests() -> void:
@@ -821,4 +821,4 @@ class ItemNameExtractor extends GdUnitValueExtractor:
 
 	func extract_value(value :Variant) -> Variant:
 		var item: TreeItem = value
-		return item.get_meta(InspectorTreeMainPanel.META_GDUNIT_NAME)
+		return item.get_meta(GdUnitInspectorTreeMainPanel.META_GDUNIT_NAME)

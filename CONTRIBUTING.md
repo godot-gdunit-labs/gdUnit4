@@ -106,6 +106,22 @@ This can occur due to CI rules. Check the terminal output for details and ensure
 
 For more details, refer to the GdUnit4Net repository.
 
+### Setup Git Hooks
+
+A pre-commit hook is provided in `.githooks/pre-commit`. It strips `uid="uid://..."` attributes from
+`[ext_resource]` lines in staged `.tscn` scene files before each commit. Godot generates these UIDs from
+`.uid` sidecar files which are not committed to this repository — leaving them in scenes causes loading
+warnings on a clean clone.
+
+Activate the hook once after cloning:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+The hook runs automatically on every `git commit` and re-stages any modified scene files — no manual
+cleanup needed.
+
 ### Setup GDScript Linting
 
 GDScript linting uses `gdtoolkit` (`gdlint`).

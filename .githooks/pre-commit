@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Strip uid="uid://..." attributes from [ext_resource] lines in staged .tscn files.
+# Godot generates these from .uid sidecar files which are not committed to this repo,
+# so leaving them in causes loading warnings when opening the project on a clean clone.
+
+staged_scenes=$(git diff --cached --name-only --diff-filter=ACM | grep '\.tscn$')
+
+if [ -z "$staged_scenes" ]; then
+    exit 0
+fi
+
+while IFS= read -r file; do
+    if grep -qE '^\[ext_resource[^]]*uid="uid://' "$file"; then
+        sed -i '/^\[ext_resource/s/ uid="uid:\/\/[^"]*"//g' "$file"
+        git add "$file"
+        echo "pre-commit: stripped uid references from $file"
+    fi
+done <<< "$staged_scenes"
+
+exit 0

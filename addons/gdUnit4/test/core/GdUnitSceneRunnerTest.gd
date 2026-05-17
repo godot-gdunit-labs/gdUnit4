@@ -294,7 +294,10 @@ func test_runner_by_uid_path() -> void:
 
 
 func test_runner_by_binary_resource_path() -> void:
+	# Hides In external resource #1, invalid UID: 'uid://tyt68dhy4ubc'
+	Engine.print_error_messages = false
 	var runner := scene_runner("res://addons/gdUnit4/test/core/resources/scenes/simple_scene.scn")
+	Engine.print_error_messages = true
 	assert_object(runner.scene()).is_instanceof(Node2D)
 
 	# verify the scene is freed when the runner is freed

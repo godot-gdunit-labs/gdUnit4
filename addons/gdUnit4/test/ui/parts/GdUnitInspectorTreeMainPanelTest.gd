@@ -1,5 +1,5 @@
 # GdUnit generated TestSuite
-class_name InspectorTreeMainPanelTest
+class_name GdUnitInspectorTreeMainPanelTest
 extends GdUnitTestSuite
 
 # TestSuite generated from
@@ -26,7 +26,7 @@ var _inspector: GdUnitInspectorTreeMainPanel
 
 func before_test() -> void:
 	@warning_ignore("unsafe_method_access")
-	_inspector = load("res://addons/gdUnit4/src/ui/parts/GdUnitInspectorTreePanel.tscn").instantiate()
+	_inspector = load("res://addons/gdUnit4/src/ui/parts/GdUnitInspectorTreeMainPanel.tscn").instantiate()
 	_inspector.disable_test_recovery()
 	add_child(_inspector)
 	_inspector.init_tree()

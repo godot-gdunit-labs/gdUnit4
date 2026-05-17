@@ -1,6 +1,6 @@
 @warning_ignore_start("unsafe_method_access")
 # GdUnit generated TestSuite
-class_name TestSuiteTemplateTest
+class_name GdUnitTestSuiteTemplatePanelTest
 extends GdUnitTestSuite
 
 # TestSuite generated from

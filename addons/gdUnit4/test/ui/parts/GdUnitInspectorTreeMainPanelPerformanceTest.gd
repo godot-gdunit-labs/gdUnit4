@@ -1,5 +1,5 @@
 # GdUnit generated TestSuite
-class_name InspectorTreeMainPanelPerformanceTest
+class_name GdUnitInspectorTreeMainPanelPerformanceTest
 extends GdUnitTestSuite
 
 # TestSuite generated from

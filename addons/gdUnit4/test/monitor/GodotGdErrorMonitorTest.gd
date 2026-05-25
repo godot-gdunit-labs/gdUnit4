@@ -21,18 +21,21 @@ func test_monitor_push_error() -> void:
 
 	# push error
 	monitor.start()
-	forcet_push_error()
+	force_push_error()
 	monitor.stop()
 
 	var reports := monitor.to_reports()
 	assert_array(reports).has_size(1)
-	prints(reports[0].message())
-	assert_str(reports[0].message())\
-		.contains("Test GodotGdErrorMonitor 'push_error' reporting")\
-		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:67")\
-		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:62")\
-		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:24")
-	assert_int(reports[0].line_number()).is_equal(24)
+	var report := reports[0]
+	assert_str(report.message()) \
+		.contains("Test GodotGdErrorMonitor 'push_error' reporting")
+	assert_object(report.stack_trace()) \
+		.is_equal(GdUnitStackTrace.new([
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd", 74, "force_push_error2"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd", 69, "force_push_error"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd", 24, "test_monitor_push_error")
+		]))
+	assert_int(report.line_number()).is_equal(74)
 
 
 func test_monitor_push_waring() -> void:
@@ -46,10 +49,14 @@ func test_monitor_push_waring() -> void:
 
 	var reports := monitor.to_reports()
 	assert_array(reports).has_size(1)
-	assert_str(reports[0].message())\
-		.contains("Test GodotGdErrorMonitor 'push_warning' reporting")\
-		.contains("at res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd:44")
-	assert_int(reports[0].line_number()).is_equal(44)
+	var report := reports[0]
+	assert_str(report.message())\
+		.contains("Test GodotGdErrorMonitor 'push_warning' reporting")
+	assert_object(report.stack_trace()) \
+		.is_equal(GdUnitStackTrace.new([
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd", 47, "test_monitor_push_waring")
+		]))
+	assert_int(report.line_number()).is_equal(47)
 
 
 func test_fail_by_push_error(_do_skip := true, _skip_reason := "disabled to not produce errors, enable only for direct testing") -> void:
@@ -57,11 +64,11 @@ func test_fail_by_push_error(_do_skip := true, _skip_reason := "disabled to not 
 	push_error("test error")
 
 
-func forcet_push_error() -> void:
+func force_push_error() -> void:
 	@warning_ignore("redundant_await")
-	await forcet_push_error2()
+	await force_push_error2()
 
 
-func forcet_push_error2() -> void:
+func force_push_error2() -> void:
 	#await get_tree().process_frame
 	push_error("Test GodotGdErrorMonitor 'push_error' reporting")

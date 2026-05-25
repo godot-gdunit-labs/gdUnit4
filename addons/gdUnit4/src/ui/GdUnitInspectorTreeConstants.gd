@@ -28,4 +28,5 @@ enum STATE {
 	FAILED,
 	ERROR,
 	ABORDED,
+	ORPHAN
 }

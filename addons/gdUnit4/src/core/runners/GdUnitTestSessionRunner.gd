@@ -161,7 +161,7 @@ func get_exit_code() -> int:
 
 
 ## Quits the test runner with given exit code.
-func quit(code: int) -> void:
+func quit(_code: int) -> void:
 	await GdUnitMemoryObserver.gc_on_guarded_instances()
 
 	if !_is_editor_debug_run:

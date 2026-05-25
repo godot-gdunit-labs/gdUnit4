@@ -25,12 +25,12 @@ func test_progress_init() -> void:
 
 
 func test_progress_on_test_counter_changed(index: int, total_count: int, state: GdUnitInspectorTreeConstants.STATE, expected_color: Color, _test_parameters := [
-	[0, 0, GdUnitInspectorTreeConstants.STATE.INITIAL, Color.DARK_GREEN],
-	[1, 2, GdUnitInspectorTreeConstants.STATE.SUCCESS, Color.DARK_GREEN],
-	[2, 2, GdUnitInspectorTreeConstants.STATE.WARNING, Color.DARK_GREEN],
-	[3, 5, GdUnitInspectorTreeConstants.STATE.RUNNING, Color.DARK_GREEN],
-	[4, 5, GdUnitInspectorTreeConstants.STATE.FAILED, Color.DARK_RED],
-	[5, 5, GdUnitInspectorTreeConstants.STATE.ERROR, Color.DARK_RED],
+	[0, 0, GdUnitInspectorTreeConstants.STATE.INITIAL, GdUnitEditorColorTheme.state_initial],
+	[1, 2, GdUnitInspectorTreeConstants.STATE.SUCCESS, GdUnitEditorColorTheme.state_success],
+	[2, 2, GdUnitInspectorTreeConstants.STATE.WARNING, GdUnitEditorColorTheme.state_success],
+	[3, 5, GdUnitInspectorTreeConstants.STATE.RUNNING, GdUnitEditorColorTheme.state_success],
+	[4, 5, GdUnitInspectorTreeConstants.STATE.FAILED, GdUnitEditorColorTheme.state_failure],
+	[5, 5, GdUnitInspectorTreeConstants.STATE.ERROR, GdUnitEditorColorTheme.state_failure],
 ]) -> void:
 
 	_progress._on_test_counter_changed(index, total_count, state)

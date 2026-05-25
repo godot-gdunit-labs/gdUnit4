@@ -1,12 +1,9 @@
 class_name GdAssertMessages
 extends Resource
 
-const WARN_COLOR = "#EFF883"
-const ERROR_COLOR = "#CD5C5C"
-const VALUE_COLOR = "#1E90FF"
+
 const SUB_COLOR :=  Color(1, 0, 0, .15)
 const ADD_COLOR :=  Color(0, 1, 0, .15)
-
 
 # Dictionary of control characters and their readable representations
 const CONTROL_CHARS = {
@@ -19,6 +16,11 @@ const CONTROL_CHARS = {
 	"\a": "<BEL>",  # Bell
 	"": "<ESC>"   # Escape
 }
+
+
+static var _warn_color :=  GdUnitEditorColorTheme.state_warning.to_html()
+static var _error_color := GdUnitEditorColorTheme.state_failure.to_html()
+static var _value_color := GdUnitEditorColorTheme.value_color.to_html()
 
 
 static func format_dict(value :Variant) -> String:
@@ -120,21 +122,21 @@ static func _typed_value(value :Variant) -> String:
 
 
 static func _warning(error :String) -> String:
-	return "[color=%s]%s[/color]" % [WARN_COLOR, error]
+	return "[color=%s]%s[/color]" % [_warn_color, error]
 
 
 static func _error(error :String) -> String:
-	return "[color=%s]%s[/color]" % [ERROR_COLOR, error]
+	return "[color=%s]%s[/color]" % [_error_color, error]
 
 
 static func _nerror(number :Variant) -> String:
 	match typeof(number):
 		TYPE_INT:
-			return "[color=%s]%d[/color]" % [ERROR_COLOR, number]
+			return "[color=%s]%d[/color]" % [_error_color, number]
 		TYPE_FLOAT:
-			return "[color=%s]%f[/color]" % [ERROR_COLOR, number]
+			return "[color=%s]%f[/color]" % [_error_color, number]
 		_:
-			return "[color=%s]%s[/color]" % [ERROR_COLOR, str(number)]
+			return "[color=%s]%s[/color]" % [_error_color, str(number)]
 
 
 static func _colored(value: Variant, color: Color) -> String:
@@ -144,29 +146,29 @@ static func _colored(value: Variant, color: Color) -> String:
 static func _colored_value(value :Variant) -> String:
 	match typeof(value):
 		TYPE_STRING, TYPE_STRING_NAME:
-			return "'[color=%s]%s[/color]'" % [VALUE_COLOR, _colored_string_div(str(value))]
+			return "'[color=%s]%s[/color]'" % [_value_color, _colored_string_div(str(value))]
 		TYPE_INT:
-			return "'[color=%s]%d[/color]'" % [VALUE_COLOR, value]
+			return "'[color=%s]%d[/color]'" % [_value_color, value]
 		TYPE_FLOAT:
-			return "'[color=%s]%s[/color]'" % [VALUE_COLOR, _typed_value(value)]
+			return "'[color=%s]%s[/color]'" % [_value_color, _typed_value(value)]
 		TYPE_COLOR:
-			return "'[color=%s]%s[/color]'" % [VALUE_COLOR, _typed_value(value)]
+			return "'[color=%s]%s[/color]'" % [_value_color, _typed_value(value)]
 		TYPE_OBJECT:
 			if value == null:
-				return "'[color=%s]<null>[/color]'" % [VALUE_COLOR]
+				return "'[color=%s]<null>[/color]'" % [_value_color]
 			if value is InputEvent:
 				var ie: InputEvent = value
-				return "[color=%s]<%s>[/color]" % [VALUE_COLOR, input_event_as_text(ie)]
+				return "[color=%s]<%s>[/color]" % [_value_color, input_event_as_text(ie)]
 			var obj_value: Object = value
 			if obj_value.has_method("_to_string"):
-				return "[color=%s]<%s>[/color]" % [VALUE_COLOR, str(value)]
-			return "[color=%s]<%s>[/color]" % [VALUE_COLOR, obj_value.get_class()]
+				return "[color=%s]<%s>[/color]" % [_value_color, str(value)]
+			return "[color=%s]<%s>[/color]" % [_value_color, obj_value.get_class()]
 		TYPE_DICTIONARY:
-			return "'[color=%s]%s[/color]'" % [VALUE_COLOR, format_dict(value)]
+			return "'[color=%s]%s[/color]'" % [_value_color, format_dict(value)]
 		_:
 			if GdArrayTools.is_array_type(value):
-				return "'[color=%s]%s[/color]'" % [VALUE_COLOR, _typed_value(value)]
-			return "'[color=%s]%s[/color]'" % [VALUE_COLOR, value]
+				return "'[color=%s]%s[/color]'" % [_value_color, _typed_value(value)]
+			return "'[color=%s]%s[/color]'" % [_value_color, value]
 
 
 
@@ -190,7 +192,7 @@ static func orphan_warning(orphans_count: int) -> String:
 			Add %s to the end of the test to collect details.""".dedent().trim_prefix("\n") % [
 		_warning("WARNING:"),
 		_nerror(orphans_count),
-		_colored_value("collect_orphan_node_details()")
+		_colored("collect_orphan_node_details()", _value_color)
 	]
 
 static func orphan_detected_on_suite_setup(orphans: Array[GdUnitOrphanNodeInfo]) -> String:

@@ -169,14 +169,14 @@ static func extract_from(descriptor :Dictionary, is_engine_ := true) -> GdFuncti
 	var is_static_: bool = function_flags & METHOD_FLAG_STATIC
 	var is_vararg_: bool = function_flags & METHOD_FLAG_VARARG
 
-	var return_type := _extract_return_type(return_descriptor)
+	var return_type_ := _extract_return_type(return_descriptor)
 	return GdFunctionDescriptor.new(
 		func_name,
 		-1,
 		is_virtual_,
 		is_static_,
 		is_engine_,
-		return_type,
+		return_type_,
 		clazz_name,
 		_extract_args(descriptor),
 		_build_varargs(is_vararg_)

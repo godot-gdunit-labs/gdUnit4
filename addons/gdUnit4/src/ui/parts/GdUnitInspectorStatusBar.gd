@@ -50,16 +50,25 @@ func _ready() -> void:
 	_errors.text = "0"
 	_flaky_value.text = "0"
 	_skipped_value.text = "0"
-	_icon_failures.texture = GdUnitUiTools.get_icon("StatusError", Color.SKY_BLUE)
-	_icon_errors.texture = GdUnitUiTools.get_icon("StatusError", Color.DARK_RED)
-	_icon_flaky.texture = GdUnitUiTools.get_icon("CheckBox", Color.GREEN_YELLOW)
-	_icon_skipped.texture = GdUnitUiTools.get_icon("CheckBox", Color.WEB_GRAY)
+	_init_icons()
 	_init_up_down_buttons()
 	_button_sync.icon = GdUnitUiTools.get_icon("Loop")
 	_set_sort_mode_menu_options()
 	_set_view_mode_menu_options()
 	GdUnitSignals.instance().gdunit_event.connect(_on_gdunit_event)
 	GdUnitSignals.instance().gdunit_settings_changed.connect(_on_settings_changed)
+
+
+func _notification(what: int) -> void:
+	if what == EditorSettings.NOTIFICATION_EDITOR_SETTINGS_CHANGED:
+		_init_icons()
+
+
+func _init_icons() -> void:
+	_icon_failures.texture = GdUnitUiTools.get_state_icon(GdUnitInspectorTreeConstants.STATE.FAILED)
+	_icon_errors.texture = GdUnitUiTools.get_state_icon(GdUnitInspectorTreeConstants.STATE.ERROR)
+	_icon_flaky.texture = GdUnitUiTools.get_state_icon(GdUnitInspectorTreeConstants.STATE.FLAKY)
+	_icon_skipped.texture = GdUnitUiTools.get_state_icon(GdUnitInspectorTreeConstants.STATE.SKIPPED)
 
 
 func _init_up_down_buttons() -> void:

@@ -24,6 +24,7 @@ func _enter_tree() -> void:
 		prints("This GdUnit4 plugin version '%s' requires Godot version '4.5' or higher to run." % GdUnit4Version.current())
 		return
 	GdUnitSettings.setup()
+	GdUnitEditorColorTheme.setup()
 	# Install the GdUnit Inspector
 	_gd_inspector = (load("res://addons/gdUnit4/src/ui/GdUnitInspector.tscn") as PackedScene).instantiate()
 	_add_context_menus()

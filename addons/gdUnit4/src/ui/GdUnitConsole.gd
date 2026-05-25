@@ -45,21 +45,21 @@ func setup_update_notification(control: Button) -> void:
 	add_child(update_client)
 	var response :GdUnitUpdateClient.HttpResponse = await update_client.request_latest_version()
 	if response.status() != 200:
-		_test_reporter.println_message("Information cannot be retrieved from GitHub!", Color.INDIAN_RED)
-		_test_reporter.println_message("Error:  %s" % response.response(), Color.INDIAN_RED)
+		_test_reporter.println_message("Information cannot be retrieved from GitHub!", GdUnitEditorColorTheme.state_failure)
+		_test_reporter.println_message("Error:  %s" % response.response(), GdUnitEditorColorTheme.state_failure)
 		return
 	var latest_version := update_client.extract_latest_version(response)
 	if not latest_version.is_greater(GdUnit4Version.current()):
-		_test_reporter.println_message("GdUnit4 is up-to-date.", Color.FOREST_GREEN)
+		_test_reporter.println_message("GdUnit4 is up-to-date.", GdUnitEditorColorTheme.state_success)
 		return
 
-	_test_reporter.println_message("A new update is available %s" % latest_version, Color.YELLOW)
-	_test_reporter.println_message("Open the GdUnit4 settings and check the update tab.", Color.YELLOW)
+	_test_reporter.println_message("A new update is available %s" % latest_version, GdUnitEditorColorTheme.state_warning)
+	_test_reporter.println_message("Open the GdUnit4 settings and check the update tab.", GdUnitEditorColorTheme.state_warning)
 
-	control.icon = GdUnitUiTools.get_icon("Notification", Color.YELLOW)
+	control.icon = GdUnitUiTools.get_icon("Notification", GdUnitEditorColorTheme.state_warning)
 	var tween := create_tween()
 	tween.tween_property(control, "self_modulate", Color.VIOLET, .2).set_trans(Tween.TransitionType.TRANS_LINEAR)
-	tween.tween_property(control, "self_modulate", Color.YELLOW, .2).set_trans(Tween.TransitionType.TRANS_BOUNCE)
+	tween.tween_property(control, "self_modulate", GdUnitEditorColorTheme.state_warning, .2).set_trans(Tween.TransitionType.TRANS_BOUNCE)
 	tween.parallel()
 	tween.tween_property(control, "scale", Vector2.ONE*1.05, .4).set_trans(Tween.TransitionType.TRANS_LINEAR)
 	tween.tween_property(control, "scale", Vector2.ONE, .4).set_trans(Tween.TransitionType.TRANS_BOUNCE)
@@ -77,12 +77,12 @@ func _on_gdunit_event(event: GdUnitEvent) -> void:
 
 func _on_gdunit_client_connected(client_id: int) -> void:
 	_test_reporter.clear()
-	_test_reporter.println_message("GdUnit Test Client connected with id: %d" % client_id, Color.hex(0x9887c4))
+	_test_reporter.println_message("GdUnit Test Client connected with id: %d" % client_id, GdUnitEditorColorTheme.folder_color)
 
 
 func _on_gdunit_client_disconnected(client_id: int) -> void:
-	_test_reporter.println_message("GdUnit Test Client disconnected with id: %d" % client_id, Color.hex(0x9887c4))
+	_test_reporter.println_message("GdUnit Test Client disconnected with id: %d" % client_id, GdUnitEditorColorTheme.folder_color)
 
 
 func _on_gdunit_message(message: String) -> void:
-	_test_reporter.println_message(message, Color.CORNFLOWER_BLUE)
+	_test_reporter.println_message(message, GdUnitEditorColorTheme.folder_color)

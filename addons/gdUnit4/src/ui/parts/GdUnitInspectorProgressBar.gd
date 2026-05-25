@@ -8,7 +8,8 @@ extends ProgressBar
 var _state: GdUnitInspectorTreeConstants.STATE
 
 func _ready() -> void:
-	style.bg_color = Color.DARK_GREEN
+	style.bg_color = GdUnitEditorColorTheme.state_initial
+	status.add_theme_color_override("font_color", Color.DIM_GRAY)
 	value = 0
 	max_value = 0
 	update_text()
@@ -25,17 +26,17 @@ func _on_test_counter_changed(index: int, total: int, state: GdUnitInspectorTree
 
 	# inital state
 	if index == 0:
-		style.bg_color = Color.DARK_GREEN
+		_state = GdUnitInspectorTreeConstants.STATE.INITIAL
 
 	# do only update the state is higher prio than current state
 	if state <= _state:
 		return
 	_state = state
 
-	if is_flaky(state):
-		style.bg_color = Color.WEB_GREEN
 	if is_failed(state):
-		style.bg_color = Color.DARK_RED
+		style.bg_color = GdUnitEditorColorTheme.state_failure
+	else:
+		style.bg_color = GdUnitEditorColorTheme.state_success
 
 
 func is_failed(state: GdUnitInspectorTreeConstants.STATE) -> bool:

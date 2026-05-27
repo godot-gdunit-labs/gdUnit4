@@ -12,16 +12,6 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0oden"]
 
-[sub_resource type="DPITexture" id="DPITexture_mb3ih"]
-_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"none\" stroke=\"#e0e0e0\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 5v7l4-4m-4 4L4 8\"/></svg>
-"
-saturation = 2.0
-color_map = {
-Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
-Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
-Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
-}
-
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ixycx"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c80wp"]
@@ -34,86 +24,74 @@ Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lpjla"]
 
-[node name="StatusBar" type="Control" unique_id=719212496]
-clip_contents = true
-layout_mode = 3
-anchors_preset = 15
+[node name="StatusBar" type="VBoxContainer" unique_id=214621769]
+anchors_preset = 10
 anchor_right = 1.0
-anchor_bottom = 1.0
+offset_bottom = 132.0
 grow_horizontal = 2
-grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 2
 script = ExtResource("3")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=214621769]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_vertical = 0
-
-[node name="tree_tools" type="HBoxContainer" parent="VBoxContainer" unique_id=1524945370]
+[node name="tree_tools" type="HBoxContainer" parent="." unique_id=1524945370]
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="Label" type="Label" parent="VBoxContainer/tree_tools" unique_id=226892195]
+[node name="Label" type="Label" parent="tree_tools" unique_id=226892195]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Statistics"
 
-[node name="tree_buttons" type="HBoxContainer" parent="VBoxContainer/tree_tools" unique_id=1600307316]
+[node name="tree_buttons" type="HBoxContainer" parent="tree_tools" unique_id=1600307316]
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 4
 alignment = 2
 
-[node name="VSeparator" type="VSeparator" parent="VBoxContainer/tree_tools/tree_buttons" unique_id=1191926359]
+[node name="VSeparator" type="VSeparator" parent="tree_tools/tree_buttons" unique_id=1191926359]
 layout_mode = 2
 
-[node name="btn_tree_sync" type="Button" parent="VBoxContainer/tree_tools/tree_buttons" unique_id=2138788372]
+[node name="btn_tree_sync" type="Button" parent="tree_tools/tree_buttons" unique_id=2138788372]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Run discover tests."
 theme_override_styles/normal = SubResource("StyleBoxEmpty_mb3ih")
 
-[node name="btn_tree_sort" type="MenuButton" parent="VBoxContainer/tree_tools/tree_buttons" unique_id=1452127838]
+[node name="btn_tree_sort" type="MenuButton" parent="tree_tools/tree_buttons" unique_id=1452127838]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Sets tree sorting mode."
 theme_override_styles/normal = SubResource("StyleBoxEmpty_wo03e")
 flat = false
 
-[node name="btn_tree_mode" type="MenuButton" parent="VBoxContainer/tree_tools/tree_buttons" unique_id=1744382439]
+[node name="btn_tree_mode" type="MenuButton" parent="tree_tools/tree_buttons" unique_id=1744382439]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Sets tree presentation mode."
 theme_override_styles/normal = SubResource("StyleBoxEmpty_jh28t")
 flat = false
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer" unique_id=1416084348]
+[node name="HSeparator" type="HSeparator" parent="." unique_id=1416084348]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="status_bar" type="HFlowContainer" parent="VBoxContainer" unique_id=1576624226]
+[node name="status_bar" type="HFlowContainer" parent="." unique_id=1576624226]
 layout_direction = 2
 layout_mode = 2
 size_flags_vertical = 2
 
-[node name="error" type="VBoxContainer" parent="VBoxContainer/status_bar" unique_id=532464781]
+[node name="error" type="VBoxContainer" parent="status_bar" unique_id=532464781]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 theme_override_constants/separation = -2
 
-[node name="icon" type="HBoxContainer" parent="VBoxContainer/status_bar/error" unique_id=980338948]
+[node name="icon" type="HBoxContainer" parent="status_bar/error" unique_id=980338948]
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="icon_errors" type="TextureRect" parent="VBoxContainer/status_bar/error/icon" unique_id=981061410]
+[node name="icon_errors" type="TextureRect" parent="status_bar/error/icon" unique_id=981061410]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -121,20 +99,20 @@ size_flags_vertical = 4
 tooltip_text = "Error Tests"
 stretch_mode = 3
 
-[node name="btn_up" type="Button" parent="VBoxContainer/status_bar/error/icon" unique_id=128855365]
+[node name="btn_up" type="Button" parent="status_bar/error/icon" unique_id=128855365]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 tooltip_text = "Jump to the previous error test"
 theme_override_styles/normal = SubResource("StyleBoxEmpty_uqb0l")
 
-[node name="counter" type="HBoxContainer" parent="VBoxContainer/status_bar/error" unique_id=320088753]
+[node name="counter" type="HBoxContainer" parent="status_bar/error" unique_id=320088753]
 auto_translate_mode = 2
 layout_mode = 2
 size_flags_horizontal = 8
 localize_numeral_system = false
 
-[node name="error_value" type="Label" parent="VBoxContainer/status_bar/error/counter" unique_id=1173069184]
+[node name="error_value" type="Label" parent="status_bar/error/counter" unique_id=1173069184]
 unique_name_in_owner = true
 use_parent_material = true
 custom_minimum_size = Vector2(32, 0)
@@ -146,28 +124,27 @@ justification_flags = 0
 visible_characters = 3
 visible_ratio = 3.0
 
-[node name="btn_down" type="Button" parent="VBoxContainer/status_bar/error/counter" unique_id=345916573]
+[node name="btn_down" type="Button" parent="status_bar/error/counter" unique_id=345916573]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 tooltip_text = "Jump to the next error test"
 theme_override_styles/normal = SubResource("StyleBoxEmpty_0oden")
-icon = SubResource("DPITexture_mb3ih")
 
-[node name="VSeparator" type="VSeparator" parent="VBoxContainer/status_bar" unique_id=1337164698]
+[node name="VSeparator" type="VSeparator" parent="status_bar" unique_id=1337164698]
 layout_mode = 2
 
-[node name="failure" type="VBoxContainer" parent="VBoxContainer/status_bar" unique_id=668143074]
+[node name="failure" type="VBoxContainer" parent="status_bar" unique_id=668143074]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_constants/separation = -2
 
-[node name="icon" type="HBoxContainer" parent="VBoxContainer/status_bar/failure" unique_id=913689377]
+[node name="icon" type="HBoxContainer" parent="status_bar/failure" unique_id=913689377]
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="icon_failures" type="TextureRect" parent="VBoxContainer/status_bar/failure/icon" unique_id=644665557]
+[node name="icon_failures" type="TextureRect" parent="status_bar/failure/icon" unique_id=644665557]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -175,20 +152,20 @@ size_flags_vertical = 4
 tooltip_text = "Failed Tests"
 stretch_mode = 3
 
-[node name="btn_up" type="Button" parent="VBoxContainer/status_bar/failure/icon" unique_id=703086216]
+[node name="btn_up" type="Button" parent="status_bar/failure/icon" unique_id=703086216]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 tooltip_text = "Jump to the previous failed test"
 theme_override_styles/normal = SubResource("StyleBoxEmpty_ixycx")
 
-[node name="counter" type="HBoxContainer" parent="VBoxContainer/status_bar/failure" unique_id=469489912]
+[node name="counter" type="HBoxContainer" parent="status_bar/failure" unique_id=469489912]
 auto_translate_mode = 2
 layout_mode = 2
 size_flags_horizontal = 8
 localize_numeral_system = false
 
-[node name="failure_value" type="Label" parent="VBoxContainer/status_bar/failure/counter" unique_id=2112775802]
+[node name="failure_value" type="Label" parent="status_bar/failure/counter" unique_id=2112775802]
 unique_name_in_owner = true
 use_parent_material = true
 custom_minimum_size = Vector2(32, 0)
@@ -200,27 +177,27 @@ justification_flags = 0
 visible_characters = 3
 visible_ratio = 3.0
 
-[node name="btn_down" type="Button" parent="VBoxContainer/status_bar/failure/counter" unique_id=354437479]
+[node name="btn_down" type="Button" parent="status_bar/failure/counter" unique_id=354437479]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 tooltip_text = "Jump to the next failed test"
 theme_override_styles/normal = SubResource("StyleBoxEmpty_c80wp")
 
-[node name="VSeparator2" type="VSeparator" parent="VBoxContainer/status_bar" unique_id=1340956265]
+[node name="VSeparator2" type="VSeparator" parent="status_bar" unique_id=1340956265]
 layout_mode = 2
 
-[node name="flaky" type="VBoxContainer" parent="VBoxContainer/status_bar" unique_id=1045751754]
+[node name="flaky" type="VBoxContainer" parent="status_bar" unique_id=1045751754]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_constants/separation = -2
 
-[node name="icon" type="HBoxContainer" parent="VBoxContainer/status_bar/flaky" unique_id=1657218582]
+[node name="icon" type="HBoxContainer" parent="status_bar/flaky" unique_id=1657218582]
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="icon_flaky" type="TextureRect" parent="VBoxContainer/status_bar/flaky/icon" unique_id=1642017900]
+[node name="icon_flaky" type="TextureRect" parent="status_bar/flaky/icon" unique_id=1642017900]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -228,20 +205,20 @@ size_flags_vertical = 4
 tooltip_text = "Flaky Tests"
 stretch_mode = 3
 
-[node name="btn_up" type="Button" parent="VBoxContainer/status_bar/flaky/icon" unique_id=1696112932]
+[node name="btn_up" type="Button" parent="status_bar/flaky/icon" unique_id=1696112932]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 tooltip_text = "Jump to the previous flaky test"
 theme_override_styles/normal = SubResource("StyleBoxEmpty_eis20")
 
-[node name="counter" type="HBoxContainer" parent="VBoxContainer/status_bar/flaky" unique_id=1112580380]
+[node name="counter" type="HBoxContainer" parent="status_bar/flaky" unique_id=1112580380]
 auto_translate_mode = 2
 layout_mode = 2
 size_flags_horizontal = 8
 localize_numeral_system = false
 
-[node name="flaky_value" type="Label" parent="VBoxContainer/status_bar/flaky/counter" unique_id=86782555]
+[node name="flaky_value" type="Label" parent="status_bar/flaky/counter" unique_id=86782555]
 unique_name_in_owner = true
 use_parent_material = true
 custom_minimum_size = Vector2(32, 0)
@@ -253,28 +230,28 @@ justification_flags = 0
 visible_characters = 3
 visible_ratio = 3.0
 
-[node name="btn_down" type="Button" parent="VBoxContainer/status_bar/flaky/counter" unique_id=349950180]
+[node name="btn_down" type="Button" parent="status_bar/flaky/counter" unique_id=349950180]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 tooltip_text = "Jump to the next flaky test"
 theme_override_styles/normal = SubResource("StyleBoxEmpty_t2qd7")
 
-[node name="VSeparator3" type="VSeparator" parent="VBoxContainer/status_bar" unique_id=1506845836]
+[node name="VSeparator3" type="VSeparator" parent="status_bar" unique_id=1506845836]
 layout_mode = 2
 
-[node name="skipped" type="VBoxContainer" parent="VBoxContainer/status_bar" unique_id=1801359704]
+[node name="skipped" type="VBoxContainer" parent="status_bar" unique_id=1801359704]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_constants/separation = -2
 
-[node name="icon" type="HBoxContainer" parent="VBoxContainer/status_bar/skipped" unique_id=730330861]
+[node name="icon" type="HBoxContainer" parent="status_bar/skipped" unique_id=730330861]
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_constants/separation = 0
 
-[node name="icon_skipped" type="TextureRect" parent="VBoxContainer/status_bar/skipped/icon" unique_id=1023112448]
+[node name="icon_skipped" type="TextureRect" parent="status_bar/skipped/icon" unique_id=1023112448]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -282,21 +259,21 @@ size_flags_vertical = 4
 tooltip_text = "Skipped Tests"
 stretch_mode = 3
 
-[node name="btn_up" type="Button" parent="VBoxContainer/status_bar/skipped/icon" unique_id=273208942]
+[node name="btn_up" type="Button" parent="status_bar/skipped/icon" unique_id=273208942]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 tooltip_text = "Jump to the previous skipped test"
 theme_override_styles/normal = SubResource("StyleBoxEmpty_1mh1t")
 
-[node name="counter" type="HBoxContainer" parent="VBoxContainer/status_bar/skipped" unique_id=1082090192]
+[node name="counter" type="HBoxContainer" parent="status_bar/skipped" unique_id=1082090192]
 auto_translate_mode = 2
 layout_mode = 2
 size_flags_horizontal = 8
 localize_numeral_system = false
 theme_override_constants/separation = 0
 
-[node name="skipped_value" type="Label" parent="VBoxContainer/status_bar/skipped/counter" unique_id=500157525]
+[node name="skipped_value" type="Label" parent="status_bar/skipped/counter" unique_id=500157525]
 unique_name_in_owner = true
 use_parent_material = true
 custom_minimum_size = Vector2(32, 0)
@@ -308,19 +285,19 @@ justification_flags = 0
 visible_characters = 3
 visible_ratio = 3.0
 
-[node name="btn_down" type="Button" parent="VBoxContainer/status_bar/skipped/counter" unique_id=2025315587]
+[node name="btn_down" type="Button" parent="status_bar/skipped/counter" unique_id=2025315587]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 tooltip_text = "Jump to the next skipped test"
 theme_override_styles/normal = SubResource("StyleBoxEmpty_lpjla")
 
-[connection signal="pressed" from="VBoxContainer/tree_tools/tree_buttons/btn_tree_sync" to="." method="_on_btn_tree_sync_pressed"]
-[connection signal="pressed" from="VBoxContainer/status_bar/error/icon/btn_up" to="." method="_on_btn_error_up_pressed"]
-[connection signal="pressed" from="VBoxContainer/status_bar/error/counter/btn_down" to="." method="_on_btn_error_down_pressed"]
-[connection signal="pressed" from="VBoxContainer/status_bar/failure/icon/btn_up" to="." method="_on_failure_up_pressed"]
-[connection signal="pressed" from="VBoxContainer/status_bar/failure/counter/btn_down" to="." method="_on_failure_down_pressed"]
-[connection signal="pressed" from="VBoxContainer/status_bar/flaky/icon/btn_up" to="." method="_on_btn_flaky_up_pressed"]
-[connection signal="pressed" from="VBoxContainer/status_bar/flaky/counter/btn_down" to="." method="_on_btn_flaky_down_pressed"]
-[connection signal="pressed" from="VBoxContainer/status_bar/skipped/icon/btn_up" to="." method="_on_btn_skipped_up_pressed"]
-[connection signal="pressed" from="VBoxContainer/status_bar/skipped/counter/btn_down" to="." method="_on_btn_skipped_down_pressed"]
+[connection signal="pressed" from="tree_tools/tree_buttons/btn_tree_sync" to="." method="_on_btn_tree_sync_pressed"]
+[connection signal="pressed" from="status_bar/error/icon/btn_up" to="." method="_on_btn_error_up_pressed"]
+[connection signal="pressed" from="status_bar/error/counter/btn_down" to="." method="_on_btn_error_down_pressed"]
+[connection signal="pressed" from="status_bar/failure/icon/btn_up" to="." method="_on_failure_up_pressed"]
+[connection signal="pressed" from="status_bar/failure/counter/btn_down" to="." method="_on_failure_down_pressed"]
+[connection signal="pressed" from="status_bar/flaky/icon/btn_up" to="." method="_on_btn_flaky_up_pressed"]
+[connection signal="pressed" from="status_bar/flaky/counter/btn_down" to="." method="_on_btn_flaky_down_pressed"]
+[connection signal="pressed" from="status_bar/skipped/icon/btn_up" to="." method="_on_btn_skipped_up_pressed"]
+[connection signal="pressed" from="status_bar/skipped/counter/btn_down" to="." method="_on_btn_skipped_down_pressed"]

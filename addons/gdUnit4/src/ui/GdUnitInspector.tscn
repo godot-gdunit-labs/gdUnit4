@@ -10,13 +10,12 @@
 
 [node name="GdUnit" type="Control" unique_id=272268338]
 clip_contents = true
-custom_minimum_size = Vector2(320, 400)
+custom_minimum_size = Vector2(360, 440)
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
+anchors_preset = 9
 anchor_bottom = 1.0
-grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 focus_mode = 2
 script = ExtResource("1_j37cs")
@@ -38,22 +37,19 @@ clip_contents = true
 layout_mode = 2
 
 [node name="ToolBar" parent="VBoxContainer/Header" unique_id=185399834 instance=ExtResource("1")]
-custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-size_flags_vertical = 2
+size_flags_vertical = 3
 
 [node name="ProgressBar" parent="VBoxContainer/Header" unique_id=360281822 instance=ExtResource("2")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 5
-size_flags_vertical = 4
+size_flags_vertical = 1
 max_value = 0.0
 
 [node name="StatusBar" parent="VBoxContainer/Header" unique_id=625414847 instance=ExtResource("3")]
-custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 1
-size_flags_vertical = 10
 
 [node name="MainPanel" parent="VBoxContainer" unique_id=1133307707 instance=ExtResource("7")]
 unique_name_in_owner = true
@@ -61,7 +57,6 @@ clip_contents = true
 layout_mode = 2
 
 [node name="Monitor" parent="VBoxContainer" unique_id=1419900107 instance=ExtResource("4")]
-visible = false
 layout_mode = 2
 
 [node name="event_server" parent="." unique_id=756999253 instance=ExtResource("7_721no")]

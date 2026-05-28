@@ -150,17 +150,6 @@ static func setup() -> void:
 	create_property_if_need(TEMPLATE_TS_GD, GdUnitTestSuiteTemplate.default_GD_template(), "Test suite template to use")
 	create_shortcut_properties_if_need()
 	create_property_if_need(SESSION_HOOKS, {} as Dictionary[String,bool])
-	migrate_properties()
-
-
-static func migrate_properties() -> void:
-	var TEST_ROOT_FOLDER := "gdunit4/settings/test/test_root_folder"
-	if get_property(TEST_ROOT_FOLDER) != null:
-		migrate_property(TEST_ROOT_FOLDER,\
-			TEST_LOOKUP_FOLDER,\
-			DEFAULT_TEST_LOOKUP_FOLDER,\
-			HELP_TEST_LOOKUP_FOLDER,\
-			func(value :Variant) -> String: return DEFAULT_TEST_LOOKUP_FOLDER if value == null else value)
 
 
 static func create_shortcut_properties_if_need() -> void:

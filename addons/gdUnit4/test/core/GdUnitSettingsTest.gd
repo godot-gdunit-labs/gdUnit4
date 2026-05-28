@@ -287,21 +287,3 @@ func test_validate_is_inferred_declaration_enabled_when_error_and_addon_not_excl
 		.is_error()\
 		.contains_message(expected_message)
 #endregion
-
-
-#region migrate_properties
-func test_migrate_properties_v215() -> void:
-	var old_property := "gdunit4/settings/test/test_root_folder"
-	GdUnitSettings.create_property_if_need(old_property, "test", "Sets the root folder where test-suites located/generated.")
-	ProjectSettings.set_setting(old_property, "tests")
-
-	GdUnitSettings.migrate_properties()
-
-	var property := GdUnitSettings.get_property(GdUnitSettings.TEST_LOOKUP_FOLDER)
-	assert_str(property.value()).is_equal("tests")
-	assert_array(property.value_set()).is_empty()
-	assert_int(property.type()).is_equal(TYPE_STRING)
-	assert_str(property.default()).is_equal(GdUnitSettings.DEFAULT_TEST_LOOKUP_FOLDER)
-	assert_str(property.help()).is_equal(GdUnitSettings.HELP_TEST_LOOKUP_FOLDER)
-	assert_that(GdUnitSettings.get_property(old_property)).is_null()
-#endregion

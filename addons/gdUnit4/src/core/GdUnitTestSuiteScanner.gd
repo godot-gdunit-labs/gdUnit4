@@ -237,7 +237,7 @@ static func is_test_suite(script: Script) -> bool:
 
 static func _is_script_format_supported(resource_path: String) -> bool:
 	var ext := resource_path.get_extension()
-	return ext == "gd" or ext == "cs"
+	return ext == "gd" or (ext == "cs" and ClassDB.class_exists("CSharpScript"))
 
 
 static func parse_test_suite_name(script: Script) -> String:

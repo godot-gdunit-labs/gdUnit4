@@ -79,16 +79,22 @@ func orphans_count() -> int:
 func collect() -> void:
 	if not _orphan_detection_enabled:
 		return
-	for orphan_id in _get_orphan_node_ids():
+
+	var orphan_ids := _get_orphan_node_ids()
+	if orphan_ids.is_empty():
+		return
+
+	var script_backtraces := Engine.capture_script_backtraces(true)
+	for orphan_id in orphan_ids:
 		var orphan_to_find := instance_from_id(orphan_id)
-		_collect_orphan_info(orphan_to_find)
+		_collect_orphan_info(orphan_to_find, script_backtraces)
 
 
-func _collect_orphan_info(orphan_to_find: Object) -> void:
+func _collect_orphan_info(orphan_to_find: Object, script_backtraces: Array[ScriptBacktrace]) -> void:
 	if orphan_to_find == null:
 		return
 
-	var orphan_node := _find_orphan_on_backtraces(orphan_to_find)
+	var orphan_node := _find_orphan_on_backtraces(orphan_to_find, script_backtraces)
 	if orphan_node:
 		_collected_orphan_infos.append(orphan_node)
 		return
@@ -164,8 +170,8 @@ func _is_frame_file_excluded(frame_file: String) -> bool:
 	return false
 
 
-func _find_orphan_on_backtraces(orphan_to_find: Object) -> GdUnitOrphanNodeInfo:
-	for script_backtrace in Engine.capture_script_backtraces(true):
+func _find_orphan_on_backtraces(orphan_to_find: Object, script_backtraces: Array[ScriptBacktrace]) -> GdUnitOrphanNodeInfo:
+	for script_backtrace in script_backtraces:
 		for frame in script_backtrace.get_frame_count():
 			var frame_file := script_backtrace.get_frame_file(frame)
 			if _is_frame_file_excluded(frame_file):

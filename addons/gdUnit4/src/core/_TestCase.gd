@@ -93,8 +93,13 @@ func _execute_test_case(name: String, test_parameter: Array) -> void:
 	# save the function state like GDScriptFunctionState to dispose at test timeout to prevent orphan state
 	_func_state = get_parent().callv(name, test_parameter)
 	await _func_state
-	# needs at least on await otherwise it breaks the awaiting chain
-	await (Engine.get_main_loop() as SceneTree).process_frame
+	# Give the engine time to free resources otherwies we do orphan false detection
+	await get_tree().process_frame
+	# We need to call deferred the signal `completed` otherwise the current thread is blocked
+	test_completed.call_deferred()
+
+
+func test_completed() -> void:
 	completed.emit()
 
 
@@ -131,7 +136,7 @@ func do_interrupt() -> void:
 		else:
 			execution_context.add_report(GdUnitReport.new()\
 				.create(GdUnitReport.INTERUPTED, line_number(), GdAssertMessages.test_timeout(_attribute.timeout)))
-	completed.emit()
+	test_completed.call_deferred()
 
 
 func do_terminate() -> void:
@@ -141,7 +146,7 @@ func do_terminate() -> void:
 	var execution_context := GdUnitThreadManager.get_current_context().get_execution_context()
 	execution_context.add_report(GdUnitReport.new()\
 		.create(GdUnitReport.TERMINATED, line_number(), GdAssertMessages.test_session_terminated()))
-	completed.emit()
+	test_completed.call_deferred()
 
 
 func _set_failure_handler() -> void:

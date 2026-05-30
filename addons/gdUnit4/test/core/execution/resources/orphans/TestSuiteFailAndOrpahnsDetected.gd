@@ -26,6 +26,7 @@ func test_case1() -> void:
 	var n12 := Node.new()
 	var n13 := Node.new()
 	_orphans.append_array([n11, n12, n13])
+	await get_tree().process_frame
 	collect_orphan_node_details()
 
 
@@ -38,6 +39,7 @@ func test_case2() -> void:
 	var n24 := Node.new()
 	_orphans.append_array([n21, n22, n23, n24])
 	fail("faild on test_case2()")
+	await get_tree().process_frame
 	collect_orphan_node_details()
 
 

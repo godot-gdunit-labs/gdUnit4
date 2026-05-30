@@ -1,29 +1,26 @@
 extends GdUnitTestSuite
 
-@warning_ignore('unused_parameter')
-@warning_ignore('return_value_discarded')
-
 
 class TestCaseStatistics:
 	var _testcase_before_called := 0
 	var _testcase_after_called := 0
 	var _test_called := 0
 	var _expected_calls :int
-	
+
 	func _init(expected_calls :int) -> void:
 		_expected_calls = expected_calls
-	
+
 	func count_test_before_test() -> void:
 		_testcase_before_called +=1
-	
+
 	func count_test_after_test() -> void:
 		_testcase_after_called +=1
-	
+
 	func count_test() -> void:
 		_test_called += 1
 
 
-var _metrics := {
+var _metrics: Dictionary[String, TestCaseStatistics] = {
 	"test_parameterized_2times" : TestCaseStatistics.new(2),
 	"test_parameterized_5times" : TestCaseStatistics.new(5)
 }
@@ -44,7 +41,7 @@ func after() -> void:
 	assert_that(_after_called)\
 		.override_failure_message("Expecting 'after' is called only one times")\
 		.is_equal(1)
-	
+
 	for test_case :String in _metrics.keys():
 		var statistics: TestCaseStatistics = _metrics[test_case]
 		assert_int(statistics._testcase_before_called)\
@@ -66,20 +63,18 @@ func after_test() -> void:
 	_metrics[__active_test_case].count_test_after_test()
 
 
-@warning_ignore('unused_parameter')
-func test_parameterized_2times(a: int, expected :bool, test_parameters := [
+func test_parameterized_2times(_value: int, _expected: bool, _test_parameters := [
 	[0, false],
 	[1, true]]) -> void:
-	
+
 	_metrics[__active_test_case].count_test()
 
 
-@warning_ignore('unused_parameter')
-func test_parameterized_5times(a: int, expected :bool, test_parameters := [
+func test_parameterized_5times(_value: int, _expected: bool, _test_parameters := [
 	[0, false],
 	[1, true],
 	[0, false],
 	[1, true],
 	[1, true]]) -> void:
-	
+
 	_metrics[__active_test_case].count_test()

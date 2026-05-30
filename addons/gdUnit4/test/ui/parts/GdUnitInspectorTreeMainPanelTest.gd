@@ -813,7 +813,7 @@ func load_non_cached(resource_path: String) -> GDScript:
 	return ResourceLoader.load(resource_path, "GDScript", ResourceLoader.CACHE_MODE_IGNORE)
 
 
-func cs_load_non_cached(resource_path: String) -> GDScript:
+func cs_load_non_cached(resource_path: String) -> Script:
 	return ResourceLoader.load(resource_path, "CSharpScript", ResourceLoader.CACHE_MODE_IGNORE)
 
 

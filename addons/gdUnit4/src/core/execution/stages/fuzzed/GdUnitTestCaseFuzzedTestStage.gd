@@ -33,6 +33,9 @@ func _execute(context :GdUnitExecutionContext) -> void:
 			reports.append(GdUnitReport.new() \
 				.create(GdUnitReport.FAILURE, report.line_number(), GdAssertMessages.fuzzer_interuped(iteration, report.message())))
 			break
+
+	# TODO Do we really need to sync again here? Otherwise, an orphaned node will be incorrectly detected.
+	await test_suite.get_tree().process_frame
 	await context.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_CASE)
 
 	# unguard on fuzzers

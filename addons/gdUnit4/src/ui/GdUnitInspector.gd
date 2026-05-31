@@ -22,9 +22,6 @@ func _ready() -> void:
 					tab_container.set_current_tab(tab_index)
 	)
 
-	# propagete the test_counters_changed signal to the progress bar
-	@warning_ignore("unsafe_property_access", "unsafe_method_access")
-	%MainPanel.test_counters_changed.connect(%ProgressBar._on_test_counter_changed)
 	# Register for editor theme updates
 	add_child(GdUnitEditorColorTheme.new(), true, Node.INTERNAL_MODE_BACK)
 

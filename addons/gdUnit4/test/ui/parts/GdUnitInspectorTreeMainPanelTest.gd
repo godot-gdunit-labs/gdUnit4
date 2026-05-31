@@ -98,8 +98,8 @@ func set_test_state(test_cases: Array[GdUnitTestCase], state: GdUnitInspectorTre
 func get_item_state(parent :TreeItem, item_name :String = "") -> int:
 	for item in parent.get_children():
 		if item.get_text(0) == item_name:
-			return item.get_meta(_inspector.META_GDUNIT_STATE)
-	return parent.get_meta(_inspector.META_GDUNIT_STATE)
+			return GdUnitInspectorTreeMainPanel.get_item_state(item)[0]
+	return GdUnitInspectorTreeMainPanel.get_item_state(parent)[0]
 
 
 func test_find_item_by_id() -> void:

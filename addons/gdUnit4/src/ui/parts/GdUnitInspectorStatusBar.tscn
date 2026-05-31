@@ -8,22 +8,6 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jh28t"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uqb0l"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0oden"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ixycx"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c80wp"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eis20"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t2qd7"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1mh1t"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lpjla"]
-
 [node name="StatusBar" type="VBoxContainer" unique_id=214621769]
 anchors_preset = 10
 anchor_right = 1.0
@@ -40,7 +24,33 @@ size_flags_vertical = 0
 [node name="Label" type="Label" parent="tree_tools" unique_id=226892195]
 layout_mode = 2
 size_flags_horizontal = 0
-text = "Statistics"
+text = "Statistics:"
+autowrap_trim_flags = 0
+justification_flags = 0
+
+[node name="timings" type="HBoxContainer" parent="tree_tools" unique_id=1494080859]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
+alignment = 1
+
+[node name="time_icon" type="TextureRect" parent="tree_tools/timings" unique_id=156277722]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+stretch_mode = 2
+
+[node name="time_value" type="Label" parent="tree_tools/timings" unique_id=387690970]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0ms"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_trim_flags = 0
+justification_flags = 0
 
 [node name="tree_buttons" type="HBoxContainer" parent="tree_tools" unique_id=1600307316]
 layout_mode = 2
@@ -73,231 +83,280 @@ flat = false
 
 [node name="HSeparator" type="HSeparator" parent="." unique_id=1416084348]
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_constants/separation = 0
 
-[node name="status_bar" type="HFlowContainer" parent="." unique_id=1576624226]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=89354949]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="status_bar" type="HFlowContainer" parent="MarginContainer" unique_id=1576624226]
 layout_direction = 2
 layout_mode = 2
 size_flags_vertical = 2
 
-[node name="error" type="VBoxContainer" parent="status_bar" unique_id=532464781]
-custom_minimum_size = Vector2(0, 48)
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-theme_override_constants/separation = -2
-
-[node name="icon" type="HBoxContainer" parent="status_bar/error" unique_id=980338948]
-layout_mode = 2
-size_flags_horizontal = 8
-
-[node name="icon_errors" type="TextureRect" parent="status_bar/error/icon" unique_id=981061410]
+[node name="icon_template" type="SpinBox" parent="MarginContainer/status_bar" unique_id=1487498266]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
-size_flags_horizontal = 8
+
+[node name="ERROR" type="HBoxContainer" parent="MarginContainer/status_bar" unique_id=310880909]
+layout_mode = 2
+tooltip_text = "Detected Errors"
+
+[node name="value" type="LineEdit" parent="MarginContainer/status_bar/ERROR" unique_id=1630464164]
+layout_mode = 2
+size_flags_horizontal = 0
 size_flags_vertical = 4
-tooltip_text = "Error Tests"
-stretch_mode = 3
-
-[node name="btn_up" type="Button" parent="status_bar/error/icon" unique_id=128855365]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 4
-tooltip_text = "Jump to the previous error test"
-theme_override_styles/normal = SubResource("StyleBoxEmpty_uqb0l")
-
-[node name="counter" type="HBoxContainer" parent="status_bar/error" unique_id=320088753]
-auto_translate_mode = 2
-layout_mode = 2
-size_flags_horizontal = 8
-localize_numeral_system = false
-
-[node name="error_value" type="Label" parent="status_bar/error/counter" unique_id=1173069184]
-unique_name_in_owner = true
-use_parent_material = true
-custom_minimum_size = Vector2(32, 0)
-layout_mode = 2
-size_flags_horizontal = 8
+tooltip_text = "Detected Errors"
 text = "0"
-horizontal_alignment = 2
-justification_flags = 0
-visible_characters = 3
-visible_ratio = 3.0
+alignment = 2
+max_length = 3
+editable = false
+context_menu_enabled = false
+emoji_menu_enabled = false
+shortcut_keys_enabled = false
+middle_mouse_paste_enabled = false
+selecting_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+virtual_keyboard_enabled = false
 
-[node name="btn_down" type="Button" parent="status_bar/error/counter" unique_id=345916573]
-layout_mode = 2
-size_flags_horizontal = 8
+[node name="icon" type="TextureRect" parent="MarginContainer/status_bar/ERROR/value" unique_id=729348405]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 4.0
+offset_top = -8.0
+offset_right = 20.0
+offset_bottom = 8.0
+grow_vertical = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
-tooltip_text = "Jump to the next error test"
-theme_override_styles/normal = SubResource("StyleBoxEmpty_0oden")
+stretch_mode = 2
 
-[node name="VSeparator" type="VSeparator" parent="status_bar" unique_id=1337164698]
+[node name="buttons" type="VBoxContainer" parent="MarginContainer/status_bar/ERROR" unique_id=541942806]
 layout_mode = 2
+size_flags_horizontal = 0
 
-[node name="failure" type="VBoxContainer" parent="status_bar" unique_id=668143074]
-custom_minimum_size = Vector2(0, 48)
+[node name="up" type="TextureButton" parent="MarginContainer/status_bar/ERROR/buttons" unique_id=1146002542]
 layout_mode = 2
-size_flags_horizontal = 8
-theme_override_constants/separation = -2
+size_flags_horizontal = 0
+size_flags_vertical = 10
 
-[node name="icon" type="HBoxContainer" parent="status_bar/failure" unique_id=913689377]
+[node name="down" type="TextureButton" parent="MarginContainer/status_bar/ERROR/buttons" unique_id=1867410350]
 layout_mode = 2
-size_flags_horizontal = 8
+size_flags_horizontal = 0
+size_flags_vertical = 2
+flip_v = true
 
-[node name="icon_failures" type="TextureRect" parent="status_bar/failure/icon" unique_id=644665557]
-unique_name_in_owner = true
+[node name="FAILED" type="HBoxContainer" parent="MarginContainer/status_bar" unique_id=1390016421]
 layout_mode = 2
-size_flags_horizontal = 8
+tooltip_text = "Failed Tests"
+
+[node name="value" type="LineEdit" parent="MarginContainer/status_bar/FAILED" unique_id=75554621]
+layout_mode = 2
+size_flags_horizontal = 0
 size_flags_vertical = 4
 tooltip_text = "Failed Tests"
-stretch_mode = 3
-
-[node name="btn_up" type="Button" parent="status_bar/failure/icon" unique_id=703086216]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 4
-tooltip_text = "Jump to the previous failed test"
-theme_override_styles/normal = SubResource("StyleBoxEmpty_ixycx")
-
-[node name="counter" type="HBoxContainer" parent="status_bar/failure" unique_id=469489912]
-auto_translate_mode = 2
-layout_mode = 2
-size_flags_horizontal = 8
-localize_numeral_system = false
-
-[node name="failure_value" type="Label" parent="status_bar/failure/counter" unique_id=2112775802]
-unique_name_in_owner = true
-use_parent_material = true
-custom_minimum_size = Vector2(32, 0)
-layout_mode = 2
-size_flags_horizontal = 8
 text = "0"
-horizontal_alignment = 2
-justification_flags = 0
-visible_characters = 3
-visible_ratio = 3.0
+alignment = 2
+max_length = 3
+editable = false
+context_menu_enabled = false
+emoji_menu_enabled = false
+shortcut_keys_enabled = false
+middle_mouse_paste_enabled = false
+selecting_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+virtual_keyboard_enabled = false
 
-[node name="btn_down" type="Button" parent="status_bar/failure/counter" unique_id=354437479]
-layout_mode = 2
-size_flags_horizontal = 8
+[node name="icon" type="TextureRect" parent="MarginContainer/status_bar/FAILED/value" unique_id=1889621378]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 4.0
+offset_top = -8.0
+offset_right = 20.0
+offset_bottom = 8.0
+grow_vertical = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
-tooltip_text = "Jump to the next failed test"
-theme_override_styles/normal = SubResource("StyleBoxEmpty_c80wp")
+stretch_mode = 2
 
-[node name="VSeparator2" type="VSeparator" parent="status_bar" unique_id=1340956265]
+[node name="buttons" type="VBoxContainer" parent="MarginContainer/status_bar/FAILED" unique_id=699611313]
 layout_mode = 2
+size_flags_horizontal = 0
 
-[node name="flaky" type="VBoxContainer" parent="status_bar" unique_id=1045751754]
-custom_minimum_size = Vector2(0, 48)
+[node name="up" type="TextureButton" parent="MarginContainer/status_bar/FAILED/buttons" unique_id=1774403865]
 layout_mode = 2
-size_flags_horizontal = 8
-theme_override_constants/separation = -2
+size_flags_horizontal = 0
+size_flags_vertical = 10
 
-[node name="icon" type="HBoxContainer" parent="status_bar/flaky" unique_id=1657218582]
+[node name="down" type="TextureButton" parent="MarginContainer/status_bar/FAILED/buttons" unique_id=1605438045]
 layout_mode = 2
-size_flags_horizontal = 8
+size_flags_horizontal = 0
+size_flags_vertical = 2
+flip_v = true
 
-[node name="icon_flaky" type="TextureRect" parent="status_bar/flaky/icon" unique_id=1642017900]
-unique_name_in_owner = true
+[node name="FLAKY" type="HBoxContainer" parent="MarginContainer/status_bar" unique_id=480870974]
 layout_mode = 2
-size_flags_horizontal = 8
+tooltip_text = "Flaky Tests"
+
+[node name="value" type="LineEdit" parent="MarginContainer/status_bar/FLAKY" unique_id=2059394293]
+layout_mode = 2
+size_flags_horizontal = 0
 size_flags_vertical = 4
 tooltip_text = "Flaky Tests"
-stretch_mode = 3
-
-[node name="btn_up" type="Button" parent="status_bar/flaky/icon" unique_id=1696112932]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 4
-tooltip_text = "Jump to the previous flaky test"
-theme_override_styles/normal = SubResource("StyleBoxEmpty_eis20")
-
-[node name="counter" type="HBoxContainer" parent="status_bar/flaky" unique_id=1112580380]
-auto_translate_mode = 2
-layout_mode = 2
-size_flags_horizontal = 8
-localize_numeral_system = false
-
-[node name="flaky_value" type="Label" parent="status_bar/flaky/counter" unique_id=86782555]
-unique_name_in_owner = true
-use_parent_material = true
-custom_minimum_size = Vector2(32, 0)
-layout_mode = 2
-size_flags_horizontal = 8
 text = "0"
-horizontal_alignment = 2
-justification_flags = 0
-visible_characters = 3
-visible_ratio = 3.0
+alignment = 2
+max_length = 3
+editable = false
+context_menu_enabled = false
+emoji_menu_enabled = false
+shortcut_keys_enabled = false
+middle_mouse_paste_enabled = false
+selecting_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+virtual_keyboard_enabled = false
 
-[node name="btn_down" type="Button" parent="status_bar/flaky/counter" unique_id=349950180]
-layout_mode = 2
-size_flags_horizontal = 8
+[node name="icon" type="TextureRect" parent="MarginContainer/status_bar/FLAKY/value" unique_id=885817973]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 4.0
+offset_top = -8.0
+offset_right = 20.0
+offset_bottom = 8.0
+grow_vertical = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
-tooltip_text = "Jump to the next flaky test"
-theme_override_styles/normal = SubResource("StyleBoxEmpty_t2qd7")
+stretch_mode = 2
 
-[node name="VSeparator3" type="VSeparator" parent="status_bar" unique_id=1506845836]
+[node name="buttons" type="VBoxContainer" parent="MarginContainer/status_bar/FLAKY" unique_id=968503310]
 layout_mode = 2
+size_flags_horizontal = 0
 
-[node name="skipped" type="VBoxContainer" parent="status_bar" unique_id=1801359704]
-custom_minimum_size = Vector2(0, 48)
+[node name="up" type="TextureButton" parent="MarginContainer/status_bar/FLAKY/buttons" unique_id=1127861257]
 layout_mode = 2
-size_flags_horizontal = 8
-theme_override_constants/separation = -2
+size_flags_horizontal = 0
+size_flags_vertical = 10
 
-[node name="icon" type="HBoxContainer" parent="status_bar/skipped" unique_id=730330861]
+[node name="down" type="TextureButton" parent="MarginContainer/status_bar/FLAKY/buttons" unique_id=949128796]
 layout_mode = 2
-size_flags_horizontal = 8
-theme_override_constants/separation = 0
+size_flags_horizontal = 0
+size_flags_vertical = 2
+flip_v = true
 
-[node name="icon_skipped" type="TextureRect" parent="status_bar/skipped/icon" unique_id=1023112448]
-unique_name_in_owner = true
+[node name="SKIPPED" type="HBoxContainer" parent="MarginContainer/status_bar" unique_id=2053554589]
 layout_mode = 2
-size_flags_horizontal = 8
+tooltip_text = "Skipped Tests"
+
+[node name="value" type="LineEdit" parent="MarginContainer/status_bar/SKIPPED" unique_id=1877800941]
+layout_mode = 2
+size_flags_horizontal = 0
 size_flags_vertical = 4
 tooltip_text = "Skipped Tests"
-stretch_mode = 3
-
-[node name="btn_up" type="Button" parent="status_bar/skipped/icon" unique_id=273208942]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 4
-tooltip_text = "Jump to the previous skipped test"
-theme_override_styles/normal = SubResource("StyleBoxEmpty_1mh1t")
-
-[node name="counter" type="HBoxContainer" parent="status_bar/skipped" unique_id=1082090192]
-auto_translate_mode = 2
-layout_mode = 2
-size_flags_horizontal = 8
-localize_numeral_system = false
-theme_override_constants/separation = 0
-
-[node name="skipped_value" type="Label" parent="status_bar/skipped/counter" unique_id=500157525]
-unique_name_in_owner = true
-use_parent_material = true
-custom_minimum_size = Vector2(32, 0)
-layout_mode = 2
-size_flags_horizontal = 8
 text = "0"
-horizontal_alignment = 2
-justification_flags = 0
-visible_characters = 3
-visible_ratio = 3.0
+alignment = 2
+max_length = 3
+editable = false
+context_menu_enabled = false
+emoji_menu_enabled = false
+shortcut_keys_enabled = false
+middle_mouse_paste_enabled = false
+selecting_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+virtual_keyboard_enabled = false
 
-[node name="btn_down" type="Button" parent="status_bar/skipped/counter" unique_id=2025315587]
-layout_mode = 2
-size_flags_horizontal = 8
+[node name="icon" type="TextureRect" parent="MarginContainer/status_bar/SKIPPED/value" unique_id=932936779]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 4.0
+offset_top = -8.0
+offset_right = 20.0
+offset_bottom = 8.0
+grow_vertical = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
-tooltip_text = "Jump to the next skipped test"
-theme_override_styles/normal = SubResource("StyleBoxEmpty_lpjla")
+stretch_mode = 2
+
+[node name="buttons" type="VBoxContainer" parent="MarginContainer/status_bar/SKIPPED" unique_id=1650258492]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="up" type="TextureButton" parent="MarginContainer/status_bar/SKIPPED/buttons" unique_id=357027687]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 10
+
+[node name="down" type="TextureButton" parent="MarginContainer/status_bar/SKIPPED/buttons" unique_id=603266459]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 2
+flip_v = true
+
+[node name="ORPHAN" type="HBoxContainer" parent="MarginContainer/status_bar" unique_id=1284157443]
+layout_mode = 2
+tooltip_text = "Detected Orphan Nodes"
+
+[node name="value" type="LineEdit" parent="MarginContainer/status_bar/ORPHAN" unique_id=629163801]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+tooltip_text = "Detected Orphan Nodes"
+text = "0"
+alignment = 2
+max_length = 3
+editable = false
+context_menu_enabled = false
+emoji_menu_enabled = false
+shortcut_keys_enabled = false
+middle_mouse_paste_enabled = false
+selecting_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+virtual_keyboard_enabled = false
+
+[node name="icon" type="TextureRect" parent="MarginContainer/status_bar/ORPHAN/value" unique_id=2121368482]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 4.0
+offset_top = -8.0
+offset_right = 20.0
+offset_bottom = 8.0
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+stretch_mode = 2
+
+[node name="buttons" type="VBoxContainer" parent="MarginContainer/status_bar/ORPHAN" unique_id=433516040]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="up" type="TextureButton" parent="MarginContainer/status_bar/ORPHAN/buttons" unique_id=159317457]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 10
+
+[node name="down" type="TextureButton" parent="MarginContainer/status_bar/ORPHAN/buttons" unique_id=1357830825]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 2
+flip_v = true
 
 [connection signal="pressed" from="tree_tools/tree_buttons/btn_tree_sync" to="." method="_on_btn_tree_sync_pressed"]
-[connection signal="pressed" from="status_bar/error/icon/btn_up" to="." method="_on_btn_error_up_pressed"]
-[connection signal="pressed" from="status_bar/error/counter/btn_down" to="." method="_on_btn_error_down_pressed"]
-[connection signal="pressed" from="status_bar/failure/icon/btn_up" to="." method="_on_failure_up_pressed"]
-[connection signal="pressed" from="status_bar/failure/counter/btn_down" to="." method="_on_failure_down_pressed"]
-[connection signal="pressed" from="status_bar/flaky/icon/btn_up" to="." method="_on_btn_flaky_up_pressed"]
-[connection signal="pressed" from="status_bar/flaky/counter/btn_down" to="." method="_on_btn_flaky_down_pressed"]
-[connection signal="pressed" from="status_bar/skipped/icon/btn_up" to="." method="_on_btn_skipped_up_pressed"]
-[connection signal="pressed" from="status_bar/skipped/counter/btn_down" to="." method="_on_btn_skipped_down_pressed"]

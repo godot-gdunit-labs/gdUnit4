@@ -4,7 +4,6 @@
 [ext_resource type="Script" path="res://addons/gdUnit4/src/ui/GdUnitInspector.gd" id="1_j37cs"]
 [ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/parts/GdUnitInspectorProgressBar.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/parts/GdUnitInspectorStatusBar.tscn" id="3"]
-[ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/parts/GdUnitInspectorMonitor.tscn" id="4"]
 [ext_resource type="PackedScene" path="res://addons/gdUnit4/src/ui/parts/GdUnitInspectorTreeMainPanel.tscn" id="7"]
 [ext_resource type="PackedScene" path="res://addons/gdUnit4/src/network/GdUnitServer.tscn" id="7_721no"]
 
@@ -44,8 +43,6 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 5
-size_flags_vertical = 1
-max_value = 0.0
 
 [node name="StatusBar" parent="VBoxContainer/Header" unique_id=625414847 instance=ExtResource("3")]
 layout_mode = 2
@@ -56,9 +53,6 @@ unique_name_in_owner = true
 clip_contents = true
 layout_mode = 2
 
-[node name="Monitor" parent="VBoxContainer" unique_id=1419900107 instance=ExtResource("4")]
-layout_mode = 2
-
 [node name="event_server" parent="." unique_id=756999253 instance=ExtResource("7_721no")]
 
 [connection signal="select_error_next" from="VBoxContainer/Header/StatusBar" to="VBoxContainer/MainPanel" method="_on_select_next_item_by_state" binds= [7]]
@@ -67,7 +61,8 @@ layout_mode = 2
 [connection signal="select_failure_prevous" from="VBoxContainer/Header/StatusBar" to="VBoxContainer/MainPanel" method="_on_select_previous_item_by_state" binds= [6]]
 [connection signal="select_flaky_next" from="VBoxContainer/Header/StatusBar" to="VBoxContainer/MainPanel" method="_on_select_next_item_by_state" binds= [5]]
 [connection signal="select_flaky_prevous" from="VBoxContainer/Header/StatusBar" to="VBoxContainer/MainPanel" method="_on_select_previous_item_by_state" binds= [5]]
+[connection signal="select_orphan_next" from="VBoxContainer/Header/StatusBar" to="VBoxContainer/MainPanel" method="_on_select_next_item_by_state" binds= [9]]
+[connection signal="select_orphan_prevous" from="VBoxContainer/Header/StatusBar" to="VBoxContainer/MainPanel" method="_on_select_previous_item_by_state" binds= [9]]
 [connection signal="select_skipped_next" from="VBoxContainer/Header/StatusBar" to="VBoxContainer/MainPanel" method="_on_select_next_item_by_state" binds= [2]]
 [connection signal="select_skipped_prevous" from="VBoxContainer/Header/StatusBar" to="VBoxContainer/MainPanel" method="_on_select_previous_item_by_state" binds= [2]]
 [connection signal="tree_view_mode_changed" from="VBoxContainer/Header/StatusBar" to="VBoxContainer/MainPanel" method="_on_status_bar_tree_view_mode_changed"]
-[connection signal="jump_to_orphan_nodes" from="VBoxContainer/Monitor" to="VBoxContainer/MainPanel" method="select_first_orphan"]

@@ -20,10 +20,13 @@ static func get_state_icon(state: STATE) -> Texture2D:
 	if icon_cache.has(state):
 		return icon_cache.get(state)
 
+	if not Engine.is_editor_hint():
+		return null
+
 	var icon: Texture2D
 	match state:
 		STATE.INITIAL:
-			icon = get_icon("EditorHandleDisabled", Color.LIGHT_GRAY)
+			icon = get_icon("EditorHandleDisabled", GdUnitEditorColorTheme.state_initial)
 		STATE.RUNNING:
 			icon = get_spinner()
 		STATE.SUCCESS:
@@ -37,7 +40,7 @@ static func get_state_icon(state: STATE) -> Texture2D:
 		STATE.FLAKY:
 			icon = get_icon("CheckBox", GdUnitEditorColorTheme.state_flaky)
 		STATE.SKIPPED:
-			icon = get_icon("Info", GdUnitEditorColorTheme.state_skipped)
+			icon = get_icon("EditorHandleDisabled", GdUnitEditorColorTheme.state_skipped)
 		STATE.ORPHAN:
 			icon = get_icon("Unlinked", GdUnitEditorColorTheme.state_orphan)
 
@@ -82,7 +85,7 @@ static func get_spinner() -> AnimatedTexture:
 	return _spinner
 
 
-static func get_color_animated_icon(icon_name :String, from :Color, to :Color) -> AnimatedTexture:
+static func get_color_animated_icon(icon_name: String, from: Color, to: Color) -> AnimatedTexture:
 	if not Engine.is_editor_hint():
 		return null
 	var texture := AnimatedTexture.new()
@@ -90,9 +93,9 @@ static func get_color_animated_icon(icon_name :String, from :Color, to :Color) -
 	texture.speed_scale = 2.5
 	var color := from
 	for frame in texture.frames:
-		color = lerp(color, to, .2)
+		color = lerp(color, to, 0.2)
 		texture.set_frame_texture(frame, get_icon(icon_name, color))
-		texture.set_frame_duration(frame, 0.2)
+		texture.set_frame_duration(frame, .2)
 	return texture
 
 
@@ -118,7 +121,7 @@ static func _modulate_image(image: Image, color: Color) -> Image:
 		data[pixel + 0] = pixel_a.r8
 		data[pixel + 1] = pixel_a.g8
 		data[pixel + 2] = pixel_a.b8
-		#data[pixel + 3] = 1
+		# data[pixel + 3] = 1
 	var output_image := Image.new()
 	output_image.set_data(image.get_width(), image.get_height(), image.has_mipmaps(), image.get_format(), data)
 	return output_image

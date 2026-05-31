@@ -12,7 +12,8 @@ func _execute(context :GdUnitExecutionContext) -> void:
 
 	@warning_ignore("redundant_await")
 	await test_suite.after()
-	# TODO This is current an workaround to fix sig11 crash on orphan tests
+	# TODO Godot 4.7.beta: This is current an workaround to fix sig11 crash on orphan tests
+	# is releated to https://github.com/godot-gdunit-labs/gdUnit4/issues/1154
 	await (Engine.get_main_loop() as SceneTree).process_frame
 	await context.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.SUITE_HOOK_AFTER)
 

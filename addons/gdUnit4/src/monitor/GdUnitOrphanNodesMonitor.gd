@@ -1,17 +1,6 @@
 class_name GdUnitOrphanNodesMonitor
 extends GdUnitMonitor
 
-const excluded_frame_files: PackedStringArray = [
-	"GdUnitOrphanNodesMonitor",
-	"GdUnitExecutionContext",
-	"_TestCase",
-	"IGdUnitExecutionStage",
-	"GdUnitTestCaseSingleTestStage",
-	"GdUnitTestCaseSingleExecutionStage",
-	"GdUnitTestCaseExecutionStage",
-	"GdUnitTestSuiteExecutionStage",
-	"GdUnitTestSuiteExecutor"
-]
 
 var _child_monitors: Array[GdUnitOrphanNodesMonitor] = []
 var _orphan_detection_enabled :bool
@@ -80,146 +69,162 @@ func collect() -> void:
 	if not _orphan_detection_enabled:
 		return
 
-	var orphan_ids := _get_orphan_node_ids()
-	if orphan_ids.is_empty():
+	stop()
+	if _orphan_ids_at_stop.is_empty():
 		return
 
 	var script_backtraces := Engine.capture_script_backtraces(true)
-	for orphan_id in orphan_ids:
-		var orphan_to_find := instance_from_id(orphan_id)
-		_collect_orphan_info(orphan_to_find, script_backtraces)
+	for orphan_id in _orphan_ids_at_stop:
+		var orphan_node := instance_from_id(orphan_id)
+		_collect_orphan_info(orphan_node, script_backtraces)
 
 
-func _collect_orphan_info(orphan_to_find: Object, script_backtraces: Array[ScriptBacktrace]) -> void:
-	if orphan_to_find == null:
+func _collect_orphan_info(orphan_node: Object, script_backtraces: Array[ScriptBacktrace]) -> void:
+	if orphan_node == null:
 		return
 
-	var orphan_node := _find_orphan_on_backtraces(orphan_to_find, script_backtraces)
-	if orphan_node:
-		_collected_orphan_infos.append(orphan_node)
+	var orphan_info := _find_orphan_on_backtraces(orphan_node, script_backtraces)
+	if orphan_info:
+		_collected_orphan_infos.append(orphan_info)
 		return
 
 	if Engine.has_meta("GdUnitSceneRunner"):
 		var current_scene_runner:GdUnitSceneRunner = Engine.get_meta("GdUnitSceneRunner")
 		if is_instance_valid(current_scene_runner):
-			orphan_node = _find_orphan_at_node(orphan_to_find, current_scene_runner.scene())
-			if orphan_node:
-				_collected_orphan_infos.append(orphan_node)
+			orphan_info = _find_orphan_at_node(orphan_node, current_scene_runner.scene())
+			if orphan_info:
+				_collected_orphan_infos.append(orphan_info)
 				return
 
-	# not able to find the orphan node via backtrace loaded nodeds
-	var message := "No details found. Verify called functions manually."
-	if not EngineDebugger.is_active():
-		message = "No details available. [color=yellow]Run tests in debug mode to collect details.[/color]"
-
-	_collected_orphan_infos.append(GdUnitOrphanNodeInfo.new(
-		GdUnitOrphanNodeInfo.GdUnitOrphanType.unknown,
-		orphan_to_find.get_instance_id(),
-		orphan_to_find.get_class(),
-		message,
-		""))
+	_collected_orphan_infos.append(
+		GdUnitOrphanNodeInfo.new(
+			orphan_node.get_instance_id(),
+			orphan_node.get_class(),
+			null)
+		)
 
 
-func _find_orphan_at_node(orphan_to_find: Object, node: Node) -> GdUnitOrphanNodeInfo:
+func _find_orphan_at_node(orphan_node: Object, node: Node) -> GdUnitOrphanNodeInfo:
 	var script: Script = node.get_script()
 	if script is not GDScript:
 		return null
 
 	# First search over all properties
 	for property in script.get_script_property_list():
-		var property_name: String = property["name"]
+		# We lookup only over user script variables
+		var property_usage: int = property["usage"]
+		if property_usage != PROPERTY_USAGE_SCRIPT_VARIABLE:
+			continue
+
 		var property_type: int = property["type"]
 		# Is untyped or type object
 		if property_type in [TYPE_NIL, TYPE_OBJECT]:
+			var property_name: String = property["name"]
 			var property_instance: Variant = node.get(property_name)
 			@warning_ignore("unsafe_cast")
-			var property_as_node := property_instance as Node if property_instance != null else null
+			var property_as_node := property_instance as Node
 			if property_as_node == null:
 				continue
-			if property_as_node == orphan_to_find:
+			# If node match the curren property object
+			if property_as_node == orphan_node:
+				var property_class: String = property["class_name"]
+				var source_line := _find_line_for_property(script, "", property_name)
 				return GdUnitOrphanNodeInfo.new(
-					GdUnitOrphanNodeInfo.GdUnitOrphanType.member,
-					orphan_to_find.get_instance_id(),
-					orphan_to_find.get_class(),
-					property_name,
-					script.resource_path)
+					orphan_node.get_instance_id(),
+					property_class,
+					GdUnitStackTraceElement.new(
+						script.resource_path,
+						source_line,
+						property_name)
+					)
 
-			# Search on node childs
-			var orphan_node_info := _find_orphan_at_node(orphan_to_find, property_as_node)
-			if orphan_node_info:
-				orphan_node_info._next = GdUnitOrphanNodeInfo.new(
-					GdUnitOrphanNodeInfo.GdUnitOrphanType.member,
-					orphan_to_find.get_instance_id(),
-					orphan_to_find.get_class(),
-					property_name,
-					script.resource_path)
-				return orphan_node_info
+			# Otherwise we need to search on child node script properties
+			var orphan_info := _find_orphan_at_node(orphan_node, property_as_node)
+			if orphan_info:
+				return orphan_info
 
 	# Second over all children
 	for child_node in node.get_children():
-		var orphan_node_info := _find_orphan_at_node(orphan_to_find, child_node)
-		if orphan_node_info:
-			return orphan_node_info
+		var orphan_info := _find_orphan_at_node(orphan_node, child_node)
+		if orphan_info:
+			return orphan_info
 	return null
 
 
-func _is_frame_file_excluded(frame_file: String) -> bool:
-	for file in excluded_frame_files:
-		if frame_file.contains(file):
-			return true
-	return false
-
-
-func _find_orphan_on_backtraces(orphan_to_find: Object, script_backtraces: Array[ScriptBacktrace]) -> GdUnitOrphanNodeInfo:
+func _find_orphan_on_backtraces(orphan_node: Object, script_backtraces: Array[ScriptBacktrace]) -> GdUnitOrphanNodeInfo:
 	for script_backtrace in script_backtraces:
 		for frame in script_backtrace.get_frame_count():
 			var frame_file := script_backtrace.get_frame_file(frame)
-			if _is_frame_file_excluded(frame_file):
+			if GdUnitStackTrace.filter_sources(frame_file):
 				continue
 
 			# Scan function variables
 			for l_index in script_backtrace.get_local_variable_count(frame):
-				var variable_instance: Variant = script_backtrace.get_local_variable_value(frame, l_index)
-				var variable_name := script_backtrace.get_local_variable_name(frame, l_index)
-				if typeof(variable_instance) in [TYPE_NIL, TYPE_OBJECT]:
+				var variable: Variant = script_backtrace.get_local_variable_value(frame, l_index)
+				if typeof(variable) in [TYPE_NIL, TYPE_OBJECT]:
 					@warning_ignore("unsafe_cast")
-					var node := variable_instance as Node
+					var node := variable as Node
 					if node == null:
 						continue
-					if variable_instance == orphan_to_find:
+					if variable == orphan_node:
+						var variable_name := script_backtrace.get_local_variable_name(frame, l_index)
+						var source_script := script_backtrace.get_frame_file(frame)
+						var source_function := script_backtrace.get_frame_function(frame)
+						var script: Script = load(source_script)
+						var source_line := _find_line_for_property(script, source_function, variable_name)
 						return GdUnitOrphanNodeInfo.new(
-							GdUnitOrphanNodeInfo.GdUnitOrphanType.variable,
-							orphan_to_find.get_instance_id(),
-							orphan_to_find.get_class(),
-							variable_name,
-							script_backtrace.get_frame_file(frame),
-							script_backtrace.get_frame_function(frame))
+							orphan_node.get_instance_id(),
+							orphan_node.get_class(),
+							GdUnitStackTraceElement.new(source_script, source_line, variable_name)
+							)
 					else:
-						var orphan_node_info := _find_orphan_at_node(orphan_to_find, node)
-						if orphan_node_info:
-							return orphan_node_info
+						var orphan_info := _find_orphan_at_node(orphan_node, node)
+						if orphan_info:
+							return orphan_info
 
 			# Scan class members
 			for m_index in script_backtrace.get_member_variable_count(frame):
-				var member_instance: Variant = script_backtrace.get_member_variable_value(frame, m_index)
-				var member_name := script_backtrace.get_member_variable_name(frame, m_index)
-				if typeof(member_instance) in [TYPE_NIL, TYPE_OBJECT]:
+				var member: Variant = script_backtrace.get_member_variable_value(frame, m_index)
+				if typeof(member) in [TYPE_NIL, TYPE_OBJECT]:
 					@warning_ignore("unsafe_cast")
-					var node := member_instance as Node
+					var node := member as Node
 					if node == null:
 						continue
-					if member_instance == orphan_to_find:
+					if member == orphan_node:
+						var member_name := script_backtrace.get_member_variable_name(frame, m_index)
 						return GdUnitOrphanNodeInfo.new(
-							GdUnitOrphanNodeInfo.GdUnitOrphanType.member,
-							orphan_to_find.get_instance_id(),
-							orphan_to_find.get_class(),
-							member_name,
-							script_backtrace.get_frame_file(frame))
+							orphan_node.get_instance_id(),
+							orphan_node.get_class(),
+							GdUnitStackTraceElement.new(
+								script_backtrace.get_frame_file(frame),
+								script_backtrace.get_frame_line(frame),
+								member_name))
 					else:
-						var orphan_node_info := _find_orphan_at_node(orphan_to_find, node)
-						if orphan_node_info:
-							return orphan_node_info
+						var orphan_info := _find_orphan_at_node(orphan_node, node)
+						if orphan_info:
+							return orphan_info
 	return null
+
+
+func _find_line_for_property(script: Script, func_name: String, property_name: String) -> int:
+	if script == null or not script.has_source_code():
+		return -1
+	var lines := script.get_source_code().split("\n")
+	var func_start_index := 0
+	for index in range(0, lines.size()):
+		var line :=  lines[index]
+		if not func_name.is_empty():
+			if line.begins_with("func") and line.contains(func_name):
+				func_start_index = index + 1
+				break;
+
+	for index in range(func_start_index, lines.size()):
+		var line := lines[index]
+		if line.contains(property_name):
+			return index + 1
+		if line.begins_with("func"):
+			break
+	return -1
 
 
 static func _get_orphan_node_ids() -> Array[int]:

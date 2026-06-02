@@ -6,8 +6,27 @@ extends RefCounted
 var _stack_trace: Array[GdUnitStackTraceElement]
 
 
+static func from_script_backtraces(script_backtraces: Array[ScriptBacktrace]) -> GdUnitStackTrace:
+	var test_stack_trace: Array[GdUnitStackTraceElement] = []
+
+	for sb in script_backtraces:
+		for frame in sb.get_frame_count():
+			var source := sb.get_frame_file(frame)
+
+			if filter_sources(source):
+				continue
+
+			var function := sb.get_frame_function(frame)
+			var line := sb.get_frame_line(frame)
+			test_stack_trace.append(GdUnitStackTraceElement.new(source, line, function))
+	return GdUnitStackTrace.of(test_stack_trace)
+
+
 func _init(stack_trace := _extract_test_stack_trace()) -> void:
 	_stack_trace = stack_trace
+	# Verify stacktrace
+	for stack_element in stack_trace:
+		assert(stack_element != null)
 
 
 ## Returns a newline-separated string of all frames in the stack trace.
@@ -31,7 +50,10 @@ func get_line_number() -> int:
 func print_stack_trace() -> String:
 	var output := ""
 	for frame in _stack_trace:
-		output += "\tat '%s' in %s:%d\n" % [frame._function, frame._source, frame._line]
+		if frame._function != null and not frame._function.is_empty():
+			output += "\tat '%s' in %s:%d\n" % [frame._function, frame._source, frame._line]
+		else:
+			output += "\tat %s:%d\n" % [frame._source, frame._line]
 	return output
 
 
@@ -72,9 +94,7 @@ static func _extract_test_stack_trace() -> Array[GdUnitStackTraceElement]:
 		var stack_info := stack_trace[index]
 		var source: String = stack_info.get("source")
 
-		if (source.begins_with("res://addons/gdUnit4/src/")
-			or source.begins_with("user://tmp/mock/")
-			or source.begins_with("user://tmp/spy/")):
+		if filter_sources(source):
 			continue
 
 		var line: int = stack_info.get("line")
@@ -84,3 +104,11 @@ static func _extract_test_stack_trace() -> Array[GdUnitStackTraceElement]:
 
 	test_stack_trace.reverse()
 	return test_stack_trace
+
+
+
+static func filter_sources(source: String) -> bool:
+	return (
+		source.begins_with("res://addons/gdUnit4/src/")
+		or source.begins_with("user://tmp/mock/")
+		or source.begins_with("user://tmp/spy/"))

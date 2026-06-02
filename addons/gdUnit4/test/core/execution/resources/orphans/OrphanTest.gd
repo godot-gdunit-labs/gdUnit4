@@ -4,6 +4,11 @@ extends GdUnitTestSuite
 var _member_node1 := T2.new() # produces an orphan Node2D
 
 
+func after() -> void:
+	await get_tree().process_frame
+	collect_orphan_node_details()
+
+
 func _after_test() -> void:
 	collect_orphan_node_details()
 
@@ -24,7 +29,7 @@ func test_orphans3() -> void:
 
 func test_with_scene_orphans() -> void:
 	# run scene with orphan nodes
-	var runner := scene_runner("res://addons/gdUnit4/test/core/execution/resources/orphans/OrphanScene.tscn")
+	var runner := scene_runner("res://addons/gdUnit4/test/core/execution/resources/OrphanScene.tscn")
 	@warning_ignore("redundant_await")
 	await runner.simulate_frames(10)
 	collect_orphan_node_details()
@@ -32,7 +37,7 @@ func test_with_scene_orphans() -> void:
 
 func test_load_scene_orphans() -> void:
 	# run scene with orphan nodes
-	var _scene :Node2D = preload("res://addons/gdUnit4/test/core/execution/resources/orphans/OrphanScene.tscn").instantiate()
+	var _scene :Node2D = preload("res://addons/gdUnit4/test/core/execution/resources/OrphanScene.tscn").instantiate()
 	@warning_ignore("redundant_await")
 	collect_orphan_node_details()
 

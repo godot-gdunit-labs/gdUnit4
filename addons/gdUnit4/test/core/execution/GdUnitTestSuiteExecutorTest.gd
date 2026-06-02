@@ -491,14 +491,14 @@ func test_execute_failure_and_orphans() -> void:
 			[],
 			[],
 			# ends with warnings
-			["WARNING: Detected 2 orphan nodes on test setup!",
-			 "WARNING: Detected 3 orphan nodes!"],
+			["WARNING: Detected 2 possible orphan nodes.",
+			 "WARNING: Detected 3 orphan nodes."],
 			[],
 			# ends with failure and warnings
-			["WARNING: Detected 2 orphan nodes on test setup!",
-			 "WARNING: Detected 4 orphan nodes!"],
+			["WARNING: Detected 2 possible orphan nodes.",
+			 "faild on test_case2()"],
 			# and one warning detected at stage 'after'
-			["WARNING: Detected 1 orphan nodes!"]
+			["WARNING: Detected 1 possible orphan nodes."]
 		])
 
 

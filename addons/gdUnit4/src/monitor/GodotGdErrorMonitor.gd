@@ -38,7 +38,11 @@ class GdUnitLogger extends Logger:
 		script_backtraces: Array[ScriptBacktrace]
 		) -> void:
 
-		var stack_trace := _to_stack_trace(script_backtraces)
+		var stack_trace := GdUnitStackTrace.from_script_backtraces(script_backtraces)
+		if stack_trace.get_frames().size() == 0:
+			stack_trace = GdUnitStackTrace.new([
+				GdUnitStackTraceElement.new(_file, _line, _function)
+			])
 
 		match error_type:
 			ErrorType.ERROR_TYPE_WARNING:
@@ -62,22 +66,7 @@ class GdUnitLogger extends Logger:
 		pass
 
 
-	func _to_stack_trace(script_backtraces: Array[ScriptBacktrace]) -> GdUnitStackTrace:
-		var test_stack_trace: Array[GdUnitStackTraceElement] = []
 
-		for sb in script_backtraces:
-			for frame in sb.get_frame_count():
-				var source := sb.get_frame_file(frame)
-
-				if (source.begins_with("res://addons/gdUnit4/src/")
-					or source.begins_with("user://tmp/mock/")
-					or source.begins_with("user://tmp/spy/")):
-					continue
-
-				var function := sb.get_frame_function(frame)
-				var line := sb.get_frame_line(frame)
-				test_stack_trace.append(GdUnitStackTraceElement.new(source, line, function))
-		return GdUnitStackTrace.of(test_stack_trace)
 
 
 func _init() -> void:

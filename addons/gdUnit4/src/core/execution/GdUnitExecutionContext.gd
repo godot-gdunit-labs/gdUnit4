@@ -272,31 +272,34 @@ func gc(gc_orphan_check: GC_ORPHANS_CHECK = GC_ORPHANS_CHECK.NONE) -> void:
 
 	match(gc_orphan_check):
 		GC_ORPHANS_CHECK.SUITE_HOOK_AFTER:
-			_orphan_monitor.collect()
-			var orphan_infos := _orphan_monitor.detected_orphans()
-			if orphan_infos.is_empty():
-				return
-			reports().push_front(GdUnitReport.new() \
-				.create(GdUnitReport.ORPHAN, 1, GdAssertMessages.orphan_detected_on_suite_setup(orphan_infos))
-				.with_current_value(orphan_infos.size()))
+			report_ophans(0, "\n\t[b]Verify your test suite setup![/b]")
 
 		GC_ORPHANS_CHECK.TEST_HOOK_AFTER:
-			_orphan_monitor.collect()
-			var orphans := _orphan_monitor.detected_orphans()
-			if not orphans.is_empty():
-				reports().push_front(GdUnitReport.new()\
-					.create(GdUnitReport.ORPHAN, 1, GdAssertMessages.orphan_detected_on_test_setup(orphans))
-					.with_current_value(orphans.size()))
+			report_ophans(0, "\n\t[b]Verify before_test() and after_test()![/b]")
 
 		GC_ORPHANS_CHECK.TEST_CASE:
-			var orphans := _orphan_monitor.detected_orphans()
-			if orphans.is_empty():
-				var orphans_count := _orphan_monitor.orphans_count()
-				if orphans_count > 0:
-					reports().push_front(GdUnitReport.new() \
-							.create(GdUnitReport.ORPHAN, test_case.line_number(), GdAssertMessages.orphan_warning(orphans_count))
-							.with_current_value(orphans_count))
-			else:
-				reports().push_front(GdUnitReport.new()\
-					.create(GdUnitReport.ORPHAN, test_case.line_number(), GdAssertMessages.orphan_detected_on_test(orphans))
-					.with_current_value(orphans.size()))
+			report_ophans(test_case.line_number(),)
+
+
+func report_ophans(line_number: int, additonal_info := "") -> void:
+	var orphan_infos := _orphan_monitor.detected_orphans()
+	if orphan_infos.is_empty():
+		var orphans_count := _orphan_monitor.orphans_count()
+		if orphans_count > 0:
+			reports().append(GdUnitReport.new() \
+					.create(GdUnitReport.ORPHAN, line_number, GdAssertMessages.orphan_warning(orphans_count) + additonal_info)
+					.with_current_value(orphans_count))
+	else:
+		reports() \
+			.append(GdUnitReport.new()\
+			.create(GdUnitReport.ORPHAN, line_number, GdAssertMessages.orphan_detected(orphan_infos.size()) + additonal_info) \
+			.with_current_value(orphan_infos.size()))
+
+		for orphan_info in orphan_infos:
+			var error := GdUnitError.new(
+				GdAssertMessages.orphan_node_info(orphan_info),
+				0,
+				GdUnitStackTrace.new([orphan_info._stack_element]) if orphan_info._stack_element != null else null)
+			reports().push_back(GdUnitReport.new()\
+				.from_error(GdUnitReport.ORPHAN, error)
+				.with_current_value(0))

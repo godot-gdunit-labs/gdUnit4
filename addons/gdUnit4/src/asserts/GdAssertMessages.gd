@@ -5,6 +5,8 @@ extends Resource
 const SUB_COLOR :=  Color(1, 0, 0, .15)
 const ADD_COLOR :=  Color(0, 1, 0, .15)
 
+const NO_ORPHAN_DETAILS := "⚠️No details available. Run tests in debug mode to collect details."
+
 # Dictionary of control characters and their readable representations
 const CONTROL_CHARS = {
 	"\n": "<LF>",   # Line Feed
@@ -185,58 +187,54 @@ static func _index_report_as_table(index_reports :Array) -> String:
 	return table.replace("$cells", cells)
 
 
-
 static func orphan_warning(orphans_count: int) -> String:
-	return """
-		%s Found %s possible orphan nodes.
-			To collect detailed information, insert this block at the end of your test.
-			%s""".dedent().trim_prefix("\n") % [
-		_warning("WARNING:"),
-		_nerror(orphans_count),
-		_colored("""
-			[code]
-				await get_tree().process_frame
-				collect_orphan_node_details()
-			[/code]""".dedent().trim_prefix("\n"), GdUnitEditorColorTheme.value_color)
-	]
-
-static func orphan_detected_on_suite_setup(orphans: Array[GdUnitOrphanNodeInfo]) -> String:
-	return """
-		%s Detected %s orphan nodes!
-			[b]Verify your test suite setup.[/b]
-		%s""".dedent().trim_prefix("\n") % [
-		_warning("WARNING:"),
-		_nerror(orphans.size()),
-		_build_orphan_node_stacktrace(orphans)]
-
-
-static func orphan_detected_on_test_setup(orphans: Array[GdUnitOrphanNodeInfo]) -> String:
-	return """
-			%s Detected %s orphan nodes on test setup!
-				[b]Check before_test() and after_test()![/b]
-			%s""".dedent().trim_prefix("\n") % [
+	if EngineDebugger.is_active():
+		return """
+			%s Detected %s possible orphan nodes.
+				To collect detailed information, insert this block at the end of your test.
+				%s""".dedent().trim_prefix("\n") % [
 				_warning("WARNING:"),
-				_nerror(orphans.size()),
-				_build_orphan_node_stacktrace(orphans)
-			]
-
-
-static func orphan_detected_on_test(orphans: Array[GdUnitOrphanNodeInfo]) -> String:
+				_nerror(orphans_count),
+				_colored("""
+					[code]
+						await get_tree().process_frame
+						collect_orphan_node_details()
+					[/code]""".dedent().trim_prefix("\n"), GdUnitEditorColorTheme.value_color)
+				]
 	return """
-		%s Detected %s orphan nodes!
-		%s""".dedent().trim_prefix("\n") % [
+		%s Detected %s possible orphan nodes.
+			%s
+		""".dedent().trim_prefix("\n") % [
 			_warning("WARNING:"),
-			_nerror(orphans.size()),
-			_build_orphan_node_stacktrace(orphans)
+			_nerror(orphans_count),
+			_warning(NO_ORPHAN_DETAILS)
 		]
 
 
-static func _build_orphan_node_stacktrace(orphans: Array[GdUnitOrphanNodeInfo]) -> String:
-	var stack_trace := "\n"
-	for orphan in orphans:
-		stack_trace += orphan.as_trace(orphan, true) + "\n"
-	return stack_trace.indent("    ")
+static func orphan_detected(orphan_count: int) -> String:
+	if EngineDebugger.is_active():
+		return """
+			%s Detected %s orphan nodes.""".dedent().trim_prefix("\n") % [
+				_warning("WARNING:"),
+				_nerror(orphan_count)
+			]
+	return """
+		%s Detected %s orphan nodes.
+			%s""".dedent().trim_prefix("\n") % [
+			_warning("WARNING:"),
+			_nerror(orphan_count),
+			_warning(NO_ORPHAN_DETAILS)
+		]
 
+
+static func orphan_node_info(orphan_info: GdUnitOrphanNodeInfo) -> String:
+	var message := "<%s> Id:%s" % [
+		_colored(orphan_info._type, GdUnitEditorColorTheme.engine_type_color),
+		_colored(orphan_info._id, GdUnitEditorColorTheme.engine_type_color)
+	]
+	if orphan_info._stack_element == null:
+		message += _warning("\n\tNo source info available")
+	return message
 
 
 static func fuzzer_interuped(iterations: int, error: String) -> String:

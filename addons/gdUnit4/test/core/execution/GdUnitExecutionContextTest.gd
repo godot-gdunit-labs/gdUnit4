@@ -36,7 +36,6 @@ func test_collect_report_statistics_with_errors() -> void:
 			ctx_test_call.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_CASE)
 
 			var test_hook_err2 := ctx_test_hook.add_report(GdUnitReport.new().create(GdUnitReport.FAILURE, 4, "after_test error"))
-			await get_tree().process_frame
 			ctx_test_hook.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_HOOK_AFTER)
 
 			# verify
@@ -103,7 +102,6 @@ func test_collect_report_statistics_with_errors_on_suite_hooks() -> void:
 			var ctx_test_call := GdUnitExecutionContext.of(ctx_test_hook)
 			ctx_test_call.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_CASE)
 
-			await get_tree().process_frame
 			ctx_test_hook.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_HOOK_AFTER)
 
 			# verify
@@ -170,7 +168,6 @@ func test_collect_report_statistics_only_errors_on_test_hooks() -> void:
 			var ctx_test_call := GdUnitExecutionContext.of(ctx_test_hook)
 			ctx_test_call.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_CASE)
 
-			await get_tree().process_frame
 			ctx_test_hook.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_HOOK_AFTER)
 
 			# verify
@@ -234,7 +231,7 @@ func test_collect_report_statistics_all_tests_skipped() -> void:
 				var ctx_test_call := GdUnitExecutionContext.of(ctx_test_hook)
 				ctx_test_call.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_CASE)
 				var expected_report := ctx_test_call.add_report(GdUnitReport.new().create(GdUnitReport.SKIPPED, index*5, "skipped test %d" % index))
-				await get_tree().process_frame
+
 				ctx_test_hook.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_HOOK_AFTER)
 				# verify
 				ctx_test.gc()
@@ -302,7 +299,7 @@ func test_simmulate_flaky_test(retry_count: int, is_flaky: bool, is_failed: bool
 				if retry < 2:
 					expected_reports.append(ctx_test_call.add_report(GdUnitReport.new().create(GdUnitReport.FAILURE, 42, "error")))
 					expected_reports.append(ctx_test_call.add_report(GdUnitReport.new().create(GdUnitReport.FAILURE, 43, "error")))
-				await get_tree().process_frame
+
 				ctx_test_hook.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_HOOK_AFTER)
 
 			ctx_test.gc()
@@ -328,7 +325,6 @@ func test_simmulate_flaky_test(retry_count: int, is_flaky: bool, is_failed: bool
 			assert_bool(statistics[GdUnitEvent.FLAKY]).override_failure_message("Shold be marked as %s" %  "flaky" if is_flaky else "").is_equal(is_flaky)
 			assert_bool(statistics[GdUnitEvent.FAILED]).override_failure_message("Expect be failing: %s" % is_failed).is_equal(is_failed)
 
-		await get_tree().process_frame
 		ctx_suite.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.SUITE_HOOK_AFTER)
 		var suite_reports := ctx_suite.collect_reports(false)
 		assert_array(suite_reports).is_empty()

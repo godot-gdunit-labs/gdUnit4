@@ -1,42 +1,29 @@
 class_name GdFunctionDescriptor
 extends RefCounted
 
-var _is_virtual :bool
-var _is_static :bool
-var _is_engine :bool
-var _is_coroutine :bool
-var _name :String
+var _is_virtual: bool
+var _is_static: bool
+var _is_engine: bool
+var _is_coroutine: bool
+var _name: String
 var _source_path: String
-var _line_number :int
-var _return_type :int
-var _return_class :String
-var _args : Array[GdFunctionArgument]
-var _varargs :Array[GdFunctionArgument]
+var _begin_line: int = -1
+var _end_line: int = -1
+var _return_type: int
+var _return_class: String
+var _args: Array[GdFunctionArgument]
+var _varargs: Array[GdFunctionArgument]
 
 
-
-static func create(p_name: String, p_source_path: String, p_source_line: int, p_return_type: int, p_args: Array[GdFunctionArgument] = []) -> GdFunctionDescriptor:
-	var fd := GdFunctionDescriptor.new(p_name, p_source_line, false, false, false, p_return_type, "", p_args)
-	fd.enrich_file_info(p_source_path, p_source_line)
-	return fd
-
-static func create_static(p_name: String, p_source_path: String, p_source_line: int, p_return_type: int, p_args: Array[GdFunctionArgument] = []) -> GdFunctionDescriptor:
-	var fd := GdFunctionDescriptor.new(p_name, p_source_line, false, true, false, p_return_type, "", p_args)
-	fd.enrich_file_info(p_source_path, p_source_line)
-	return fd
-
-
-func _init(p_name :String,
-	p_line_number :int,
-	p_is_virtual :bool,
-	p_is_static :bool,
-	p_is_engine :bool,
-	p_return_type :int,
-	p_return_class :String,
-	p_args : Array[GdFunctionArgument],
-	p_varargs :Array[GdFunctionArgument] = []) -> void:
+func _init(p_name: String,
+	p_is_virtual: bool,
+	p_is_static: bool,
+	p_is_engine: bool,
+	p_return_type: int,
+	p_return_class: String,
+	p_args: Array[GdFunctionArgument],
+	p_varargs: Array[GdFunctionArgument] = []) -> void:
 	_name = p_name
-	_line_number = p_line_number
 	_return_type = p_return_type
 	_return_class = p_return_class
 	_is_virtual = p_is_virtual
@@ -60,8 +47,12 @@ func source_path() -> String:
 	return _source_path
 
 
-func line_number() -> int:
-	return _line_number
+func begin_line() -> int:
+	return _begin_line
+
+
+func end_line() -> int:
+	return _end_line
 
 
 func is_virtual() -> bool:
@@ -125,9 +116,10 @@ func enrich_arguments(arguments: Array[Dictionary]) -> void:
 			set_argument_value(arg_name, arg_value)
 
 
-func enrich_file_info(p_source_path: String, p_line_number: int) -> void:
+func enrich_file_info(p_source_path: String, p_begin_line: int, p_end_line: int) -> void:
 	_source_path = p_source_path
-	_line_number = p_line_number
+	_begin_line = p_begin_line
+	_end_line = p_end_line
 
 
 func args() -> Array[GdFunctionArgument]:
@@ -152,11 +144,11 @@ func typed_args() -> String:
 func _to_string() -> String:
 	var fsignature := "virtual " if is_virtual() else ""
 	if _return_type == TYPE_NIL:
-		return fsignature + "[Line:%s] func %s(%s):" % [line_number(), name(), typed_args()]
-	var func_template := fsignature + "[Line:%s] func %s(%s) -> %s:"
+		return fsignature + "[Line:(%d,%d)] func %s(%s):" % [begin_line(), end_line(), name(), typed_args()]
+	var func_template := fsignature + "[Line:(%d,%d)] func %s(%s) -> %s:"
 	if is_static():
-		func_template= "[Line:%s] static func %s(%s) -> %s:"
-	return func_template % [line_number(), name(), typed_args(), return_type_as_string()]
+		func_template= "[Line:(%d,%d)] static func %s(%s) -> %s:"
+	return func_template % [begin_line(), end_line(), name(), typed_args(), return_type_as_string()]
 
 
 # extract function description given by Object.get_method_list()
@@ -172,7 +164,6 @@ static func extract_from(descriptor :Dictionary, is_engine_ := true) -> GdFuncti
 	var return_type_ := _extract_return_type(return_descriptor)
 	return GdFunctionDescriptor.new(
 		func_name,
-		-1,
 		is_virtual_,
 		is_static_,
 		is_engine_,
@@ -206,7 +197,7 @@ const enum_fix := [
 	"Control.LayoutMode"]
 
 
-static func _extract_return_type(return_info :Dictionary) -> int:
+static func _extract_return_type(return_info: Dictionary) -> int:
 	var type :int = return_info["type"]
 	var usage :int = return_info["usage"]
 	if usage & PROPERTY_USAGE_CLASS_IS_ENUM:
@@ -218,13 +209,13 @@ static func _extract_return_type(return_info :Dictionary) -> int:
 	return type
 
 
-static func _extract_args(descriptor :Dictionary) -> Array[GdFunctionArgument]:
-	var args_ :Array[GdFunctionArgument] = []
-	var arguments :Array = descriptor["args"]
-	var defaults :Array = descriptor["default_args"]
+static func _extract_args(descriptor: Dictionary) -> Array[GdFunctionArgument]:
+	var args_: Array[GdFunctionArgument] = []
+	var arguments: Array = descriptor["args"]
+	var defaults: Array = descriptor["default_args"]
 	# iterate backwards because the default values are stored from right to left
 	while not arguments.is_empty():
-		var arg :Dictionary = arguments.pop_back()
+		var arg: Dictionary = arguments.pop_back()
 		var arg_name := _argument_name(arg)
 		var arg_type := _argument_type(arg)
 		var arg_type_hint := _argument_hint(arg)
@@ -234,21 +225,21 @@ static func _extract_args(descriptor :Dictionary) -> Array[GdFunctionArgument]:
 	return args_
 
 
-static func _build_varargs(p_is_vararg :bool) -> Array[GdFunctionArgument]:
-	var varargs_ :Array[GdFunctionArgument] = []
+static func _build_varargs(p_is_vararg: bool) -> Array[GdFunctionArgument]:
+	var varargs_: Array[GdFunctionArgument] = []
 	if not p_is_vararg:
 		return varargs_
 	varargs_.push_back(GdFunctionArgument.new("varargs", GdObjects.TYPE_VARARG, ''))
 	return varargs_
 
 
-static func _argument_name(arg :Dictionary) -> String:
+static func _argument_name(arg: Dictionary) -> String:
 	return arg["name"]
 
 
-static func _argument_type(arg :Dictionary) -> int:
-	var type :int = arg["type"]
-	var usage :int = arg["usage"]
+static func _argument_type(arg: Dictionary) -> int:
+	var type: int = arg["type"]
+	var usage: int = arg["usage"]
 
 	if type == TYPE_OBJECT:
 		if arg["class_name"] == "Node":
@@ -262,9 +253,9 @@ static func _argument_type(arg :Dictionary) -> int:
 	return type
 
 
-static func _argument_hint(arg :Dictionary) -> int:
-	var hint :int = arg["hint"]
-	var hint_string :String = arg["hint_string"]
+static func _argument_hint(arg: Dictionary) -> int:
+	var hint: int = arg["hint"]
+	var hint_string: String = arg["hint_string"]
 
 	match hint:
 		PROPERTY_HINT_ARRAY_TYPE:
@@ -273,13 +264,13 @@ static func _argument_hint(arg :Dictionary) -> int:
 			return 0
 
 
-static func _argument_type_as_string(arg :Dictionary) -> String:
+static func _argument_type_as_string(arg: Dictionary) -> String:
 	var type := _argument_type(arg)
 	match type:
 		TYPE_NIL:
 			return ""
 		TYPE_OBJECT:
-			var clazz_name :String = arg["class_name"]
+			var clazz_name: String = arg["class_name"]
 			if not clazz_name.is_empty():
 				return clazz_name
 			return ""

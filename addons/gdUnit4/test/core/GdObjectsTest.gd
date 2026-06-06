@@ -467,12 +467,12 @@ func test_extract_class_functions() -> void:
 	var functions := GdObjects.extract_class_functions("Resource", [""])
 	for f :Dictionary in functions:
 		if f["name"] == "get_path":
-			assert_str(GdFunctionDescriptor.extract_from(f)._to_string()).is_equal("[Line:-1] func get_path() -> String:")
+			assert_str(GdFunctionDescriptor.extract_from(f)._to_string()).is_equal("[Line:(-1,-1)] func get_path() -> String:")
 
 	functions = GdObjects.extract_class_functions("CustomResourceTestClass", ["res://addons/gdUnit4/test/mocker/resources/CustomResourceTestClass.gd"])
 	for f :Dictionary in functions:
 		if f["name"] == "get_path":
-			assert_str(GdFunctionDescriptor.extract_from(f)._to_string()).is_equal("[Line:-1] func get_path() -> String:")
+			assert_str(GdFunctionDescriptor.extract_from(f)._to_string()).is_equal("[Line:(-1,-1)] func get_path() -> String:")
 
 
 func test_all_types() -> void:

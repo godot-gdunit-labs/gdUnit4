@@ -2,12 +2,12 @@ extends GdUnitTestSuite
 
 var _parser: GdScriptParser
 
-const TYPE_VOID = GdObjects.TYPE_VOID
-const TYPE_VARIANT = GdObjects.TYPE_VARIANT
-const TYPE_VARARG = GdObjects.TYPE_VARARG
-const TYPE_FUNC = GdObjects.TYPE_FUNC
-const TYPE_FUZZER = GdObjects.TYPE_FUZZER
-const TYPE_ENUM = GdObjects.TYPE_ENUM
+const TYPE_VOID := GdObjects.TYPE_VOID
+const TYPE_VARIANT := GdObjects.TYPE_VARIANT
+const TYPE_VARARG := GdObjects.TYPE_VARARG
+const TYPE_FUNC := GdObjects.TYPE_FUNC
+const TYPE_FUZZER := GdObjects.TYPE_FUZZER
+const TYPE_ENUM := GdObjects.TYPE_ENUM
 
 
 func before() -> void:
@@ -383,6 +383,7 @@ func test_parse_func_name() -> void:
 	assert_str(_parser.parse_func_name("#func foo():")).is_empty()
 	assert_str(_parser.parse_func_name("var x")).is_empty()
 
+
 func test_load_source_code_inner_class_AtmosphereData() -> void:
 	var base_class := AdvancedTestClass.new()
 	@warning_ignore("unsafe_cast")
@@ -473,21 +474,21 @@ func test_parse_func_description() -> void:
 	var fds := _parser.get_function_descriptors(script)
 
 	assert_that(fds[0])\
-		.is_equal(GdFunctionDescriptor.create("foo0", script.resource_path, 4, TYPE_STRING, [
+		.is_equal(create("foo0", script.resource_path, 4, 5, TYPE_STRING, [
 			GdFunctionArgument.new("arg1", TYPE_INT),
 			GdFunctionArgument.new("arg2", TYPE_BOOL, false)
 		]))
 
 	# static function
 	assert_that(fds[1])\
-		.is_equal(GdFunctionDescriptor.create_static("foo1", script.resource_path, 8, TYPE_STRING, [
+		.is_equal(create_static("foo1", script.resource_path, 8, 9, TYPE_STRING, [
 			GdFunctionArgument.new("arg1", TYPE_INT),
 			GdFunctionArgument.new("arg2", TYPE_BOOL, false)
 		]))
 
 	# static function without return type
 	assert_that(fds[2])\
-		.is_equal(GdFunctionDescriptor.create_static("foo2", script.resource_path, 12, GdObjects.TYPE_VARIANT, [
+		.is_equal(create_static("foo2", script.resource_path, 12, 13, GdObjects.TYPE_VARIANT, [
 			GdFunctionArgument.new("arg1", TYPE_INT),
 			GdFunctionArgument.new("arg2", TYPE_BOOL, true)
 		]))
@@ -498,8 +499,7 @@ func test_get_function_descriptors_return_type_enum() -> void:
 	var fds := _parser.get_function_descriptors(script, ["get_enum"])
 
 	assert_that(fds[0])\
-		.is_equal(GdFunctionDescriptor
-			.create("get_enum", script.resource_path, 15, GdObjects.TYPE_ENUM)
+		.is_equal(create("get_enum", script.resource_path, 15, 16, GdObjects.TYPE_ENUM, [])
 			.with_return_class("ClassWithEnumReturnTypes.TEST_ENUM")
 		)
 
@@ -509,8 +509,7 @@ func test_parse_func_description_return_type_internal_class_enum() -> void:
 	var fds := _parser.get_function_descriptors(script, ["get_inner_class_enum"])
 
 	assert_that(fds[0])\
-		.is_equal(GdFunctionDescriptor
-			.create("get_inner_class_enum", script.resource_path, 25, GdObjects.TYPE_ENUM)
+		.is_equal(create("get_inner_class_enum", script.resource_path, 25, 26, GdObjects.TYPE_ENUM, [])
 			.with_return_class("ClassWithEnumReturnTypes.InnerClass.TEST_ENUM")
 		)
 
@@ -520,8 +519,7 @@ func test_parse_func_description_return_type_external_class_enum() -> void:
 	var fds := _parser.get_function_descriptors(script, ["get_external_class_enum"])
 
 	assert_that(fds[0])\
-		.is_equal(GdFunctionDescriptor
-			.create("get_external_class_enum", script.resource_path, 20, GdObjects.TYPE_ENUM)
+		.is_equal(create("get_external_class_enum", script.resource_path, 20, 21, GdObjects.TYPE_ENUM, [])
 			.with_return_class("CustomEnums.TEST_ENUM")
 		)
 
@@ -539,17 +537,17 @@ func test_parse_class_inherits() -> void:
 	assert_bool(clazz_desccriptor.is_inner_class()).is_false()
 	assert_array(clazz_desccriptor.functions())\
 		.contains_exactly([
-			GdFunctionDescriptor.create("foo2", "res://addons/gdUnit4/test/mocker/resources/CustomClassExtendsCustomClass.gd", 6, GdObjects.TYPE_VARIANT),
-			GdFunctionDescriptor.create("bar2", "res://addons/gdUnit4/test/mocker/resources/CustomClassExtendsCustomClass.gd", 9, TYPE_STRING),
-			GdFunctionDescriptor.create("foo", "res://addons/gdUnit4/test/mocker/resources/CustomResourceTestClass.gd", 4, TYPE_STRING),
-			GdFunctionDescriptor.create("foo_void", "res://addons/gdUnit4/test/mocker/resources/CustomResourceTestClass.gd", 10, GdObjects.TYPE_VOID),
-			GdFunctionDescriptor.create("bar", "res://addons/gdUnit4/test/mocker/resources/CustomResourceTestClass.gd", 13, TYPE_STRING, [
+			create("foo2", "res://addons/gdUnit4/test/mocker/resources/CustomClassExtendsCustomClass.gd", 6, 7, GdObjects.TYPE_VARIANT),
+			create("bar2", "res://addons/gdUnit4/test/mocker/resources/CustomClassExtendsCustomClass.gd", 9, 10, TYPE_STRING),
+			create("foo", "res://addons/gdUnit4/test/mocker/resources/CustomResourceTestClass.gd", 4, 5, TYPE_STRING),
+			create("foo_void", "res://addons/gdUnit4/test/mocker/resources/CustomResourceTestClass.gd", 10, 11, GdObjects.TYPE_VOID),
+			create("bar", "res://addons/gdUnit4/test/mocker/resources/CustomResourceTestClass.gd", 13, 14, TYPE_STRING, [
 				GdFunctionArgument.new("arg1", TYPE_INT),
 				GdFunctionArgument.new("arg2", TYPE_INT, 23),
 				GdFunctionArgument.new("name", TYPE_STRING, "test"),
 			]),
 			# see https://github.com/godotengine/godot/pull/118032
-			GdFunctionDescriptor.create("foo5", "res://addons/gdUnit4/test/mocker/resources/CustomResourceTestClass.gd", 17,
+			create("foo5", "res://addons/gdUnit4/test/mocker/resources/CustomResourceTestClass.gd", 17, 18,
 				GdObjects.TYPE_VARIANT if Engine.get_version_info()["minor"] >= 7 else GdObjects.TYPE_VOID),
 		])
 
@@ -618,7 +616,7 @@ func test_parse_func_description_paramized_test() -> void:
 	""")
 	var fds := GdScriptParser.new().get_function_descriptors(script, ["test_parameterized"])
 
-	assert_that(fds[0]).is_equal(GdFunctionDescriptor.create("test_parameterized", script.resource_path, 3, GdObjects.TYPE_VARIANT, [
+	assert_that(fds[0]).is_equal(create("test_parameterized", script.resource_path, 3, 4, GdObjects.TYPE_VARIANT, [
 		GdFunctionArgument.new("a", TYPE_INT),
 		GdFunctionArgument.new("b", TYPE_INT),
 		GdFunctionArgument.new("c", TYPE_INT),
@@ -679,7 +677,7 @@ func test_parse_func_descriptor_with_fuzzers() -> void:
 	# see https://github.com/godotengine/godot/pull/118032
 	var untyped_return_type: int = GdObjects.TYPE_VARIANT if Engine.get_version_info()["minor"] >= 7 else GdObjects.TYPE_VOID
 
-	assert_that(fds[0]).is_equal(GdFunctionDescriptor.create("test_foo", script.resource_path, 12, untyped_return_type, [
+	assert_that(fds[0]).is_equal(create("test_foo", script.resource_path, 12, 17, untyped_return_type, [
 		# all fuzzer must by type TYPE_FUZZER
 		GdFunctionArgument.new("fuzzer_a", GdObjects.TYPE_FUZZER, "fuzz_a()"),
 		GdFunctionArgument.new("fuzzer_b", GdObjects.TYPE_FUZZER, "fuzz_b()"),
@@ -740,3 +738,63 @@ func test_using_class_in_variable_name() -> void:
 	var rows := script.split("\n")
 	assert_bool(_parser.is_func_coroutine(rows, 0)).is_false()
 	assert_bool(_parser.is_func_coroutine(rows, 4)).is_false()
+
+
+func test_find_end_line() -> void:
+	var source := """
+		extends RefCounted															# Line: 1
+
+
+		func test_foo1() -> void:                                                   # Line: 4
+			pass																	# Line: 5
+		func test_foo2() -> void:													# Line: 6
+			pass																	# Line: 7
+
+
+		# Single comment
+		func test_foo3() -> void:													# Line: 11
+			# comment
+
+			pass																	# Line: 14
+
+		@warning_ignore("untyped_declaration")
+		func test_with_paramset(													# Line: 17
+			values: Array,
+			expected: String,
+			_test_parameters : Array = [
+				[ ["a"], "a" ],
+				[ ["a", "very", "long", "argument"], "a very long argument" ],
+			]
+		) -> void:
+			var current := " ".join(values)
+			assert_that(current.strip_edges()).is_equal(expected)(					# Line: 26
+
+		## function doc
+		## pla ...
+		func test_end() -> void:													# Line: 30
+			pass																	# Line: 31
+		""".dedent().trim_prefix("\n")
+
+	var rows := source.split("\n")
+	# test_foo1()
+	assert_int(_parser._parse_func_end_line(rows, 4)).is_equal(5)
+	# test_foo2()
+	assert_int(_parser._parse_func_end_line(rows, 6)).is_equal(7)
+	# test_foo3()
+	assert_int(_parser._parse_func_end_line(rows, 11)).is_equal(14)
+	# test_with_paramset()
+	assert_int(_parser._parse_func_end_line(rows, 17)).is_equal(26)
+	# test_end()
+	assert_int(_parser._parse_func_end_line(rows, 30)).is_equal(31)
+
+
+static func create(func_name: String, source_path: String, begin_line: int, end_line: int, return_type: int, args: Array[GdFunctionArgument] = []) -> GdFunctionDescriptor:
+	var fd := GdFunctionDescriptor.new(func_name, false, false, false, return_type, "", args)
+	fd.enrich_file_info(source_path, begin_line, end_line)
+	return fd
+
+
+static func create_static(func_name: String, source_path: String, begin_line: int, end_line: int, return_type: int, args: Array[GdFunctionArgument]) -> GdFunctionDescriptor:
+	var fd := GdFunctionDescriptor.new(func_name, false, true, false, return_type, "", args)
+	fd.enrich_file_info(source_path, begin_line, end_line)
+	return fd

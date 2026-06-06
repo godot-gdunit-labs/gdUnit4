@@ -136,7 +136,7 @@ func test_double_untyped_function_with_varargs() -> void:
 	var doubler := GdUnitMockFunctionDoubler.new()
 
 	# void emit_custom(signal_name, args__ ...) vararg const
-	var fd := GdFunctionDescriptor.new("emit_custom", 10, false, false, false, TYPE_NIL, "",
+	var fd := GdFunctionDescriptor.new("emit_custom", false, false, false, TYPE_NIL, "",
 		[GdFunctionArgument.new("signal", TYPE_SIGNAL)],
 		GdFunctionDescriptor._build_varargs(true))
 	var expected := """

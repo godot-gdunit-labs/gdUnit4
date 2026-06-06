@@ -3,12 +3,12 @@ extends RefCounted
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
-const TYPE_VOID = GdObjects.TYPE_VOID
-const TYPE_VARIANT = GdObjects.TYPE_VARIANT
-const TYPE_VARARG = GdObjects.TYPE_VARARG
-const TYPE_FUNC = GdObjects.TYPE_FUNC
-const TYPE_FUZZER = GdObjects.TYPE_FUZZER
-const TYPE_ENUM = GdObjects.TYPE_ENUM
+const TYPE_VOID := GdObjects.TYPE_VOID
+const TYPE_VARIANT := GdObjects.TYPE_VARIANT
+const TYPE_VARARG := GdObjects.TYPE_VARARG
+const TYPE_FUNC := GdObjects.TYPE_FUNC
+const TYPE_FUZZER := GdObjects.TYPE_FUZZER
+const TYPE_ENUM := GdObjects.TYPE_ENUM
 
 
 var TOKEN_NOT_MATCH := Token.new("")
@@ -16,6 +16,7 @@ var TOKEN_SPACE := SkippableToken.new(" ")
 var TOKEN_TABULATOR := SkippableToken.new("\t")
 var TOKEN_NEW_LINE := SkippableToken.new("\n")
 var TOKEN_COMMENT := SkippableToken.new("#")
+var TOKEN_ANNOTATION := SkippableToken.new("@")
 var TOKEN_CLASS_NAME := RegExToken.new("class_name", GdUnitTools.to_regex("(class_name)\\s+([\\w\\p{L}\\p{N}_]+) (extends[a-zA-Z]+:)|(class_name)\\s+([\\w\\p{L}\\p{N}_]+)"), 5)
 var TOKEN_INNER_CLASS := TokenInnerClass.new("class", GdUnitTools.to_regex("(class)\\s+(\\w\\p{L}\\p{N}_]+) (extends[a-zA-Z]+:)|(class)\\s+([\\w\\p{L}\\p{N}_]+)"), 5)
 var TOKEN_EXTENDS := RegExToken.new("extends", GdUnitTools.to_regex("extends\\s+"))
@@ -52,6 +53,7 @@ var TOKENS :Array[Token] = [
 	TOKEN_NEW_LINE,
 	TOKEN_BACKSLASH,
 	TOKEN_COMMENT,
+	TOKEN_ANNOTATION,
 	TOKEN_BRACKET_ROUND_OPEN,
 	TOKEN_BRACKET_ROUND_CLOSE,
 	TOKEN_BRACKET_SQUARE_OPEN,
@@ -683,9 +685,11 @@ func _enrich_function_descriptor(script: GDScript, fds: Array[GdFunctionDescript
 			enriched_functions[function_name] = true
 			var func_signature := extract_func_signature(rows, rowIndex)
 			var func_arguments := _parse_function_arguments(func_signature)
+			var func_begin_line := rowIndex + 1
+			var func_end_line := _parse_func_end_line(rows, func_begin_line)
 			# enrich missing default values
 			fd.enrich_arguments(func_arguments)
-			fd.enrich_file_info(script_to_scan.resource_path, rowIndex + 1)
+			fd.enrich_file_info(script_to_scan.resource_path, func_begin_line, func_end_line)
 			fd._is_coroutine = is_func_coroutine(rows, rowIndex)
 			# enrich return class name if not set
 			if fd.return_type() == TYPE_OBJECT and fd._return_class in ["", "Resource", "RefCounted"]:
@@ -694,6 +698,20 @@ func _enrich_function_descriptor(script: GDScript, fds: Array[GdFunctionDescript
 					fd._return_class = _patch_inner_class_names(var_token.plain_value(), "")
 		# if the script ihnerits we need to scan this also
 		script_to_scan = script_to_scan.get_base_script()
+
+
+func _parse_func_end_line(rows: PackedStringArray, func_row_index: int) -> int:
+	var last_non_empty := func_row_index
+	for row_index in range(func_row_index, rows.size()):
+		var row := rows[row_index]
+		if row.begins_with("#") or row.is_empty():
+			continue
+		var token := next_token(row, 0)
+		# scan until next function or annotation
+		if token in [TOKEN_ANNOTATION, TOKEN_FUNCTION_STATIC_DECLARATION, TOKEN_FUNCTION_DECLARATION]:
+			break
+		last_non_empty = row_index
+	return last_non_empty + 1
 
 
 func is_func_coroutine(rows :PackedStringArray, index :int) -> bool:

@@ -26,7 +26,7 @@ func _init(fd: GdFunctionDescriptor) -> void:
 
 func resolve_test_cases(script: GDScript) -> Array[GdUnitTestCase]:
 	if not is_parameterized():
-		return [GdUnitTestCase.from(script.resource_path, _fd.source_path(), _fd.line_number(), _fd.name())]
+		return [GdUnitTestCase.from(script.resource_path, _fd.source_path(), _fd.begin_line(), _fd.name())]
 	return extract_test_cases_by_reflection(script)
 
 
@@ -102,7 +102,7 @@ func extract_test_cases_by_reflection(script: GDScript) -> Array[GdUnitTestCase]
 			var parameter_set := parameter_sets[parameter_set_index]
 			_static_sets_by_index[parameter_set_index] = _is_static_parameter_set(parameter_set, property_names)
 			@warning_ignore("return_value_discarded")
-			test_cases.append(GdUnitTestCase.from(script.resource_path, _fd.source_path(), _fd.line_number(), _fd.name(), parameter_set_index, parameter_set))
+			test_cases.append(GdUnitTestCase.from(script.resource_path, _fd.source_path(), _fd.begin_line(), _fd.name(), parameter_set_index, parameter_set))
 			parameter_set_index += 1
 		return test_cases
 
@@ -128,7 +128,7 @@ func _extract_test_cases_by_reflection(source: Node, script: GDScript) -> Array[
 	for index in parameter_sets.size():
 		var parameter_set := str(parameter_sets[index])
 		@warning_ignore("return_value_discarded")
-		test_cases.append(GdUnitTestCase.from(script.resource_path, _fd.source_path(), _fd.line_number(), _fd.name(), index, parameter_set))
+		test_cases.append(GdUnitTestCase.from(script.resource_path, _fd.source_path(), _fd.begin_line(), _fd.name(), index, parameter_set))
 	return test_cases
 
 

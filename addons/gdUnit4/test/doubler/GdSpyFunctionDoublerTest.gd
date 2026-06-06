@@ -171,7 +171,7 @@ func test_double_return_typed_function_with_args_and_varargs() -> void:
 func test_double_return_void_function_only_varargs() -> void:
 	var doubler := GdUnitSpyFunctionDoubler.new()
 	# void bar(s...) vararg
-	var fd := GdFunctionDescriptor.new( "bar", 23, false, false, false, TYPE_NIL, "void", [], GdFunctionDescriptor._build_varargs(true))
+	var fd := GdFunctionDescriptor.new("bar", false, false, false, TYPE_NIL, "void", [], GdFunctionDescriptor._build_varargs(true))
 	var expected := """
 		func bar(...varargs_: Array) -> void:
 			var __args := [] + varargs_
@@ -206,7 +206,7 @@ func test_double_return_void_function_only_varargs() -> void:
 func test_double_return_typed_function_only_varargs() -> void:
 	var doubler := GdUnitSpyFunctionDoubler.new()
 	# String bar(s...) vararg
-	var fd := GdFunctionDescriptor.new("bar", 23, false, false, false, TYPE_STRING, "String", [], GdFunctionDescriptor._build_varargs(true))
+	var fd := GdFunctionDescriptor.new("bar", false, false, false, TYPE_STRING, "String", [], GdFunctionDescriptor._build_varargs(true))
 	var expected := """
 		func bar(...varargs_: Array) -> String:
 			var __args := [] + varargs_
@@ -241,7 +241,7 @@ func test_double_return_typed_function_only_varargs() -> void:
 func test_double_static_return_void_function_without_args() -> void:
 	var doubler := GdUnitSpyFunctionDoubler.new()
 	# void foo()
-	var fd := GdFunctionDescriptor.new("foo", 23, false, true, false, TYPE_NIL, "", [])
+	var fd := GdFunctionDescriptor.new("foo", false, true, false, TYPE_NIL, "", [])
 	var expected := """
 		static func foo() -> void:
 			var __args := []
@@ -262,7 +262,7 @@ func test_double_static_return_void_function_without_args() -> void:
 
 func test_double_static_return_void_function_with_args() -> void:
 	var doubler := GdUnitSpyFunctionDoubler.new()
-	var fd := GdFunctionDescriptor.new("foo", 23, false, true, false, TYPE_NIL, "", [
+	var fd := GdFunctionDescriptor.new("foo", false, true, false, TYPE_NIL, "", [
 		GdFunctionArgument.new("arg1", TYPE_BOOL),
 		GdFunctionArgument.new("arg2", TYPE_STRING, "default")
 	])
@@ -287,7 +287,7 @@ func test_double_static_return_void_function_with_args() -> void:
 func test_double_static_script_function_with_args_return_bool() -> void:
 	var doubler := GdUnitSpyFunctionDoubler.new()
 
-	var fd := GdFunctionDescriptor.new("foo", 23, false, true, false, TYPE_BOOL, "", [
+	var fd := GdFunctionDescriptor.new("foo", false, true, false, TYPE_BOOL, "", [
 		GdFunctionArgument.new("arg1", TYPE_BOOL),
 		GdFunctionArgument.new("arg2", TYPE_STRING, "default")
 	])

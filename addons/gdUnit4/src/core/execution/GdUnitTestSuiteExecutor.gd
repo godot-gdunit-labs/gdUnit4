@@ -45,6 +45,7 @@ func run_and_wait(tests: Array[GdUnitTestCase]) -> void:
 			context.test_suite = test_suite
 			(Engine.get_main_loop() as SceneTree).root.add_child(test_suite)
 			await _executeStage.execute(context)
+			GdUnitOrphanDetectionInjector.cleanup()
 			context.dispose()
 		else:
 			await GdUnit4CSharpApiLoader.execute(suite_tests)

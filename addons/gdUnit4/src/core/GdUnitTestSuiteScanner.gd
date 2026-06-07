@@ -133,10 +133,6 @@ func _load_is_test_suite(resource_path: String) -> Script:
 
 
 func load_suite(script: GDScript, tests: Array[GdUnitTestCase]) -> GdUnitTestSuite:
-	var test_suite: GdUnitTestSuite = script.new()
-	var first_test: GdUnitTestCase = tests.front()
-	test_suite.set_name(first_test.suite_name)
-
 	# We need to group first all parameterized tests together to load the parameter set once
 	var grouped_by_test := GdArrayTools.group_by(tests, func(test: GdUnitTestCase) -> String:
 		return test.test_name
@@ -145,6 +141,12 @@ func load_suite(script: GDScript, tests: Array[GdUnitTestCase]) -> GdUnitTestSui
 	var test_names: PackedStringArray = grouped_by_test.keys()
 	test_names.append("before")
 	var function_descriptors := _script_parser.get_function_descriptors(script, test_names)
+
+	#GdUnitOrphanDetectionInjector.intercept(script, function_descriptors)
+
+	var test_suite: GdUnitTestSuite = script.new()
+	var first_test: GdUnitTestCase = tests.front()
+	test_suite.set_name(first_test.suite_name)
 
 	# Convert to test
 	for fd in function_descriptors:

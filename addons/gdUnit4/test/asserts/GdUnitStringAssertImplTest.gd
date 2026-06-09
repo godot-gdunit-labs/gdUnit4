@@ -314,13 +314,13 @@ func test_has_length() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting size:
-			 '23' but was '22' in
+			 23 but was 22 in
 			 'This is a test message'""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str(null).has_length(23)) \
 		.is_failed() \
 		.has_message("""
 			Expecting size:
-			 '23' but was '<null>' in
+			 23 but was <null> in
 			 '<null>'""".dedent().trim_prefix("\n"))
 
 
@@ -333,13 +333,13 @@ func test_has_length_less_than() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting size to be less than:
-			 '22' but was '22' in
+			 22 but was 22 in
 			 'This is a test message'""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str(null).has_length(22, Comparator.LESS_THAN)) \
 		.is_failed() \
 		.has_message("""
 			Expecting size to be less than:
-			 '22' but was '<null>' in
+			 22 but was <null> in
 			 '<null>'""".dedent().trim_prefix("\n"))
 
 
@@ -352,13 +352,13 @@ func test_has_length_less_equal() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting size to be less than or equal:
-			 '21' but was '22' in
+			 21 but was 22 in
 			 'This is a test message'""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str(null).has_length(21, Comparator.LESS_EQUAL)) \
 		.is_failed() \
 		.has_message("""
 			Expecting size to be less than or equal:
-			 '21' but was '<null>' in
+			 21 but was <null> in
 			 '<null>'""".dedent().trim_prefix("\n"))
 
 
@@ -370,13 +370,13 @@ func test_has_length_greater_than() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting size to be greater than:
-			 '22' but was '22' in
+			 22 but was 22 in
 			 'This is a test message'""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str(null).has_length(22, Comparator.GREATER_THAN)) \
 		.is_failed() \
 		.has_message("""
 			Expecting size to be greater than:
-			 '22' but was '<null>' in
+			 22 but was <null> in
 			 '<null>'""".dedent().trim_prefix("\n"))
 
 
@@ -389,13 +389,13 @@ func test_has_length_greater_equal() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting size to be greater than or equal:
-			 '23' but was '22' in
+			 23 but was 22 in
 			 'This is a test message'""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str(null).has_length(23, Comparator.GREATER_EQUAL)) \
 		.is_failed() \
 		.has_message("""
 			Expecting size to be greater than or equal:
-			 '23' but was '<null>' in
+			 23 but was <null> in
 			 '<null>'""".dedent().trim_prefix("\n"))
 
 

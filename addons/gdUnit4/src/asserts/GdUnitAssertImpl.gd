@@ -32,8 +32,12 @@ func report_error(failure :String, failure_line_number: int = -1) -> GdUnitAsser
 	return self
 
 
-func do_fail() -> GdUnitAssert:
+func do_fail_not_implemented() -> GdUnitAssert:
 	return report_error(GdAssertMessages.error_not_implemented())
+
+
+func do_fail_with_message(message: String) -> GdUnitAssert:
+	return report_error(GdAssertMessages.error_with_message(message))
 
 
 func override_failure_message(message: String) -> GdUnitAssert:

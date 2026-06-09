@@ -272,13 +272,26 @@ func gc(gc_orphan_check: GC_ORPHANS_CHECK = GC_ORPHANS_CHECK.NONE) -> void:
 
 	match(gc_orphan_check):
 		GC_ORPHANS_CHECK.SUITE_HOOK_AFTER:
-			report_ophans(0, "\n\t[b]Verify your test suite setup![/b]")
+			report_ophans(0, """
+		func before() -> void:
+			collect_orphan_node_details())
+
+		func after() -> void:
+			collect_orphan_node_details())""")
 
 		GC_ORPHANS_CHECK.TEST_HOOK_AFTER:
-			report_ophans(0, "\n\t[b]Verify before_test() and after_test()![/b]")
+			report_ophans(0, """
+		func before_test() -> void:
+			collect_orphan_node_details()
+
+		func after_test() -> void:
+			collect_orphan_node_details()""")
 
 		GC_ORPHANS_CHECK.TEST_CASE:
-			report_ophans(test_case.line_number(),)
+			report_ophans(test_case.line_number(),
+			"	collect_orphan_node_details()"
+			)
+
 
 
 func report_ophans(line_number: int, additonal_info := "") -> void:
@@ -286,13 +299,13 @@ func report_ophans(line_number: int, additonal_info := "") -> void:
 	if orphan_infos.is_empty():
 		var orphans_count := _orphan_monitor.orphans_count()
 		if orphans_count > 0:
-			reports().append(GdUnitReport.new() \
-					.create(GdUnitReport.ORPHAN, line_number, GdAssertMessages.orphan_warning(orphans_count) + additonal_info)
+			reports().push_back(GdUnitReport.new() \
+					.create(GdUnitReport.ORPHAN, line_number, GdAssertMessages.orphan_warning(orphans_count, additonal_info))
 					.with_current_value(orphans_count))
 	else:
 		reports() \
-			.append(GdUnitReport.new()\
-			.create(GdUnitReport.ORPHAN, line_number, GdAssertMessages.orphan_detected(orphan_infos.size()) + additonal_info) \
+			.push_back(GdUnitReport.new()\
+			.create(GdUnitReport.ORPHAN, line_number, GdAssertMessages.orphan_detected(orphan_infos.size())) \
 			.with_current_value(orphan_infos.size()))
 
 		for orphan_info in orphan_infos:

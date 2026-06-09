@@ -11,7 +11,7 @@ func test_is_null() -> void:
 
 	assert_failure(func() -> void: assert_float(23.2).is_null()) \
 		.is_failed() \
-		.starts_with_message("Expecting: '<null>' but was '23.200000'")
+		.starts_with_message("Expecting: '<null>' but was 23.200000")
 
 
 func test_is_not_null() -> void:
@@ -27,10 +27,10 @@ func test_is_equal() -> void:
 
 	assert_failure(func() -> void: assert_float(23.2).is_equal(23.4)) \
 		.is_failed() \
-		.has_message("Expecting:\n '23.400000'\n but was\n '23.200000'")
+		.has_message("Expecting:\n 23.400000\n but was\n 23.200000")
 	assert_failure(func() -> void: assert_float(null).is_equal(23.4)) \
 		.is_failed() \
-		.has_message("Expecting:\n '23.400000'\n but was\n '<null>'")
+		.has_message("Expecting:\n 23.400000\n but was\n '<null>'")
 
 
 func test_is_not_equal() -> void:
@@ -39,7 +39,7 @@ func test_is_not_equal() -> void:
 
 	assert_failure(func() -> void: assert_float(23.2).is_not_equal(23.2)) \
 		.is_failed() \
-		.has_message("Expecting:\n '23.200000'\n not equal to\n '23.200000'")
+		.has_message("Expecting:\n 23.200000\n not equal to\n 23.200000")
 
 
 func test_is_equal_approx() -> void:
@@ -50,20 +50,20 @@ func test_is_equal_approx() -> void:
 
 	assert_failure(func() -> void: assert_float(23.18).is_equal_approx(23.2, 0.01)) \
 		.is_failed() \
-		.has_message("Expecting:\n '23.180000'\n in range between\n '23.190000' <> '23.210000'")
+		.has_message("Expecting:\n 23.180000\n in range between\n 23.190000 <> 23.210000")
 	assert_failure(func() -> void: assert_float(23.22).is_equal_approx(23.2, 0.01)) \
 		.is_failed() \
-		.has_message("Expecting:\n '23.220000'\n in range between\n '23.190000' <> '23.210000'")
+		.has_message("Expecting:\n 23.220000\n in range between\n 23.190000 <> 23.210000")
 	assert_failure(func() -> void: assert_float(null).is_equal_approx(23.2, 0.01)) \
 		.is_failed() \
-		.has_message("Expecting:\n '<null>'\n in range between\n '23.190000' <> '23.210000'")
+		.has_message("Expecting:\n '<null>'\n in range between\n 23.190000 <> 23.210000")
 
 
 
 func test_is_less_() -> void:
 	assert_failure(func() -> void: assert_float(23.2).is_less(23.2)) \
 		.is_failed() \
-		.has_message("Expecting to be less than:\n '23.200000' but was '23.200000'")
+		.has_message("Expecting to be less than:\n 23.200000 but was 23.200000")
 
 func test_is_less() -> void:
 	assert_float(23.2).is_less(23.4)
@@ -71,10 +71,10 @@ func test_is_less() -> void:
 
 	assert_failure(func() -> void: assert_float(23.2).is_less(23.2)) \
 		.is_failed() \
-		.has_message("Expecting to be less than:\n '23.200000' but was '23.200000'")
+		.has_message("Expecting to be less than:\n 23.200000 but was 23.200000")
 	assert_failure(func() -> void: assert_float(null).is_less(23.2)) \
 		.is_failed() \
-		.has_message("Expecting to be less than:\n '23.200000' but was '<null>'")
+		.has_message("Expecting to be less than:\n 23.200000 but was '<null>'")
 
 
 func test_is_less_equal() -> void:
@@ -83,10 +83,10 @@ func test_is_less_equal() -> void:
 
 	assert_failure(func() -> void: assert_float(23.2).is_less_equal(23.1)) \
 		.is_failed() \
-		.has_message("Expecting to be less than or equal:\n '23.100000' but was '23.200000'")
+		.has_message("Expecting to be less than or equal:\n 23.100000 but was 23.200000")
 	assert_failure(func() -> void: assert_float(null).is_less_equal(23.1)) \
 		.is_failed() \
-		.has_message("Expecting to be less than or equal:\n '23.100000' but was '<null>'")
+		.has_message("Expecting to be less than or equal:\n 23.100000 but was '<null>'")
 
 
 func test_is_greater() -> void:
@@ -95,10 +95,10 @@ func test_is_greater() -> void:
 
 	assert_failure(func() -> void: assert_float(23.2).is_greater(23.2)) \
 		.is_failed() \
-		.has_message("Expecting to be greater than:\n '23.200000' but was '23.200000'")
+		.has_message("Expecting to be greater than:\n 23.200000 but was 23.200000")
 	assert_failure(func() -> void: assert_float(null).is_greater(23.2)) \
 		.is_failed() \
-		.has_message("Expecting to be greater than:\n '23.200000' but was '<null>'")
+		.has_message("Expecting to be greater than:\n 23.200000 but was '<null>'")
 
 
 func test_is_greater_equal() -> void:
@@ -107,10 +107,10 @@ func test_is_greater_equal() -> void:
 
 	assert_failure(func() -> void: assert_float(23.2).is_greater_equal(23.3)) \
 		.is_failed() \
-		.has_message("Expecting to be greater than or equal:\n '23.300000' but was '23.200000'")
+		.has_message("Expecting to be greater than or equal:\n 23.300000 but was 23.200000")
 	assert_failure(func() -> void: assert_float(null).is_greater_equal(23.3)) \
 		.is_failed() \
-		.has_message("Expecting to be greater than or equal:\n '23.300000' but was '<null>'")
+		.has_message("Expecting to be greater than or equal:\n 23.300000 but was '<null>'")
 
 
 func test_is_negative() -> void:
@@ -118,7 +118,7 @@ func test_is_negative() -> void:
 
 	assert_failure(func() -> void: assert_float(13.2).is_negative()) \
 		.is_failed() \
-		.has_message("Expecting:\n '13.200000' be negative")
+		.has_message("Expecting:\n 13.200000 be negative")
 	assert_failure(func() -> void: assert_float(null).is_negative()) \
 		.is_failed() \
 		.has_message("Expecting:\n '<null>' be negative")
@@ -129,7 +129,7 @@ func test_is_not_negative() -> void:
 
 	assert_failure(func() -> void: assert_float(-13.2).is_not_negative()) \
 		.is_failed() \
-		.has_message("Expecting:\n '-13.200000' be not negative")
+		.has_message("Expecting:\n -13.200000 be not negative")
 	assert_failure(func() -> void: assert_float(null).is_not_negative()) \
 		.is_failed() \
 		.has_message("Expecting:\n '<null>' be not negative")
@@ -140,7 +140,7 @@ func test_is_zero() -> void:
 
 	assert_failure(func() -> void: assert_float(0.00001).is_zero()) \
 		.is_failed() \
-		.has_message("Expecting:\n equal to 0 but is '0.000010'")
+		.has_message("Expecting:\n equal to 0 but is 0.000010")
 	assert_failure(func() -> void: assert_float(null).is_zero()) \
 		.is_failed() \
 		.has_message("Expecting:\n equal to 0 but is '<null>'")
@@ -162,7 +162,7 @@ func test_is_in() -> void:
 	# this assertion fail because 5.5 is not in [5.1, 5.2, 5.3, 5.4]
 	assert_failure(func() -> void: assert_float(5.5).is_in([5.1, 5.2, 5.3, 5.4])) \
 		.is_failed() \
-		.has_message("Expecting:\n '5.500000'\n is in\n '[5.1, 5.2, 5.3, 5.4]'")
+		.has_message("Expecting:\n 5.500000\n is in\n '[5.1, 5.2, 5.3, 5.4]'")
 	assert_failure(func() -> void: assert_float(null).is_in([5.1, 5.2, 5.3, 5.4])) \
 		.is_failed() \
 		.has_message("Expecting:\n '<null>'\n is in\n '[5.1, 5.2, 5.3, 5.4]'")
@@ -174,7 +174,7 @@ func test_is_not_in() -> void:
 	# this assertion fail because 5.2 is not in [5.1, 5.2, 5.3, 5.4]
 	assert_failure(func() -> void: assert_float(5.2).is_not_in([5.1, 5.2, 5.3, 5.4])) \
 		.is_failed() \
-		.has_message("Expecting:\n '5.200000'\n is not in\n '[5.1, 5.2, 5.3, 5.4]'")
+		.has_message("Expecting:\n 5.200000\n is not in\n '[5.1, 5.2, 5.3, 5.4]'")
 
 
 func test_is_between() -> void:
@@ -186,16 +186,16 @@ func test_is_between() -> void:
 func test_is_between_must_fail() -> void:
 	assert_failure(func() -> void: assert_float(-10.0).is_between(-9.0, 0.0)) \
 		.is_failed() \
-		.has_message("Expecting:\n '-10.000000'\n in range between\n '-9.000000' <> '0.000000'")
+		.has_message("Expecting:\n -10.000000\n in range between\n -9.000000 <> 0.000000")
 	assert_failure(func() -> void: assert_float(0.0).is_between(1, 10)) \
 		.is_failed() \
-		.has_message("Expecting:\n '0.000000'\n in range between\n '1.000000' <> '10.000000'")
+		.has_message("Expecting:\n 0.000000\n in range between\n 1.000000 <> 10.000000")
 	assert_failure(func() -> void: assert_float(10.0).is_between(11, 21)) \
 		.is_failed() \
-		.has_message("Expecting:\n '10.000000'\n in range between\n '11.000000' <> '21.000000'")
+		.has_message("Expecting:\n 10.000000\n in range between\n 11.000000 <> 21.000000")
 	assert_failure(func() -> void: assert_float(null).is_between(11, 21)) \
 		.is_failed() \
-		.has_message("Expecting:\n '<null>'\n in range between\n '11.000000' <> '21.000000'")
+		.has_message("Expecting:\n '<null>'\n in range between\n 11.000000 <> 21.000000")
 
 
 func test_must_fail_has_invlalid_type() -> void:
@@ -232,7 +232,7 @@ func test_append_failure_message() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 equal to 0 but is '3.140000'
+			 equal to 0 but is 3.140000
 			Additional info:
 			 custom failure data""".dedent().trim_prefix("\n"))
 

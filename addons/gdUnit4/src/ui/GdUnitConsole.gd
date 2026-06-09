@@ -14,6 +14,7 @@ var _test_reporter: GdUnitConsoleTestReporter
 
 func _ready() -> void:
 	GdUnitFonts.init_fonts(output)
+	output.add_theme_constant_override("line_separation", 3)
 	GdUnit4Version.init_version_label(title)
 	GdUnitSignals.instance().gdunit_event.connect(_on_gdunit_event)
 	GdUnitSignals.instance().gdunit_message.connect(_on_gdunit_message)

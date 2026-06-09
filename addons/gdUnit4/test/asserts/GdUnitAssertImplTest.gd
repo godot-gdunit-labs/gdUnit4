@@ -11,28 +11,28 @@ func before() -> void:
 	assert_failure(func() -> void: assert_int(10).is_equal(42)) \
 		.is_failed() \
 		.has_line(11) \
-		.has_message("Expecting:\n '42'\n but was\n '10'")
+		.has_message("Expecting:\n 42\n but was\n 10")
 
 
 func after() -> void:
 	assert_failure(func() -> void: assert_int(10).is_equal(42)) \
 		.is_failed() \
 		.has_line(18) \
-		.has_message("Expecting:\n '42'\n but was\n '10'")
+		.has_message("Expecting:\n 42\n but was\n 10")
 
 
 func before_test() -> void:
 	assert_failure(func() -> void: assert_int(10).is_equal(42)) \
 		.is_failed() \
 		.has_line(25) \
-		.has_message("Expecting:\n '42'\n but was\n '10'")
+		.has_message("Expecting:\n 42\n but was\n 10")
 
 
 func after_test() -> void:
 	assert_failure(func() -> void: assert_int(10).is_equal(42)) \
 		.is_failed() \
 		.has_line(32) \
-		.has_message("Expecting:\n '42'\n but was\n '10'")
+		.has_message("Expecting:\n 42\n but was\n 10")
 
 
 func test_get_line_number() -> void:
@@ -40,7 +40,7 @@ func test_get_line_number() -> void:
 	assert_failure(func() -> void: assert_int(10).is_equal(42)) \
 		.is_failed() \
 		.has_line(40) \
-		.has_message("Expecting:\n '42'\n but was\n '10'")
+		.has_message("Expecting:\n 42\n but was\n 10")
 
 
 func test_get_line_number_yielded() -> void:
@@ -49,7 +49,7 @@ func test_get_line_number_yielded() -> void:
 	assert_failure(func() -> void: assert_int(10).is_equal(42)) \
 		.is_failed() \
 		.has_line(49) \
-		.has_message("Expecting:\n '42'\n but was\n '10'")
+		.has_message("Expecting:\n 42\n but was\n 10")
 
 
 func test_get_line_number_multiline() -> void:
@@ -60,7 +60,7 @@ func test_get_line_number_multiline() -> void:
 			.is_equal(42)) \
 		.is_failed() \
 		.has_line(58) \
-		.has_message("Expecting:\n '42'\n but was\n '10'")
+		.has_message("Expecting:\n 42\n but was\n 10")
 
 
 func test_get_line_number_verify() -> void:

@@ -38,7 +38,6 @@ func test_with_scene_orphans() -> void:
 func test_load_scene_orphans() -> void:
 	# run scene with orphan nodes
 	var _scene :Node2D = preload("res://addons/gdUnit4/test/core/execution/resources/OrphanScene.tscn").instantiate()
-	@warning_ignore("redundant_await")
 	collect_orphan_node_details()
 
 

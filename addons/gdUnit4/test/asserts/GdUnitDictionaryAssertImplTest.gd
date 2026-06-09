@@ -239,9 +239,9 @@ func test_has_size() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting size:
-			 '2'
+			 2
 			 but was
-			 '1'"""
+			 1"""
 			.dedent()
 			.trim_prefix("\n")
 		)
@@ -369,9 +369,9 @@ func test_contains_key_value() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains key and value:
-			 '1' : '2'
+			 1 : 2
 			 but contains
-			 '1' : '1'"""
+			 1 : 1"""
 			.dedent()
 			.trim_prefix("\n")
 		)
@@ -485,9 +485,9 @@ func test_contains_same_key_value() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains SAME key and value:
-			 <class:A:0> : '2'
+			 <class:A:0> : 2
 			 but contains
-			 <class:A:0> : '1'"""
+			 <class:A:0> : 1"""
 			.dedent().trim_prefix("\n")
 		)
 	assert_failure(func() -> void: assert_dict({key_a:1, key_b:2, key_c:3}).contains_same_key_value(key_d, 1)) \

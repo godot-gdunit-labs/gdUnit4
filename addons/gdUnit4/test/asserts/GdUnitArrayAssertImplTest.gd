@@ -273,15 +273,15 @@ func test_has_size() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting size:
-			 '4'
+			 4
 			 but was
-			 '5'"""
+			 5"""
 			.dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_array(null).has_size(4)) \
 		.is_failed() \
 		.has_message("""
 			Expecting size:
-			 '4'
+			 4
 			 but was
 			 '<null>'"""
 			.dedent().trim_prefix("\n"))
@@ -387,7 +387,7 @@ func test_contains_exactly() -> void:
 			 '[1, 2, 3, 4, 5]'
 			 do contains (in same order)
 			 '[1, 4, 3, 2, 5]'
-			 but has different order at position '1'
+			 but has different order at position 1
 			 '2' vs '4'"""
 			.dedent().trim_prefix("\n"))
 
@@ -433,7 +433,7 @@ func test_contains_exactly() -> void:
 			 '[class:A, class:B]'
 			 do contains (in same order)
 			 '[class:B, class:A]'
-			 but has different order at position '0'
+			 but has different order at position 0
 			 'class:A' vs 'class:B'"""
 		.dedent().trim_prefix("\n"))
 
@@ -452,7 +452,7 @@ func test_contains_exactly_variadic_args() -> void:
 			 '[1, 2, 3, 4, 5]'
 			 do contains (in same order)
 			 '[1, 4, 3, 2, 5]'
-			 but has different order at position '1'
+			 but has different order at position 1
 			 '2' vs '4'"""
 			.dedent().trim_prefix("\n"))
 
@@ -498,7 +498,7 @@ func test_contains_exactly_variadic_args() -> void:
 			 '[class:A, class:B]'
 			 do contains (in same order)
 			 '[class:B, class:A]'
-			 but has different order at position '0'
+			 but has different order at position 0
 			 'class:A' vs 'class:B'"""
 		.dedent().trim_prefix("\n"))
 
@@ -673,7 +673,7 @@ func test_contains_same_exactly() -> void:
 			 '[class:A, class:B]'
 			 do contains (in same order)
 			 '[class:B, class:A]'
-			 but has different order at position '0'
+			 but has different order at position 0
 			 'class:A' vs 'class:B'"""
 		.dedent().trim_prefix("\n"))
 

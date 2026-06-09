@@ -50,10 +50,12 @@ func get_line_number() -> int:
 func print_stack_trace() -> String:
 	var output := ""
 	for frame in _stack_trace:
+		if not output.is_empty():
+			output += "\n"
 		if frame._function != null and not frame._function.is_empty():
-			output += "\tat '%s' in %s:%d\n" % [frame._function, frame._source, frame._line]
+			output += "\tat '%s' in %s:%d" % [frame._function, frame._source, frame._line]
 		else:
-			output += "\tat %s:%d\n" % [frame._source, frame._line]
+			output += "\tat %s:%d" % [frame._source, frame._line]
 	return output
 
 

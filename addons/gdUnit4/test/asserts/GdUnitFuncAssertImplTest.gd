@@ -218,7 +218,7 @@ func test_is_equal(timeout := 2000) -> void:
 	value_provider = TestIterativeValueProvider.new(23, 1, 23)
 	(
 		await assert_failure_await(func() -> void: await assert_func(value_provider, "int_value", []).wait_until(100).is_equal(25))
-	).has_message("Expected: is equal '25' but timed out after 100ms")
+	).has_message("Expected: is equal 25 but timed out after 100ms")
 
 
 @warning_ignore("unused_parameter")
@@ -239,7 +239,7 @@ func test_is_not_equal(timeout := 2000) -> void:
 	value_provider = TestIterativeValueProvider.new(23, 1, 23)
 	(
 		await assert_failure_await(func() -> void: await assert_func(value_provider, "int_value", []).wait_until(100).is_not_equal(23))
-	).has_message("Expected: is not equal '23' but timed out after 100ms")
+	).has_message("Expected: is not equal 23 but timed out after 100ms")
 
 
 @warning_ignore("unused_parameter")
@@ -321,7 +321,7 @@ func test_has_failure_message() -> void:
 	var value_provider := TestIterativeValueProvider.new(10, 1, 10)
 	(
 		await assert_failure_await(func() -> void: await assert_func(value_provider, "int_value", []).wait_until(500).is_equal(42))
-	).has_message("Expected: is equal '42' but timed out after 500ms")
+	).has_message("Expected: is equal 42 but timed out after 500ms")
 
 
 func test_override_failure_message() -> void:
@@ -344,7 +344,7 @@ func test_append_failure_message() -> void:
 			.wait_until(10)\
 			.is_equal(42))
 	).is_failed() \
-		.contains_message("Expected: is equal '42' but timed out after") \
+		.contains_message("Expected: is equal 42 but timed out after") \
 		.contains_message("""
 			Additional info:
 			 custom failure data""".dedent().trim_prefix("\n"))

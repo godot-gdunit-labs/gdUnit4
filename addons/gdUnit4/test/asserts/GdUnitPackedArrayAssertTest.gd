@@ -232,9 +232,9 @@ func test_has_size(_test: String, array: Variant, _test_parameters := [
 		.is_failed() \
 		.has_message("""
 			Expecting size:
-			 '4'
+			 4
 			 but was
-			 '5'"""
+			 5"""
 			.dedent()
 			.trim_prefix("\n"))
 
@@ -296,7 +296,7 @@ func test_contains_exactly(_test: String, array: Variant, _test_parameters := [
 			 '$source'
 			 do contains (in same order)
 			 '$contains'
-			 but has different order at position '1'
+			 but has different order at position 1
 			 '$A' vs '$B'"""
 			.dedent()
 			.trim_prefix("\n")

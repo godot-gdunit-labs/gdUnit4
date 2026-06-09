@@ -15,13 +15,13 @@ static func init_fonts(item: CanvasItem) -> float:
 		var output_source_bold_italic := base_control.get_theme_font("output_source_bold_italic", "EditorFonts")
 		var output_source_italic := base_control.get_theme_font("output_source_italic", "EditorFonts")
 		var output_source_bold := base_control.get_theme_font("output_source_bold", "EditorFonts")
-		var output_source := base_control.get_theme_font("output_source", "EditorFonts")
+		#var output_source := base_control.get_theme_font("output_source", "EditorFonts")
 		var settings := EditorInterface.get_editor_settings()
 		var scale_factor := EditorInterface.get_editor_scale()
 		var font_size: float = settings.get_setting("interface/editor/main_font_size")
 
 		font_size *= scale_factor
-		item.set("theme_override_fonts/normal_font", output_source)
+		#item.set("theme_override_fonts/normal_font", output_source)
 		item.set("theme_override_fonts/bold_font", output_source_bold)
 		item.set("theme_override_fonts/italics_font", output_source_italic)
 		item.set("theme_override_fonts/bold_italics_font", output_source_bold_italic)

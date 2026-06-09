@@ -719,7 +719,7 @@ func assert_error(current: Callable) -> GdUnitGodotErrorAssert:
 ##     [/codeblock]
 func assert_not_yet_implemented() -> void:
 	@warning_ignore("unsafe_method_access")
-	__gdunit_assert().new(null).do_fail()
+	__gdunit_assert().new(null).do_fail_not_implemented()
 
 
 ## Explicitly fails the current test with a custom error message.[br]
@@ -738,7 +738,7 @@ func assert_not_yet_implemented() -> void:
 ##     [/codeblock]
 func fail(message: String) -> void:
 	@warning_ignore("unsafe_method_access")
-	__gdunit_assert().new(null).report_error(message)
+	__gdunit_assert().new(null).do_fail_with_message(message)
 
 
 # --- internal stuff do not override!!!

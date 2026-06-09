@@ -39,7 +39,7 @@ func test_captures_stack_depth_0() -> void:
 	var trace := GdUnitStackTrace.new()
 	assert_int(trace.get_line_number()).is_equal(39)
 	assert_str(trace.print_stack_trace())\
-		.is_equal("\tat 'test_captures_stack_depth_0' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:39\n")
+		.is_equal("\tat 'test_captures_stack_depth_0' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:39")
 
 
 func test_captures_stack_depth_1() -> void:
@@ -48,8 +48,8 @@ func test_captures_stack_depth_1() -> void:
 	assert_str(trace.print_stack_trace())\
 		.is_equal("""
 			at 'capture_stack' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:9
-			at 'test_captures_stack_depth_1' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:46
-			""".dedent().indent("\t").trim_prefix("\n"))
+			at 'test_captures_stack_depth_1' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:46"""
+				.dedent().indent("\t").trim_prefix("\n"))
 
 
 func test_captures_stack_depth_2() -> void:
@@ -59,8 +59,8 @@ func test_captures_stack_depth_2() -> void:
 		.is_equal("""
 			at 'capture_stack' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:9
 			at 'capture_stack_1' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:13
-			at 'test_captures_stack_depth_2' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:56
-			""".dedent().indent("\t").trim_prefix("\n"))
+			at 'test_captures_stack_depth_2' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:56"""
+				.dedent().indent("\t").trim_prefix("\n"))
 
 
 func test_captures_stack_depth_3() -> void:
@@ -71,8 +71,8 @@ func test_captures_stack_depth_3() -> void:
 			at 'capture_stack' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:9
 			at 'capture_stack_1' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:13
 			at 'capture_stack_2' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:17
-			at 'test_captures_stack_depth_3' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:67
-			""".dedent().indent("\t").trim_prefix("\n"))
+			at 'test_captures_stack_depth_3' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:67"""
+				.dedent().indent("\t").trim_prefix("\n"))
 
 
 func test_captures_stack_depth_4() -> void:
@@ -84,8 +84,8 @@ func test_captures_stack_depth_4() -> void:
 			at 'capture_stack_1' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:13
 			at 'capture_stack_2' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:17
 			at 'capture_stack_3' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:21
-			at 'test_captures_stack_depth_4' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:79
-			""".dedent().indent("\t").trim_prefix("\n"))
+			at 'test_captures_stack_depth_4' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:79"""
+				.dedent().indent("\t").trim_prefix("\n"))
 
 
 func test_captures_stack_depth_5() -> void:
@@ -98,8 +98,8 @@ func test_captures_stack_depth_5() -> void:
 			at 'capture_stack_2' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:17
 			at 'capture_stack_3' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:21
 			at 'capture_stack_4' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:25
-			at 'test_captures_stack_depth_5' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:92
-			""".dedent().indent("\t").trim_prefix("\n"))
+			at 'test_captures_stack_depth_5' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:92"""
+				.dedent().indent("\t").trim_prefix("\n"))
 
 
 func test_mock_frames_are_filtered_from_stack_trace() -> void:
@@ -133,8 +133,8 @@ func test_inner_class_frames_in_stack_trace() -> void:
 	assert_str(trace.print_stack_trace())\
 		.is_equal("""
 			at 'capture_stack' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:31
-			at 'test_inner_class_frames_in_stack_trace' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:131
-			""".dedent().indent("\t").trim_prefix("\n"))
+			at 'test_inner_class_frames_in_stack_trace' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:131"""
+				.dedent().indent("\t").trim_prefix("\n"))
 
 #endregion
 

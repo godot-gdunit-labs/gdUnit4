@@ -56,6 +56,7 @@ func on_gdunit_event(event: GdUnitEvent) -> void:
 				_writer.indent(1).color(GdUnitEditorColorTheme.engine_type_color).print_message(event._suite_name)
 				print_message(" > ")
 				print_message("finalize()", GdUnitEditorColorTheme.function_definition_color)
+				_writer.indent(-1)
 				_print_failure_report(event.reports())
 			_print_statistics(_reporter.build_test_suite_statisitcs(event))
 			_print_status(event)
@@ -76,6 +77,7 @@ func on_gdunit_event(event: GdUnitEvent) -> void:
 				var test := test_session.find_test_by_id(event.guid())
 				_print_test_path(test, event.guid())
 			_print_status(event)
+			_writer.indent(-1)
 			_print_failure_report(event.reports())
 			if _detailed:
 				println_message("")
@@ -119,6 +121,14 @@ func _print_status(event: GdUnitEvent) -> void:
 
 
 func _print_failure_report(reports: Array[GdUnitReport]) -> void:
+	if reports.is_empty():
+		return
+
+	_writer.indent(1) \
+		.color(Color.DARK_TURQUOISE) \
+		.style(GdUnitMessageWriter.BOLD | GdUnitMessageWriter.UNDERLINE) \
+		.println_message("Report:")
+
 	for report in reports:
 		if (
 			report.is_failure()
@@ -128,14 +138,12 @@ func _print_failure_report(reports: Array[GdUnitReport]) -> void:
 			or report.is_orphan()
 		):
 			_writer.indent(1) \
-				.color(Color.DARK_TURQUOISE) \
-				.style(GdUnitMessageWriter.BOLD | GdUnitMessageWriter.UNDERLINE) \
-				.println_message("Report:")
-			_writer.indent(2) \
 				.color(GdUnitEditorColorTheme.text_color) \
-				.println_message(report.message()) \
-				.indent(2) \
+				.print_message(report.message()) \
 				.print_stack_trace(report.stack_trace())
+			_writer.indent(-1)
+	_writer.indent(-1)
+
 
 	if not reports.is_empty():
 		println_message("")

@@ -150,9 +150,9 @@ static func _colored_value(value :Variant) -> String:
 		TYPE_STRING, TYPE_STRING_NAME:
 			return "'[color=%s]%s[/color]'" % [_value_color, _colored_string_div(str(value))]
 		TYPE_INT:
-			return "'[color=%s]%d[/color]'" % [_value_color, value]
+			return "[color=%s]%d[/color]" % [_value_color, value]
 		TYPE_FLOAT:
-			return "'[color=%s]%s[/color]'" % [_value_color, _typed_value(value)]
+			return "[color=%s]%s[/color]" % [_value_color, _typed_value(value)]
 		TYPE_COLOR:
 			return "'[color=%s]%s[/color]'" % [_value_color, _typed_value(value)]
 		TYPE_OBJECT:
@@ -187,42 +187,38 @@ static func _index_report_as_table(index_reports :Array) -> String:
 	return table.replace("$cells", cells)
 
 
-static func orphan_warning(orphans_count: int) -> String:
+static func orphan_warning(orphans_count: int, info: String) -> String:
 	if EngineDebugger.is_active():
 		return """
 			%s Detected %s possible orphan nodes.
-				To collect detailed information, insert this block at the end of your test.
-				%s""".dedent().trim_prefix("\n") % [
+				To capture detailed information insert
+				[code]%s[/code]
+			""".dedent().trim_prefix("\n").trim_suffix("\n") % [
 				_warning("WARNING:"),
-				_nerror(orphans_count),
-				_colored("""
-					[code]
-						await get_tree().process_frame
-						collect_orphan_node_details()
-					[/code]""".dedent().trim_prefix("\n"), GdUnitEditorColorTheme.value_color)
+				_colored_value(orphans_count),
+				_colored(info, Color.STEEL_BLUE)
 				]
 	return """
 		%s Detected %s possible orphan nodes.
 			%s
-		""".dedent().trim_prefix("\n") % [
+		""".dedent().trim_prefix("\n").trim_suffix("\n") % [
 			_warning("WARNING:"),
-			_nerror(orphans_count),
+			_colored_value(orphans_count),
 			_warning(NO_ORPHAN_DETAILS)
 		]
 
 
 static func orphan_detected(orphan_count: int) -> String:
 	if EngineDebugger.is_active():
-		return """
-			%s Detected %s orphan nodes.""".dedent().trim_prefix("\n") % [
+		return "%s Detected %s orphan nodes." % [
 				_warning("WARNING:"),
-				_nerror(orphan_count)
+				_colored_value(orphan_count)
 			]
 	return """
 		%s Detected %s orphan nodes.
 			%s""".dedent().trim_prefix("\n") % [
 			_warning("WARNING:"),
-			_nerror(orphan_count),
+			_colored_value(orphan_count),
 			_warning(NO_ORPHAN_DETAILS)
 		]
 
@@ -273,6 +269,10 @@ static func test_skipped(hint :String) -> String:
 
 static func error_not_implemented() -> String:
 	return _error("Test not implemented!")
+
+
+static func error_with_message(message: String) -> String:
+	return _error(message)
 
 
 static func error_is_null(current :Variant) -> String:
@@ -374,15 +374,15 @@ static func error_is_wrong_type(current_type :Variant.Type, expected_type :Varia
 static func error_is_value(operation :int, current :Variant, expected :Variant, expected2 :Variant = null) -> String:
 	match operation:
 		Comparator.EQUAL:
-			return "%s\n %s but was '%s'" % [_error("Expecting:"), _colored_value(expected), _nerror(current)]
+			return "%s\n %s but was %s" % [_error("Expecting:"), _colored_value(expected), _colored_value(current)]
 		Comparator.LESS_THAN:
-			return "%s\n %s but was '%s'" % [_error("Expecting to be less than:"), _colored_value(expected), _nerror(current)]
+			return "%s\n %s but was %s" % [_error("Expecting to be less than:"), _colored_value(expected), _colored_value(current)]
 		Comparator.LESS_EQUAL:
-			return "%s\n %s but was '%s'" % [_error("Expecting to be less than or equal:"), _colored_value(expected), _nerror(current)]
+			return "%s\n %s but was %s" % [_error("Expecting to be less than or equal:"), _colored_value(expected), _colored_value(current)]
 		Comparator.GREATER_THAN:
-			return "%s\n %s but was '%s'" % [_error("Expecting to be greater than:"), _colored_value(expected), _nerror(current)]
+			return "%s\n %s but was %s" % [_error("Expecting to be greater than:"), _colored_value(expected), _colored_value(current)]
 		Comparator.GREATER_EQUAL:
-			return "%s\n %s but was '%s'" % [_error("Expecting to be greater than or equal:"), _colored_value(expected), _nerror(current)]
+			return "%s\n %s but was %s" % [_error("Expecting to be greater than or equal:"), _colored_value(expected), _colored_value(current)]
 		Comparator.BETWEEN_EQUAL:
 			return "%s\n %s\n in range between\n %s <> %s" % [
 					_error("Expecting:"), _colored_value(current), _colored_value(expected), _colored_value(expected2)]
@@ -434,21 +434,21 @@ static func error_has_length(current :Variant, expected: int, compare_operator :
 	var current_length :Variant = current.length() if current != null else null
 	match compare_operator:
 		Comparator.EQUAL:
-			return "%s\n %s but was '%s' in\n %s" % [
+			return "%s\n %s but was %s in\n %s" % [
 					_error("Expecting size:"), _colored_value(expected), _nerror(current_length), _colored_value(current)]
 		Comparator.LESS_THAN:
-			return "%s\n %s but was '%s' in\n %s" % [
+			return "%s\n %s but was %s in\n %s" % [
 					_error("Expecting size to be less than:"), _colored_value(expected), _nerror(current_length), _colored_value(current)]
 		Comparator.LESS_EQUAL:
-			return "%s\n %s but was '%s' in\n %s" % [
+			return "%s\n %s but was %s in\n %s" % [
 					_error("Expecting size to be less than or equal:"), _colored_value(expected),
 					_nerror(current_length), _colored_value(current)]
 		Comparator.GREATER_THAN:
-			return "%s\n %s but was '%s' in\n %s" % [
+			return "%s\n %s but was %s in\n %s" % [
 					_error("Expecting size to be greater than:"), _colored_value(expected),
 					_nerror(current_length), _colored_value(current)]
 		Comparator.GREATER_EQUAL:
-			return "%s\n %s but was '%s' in\n %s" % [
+			return "%s\n %s but was %s in\n %s" % [
 					_error("Expecting size to be greater than or equal:"), _colored_value(expected),
 					_nerror(current_length), _colored_value(current)]
 	return "TODO create expected message"

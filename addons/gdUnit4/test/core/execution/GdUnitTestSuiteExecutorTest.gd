@@ -496,7 +496,7 @@ func test_execute_failure_and_orphans() -> void:
 			[],
 			# ends with failure and warnings
 			["WARNING: Detected 2 possible orphan nodes.",
-			 "faild on test_case2()"],
+			 "fail on test_case2()"],
 			# and one warning detected at stage 'after'
 			["WARNING: Detected 1 possible orphan nodes."]
 		])
@@ -549,7 +549,7 @@ func test_execute_failure_and_orphans_report_orphan_disabled() -> void:
 			[],
 			[],
 			# ends with a failure
-			["faild on test_case2()"],
+			["fail on test_case2()"],
 			[]
 		])
 
@@ -685,7 +685,7 @@ func test_execute_failure_fuzzer_iteration() -> void:
 			[],
 			[],
 			# must fail after three iterations
-			["Found an error after '3' test iterations\n Expecting: 'false' but is 'true'"],
+			["Found an error after 3 test iterations\n Expecting: 'false' but is 'true'"],
 			[]
 		])
 
@@ -808,7 +808,7 @@ func test_execute_test_suite_is_skipped() -> void:
 			# must fail after three iterations
 			["""
 				The Entire test-suite is skipped!
-				  Skipped '2' tests
+				  Skipped 2 tests
 				  Reason: 'do not run this'
 				""".dedent().trim_prefix("\n")]
 		])

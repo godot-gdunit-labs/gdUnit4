@@ -78,8 +78,10 @@ static func close_open_editor_scripts() -> void:
 # The script will be open with the user-configured editor for the script's language which may be an external editor.
 static func edit_script(script_path: String, line_number := -1) -> void:
 	if Engine.is_editor_hint():
+		# scan() is required — update_file() alone does not refresh the dock for newly created files
 		var file_system := EditorInterface.get_resource_filesystem()
 		file_system.update_file(script_path)
+		file_system.scan()
 		var file_system_dock := EditorInterface.get_file_system_dock()
 		file_system_dock.navigate_to_path(script_path)
 		EditorInterface.select_file(script_path)

@@ -2,74 +2,74 @@
 class_name GdUnitScriptEditorControls
 extends RefCounted
 
-# https://github.com/godotengine/godot/blob/master/editor/plugins/script_editor_plugin.h
-# the Editor menu popup items
-enum {
-	FILE_NEW,
-	FILE_NEW_TEXTFILE,
-	FILE_OPEN,
-	FILE_REOPEN_CLOSED,
-	FILE_OPEN_RECENT,
-	FILE_SAVE,
-	FILE_SAVE_AS,
-	FILE_SAVE_ALL,
-	FILE_THEME,
-	FILE_RUN,
-	FILE_CLOSE,
-	CLOSE_DOCS,
-	CLOSE_ALL,
-	CLOSE_OTHER_TABS,
-	TOGGLE_SCRIPTS_PANEL,
-	SHOW_IN_FILE_SYSTEM,
-	FILE_COPY_PATH,
-	FILE_TOOL_RELOAD_SOFT,
-	SEARCH_IN_FILES,
-	REPLACE_IN_FILES,
-	SEARCH_HELP,
-	SEARCH_WEBSITE,
-	HELP_SEARCH_FIND,
-	HELP_SEARCH_FIND_NEXT,
-	HELP_SEARCH_FIND_PREVIOUS,
-	WINDOW_MOVE_UP,
-	WINDOW_MOVE_DOWN,
-	WINDOW_NEXT,
-	WINDOW_PREV,
-	WINDOW_SORT,
-	WINDOW_SELECT_BASE = 100
-}
+
+static var _command_ids_initalizied := false
+static var FILE_CLOSE := -1
+static var FILE_CLOSE_ALL := -1
+static var FILE_SAVE := -1
+static var FILE_SAVE_ALL := -1
+
+
+## We scan the file popup menu to find the file command ids to trigger it on save, close, etc.
+static func init_file_command_ids() -> void:
+	if _command_ids_initalizied:
+		return
+
+	var popup := get_file_menu_popup()
+	for itemIndex in popup.item_count:
+		var command := popup.get_item_text(itemIndex)
+		var command_id := popup.get_item_id(itemIndex)
+		match command:
+			"Close":
+				FILE_CLOSE = command_id
+			"Close All":
+				FILE_CLOSE_ALL = command_id
+			"Save":
+				FILE_SAVE = command_id
+			"Save All":
+				FILE_SAVE_ALL = command_id
+
+	if FILE_CLOSE == -1:
+		push_error("Can't determine ScriptEditor 'Close' command.")
+	if FILE_CLOSE_ALL == -1:
+		push_error("Can't determine ScriptEditor 'Close All' command.")
+	if FILE_SAVE == -1:
+		push_error("Can't determine ScriptEditor 'Save' command.")
+	if FILE_SAVE_ALL == -1:
+		push_error("Can't determine ScriptEditor 'Save All' command.")
+	_command_ids_initalizied = true
 
 
 # Saves the given script and closes if requested by <close=true>
 # The script is saved when is opened in the editor.
 # The script is closed when <close> is set to true.
-static func save_an_open_script(script_path: String, close:=false) -> bool:
-	#prints("save_an_open_script", script_path, close)
+static func save_and_close_script(script_path: String, close := false) -> bool:
 	if !Engine.is_editor_hint():
 		return false
+
+	init_file_command_ids()
 	var editor := EditorInterface.get_script_editor()
-	var editor_popup := _menu_popup()
 	# search for the script in all opened editor scrips
 	for open_script in editor.get_open_scripts():
 		if open_script.resource_path == script_path:
 			# select the script in the editor
 			EditorInterface.edit_script(open_script, 0);
-			# save and close
-			editor_popup.id_pressed.emit(FILE_SAVE)
+			run_file_command(FILE_SAVE)
 			if close:
-				editor_popup.id_pressed.emit(FILE_CLOSE)
+				run_file_command(FILE_CLOSE)
 			return true
 	return false
 
 
 # Saves all opened script
 static func save_all_open_script() -> void:
-	if Engine.is_editor_hint():
-		_menu_popup().id_pressed.emit(FILE_SAVE_ALL)
+	init_file_command_ids()
+	run_file_command(FILE_SAVE_ALL)
 
 
 static func close_open_editor_scripts() -> void:
-	if Engine.is_editor_hint():
-		_menu_popup().id_pressed.emit(CLOSE_ALL)
+	init_file_command_ids()
+	run_file_command(FILE_CLOSE_ALL)
 
 
 # Edits the given script.
@@ -87,9 +87,14 @@ static func edit_script(script_path: String, line_number := -1) -> void:
 		EditorInterface.edit_script(script, line_number)
 
 
-static func _menu_popup() -> PopupMenu:
+static func get_file_menu_popup() -> PopupMenu:
 	@warning_ignore("unsafe_method_access")
 	return EditorInterface.get_script_editor().get_child(0).get_child(0).get_child(0).get_popup()
+
+
+static func run_file_command(command_id: int) -> void:
+	if Engine.is_editor_hint():
+		get_file_menu_popup().id_pressed.emit(command_id)
 
 
 static func _print_menu(popup: PopupMenu) -> void:

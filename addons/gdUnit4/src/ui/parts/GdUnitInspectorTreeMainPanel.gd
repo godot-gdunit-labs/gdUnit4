@@ -96,7 +96,7 @@ func _find_first_item_by_state(parent: TreeItem, item_state: STATE, reverse := f
 	if reverse:
 		itmes.reverse()
 	for item in itmes:
-		if is_test_case(item) and (is_item_state(item, item_state)):
+		if is_item_state(item, item_state):
 			return item
 		var failure_item := _find_first_item_by_state(item, item_state, reverse)
 		if failure_item != null:
@@ -112,7 +112,7 @@ func _find_item_by_state(current: TreeItem, item_state: STATE, prev := false) ->
 	var next := current.get_prev_in_tree() if prev else current.get_next_in_tree()
 	if next == null or next == _tree_root:
 		return null
-	if is_test_case(next) and is_item_state(next, item_state):
+	if is_item_state(next, item_state):
 		return next
 	return _find_item_by_state(next, item_state, prev)
 
@@ -151,6 +151,10 @@ func is_test_suite(item: TreeItem) -> bool:
 
 func is_test_case(item: TreeItem) -> bool:
 	return item.has_meta(META_GDUNIT_TYPE) and item.get_meta(META_GDUNIT_TYPE) == GdUnitType.TEST_CASE
+
+
+func is_test_group(item: TreeItem) -> bool:
+	return item.has_meta(META_GDUNIT_TYPE) and item.get_meta(META_GDUNIT_TYPE) == GdUnitType.TEST_GROUP
 
 
 func is_folder(item: TreeItem) -> bool:
@@ -503,12 +507,10 @@ func do_collapse_all(collapse: bool, parent := _tree_root) -> void:
 
 func set_state_initial(item: TreeItem, type: GdUnitType) -> void:
 	item.set_text(0, str(item.get_meta(META_GDUNIT_NAME)))
-	item.set_custom_color(0, GdUnitEditorColorTheme.state_initial)
 	item.set_tooltip_text(0, "")
 	item.set_text_overrun_behavior(0, TextServer.OVERRUN_TRIM_CHAR)
 	item.set_expand_right(0, true)
 
-	item.set_custom_color(1, GdUnitEditorColorTheme.state_initial)
 	item.set_text(1, "")
 	item.set_expand_right(1, true)
 	item.set_tooltip_text(1, "")
@@ -527,8 +529,6 @@ func set_state_running(item: TreeItem) -> void:
 	if is_state_running(item):
 		return
 	if is_item_state(item, STATE.INITIAL):
-		item.set_custom_color(0, GdUnitEditorColorTheme.state_success)
-		item.set_custom_color(1, GdUnitEditorColorTheme.state_success)
 		set_item_state(item, STATE.RUNNING)
 		item.collapsed = false
 
@@ -543,7 +543,6 @@ func set_state_succeded(item: TreeItem) -> void:
 		return
 	if item == _tree_root:
 		return
-	item.set_custom_color(0, GdUnitEditorColorTheme.state_success)
 	item.collapsed = GdUnitSettings.is_inspector_node_collapse()
 	set_item_state(item, STATE.SUCCESS)
 
@@ -559,7 +558,7 @@ func set_state_flaky(item: TreeItem, event: GdUnitEvent) -> void:
 			var success_count: int = item.get_meta(META_GDUNIT_SUCCESS_TESTS)
 			item_text = "(%d/%d) %s" % [success_count, item.get_meta(META_GDUNIT_PROGRESS_COUNT_MAX), item.get_meta(META_GDUNIT_NAME)]
 		item.set_text(0, "%s (%s retries)" % [item_text, retry_count])
-	item.set_custom_color(0, GdUnitEditorColorTheme.state_flaky)
+
 	item.collapsed = false
 	set_item_state(item, STATE.FLAKY)
 
@@ -567,8 +566,6 @@ func set_state_flaky(item: TreeItem, event: GdUnitEvent) -> void:
 func set_state_skipped(item: TreeItem) -> void:
 	item.set_text(1, "(skipped)")
 	item.set_text_alignment(1, HORIZONTAL_ALIGNMENT_RIGHT)
-	item.set_custom_color(0, GdUnitEditorColorTheme.state_skipped)
-	item.set_custom_color(1, GdUnitEditorColorTheme.state_skipped)
 	item.collapsed = false
 	set_item_state(item, STATE.SKIPPED)
 
@@ -577,7 +574,7 @@ func set_state_warnings(item: TreeItem) -> void:
 	# Do not overwrite higher states
 	if is_state_error(item) or is_state_failed(item):
 		return
-	item.set_custom_color(0, GdUnitEditorColorTheme.state_warning)
+
 	item.collapsed = false
 	set_item_state(item, STATE.WARNING)
 
@@ -593,20 +590,16 @@ func set_state_failed(item: TreeItem, event: GdUnitEvent) -> void:
 			var success_count: int = item.get_meta(META_GDUNIT_SUCCESS_TESTS)
 			item_text = "(%d/%d) %s" % [success_count, item.get_meta(META_GDUNIT_PROGRESS_COUNT_MAX), item.get_meta(META_GDUNIT_NAME)]
 		item.set_text(0, "%s (%s retries)" % [item_text, retry_count])
-	item.set_custom_color(0, GdUnitEditorColorTheme.state_failure)
 	item.collapsed = false
 	set_item_state(item, STATE.FAILED)
 
 
 func set_state_error(item: TreeItem) -> void:
-	item.set_custom_color(0, GdUnitEditorColorTheme.state_error)
 	set_item_state(item, STATE.ERROR)
 	item.collapsed = false
 
 
 func set_state_aborted(item: TreeItem) -> void:
-	item.set_custom_color(0, GdUnitEditorColorTheme.state_error)
-	item.clear_custom_bg_color(0)
 	item.set_text(1, "(aborted)")
 	item.set_text_alignment(1, HORIZONTAL_ALIGNMENT_RIGHT)
 	set_item_state(item, STATE.ABORDED)
@@ -617,15 +610,13 @@ func set_state_orphan(item: TreeItem, event: GdUnitEvent) -> void:
 	var orphan_count := event.statistic(GdUnitEvent.ORPHAN_NODES)
 	if orphan_count == 0:
 		return
-	if item.has_meta(META_GDUNIT_ORPHAN):
-		orphan_count += item.get_meta(META_GDUNIT_ORPHAN)
+
 	set_item_state(item, STATE.ORPHAN)
 	item.set_meta(META_GDUNIT_ORPHAN, orphan_count)
 	item.set_tooltip_text(0, "Total <%d> orphan nodes detected." % orphan_count)
-	set_item_state(item, STATE.ORPHAN)
 
 
-func update_state(item: TreeItem, event: GdUnitEvent, add_reports := true) -> void:
+func update_state(item: TreeItem, event: GdUnitEvent) -> void:
 	# we do not show the root
 	if item == null:
 		return
@@ -642,20 +633,7 @@ func update_state(item: TreeItem, event: GdUnitEvent, add_reports := true) -> vo
 		set_state_failed(item, event)
 	elif event.is_warning():
 		set_state_warnings(item)
-	if add_reports:
-		for report in event.reports():
-			add_report(item, report)
 	set_state_orphan(item, event)
-
-	var parent := item.get_parent()
-	if parent == null:
-		return
-
-	var item_state: int = get_item_state(item)[0]
-	var parent_state: int = get_item_state(parent)[0]
-	if item_state <= parent_state:
-		return
-	update_state(item.get_parent(), event, false)
 
 
 func add_report(item: TreeItem, report: GdUnitReport) -> void:
@@ -669,8 +647,15 @@ func add_report(item: TreeItem, report: GdUnitReport) -> void:
 func abort_running(items := _tree_root.get_children()) -> void:
 	for item in items:
 		if is_state_running(item):
-			set_state_aborted(item)
-			abort_running(item.get_children())
+			if is_test_case(item):
+				set_state_aborted(item)
+			else:
+				var state := _find_highest_state(item)
+				if state == STATE.RUNNING:
+					set_state_aborted(item)
+				else:
+					set_item_state(item, state)
+				abort_running(item.get_children())
 
 
 func _on_select_next_item_by_state(item_state: int) -> TreeItem:
@@ -710,8 +695,9 @@ func update_test_suite(event: GdUnitEvent) -> void:
 		push_error("[InspectorTreeMainPanel#update_test_suite] Internal Error: Can't find test suite item '{_suite_name}' for {_resource_path} ".format(event))
 		return
 
-	update_item_elapsed_time_counter(item, event.elapsed_time())
-	update_state(item, event)
+	update_item_state_recursive(item)
+	update_item_elapsed_time_counter_recursive(item, event.elapsed_time())
+	update_item_orphan_counter_recursive(item)
 
 
 func update_test_case(event: GdUnitEvent) -> void:
@@ -726,11 +712,17 @@ func update_test_case(event: GdUnitEvent) -> void:
 		return
 
 	if event.type() == GdUnitEvent.TESTCASE_AFTER:
-		update_item_elapsed_time_counter(item, event.elapsed_time())
+		update_item_elapsed_time_counter_recursive(item, event.elapsed_time())
 		if event.is_success() or event.is_warning():
 			update_item_processed_counter(item)
-		update_state(item, event)
 		update_progress_counters(item)
+		update_state(item, event)
+		# update test group
+		if is_test_group(item.get_parent()):
+			update_state(item.get_parent(), event)
+		# Add test reports
+		for report in event.reports():
+			add_report(item, report)
 
 
 func create_item(parent: TreeItem, test: GdUnitTestCase, item_name: String, type: GdUnitType) -> TreeItem:
@@ -760,11 +752,31 @@ static func get_item_state(item: TreeItem) -> Array[STATE]:
 	return [STATE.INITIAL, STATE.INITIAL]
 
 
+static func get_item_orphans(item: TreeItem) -> int:
+	if item.has_meta(META_GDUNIT_ORPHAN):
+		return item.get_meta(META_GDUNIT_ORPHAN)
+	return 0
+
+
+func get_item_children_orphans(item: TreeItem) -> int:
+	var orphans_total := 0
+	for child_item in item.get_children():
+		orphans_total += get_item_orphans(child_item)
+	return orphans_total
+
+
+func get_item_children_elapsed_time(item: TreeItem) -> int:
+	var elapsed_time_total := 0
+	for child_item in item.get_children():
+		elapsed_time_total += child_item.get_meta(META_GDUNIT_EXECUTION_TIME)
+	return elapsed_time_total
+
+
 func set_item_state(item: TreeItem, state: STATE) -> void:
 	if item == _tree_root:
 		return
 
-	if state != STATE.RUNNING and (is_test_suite(item) or is_folder(item)):
+	if state != STATE.RUNNING and is_folder(item):
 		var resource_path := get_item_source_file(item)
 		item.set_icon(0, get_icon_by_file_type(resource_path))
 	else:
@@ -777,6 +789,36 @@ func set_item_state(item: TreeItem, state: STATE) -> void:
 		get_item_state(item)[1] = state
 	else:
 		get_item_state(item)[0] = state
+
+	set_item_state_color(item, state)
+
+
+func set_item_state_color(item: TreeItem, state: STATE) -> void:
+	if item == _tree_root:
+		return
+
+	var state_color := GdUnitEditorColorTheme.state_initial
+	match state:
+		STATE.INITIAL:
+			state_color = GdUnitEditorColorTheme.state_initial
+		STATE.RUNNING, STATE.SUCCESS:
+			state_color = GdUnitEditorColorTheme.state_success
+		STATE.WARNING:
+			state_color = GdUnitEditorColorTheme.state_warning
+		STATE.FLAKY:
+			state_color = GdUnitEditorColorTheme.state_flaky
+		STATE.ERROR, STATE.ABORDED:
+			state_color = GdUnitEditorColorTheme.state_error
+		STATE.FAILED:
+			state_color = GdUnitEditorColorTheme.state_failure
+		STATE.SKIPPED:
+			state_color = GdUnitEditorColorTheme.state_skipped
+		STATE.ORPHAN:
+			# For orphan state we do not overwrite the orignal color state
+			return
+
+	item.set_custom_color(0, state_color)
+	item.set_custom_color(1, state_color)
 
 
 func update_item_total_counter(item: TreeItem) -> void:
@@ -862,23 +904,60 @@ func recalculate_counters(parent: TreeItem) -> void:
 		parent.set_text(0, "(%d/%d) %s" % [success_count, total_count, parent.get_meta(META_GDUNIT_NAME)])
 
 
-func update_item_elapsed_time_counter(item: TreeItem, time: int) -> void:
-	item.set_text(1, "%s" % LocalTime.elapsed(time))
-	item.set_text_alignment(1, HORIZONTAL_ALIGNMENT_RIGHT)
-	item.set_meta(META_GDUNIT_EXECUTION_TIME, time)
-
-	var parent := item.get_parent()
-	if parent == _tree_root:
+func update_item_elapsed_time_counter_recursive(item: TreeItem, elapsed_time: int) -> void:
+	if item == _tree_root:
 		return
-	var elapsed_time :int = parent.get_meta(META_GDUNIT_EXECUTION_TIME) + time
-	var type :GdUnitType = item.get_meta(META_GDUNIT_TYPE)
+	if is_folder(item):
+		elapsed_time = get_item_children_elapsed_time(item)
+
+	item.set_text(1, "%s" % LocalTime.elapsed(elapsed_time))
+	item.set_text_alignment(1, HORIZONTAL_ALIGNMENT_RIGHT)
+	item.set_meta(META_GDUNIT_EXECUTION_TIME, elapsed_time)
+	update_item_elapsed_time_counter_recursive(item.get_parent(), elapsed_time)
+
+
+func update_item_orphan_counter_recursive(item: TreeItem) -> void:
+	if item == _tree_root:
+		return
+
+	var orphan_count := 0
+	var type: GdUnitType = item.get_meta(META_GDUNIT_TYPE)
 	match type:
 		GdUnitType.TEST_CASE:
 			return
 		GdUnitType.TEST_SUITE:
-			update_item_elapsed_time_counter(parent, elapsed_time)
-		#GdUnitType.FOLDER:
-		#	update_item_elapsed_time_counter(parent, elapsed_time)
+			orphan_count = get_item_children_orphans(item) + get_item_orphans(item)
+			if orphan_count > 0:
+				set_item_state(item, STATE.ORPHAN)
+		GdUnitType.FOLDER:
+			orphan_count = get_item_children_orphans(item)
+
+	if orphan_count == 0:
+		return
+	item.set_meta(META_GDUNIT_ORPHAN, orphan_count)
+	item.set_tooltip_text(0, "Total <%d> orphan nodes detected." % orphan_count)
+	update_item_orphan_counter_recursive(item.get_parent())
+
+
+func update_item_state_recursive(item: TreeItem) -> void:
+	if item == _tree_root:
+		return
+
+	var state := _find_highest_state(item)
+	prints("update_item_state_recursive", item.get_text(0), STATE.keys()[state])
+	set_item_state(item, state)
+
+	update_item_state_recursive(item.get_parent())
+
+
+func _find_highest_state(item: TreeItem) -> STATE:
+	var state := STATE.INITIAL
+	for child in item.get_children():
+		var item_state := get_item_state(child)[0]
+		if item_state > state:
+			state = item_state
+	return state
+
 
 
 func get_icon_by_file_type(path: String) -> Texture2D:

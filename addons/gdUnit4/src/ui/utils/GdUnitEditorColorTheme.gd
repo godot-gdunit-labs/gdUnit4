@@ -47,5 +47,4 @@ static func setup() -> void:
 		state_flaky = settings.get_setting("text_editor/theme/highlighting/gdscript/node_reference_color")
 		state_failure = settings.get_setting("text_editor/theme/highlighting/comment_markers/critical_color")
 		state_error = settings.get_setting("editors/2d/smart_snapping_line_color")
-		state_skipped = settings.get_setting("text_editor/theme/highlighting/member_variable_color")
 		state_orphan = settings.get_setting("text_editor/theme/highlighting/string_placeholder_color")

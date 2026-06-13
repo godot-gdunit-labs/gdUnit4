@@ -78,17 +78,13 @@ func setup_test_env() -> void:
 func set_test_state(test_cases: Array[GdUnitTestCase], state: GdUnitInspectorTreeMainPanel.STATE) -> void:
 	for test in test_cases:
 		var item := _inspector._find_tree_item_by_id(_inspector._tree_root, test.guid)
-		var parent := item.get_parent()
 		var test_event := GdUnitEvent.new().test_after(test.guid, "test")
 		match state:
 			ERROR:
-				_inspector.set_state_error(parent)
 				_inspector.set_state_error(item)
 			FAILED:
-				_inspector.set_state_failed(parent, test_event)
 				_inspector.set_state_failed(item, test_event)
 			FLAKY:
-				_inspector.set_state_flaky(parent, test_event)
 				_inspector.set_state_flaky(item, test_event)
 
 
@@ -430,6 +426,8 @@ func test_update_icon_state() -> void:
 	_inspector._on_gdunit_event(GdUnitEvent.new().test_after(test_case2.guid, "test_case2", {GdUnitEvent.FAILED: true}))
 	# We check whether a test event with a warning does not overwrite a higher object status, e.g. an error.
 	_inspector._on_gdunit_event(GdUnitEvent.new().test_after(test_case2.guid, "test_case2", {GdUnitEvent.WARNINGS: true}))
+	# at last the suite after event
+	_inspector._on_gdunit_event(GdUnitEvent.new().suite_after(suite_script_path, suite_name, {}))
 
 	# Verify the final state
 	assert_str(suite_item.get_text(0)).is_equal("(2/2) " + suite_name)

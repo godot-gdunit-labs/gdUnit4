@@ -19,11 +19,10 @@
       "Read(//mnt/d/development/workspace/gdUnit4/**)",
       "Skill(update-config)",
       "WebFetch(domain:docs.godotengine.org)",
+      "WebFetch(domain:godot-gdunit-labs.github.io)",
       "WebSearch",
-      "Bash(git add *)",
-      "Bash(git rm *)",
-      "Bash(git push *)",
-      "Bash(git commit -m ' *)"
+      "Bash(Get-Content *)",
+      "Bash(git fetch *)"
     ]
   },
   "hooks": {

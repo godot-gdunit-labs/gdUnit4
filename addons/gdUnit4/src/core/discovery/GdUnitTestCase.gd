@@ -84,7 +84,14 @@ static func to_dict(test: GdUnitTestCase) -> Dictionary:
 	}
 
 
-static func from(_suite_resource_path: String, _source_file: String, _line_number: int, _test_name: String, _attribute_index := -1, _test_parameters := "") -> GdUnitTestCase:
+static func from(
+	_suite_resource_path: String,
+	_source_file: String,
+	_line_number: int,
+	_test_name: String,
+	_attribute_index := -1,
+	_test_parameters := "") -> GdUnitTestCase:
+
 	if(_source_file == null or _source_file.is_empty()):
 		prints(_test_name)
 
@@ -122,4 +129,6 @@ func _build_fully_qualified_name(_resource_path: String) -> void:
 		fully_qualified_name = "%s.%s" % [name_space, test_name]
 	else:
 		fully_qualified_name = "%s.%s.%s" % [name_space, test_name, display_name]
-	assert(fully_qualified_name != null and not fully_qualified_name.is_empty(), "Precondition: The parameter 'fully_qualified_name' can't be resolved")
+	assert(
+		fully_qualified_name != null and not fully_qualified_name.is_empty(),
+		"Precondition: The parameter 'fully_qualified_name' can't be resolved")

@@ -1,7 +1,7 @@
 class_name GdFunctionParameterSetResolver
 extends RefCounted
 
-const CLASS_TEMPLATE = """
+const CLASS_TEMPLATE := """
 class_name _ParameterExtractor extends '${clazz_path}'
 
 func __extract_test_parameters() -> Array:
@@ -9,42 +9,39 @@ func __extract_test_parameters() -> Array:
 
 """
 
-const EXCLUDE_PROPERTIES_TO_COPY = [
+const EXCLUDE_PROPERTIES_TO_COPY := [
 	"script",
 	"type",
 	"Node",
 	"_import_path"]
 
 
-var _fd: GdFunctionDescriptor
+var _function_descriptors: Array[GdFunctionDescriptor]
 var _static_sets_by_index := {}
 var _is_static := true
 
-func _init(fd: GdFunctionDescriptor) -> void:
-	_fd = fd
+
+func _init(function_descriptors: Array[GdFunctionDescriptor]) -> void:
+	_function_descriptors = function_descriptors
 
 
-func resolve_test_cases(script: GDScript) -> Array[GdUnitTestCase]:
-	if not is_parameterized():
-		return [GdUnitTestCase.from(script.resource_path, _fd.source_path(), _fd.begin_line(), _fd.name())]
-	return extract_test_cases_by_reflection(script)
+func discover_tests(script: GDScript) -> Array[GdUnitTestCase]:
+	var source: Node = script.new()
+	source.queue_free()
 
+	var test_cases: Array[GdUnitTestCase] = []
+	for fd in _function_descriptors:
+		if fd.is_parameterized():
+			test_cases.append_array(extract_test_cases_by_reflection(source, fd))
+		else:
+			test_cases.append(GdUnitTestCase.from(script.resource_path, fd.source_path(), fd.begin_line(), fd.name()))
 
-func is_parameterized() -> bool:
-	return _fd.is_parameterized()
-
-
-func is_parameter_sets_static() -> bool:
-	return _is_static
-
-
-func is_parameter_set_static(index: int) -> bool:
-	return _is_static and _static_sets_by_index.get(index, false)
+	return test_cases
 
 
 # validates the given arguments are complete and matches to required input fields of the test function
-func validate(input_value_set: Array) -> String:
-	var input_arguments := _fd.args()
+func validate(input_value_set: Array, fd: GdFunctionDescriptor) -> String:
+	var input_arguments := fd.args()
 	# check given parameter set with test case arguments
 	var expected_arg_count := input_arguments.size() - 1
 	for input_values :Variant in input_value_set:
@@ -53,12 +50,18 @@ func validate(input_value_set: Array) -> String:
 			var arr_values: Array = input_values
 			var current_arg_count := arr_values.size()
 			if current_arg_count != expected_arg_count:
-				return "\n	The parameter set at index [%d] does not match the expected input parameters!\n	The test case requires [%d] input parameters, but the set contains [%d]" % [parameter_set_index, expected_arg_count, current_arg_count]
+				return """
+					The parameter set at index [%d] does not match the expected input parameters!
+					The test case requires [%d] input parameters, but the set contains [%d]
+					""".dedent() % [parameter_set_index, expected_arg_count, current_arg_count]
 			var error := validate_parameter_types(input_arguments, arr_values, parameter_set_index)
 			if not error.is_empty():
 				return error
 		else:
-			return "\n	The parameter set at index [%d] does not match the expected input parameters!\n	Expecting an array of input values." % parameter_set_index
+			return """
+				The parameter set at index [%d] does not match the expected input parameters!
+				Expecting an array of input values.
+				""".dedent() % parameter_set_index
 	return ""
 
 
@@ -69,7 +72,7 @@ static func validate_parameter_types(input_arguments: Array, input_values: Array
 		if input_param.is_parameter_set():
 			continue
 		var input_param_type := input_param.type()
-		var input_value :Variant = input_values[i]
+		var input_value: Variant = input_values[i]
 		var input_value_type := typeof(input_value)
 		# input parameter is not typed or is Variant we skip the type test
 		if input_param_type == TYPE_NIL or input_param_type == GdObjects.TYPE_VARIANT:
@@ -81,30 +84,37 @@ static func validate_parameter_types(input_arguments: Array, input_values: Array
 		if input_param_type == TYPE_OBJECT and input_value_type == TYPE_NIL:
 			continue
 		if input_param_type != input_value_type:
-			return "\n	The parameter set at index [%d] does not match the expected input parameters!\n	The value '%s' does not match the required input parameter <%s>." % [parameter_set_index, input_value, input_param]
+			return (
+				"\n\tThe parameter set at index [%d] does not match the expected input parameters!"
+				+ "\n\tThe value '%s' does not match the required input parameter <%s>."
+			) % [parameter_set_index, input_value, input_param]
 	return ""
 
 
-func extract_test_cases_by_reflection(script: GDScript) -> Array[GdUnitTestCase]:
-	var source: Node = script.new()
-	source.queue_free()
-
-	var fa := GdFunctionArgument.get_parameter_set(_fd.args())
+func extract_test_cases_by_reflection(source: Node, fd: GdFunctionDescriptor) -> Array[GdUnitTestCase]:
+	var fa := GdFunctionArgument.get_parameter_set(fd.args())
 	var parameter_sets := fa.parameter_sets()
 	# if no parameter set detected we need to resolve it by using reflection
 	if parameter_sets.size() == 0:
 		_is_static = false
-		return _extract_test_cases_by_reflection(source, script)
-	else:
-		var test_cases: Array[GdUnitTestCase] = []
-		var property_names := _extract_property_names(source)
-		for parameter_set_index in parameter_sets.size():
-			var parameter_set := parameter_sets[parameter_set_index]
-			_static_sets_by_index[parameter_set_index] = _is_static_parameter_set(parameter_set, property_names)
-			@warning_ignore("return_value_discarded")
-			test_cases.append(GdUnitTestCase.from(script.resource_path, _fd.source_path(), _fd.begin_line(), _fd.name(), parameter_set_index, parameter_set))
-			parameter_set_index += 1
-		return test_cases
+		return _extract_test_cases_by_reflection(source, fd)
+	var test_cases: Array[GdUnitTestCase] = []
+	var property_names := _extract_property_names(source)
+	for parameter_set_index in parameter_sets.size():
+		var parameter_set := parameter_sets[parameter_set_index]
+		_static_sets_by_index[parameter_set_index] = _is_static_parameter_set(parameter_set, property_names)
+		@warning_ignore("return_value_discarded")
+		test_cases.append(
+			GdUnitTestCase.from(
+				fd.source_path(),
+				fd.source_path(),
+				fd.begin_line(),
+				fd.name(),
+				parameter_set_index,
+				parameter_set)
+			)
+		parameter_set_index += 1
+	return test_cases
 
 
 func _extract_property_names(source: Node) -> PackedStringArray:
@@ -122,21 +132,22 @@ func _is_static_parameter_set(parameters :String, property_names :PackedStringAr
 	return true
 
 
-func _extract_test_cases_by_reflection(source: Node, script: GDScript) -> Array[GdUnitTestCase]:
-	var parameter_sets := load_parameter_sets(source)
+func _extract_test_cases_by_reflection(source: Node, fd: GdFunctionDescriptor) -> Array[GdUnitTestCase]:
+	var parameter_sets := load_parameter_sets(source, fd)
 	var test_cases: Array[GdUnitTestCase] = []
 	for index in parameter_sets.size():
 		var parameter_set := str(parameter_sets[index])
+		var script: GDScript = source.get_script()
 		@warning_ignore("return_value_discarded")
-		test_cases.append(GdUnitTestCase.from(script.resource_path, _fd.source_path(), _fd.begin_line(), _fd.name(), index, parameter_set))
+		test_cases.append(GdUnitTestCase.from(script.resource_path, fd.source_path(), fd.begin_line(), fd.name(), index, parameter_set))
 	return test_cases
 
 
 # extracts the arguments from the given test case, using kind of reflection solution
 # to restore the parameters from a string representation to real instance type
-func load_parameter_sets(source: Node) -> Array:
+func load_parameter_sets(source: Node, fd: GdFunctionDescriptor) -> Array:
 	var source_script: GDScript = source.get_script()
-	var parameter_arg := GdFunctionArgument.get_parameter_set(_fd.args())
+	var parameter_arg := GdFunctionArgument.get_parameter_set(fd.args())
 	var source_code := CLASS_TEMPLATE \
 		.replace("${clazz_path}", source_script.resource_path) \
 		.replace("${test_params}", parameter_arg.value_as_string())
@@ -154,7 +165,7 @@ func load_parameter_sets(source: Node) -> Array:
 	GdFunctionParameterSetResolver.copy_properties(source, instance)
 	instance.queue_free()
 	var parameter_sets: Array = instance.call("__extract_test_parameters")
-	return fixure_typed_parameters(parameter_sets, _fd.args())
+	return fixure_typed_parameters(parameter_sets, fd.args())
 
 
 func fixure_typed_parameters(parameter_sets: Array, arg_descriptors: Array[GdFunctionArgument]) -> Array:

@@ -105,35 +105,32 @@ static func console_log(message: String, on_console := false) -> void:
 		GdUnitSignals.instance().gdunit_message.emit(message)
 
 
-static func filter_tests(method: Dictionary) -> bool:
-	var method_name: String = method["name"]
-	return method_name.begins_with("test_")
-
-
 static func default_discover_sink(test_case: GdUnitTestCase) -> void:
 	GdUnitTestDiscoverSink.discover(test_case)
 
 
 static func discover_tests(source_script: Script, discover_sink := default_discover_sink) -> void:
 	if source_script is GDScript:
-		var test_names := source_script.get_script_method_list()\
-			.filter(filter_tests)\
-			.map(func(method: Dictionary) -> String: return method["name"])
-		# no tests discovered?
-		if test_names.is_empty():
-			return
-
-		var parser := GdScriptParser.new()
-		var fds := parser.get_function_descriptors(source_script as GDScript, test_names)
-		for fd in fds:
-			var resolver := GdFunctionParameterSetResolver.new(fd)
-			for test_case in resolver.resolve_test_cases(source_script as GDScript):
-				discover_sink.call(test_case)
+		for test_case in discover_tests_from_gd_script(source_script as GDScript):
+			discover_sink.call(test_case)
 	elif source_script.get_class() == "CSharpScript":
 		if not GdUnit4CSharpApiLoader.is_api_loaded():
 			return
 		for test_case in GdUnit4CSharpApiLoader.discover_tests(source_script):
 			discover_sink.call(test_case)
+
+
+static func discover_tests_from_gd_script(script: GDScript) -> Array[GdUnitTestCase]:
+	# Filter by test case only
+	var test_names: Array[String] = []
+	for method: Dictionary in script.get_script_method_list():
+		@warning_ignore("unsafe_method_access")
+		if method["name"].begins_with("test_"):
+			test_names.append(method["name"])
+	if test_names.is_empty():
+		return []
+	var fds := GdScriptParser.new().get_function_descriptors(script, test_names)
+	return GdFunctionParameterSetResolver.new(fds).discover_tests(script)
 
 
 static func scan_all_test_directories(root: String) -> PackedStringArray:

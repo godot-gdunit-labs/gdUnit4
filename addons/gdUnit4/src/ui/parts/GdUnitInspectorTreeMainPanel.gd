@@ -96,6 +96,9 @@ func _find_first_item_by_state(parent: TreeItem, item_state: STATE, reverse := f
 	if reverse:
 		itmes.reverse()
 	for item in itmes:
+		if item_state in [STATE.FAILED, STATE.ERROR] and get_item_reports(item).is_empty():
+			return _find_first_item_by_state(item, item_state, reverse)
+
 		if is_item_state(item, item_state):
 			return item
 		var failure_item := _find_first_item_by_state(item, item_state, reverse)
@@ -112,6 +115,10 @@ func _find_item_by_state(current: TreeItem, item_state: STATE, prev := false) ->
 	var next := current.get_prev_in_tree() if prev else current.get_next_in_tree()
 	if next == null or next == _tree_root:
 		return null
+
+	if item_state in [STATE.FAILED, STATE.ERROR] and get_item_reports(next).is_empty():
+		return _find_item_by_state(next, item_state, prev)
+
 	if is_item_state(next, item_state):
 		return next
 	return _find_item_by_state(next, item_state, prev)
@@ -944,7 +951,6 @@ func update_item_state_recursive(item: TreeItem) -> void:
 		return
 
 	var state := _find_highest_state(item)
-	prints("update_item_state_recursive", item.get_text(0), STATE.keys()[state])
 	set_item_state(item, state)
 
 	update_item_state_recursive(item.get_parent())

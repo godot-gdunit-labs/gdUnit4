@@ -5,7 +5,8 @@ var _parameters: Array[Array]
 var _property_name: String
 
 
-func _init(instance: Node, property_name: String) -> void:
+func _init(instance: Node, property_name: String, args: Array[GdFunctionArgument] = []) -> void:
+	super(args)
 	_parameters = _resolve_property(instance, property_name)
 	_property_name = property_name
 
@@ -28,13 +29,12 @@ func _resolve_property(instance: Node, property_name: String) -> Array[Array]:
 		prints("The property `%s` must be an Array" % property_name)
 		return []
 
-	var parameters: Array = result
-	var resolved_parameters := parameters.duplicate(true)
-	for parameter: Array in resolved_parameters:
-		# We append an extra empty array representing the `_test_parameters` to prevent reinitalizice the test parameter set
-		parameter.append(EMPTY_SET)
+	var parameter_set: Array = result
+	parameter_set = parameter_set.duplicate(true)
+	for parameters: Array in parameter_set:
+		_finalize_parameter_set(parameters)
 
 	# We want to use allways typed arrays
-	if not resolved_parameters.is_typed():
-		return Array(resolved_parameters, TYPE_ARRAY, "", null)
-	return resolved_parameters
+	if not parameter_set.is_typed():
+		return Array(parameter_set, TYPE_ARRAY, "", null)
+	return parameter_set

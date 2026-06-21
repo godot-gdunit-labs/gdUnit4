@@ -191,14 +191,25 @@ func test_discover_tests_with_static_parameterset() -> void:
 			extr("line_number"),
 			extr("attribute_index"))\
 		.contains_exactly(
-			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_bool_value", script.resource_path, 5, 0),
-			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_bool_value", script.resource_path, 5, 1),
-			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_int_values", script.resource_path, 12, 0),
-			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_int_values", script.resource_path, 12, 1),
-			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_int_values", script.resource_path, 12, 2),
-			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_float_values", script.resource_path, 20, 0),
-			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_float_values", script.resource_path, 20, 1),
-			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_float_values", script.resource_path, 20, 2),
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_bool_value", script.resource_path, 20, 0),
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_bool_value", script.resource_path, 20, 1),
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_int_values", script.resource_path, 27, 0),
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_int_values", script.resource_path, 27, 1),
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_int_values", script.resource_path, 27, 2),
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_float_values", script.resource_path, 35, 0),
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_float_values", script.resource_path, 35, 1),
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_float_values", script.resource_path, 35, 2),
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_string_values", script.resource_path, 42, 0),
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_string_values", script.resource_path, 42, 1),
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_string_values", script.resource_path, 42, 2),
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_Vector2_values", script.resource_path, 50, 0),
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_Vector2_values", script.resource_path, 50, 1),
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_Vector2_values", script.resource_path, 50, 2),
+			tuple("TestSuiteWithStaticParameterSet", "test_with_instance_parameters", script.resource_path, 58, 0),
+			tuple("TestSuiteWithStaticParameterSet", "test_with_instance_parameters", script.resource_path, 58, 1),
+			tuple("TestSuiteWithStaticParameterSet", "test_with_instance_parameters", script.resource_path, 58, 2),
+			tuple("TestSuiteWithStaticParameterSet", "test_with_instance_parameters", script.resource_path, 58, 3),
+			tuple("TestSuiteWithStaticParameterSet", "test_with_instance_parameters", script.resource_path, 58, 4),
 		)
 
 
@@ -218,17 +229,21 @@ func test_discover_tests_with_dynamic_parameterset() -> void:
 			extr("line_number"),
 			extr("attribute_index"))\
 		.contains_exactly(
-			# test_with_dynamic_parameters
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters", script.resource_path, 21, 0),
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters", script.resource_path, 21, 1),
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters", script.resource_path, 21, 2),
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters", script.resource_path, 21, 3),
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters", script.resource_path, 21, 4),
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters", script.resource_path, 21, 5),
 			# test_with_dynamic_parameters_typed_array
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_typed_array", script.resource_path, 33, 0),
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_typed_array", script.resource_path, 33, 1),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_typed_array", script.resource_path, 27, 0),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_typed_array", script.resource_path, 27, 1),
 			# test_with_dynamic_parameters_untyped_array
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_untyped_array", script.resource_path, 38, 0),
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_untyped_array", script.resource_path, 38, 1),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_untyped_array", script.resource_path, 32, 0),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_untyped_array", script.resource_path, 32, 1),
+			# test_with_dynamic_parameterset
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 36, 0),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 36, 1),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 36, 2),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 36, 3),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 36, 4),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 36, 5),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 36, 6),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 36, 7),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 36, 8),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 36, 9),
 		)

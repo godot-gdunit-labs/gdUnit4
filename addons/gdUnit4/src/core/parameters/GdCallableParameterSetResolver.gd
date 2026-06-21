@@ -5,10 +5,11 @@ extends GdParameterSetResolver
 var _expression: String
 var _parameters: Array[Array]
 
-static var _func_call_regex := RegEx.create_from_string("^(\\w+)\\((.*)\\)$")
+var _func_call_regex := RegEx.create_from_string("^(\\w+)\\((.*)\\)$")
 
 
-func _init(instance: Node, expression: String) -> void:
+func _init(instance: Node, expression: String, args: Array[GdFunctionArgument] = []) -> void:
+	super(args)
 	_expression = expression
 	_parameters = _compile(instance, expression)
 
@@ -35,19 +36,18 @@ func _compile(instance: Node, expression: String) -> Array[Array]:
 		return []
 
 	var args: Array = [] if args_str.is_empty() else _parse_arguments(args_str)
-	var parameters: Array = instance.callv(func_name, args)
-	if parameters == null:
+	var parameter_set: Array = instance.callv(func_name, args)
+	if parameter_set == null:
 		return []
 
-	# We append an extra empty array representing the `_test_parameters` to prevent reinitializing the test parameter set
-	for parameter: Array in parameters:
-		parameter.append(EMPTY_SET)
+	for parameters: Array in parameter_set:
+		_finalize_parameter_set(parameters)
 
 	# We want to use allways typed arrays
-	if not parameters.is_typed():
-		parameters = Array(parameters, TYPE_ARRAY, "", null)
+	if not parameter_set.is_typed():
+		parameter_set = Array(parameter_set, TYPE_ARRAY, "", null)
 
-	return parameters
+	return parameter_set
 
 
 func _parse_arguments(args_str: String) -> Array:

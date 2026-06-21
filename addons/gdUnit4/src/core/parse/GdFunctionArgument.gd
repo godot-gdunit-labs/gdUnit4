@@ -118,7 +118,7 @@ func parameter_sets() -> PackedStringArray:
 	return _parameter_sets
 
 
-static func get_parameter_set(parameters :Array[GdFunctionArgument]) -> GdFunctionArgument:
+static func get_parameter_set(parameters: Array[GdFunctionArgument]) -> GdFunctionArgument:
 	for current in parameters:
 		if current != null and current.is_parameter_set():
 			return current
@@ -136,8 +136,8 @@ func _to_string() -> String:
 	return s
 
 
-func _parse_parameter_set(input :String) -> PackedStringArray:
-	if not input.contains("["):
+func _parse_parameter_set(input: String) -> PackedStringArray:
+	if not input.begins_with("["):
 		return []
 
 	input = _cleanup_leading_spaces.sub(input, "", true)

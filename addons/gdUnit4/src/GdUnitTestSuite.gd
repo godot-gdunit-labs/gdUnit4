@@ -99,6 +99,9 @@ func error_as_string(error_number: int) -> String:
 func auto_free(obj: Variant) -> Variant:
 	var execution_context := GdUnitThreadManager.get_current_context().get_execution_context()
 
+	if execution_context == null:
+		print_stack()
+
 	assert(execution_context != null, "INTERNAL ERROR: The current execution_context is null! Please report this as bug.")
 	return execution_context.register_auto_free(obj)
 

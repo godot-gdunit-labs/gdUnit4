@@ -9,7 +9,7 @@ func test_discover_tests_on_path() -> void:
 	runner.add_test_suite("res://addons/gdUnit4/test/core/discovery/resources/")
 
 	var tests := runner.discover_tests()
-	assert_array(tests).has_size(12)
+	assert_array(tests).has_size(14)
 
 
 func test_discover_tests_on_file() -> void:

@@ -19,7 +19,7 @@ func _execute(context :GdUnitExecutionContext) -> void:
 		if test_context.is_success() or test_context.is_skipped() or test_context.is_interupted():
 			break
 
-	context.gc()
+	await context.gc()
 	if context.is_skipped():
 		fire_test_skipped(context)
 	else:

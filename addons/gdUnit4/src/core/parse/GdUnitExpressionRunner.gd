@@ -38,10 +38,11 @@ func execute(src_script: GDScript, value: Variant) -> Variant:
 	@warning_ignore("return_value_discarded")
 	script.reload(true)
 	var runner: Object = script.new()
-	if runner.has_method("queue_free"):
-		(runner as Node).queue_free()
 	@warning_ignore("unsafe_method_access")
-	return runner.__run_expression()
+	var result: Variant = runner.__run_expression()
+	if runner.has_method("free"):
+		runner.call_deferred("free")
+	return result
 
 
 func build_constructor_arguments(parameter_map: Dictionary, expression: String) -> Array[Variant]:

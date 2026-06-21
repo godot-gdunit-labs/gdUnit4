@@ -22,7 +22,8 @@ var _parameter_sets: PackedStringArray
 var _used_input_types: Array[PackedStringArray] = []
 
 
-func _init(parameter_sets: PackedStringArray) -> void:
+func _init(parameter_sets: PackedStringArray, args: Array[GdFunctionArgument] = []) -> void:
+	super(args)
 	_expression = Expression.new()
 	_parameter_sets = parameter_sets
 
@@ -60,20 +61,18 @@ func get_parameters(instance: Node, index: int) -> Array:
 			""".dedent() % [error_string(parse_error), expression, _expression.get_error_text()])
 		return _run_expression_via_script(instance, expression)
 
-	var result: Variant = _expression.execute(input_values, instance, false)
+	var parameters: Variant = _expression.execute(input_values, instance, false)
 	if _expression.has_execute_failed():
 		# TODO provide better error reporting
 		prints("Expression execute error:", _expression.get_error_text())
-		return []
-	if not result is Array:
-		prints("Expression execute error:", "The expresion result must be an Array.")
-		return []
+		return _run_expression_via_script(instance, expression)
+	if not parameters is Array:
+		# The expression may reference a class const or property not accessible via Object.get();
+		# fall back to a GDScript that extends the test class so it can resolve such identifiers.
+		return _run_expression_via_script(instance, expression)
 
-	# We append an extra empty array representing the `_test_parameters` to prevent reinitalizice the test parameter set
-	var parameters: Array = result
-	parameters.append(EMPTY_SET)
-
-	return parameters
+	@warning_ignore("unsafe_call_argument")
+	return _finalize_parameter_set(parameters)
 
 # This is a fallback option to run the expression by kind of reflection
 func _run_expression_via_script(instance: Node, expression: String) -> Array:
@@ -97,10 +96,7 @@ func _run_expression_via_script(instance: Node, expression: String) -> Array:
 	copy_properties(instance, expression_runner)
 	var parameters: Array = expression_runner.call("__run_expression")
 	expression_runner.free()
-
-	# We append an extra empty array representing the `_test_parameters` to prevent reinitializing the test parameter set
-	parameters.append(EMPTY_SET)
-	return parameters
+	return _finalize_parameter_set(parameters)
 
 
 static func copy_properties(source: Object, dest: Object) -> void:

@@ -20,21 +20,21 @@ func test_validate_parameter_set() -> void:
 	assert_is_not_skipped(test_suite, "test_parameterized_failed", 2)
 	assert_is_skipped(test_suite, "test_parameterized_to_less_args", 0).is_equal(
 		"""
-			The test data set at index (0) does not match the expected test arguments:
+			The test data set at index (0) does not match the expected test parameters:
 				test function: func test...(a: int,b: int,expected: int)
 				test input values: [1, 2, 3, 6]
 		""".dedent()
 	)
 	assert_is_skipped(test_suite, "test_parameterized_to_less_args", 1).is_equal(
 		"""
-			The test data set at index (1) does not match the expected test arguments:
+			The test data set at index (1) does not match the expected test parameters:
 				test function: func test...(a: int,b: int,expected: int)
 				test input values: [3, 4, 5, 11]
 		""".dedent()
 	)
 	assert_is_skipped(test_suite, "test_parameterized_to_many_args", 0).is_equal(
 		"""
-			The test data set at index (0) does not match the expected test arguments:
+			The test data set at index (0) does not match the expected test parameters:
 				test function: func test...(a: int,b: int,c: int,d: int,expected: int)
 				test input values: [1, 2, 3, 6]
 		""".dedent()
@@ -43,7 +43,7 @@ func test_validate_parameter_set() -> void:
 	assert_is_not_skipped(test_suite, "test_parameterized_invalid_struct", 0)
 	assert_is_skipped(test_suite, "test_parameterized_invalid_struct", 1).is_equal(
 		"""
-			The test data set at index (1) does not match the expected test arguments:
+			The test data set at index (1) does not match the expected test parameters:
 				test function: func test...(a: int,b: int,expected: int)
 				test input values: ["foo"]
 		""".dedent()
@@ -55,10 +55,13 @@ func test_validate_parameter_set() -> void:
 		"""
 			The test data value does not match the expected input type!
 				input value: '4', <String>
-				expected argument: b: int
+				expected parameter: b: int
 		""".dedent()
 	)
 	assert_is_not_skipped(test_suite, "test_parameterized_invalid_args", 2)
+	# test_with_extern_const_parameter_set
+	assert_is_not_skipped(test_suite, "test_with_extern_const_parameter_set", 0)
+	assert_is_not_skipped(test_suite, "test_with_extern_const_parameter_set", 1)
 
 
 func assert_is_not_skipped(test_suite: GdUnitTestSuite, test_case: String, index := -1) -> void:
@@ -87,24 +90,7 @@ func simulate_test_execution_with_parameter_validation(test_suite: GdUnitTestSui
 	if resolver == null:
 		return test
 	var parameter_set := resolver.get_parameters(test_suite, attribute_index)
-	var result := _validate_parameter_set(fd, parameter_set, attribute_index)
+	var result := resolver.validate(parameter_set, attribute_index)
 	if result.is_error():
 		test.do_skip(true, result.error_message())
 	return test
-
-
-static func _validate_parameter_set(fd: GdFunctionDescriptor, parameter_set: Array, parameter_set_index: int) -> GdUnitResult:
-	var input_arguments := fd.args()
-	var expected_arg_count := input_arguments.size()
-	var current_arg_count := parameter_set.size()
-	if current_arg_count != expected_arg_count:
-		var arg_names := input_arguments \
-			.filter(func(arg: GdFunctionArgument) -> bool: return not arg.is_parameter_set()) \
-			.map(func(arg: GdFunctionArgument) -> String: return str(arg))
-		var test_parameters := parameter_set.slice(0, parameter_set.size() - 1)
-		return GdUnitResult.error("""
-			The test data set at index (%d) does not match the expected test arguments:
-				test function: [color=snow]func test...(%s)[/color]
-				test input values: [color=snow]%s[/color]
-			""".dedent() % [parameter_set_index, ",".join(arg_names), test_parameters])
-	return GdUnitTestParameterSetResolver.validate_parameter_types(input_arguments, parameter_set)

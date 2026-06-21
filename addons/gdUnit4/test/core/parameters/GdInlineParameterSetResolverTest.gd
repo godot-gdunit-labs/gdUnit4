@@ -2,6 +2,10 @@
 extends GdUnitTestSuite
 
 
+const DATA1 := ["aa"]
+const DATA2 := ["bb"]
+
+
 var example_parameters := [
 	'[auto_free(Node.new()), Node]',
 	'[auto_free(Node3D.new()), Node3D]',
@@ -80,6 +84,10 @@ func test_resolve_parameters_at_runtime(_a: int, _b: int, _test_parameters := [
 	[2, _test_param2],
 	[3, 30]
 	]) -> void:
+	pass
+
+
+func test_with_extern_const_parameter_set(_value: String, _test_parameters := [DATA1, DATA2]) -> void:
 	pass
 
 
@@ -209,27 +217,27 @@ func test_get_parameters_with_constants() -> void:
 #endregion
 
 
-#region load_parameter_sets
+#region resolve_parameters
 
 func test_load_parameter_sets() -> void:
-	assert_array(load_parameter_sets("test_example_a")) \
+	assert_array(resolve_parameters("test_example_a")) \
 		.is_equal([[1, 2, []], [3, 4, []]])
 
-	assert_array(load_parameter_sets("test_example_b")) \
+	assert_array(resolve_parameters("test_example_b")) \
 		.is_equal([[Vector2.ZERO, Vector2.ONE, []], [Vector2(1.1, 3.2), Vector2.DOWN, []]])
 
-	assert_array(load_parameter_sets("test_example_c")) \
+	assert_array(resolve_parameters("test_example_c")) \
 		.is_equal([[Resource.new(), Resource.new(), []], [Resource.new(), null, []]])
 
-	assert_array(load_parameter_sets("test_example_d")) \
+	assert_array(resolve_parameters("test_example_d")) \
 		.is_equal([[Vector3(1, 1, 1), Vector3(3, 3, 3), []], [Vector3.BACK, Vector3.UP, []]])
 
-	assert_array(load_parameter_sets("test_example_e")) \
+	assert_array(resolve_parameters("test_example_e")) \
 		.is_equal([[TestObjNamed.new("abc"), TestObjNamed.new("def"), "abcdef", []]])
 
 
 func test_load_parameter_sets_at_runtime() -> void:
-	var params := load_parameter_sets("test_resolve_parameters_at_runtime")
+	var params := resolve_parameters("test_resolve_parameters_at_runtime")
 	assert_that(params).is_not_null()
 	assert_array(params) \
 		.is_equal([
@@ -242,7 +250,7 @@ func test_load_parameter_sets_at_runtime() -> void:
 
 
 func test_load_parameter_with_comments() -> void:
-	var params := load_parameter_sets("test_parameterized_with_comments")
+	var params := resolve_parameters("test_parameterized_with_comments")
 	assert_that(params).is_not_null()
 	assert_array(params) \
 		.is_equal([
@@ -252,7 +260,17 @@ func test_load_parameter_with_comments() -> void:
 			[6, 7, "string #ABCD", 21, []]])
 
 
-func load_parameter_sets(child_name: String) -> Array[Array]:
+func test_load_test_parameters_with_const_values() -> void:
+	var params := resolve_parameters("test_with_extern_const_parameter_set")
+	assert_that(params).is_not_null()
+	assert_array(params) \
+		.is_equal([
+			["aa", []],
+			["bb", []]
+			])
+
+
+func resolve_parameters(child_name: String) -> Array[Array]:
 	test_before()
 	var script: GDScript = self.get_script()
 	var function_descriptors := GdScriptParser.new().get_function_descriptors(script, [child_name])

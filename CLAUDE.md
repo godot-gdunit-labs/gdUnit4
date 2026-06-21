@@ -47,9 +47,13 @@ Requires `gdlint` (gdscript-toolkit 4.5.0):
 ```bash
 gdlint addons/gdUnit4/bin/
 gdlint addons/gdUnit4/src/cmd/
+gdlint addons/gdUnit4/src/core/parameters
 gdlint addons/gdUnit4/src/reporters/
 gdlint addons/gdUnit4/src/network
 gdlint addons/gdUnit4/src/asserts
+
+# For tests
+gdlint addons/gdUnit4/test/core/parameters
 ```
 
 ### Markdown Linting

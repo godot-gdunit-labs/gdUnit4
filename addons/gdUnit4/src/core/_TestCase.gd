@@ -46,22 +46,21 @@ func execute_parameterized() -> void:
 	set_timeout()
 
 	var test_parameters := _resolve_test_paramaters(_test_case.attribute_index)
+	if is_skipped():
+		test_completed.call_deferred()
+		return
 	await _execute_test_case(test_name(), test_parameters)
 
 
 func _resolve_test_paramaters(index: int) -> Array:
-	# We need to load the parameter set at runtime to include runtime variables
-	var parameter_sets := _parameter_resolver.get_parameters(get_parent(), index)
-	if parameter_sets.is_empty():
+	var parameter_set := _parameter_resolver.get_parameters(get_parent(), index)
+	if parameter_set.is_empty():
 		return []
-	# We need to validate the parameters match the func signature
-	#var result := _parameter_set_resolver.validate_parameters(parameter_sets, attribute_index)
-	#if result.is_error():
-	#	do_skip(true, result.error_message())
-	#	test_completed.call_deferred()
-	#	return []
-
-	return parameter_sets
+	var result := _parameter_resolver.validate(parameter_set, index)
+	if result.is_error():
+		do_skip(true, result.error_message())
+		return []
+	return parameter_set
 
 
 func dispose() -> void:

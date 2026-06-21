@@ -55,3 +55,12 @@ func test_parameterized_invalid_args(a: int, b :int, expected :int, test_paramet
 	[3, "4", 11],
 	[6, 7, 21] ]) -> void:
 	pass
+
+
+const _data1 := ["aa"]
+const _data2 := ["bb"]
+
+
+@warning_ignore('unused_parameter')
+func test_with_extern_const_parameter_set(value: String, _test_parameters := [_data1, _data2]) -> void:
+	pass

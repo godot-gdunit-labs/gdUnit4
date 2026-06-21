@@ -1,4 +1,4 @@
-## @deprecated see GdFunctionParameterSetResolver
+## @deprecated
 class_name GdUnitTestParameterSetResolver
 extends RefCounted
 

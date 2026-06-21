@@ -269,6 +269,9 @@ func gc(gc_orphan_check: GC_ORPHANS_CHECK = GC_ORPHANS_CHECK.NONE) -> void:
 	GdUnitThreadManager.get_current_context().clear_assert()
 	await _memory_observer.gc()
 	orphan_monitor_stop()
+	if _orphan_monitor.orphans_count() > 0:
+		# Give the engine time to free resources otherwies we do orphan false detection
+		await test_suite.get_tree().process_frame
 
 	match(gc_orphan_check):
 		GC_ORPHANS_CHECK.SUITE_HOOK_AFTER:

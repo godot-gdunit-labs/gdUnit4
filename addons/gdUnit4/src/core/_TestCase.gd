@@ -12,15 +12,16 @@ var _timer: Timer
 var _interupted := false
 var _terminated := false
 var _failed := false
-var _parameter_set_resolver: GdUnitTestParameterSetResolver
+var _parameter_resolver: GdParameterSetResolver
 var _is_disposed := false
 var _func_state: Variant
 
 
-func _init(test_case: GdUnitTestCase, attribute: TestCaseAttribute, fd: GdFunctionDescriptor) -> void:
+func _init(test_case: GdUnitTestCase, attribute: TestCaseAttribute, parameter_resolver: GdParameterSetResolver) -> void:
+	set_name(test_case.test_name)
 	_test_case = test_case
 	_attribute = attribute
-	set_function_descriptor(fd)
+	_parameter_resolver = parameter_resolver
 
 
 func execute(p_test_parameter := Array(), p_iteration := 0) -> void:
@@ -44,38 +45,23 @@ func execute_parameterized() -> void:
 	_failure_received(false)
 	set_timeout()
 
-	# Resolve parameter set at runtime to include runtime variables
-	var test_parameters := await _resolve_test_parameters(_test_case.attribute_index)
-	if test_parameters.is_empty():
-		return
-
+	var test_parameters := _resolve_test_paramaters(_test_case.attribute_index)
 	await _execute_test_case(test_name(), test_parameters)
 
 
-func _resolve_test_parameters(attribute_index: int) -> Array:
-	var result := _parameter_set_resolver.load_parameter_sets(get_parent())
-	if result.is_error():
-		do_skip(true, result.error_message())
-		await (Engine.get_main_loop() as SceneTree).process_frame
-		completed.emit()
+func _resolve_test_paramaters(index: int) -> Array:
+	# We need to load the parameter set at runtime to include runtime variables
+	var parameter_sets := _parameter_resolver.get_parameters(get_parent(), index)
+	if parameter_sets.is_empty():
 		return []
+	# We need to validate the parameters match the func signature
+	#var result := _parameter_set_resolver.validate_parameters(parameter_sets, attribute_index)
+	#if result.is_error():
+	#	do_skip(true, result.error_message())
+	#	test_completed.call_deferred()
+	#	return []
 
-	# validate the parameter set
-	var parameter_sets: Array = result.value()
-	result = _parameter_set_resolver.validate(parameter_sets, attribute_index)
-	if result.is_error():
-		do_skip(true, result.error_message())
-		await (Engine.get_main_loop() as SceneTree).process_frame
-		completed.emit()
-		return []
-
-	@warning_ignore("unsafe_method_access")
-	var test_parameters: Array = parameter_sets[attribute_index].duplicate()
-	# We need here to add a empty array to override the `test_parameters` to prevent initial "default" parameters from being used.
-	# This prevents objects in the argument list from being unnecessarily re-instantiated.
-	test_parameters.append([])
-
-	return test_parameters
+	return parameter_sets
 
 
 func dispose() -> void:
@@ -93,8 +79,6 @@ func _execute_test_case(name: String, test_parameter: Array) -> void:
 	# save the function state like GDScriptFunctionState to dispose at test timeout to prevent orphan state
 	_func_state = get_parent().callv(name, test_parameter)
 	await _func_state
-	# Give the engine time to free resources otherwies we do orphan false detection
-	await get_tree().process_frame
 	# We need to call deferred the signal `completed` otherwise the current thread is blocked
 	test_completed.call_deferred()
 
@@ -193,7 +177,7 @@ func is_terminated() -> bool:
 
 
 func is_parameterized() -> bool:
-	return _parameter_set_resolver.is_parameterized()
+	return _parameter_resolver != null
 
 
 func is_skipped() -> bool:
@@ -248,10 +232,6 @@ func generate_seed() -> void:
 func do_skip(skipped: bool, reason: String="") -> void:
 	_attribute.is_skipped = skipped
 	_attribute.skip_reason = reason
-
-
-func set_function_descriptor(fd: GdFunctionDescriptor) -> void:
-	_parameter_set_resolver = GdUnitTestParameterSetResolver.new(fd)
 
 
 func _to_string() -> String:

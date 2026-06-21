@@ -104,6 +104,8 @@ func test_parameterized_bool_value(a: int, expected: bool, _test_parameters := [
 	[1, true]]) -> void:
 	collect_test_call("test_parameterized_bool_value", [a, expected])
 	assert_that(bool(a)).is_equal(expected)
+	# The test call should replace the defaults with an empty array
+	assert_array(_test_parameters).is_empty()
 
 
 func test_parameterized_int_values(a: int, b: int, c: int, expected: int, _test_parameters := [
@@ -113,6 +115,8 @@ func test_parameterized_int_values(a: int, b: int, c: int, expected: int, _test_
 
 	collect_test_call("test_parameterized_int_values", [a, b, c, expected])
 	assert_that(a+b+c).is_equal(expected)
+	# The test call should replace the defaults with an empty array
+	assert_array(_test_parameters).is_empty()
 
 
 func test_parameterized_float_values(a: float, b: float, expected: float, _test_parameters := [
@@ -122,6 +126,8 @@ func test_parameterized_float_values(a: float, b: float, expected: float, _test_
 
 	collect_test_call("test_parameterized_float_values", [a, b, expected])
 	assert_float(a+b).is_equal(expected)
+	# The test call should replace the defaults with an empty array
+	assert_array(_test_parameters).is_empty()
 
 
 func test_parameterized_string_values(a: String, b: String, expected: String, _test_parameters := [
@@ -131,6 +137,8 @@ func test_parameterized_string_values(a: String, b: String, expected: String, _t
 
 	collect_test_call("test_parameterized_string_values", [a, b, expected])
 	assert_that(a+b).is_equal(expected)
+	# The test call should replace the defaults with an empty array
+	assert_array(_test_parameters).is_empty()
 
 
 func test_parameterized_Vector2_values(a: Vector2, b: Vector2, expected: Vector2, _test_parameters := [
@@ -140,6 +148,8 @@ func test_parameterized_Vector2_values(a: Vector2, b: Vector2, expected: Vector2
 
 	collect_test_call("test_parameterized_Vector2_values", [a, b, expected])
 	assert_that(a+b).is_equal(expected)
+	# The test call should replace the defaults with an empty array
+	assert_array(_test_parameters).is_empty()
 
 
 func test_parameterized_Vector3_values(a: Vector3, b: Vector3, expected: Vector3, _test_parameters := [
@@ -236,7 +246,7 @@ func test_with_string_contains_brackets(
 		[9, """
 			flowchart TD
 			id{"This is a rhombus node"}
-			"""],
+			""".dedent()],
 	]
 ) -> void:
 	match test_index:
@@ -251,7 +261,7 @@ func test_with_string_contains_brackets(
 		9: assert_str(value).is_equal("""
 			flowchart TD
 			id{"This is a rhombus node"}
-			""")
+			""".dedent())
 
 
 func test_with_dynamic_parameter_resolving(name_: String, value: Variant, expected: Variant, _test_parameters := [
@@ -261,6 +271,7 @@ func test_with_dynamic_parameter_resolving(name_: String, value: Variant, expect
 	["test_d", _test_node_before_test, SubViewport],
 ]) -> void:
 	# all values must be resolved
+	prints(value, expected)
 	assert_object(value).is_not_null().is_instanceof(expected)
 	if name_ == "test_c":
 		assert_object(value).is_same(_test_node_before)

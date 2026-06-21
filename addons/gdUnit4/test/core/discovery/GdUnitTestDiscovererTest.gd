@@ -151,3 +151,84 @@ func test_scan_all_test_directories() -> void:
 
 	# Test when test_root_folder is set to something which doesn't exist
 	assert_array(GdUnitTestDiscoverer.scan_all_test_directories("notest")).is_empty()
+
+
+func test_discover_tests_with_fuzzers() -> void:
+	# Setup
+	var script: GDScript = load("res://addons/gdUnit4/test/core/parse/resources/TestSuiteWithFuzzers.gd")
+
+	# Act
+	var tests := GdUnitTestDiscoverer.discover_tests_from_gd_script(script)
+
+	# Verify
+	assert_array(tests)\
+		.extractv(
+			extr("suite_name"),
+			extr("test_name"),
+			extr("source_file"),
+			extr("line_number"),
+			extr("attribute_index"))\
+		.contains_exactly(
+			tuple("TestSuiteWithFuzzers", "test_do_skip_as_first_param", script.resource_path, 4, -1),
+			tuple("TestSuiteWithFuzzers", "test_do_skip_in_middle", script.resource_path, 11, -1),
+			tuple("TestSuiteWithFuzzers", "test_do_skip_as_last_param", script.resource_path, 18, -1),
+		)
+
+
+func test_discover_tests_with_static_parameterset() -> void:
+	# Setup
+	var script: GDScript = load("res://addons/gdUnit4/test/core/parse/resources/TestSuiteWithStaticParameterSet.gd")
+
+	# Act
+	var tests := GdUnitTestDiscoverer.discover_tests_from_gd_script(script)
+
+	# Verify
+	assert_array(tests)\
+		.extractv(
+			extr("suite_name"),
+			extr("test_name"),
+			extr("source_file"),
+			extr("line_number"),
+			extr("attribute_index"))\
+		.contains_exactly(
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_bool_value", script.resource_path, 5, 0),
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_bool_value", script.resource_path, 5, 1),
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_int_values", script.resource_path, 12, 0),
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_int_values", script.resource_path, 12, 1),
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_int_values", script.resource_path, 12, 2),
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_float_values", script.resource_path, 20, 0),
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_float_values", script.resource_path, 20, 1),
+			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_float_values", script.resource_path, 20, 2),
+		)
+
+
+func test_discover_tests_with_dynamic_parameterset() -> void:
+	# Setup
+	var script: GDScript = load("res://addons/gdUnit4/test/core/parse/resources/TestSuiteWithDynamicParameterSet.gd")
+
+	# Act
+	var tests := GdUnitTestDiscoverer.discover_tests_from_gd_script(script)
+
+	# Verify
+	assert_array(tests)\
+		.extractv(
+			extr("suite_name"),
+			extr("test_name"),
+			extr("source_file"),
+			extr("line_number"),
+			extr("attribute_index"))\
+		.contains_exactly(
+			# test_with_dynamic_parameters
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters", script.resource_path, 21, 0),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters", script.resource_path, 21, 1),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters", script.resource_path, 21, 2),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters", script.resource_path, 21, 3),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters", script.resource_path, 21, 4),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters", script.resource_path, 21, 5),
+			# test_with_dynamic_parameters_typed_array
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_typed_array", script.resource_path, 33, 0),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_typed_array", script.resource_path, 33, 1),
+			# test_with_dynamic_parameters_untyped_array
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_untyped_array", script.resource_path, 38, 0),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_untyped_array", script.resource_path, 38, 1),
+		)

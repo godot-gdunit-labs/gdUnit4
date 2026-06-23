@@ -17,14 +17,17 @@ class ParameterSpec:
 	var index: int
 	## The GDScript type constant ([code]TYPE_*[/code]) the resolved value must match.
 	var type: int
+	## Value type hint, for typed arrays or dictionaries
+	var value_type_hint: int
 	## [code]true[/code] when this parameter is [code]_test_parameters[/code] — internal, not a user-supplied test input.
 	var is_parameter_set: bool
 	## Human-readable representation used in validation error messages.
 	var declaration: String
 
-	func _init(p_index: int, p_type: int, p_is_parameter_set: bool, p_declaration: String) -> void:
+	func _init(p_index: int, p_type: int, p_is_parameter_set: bool, p_declaration: String, p_value_type_hint: int) -> void:
 		index = p_index
 		type = p_type
+		value_type_hint = p_value_type_hint
 		is_parameter_set = p_is_parameter_set
 		declaration = p_declaration
 
@@ -47,10 +50,10 @@ func _build_parameter_specs(args: Array[GdFunctionArgument] = []) -> void:
 		var param_str := str(param)
 		var param_type := param.type()
 		if param.is_parameter_set():
-			_parameter_specs.append(ParameterSpec.new(param_index, TYPE_ARRAY, true, param_str))
+			_parameter_specs.append(ParameterSpec.new(param_index, TYPE_ARRAY, true, param_str, param.type_hint()))
 		else:
 			parameter_names.append(param_str)
-			_parameter_specs.append(ParameterSpec.new(param_index, param_type, false, param_str))
+			_parameter_specs.append(ParameterSpec.new(param_index, param_type, false, param_str, param.type_hint()))
 	_parameter_names = ",".join(parameter_names)
 
 
@@ -102,9 +105,33 @@ func validate(parameters: Array, index: int) -> GdUnitResult:
 ## Appends [constant EMPTY_SET] to [param parameters] to prevent re-initialisation of the
 ## [code]_test_parameters[/code] default value on the next invocation.
 ## Duplicates [param parameters] first when it is read-only (e.g. a GDScript class constant).
+## Also coerces untyped [Array] values to typed arrays
 func _finalize_parameter_set(parameters: Array) -> Array:
 	if parameters.is_read_only():
 		parameters = parameters.duplicate()
+
+	# Convert to typed Array and Dictionary parameters if required
+	for spec: ParameterSpec in _parameter_specs:
+		if spec.value_type_hint == TYPE_NIL:
+			continue
+		if spec.index >= parameters.size():
+			continue
+		var val: Variant = parameters[spec.index]
+		if spec.type == TYPE_ARRAY:
+			@warning_ignore("unsafe_cast")
+			if typeof(val) == TYPE_ARRAY and not (val as Array).is_typed():
+				@warning_ignore("unsafe_call_argument")
+				parameters[spec.index] = Array(val, spec.value_type_hint, "", null)
+
+		# TODO not fully implemented
+		if spec.type == TYPE_DICTIONARY:
+			@warning_ignore("unsafe_cast")
+			if (val as Dictionary).is_typed():
+				@warning_ignore("unsafe_call_argument")
+				#Dictionary(base: Dictionary, key_type: int, key_class_name: StringName, key_script: Variant, value_type: int, value_class_name: StringName, value_script: Variant)
+				parameters[spec.index] = Dictionary(val, spec.value_type_hint, "", null, spec.value_type_hint, "", null)
+
+	# prevent re-initialisation of the '_test_parameters' default value on the next invocation.
 	parameters.append(EMPTY_SET)
 	return parameters
 

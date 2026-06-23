@@ -219,6 +219,11 @@ static func _extract_args(descriptor: Dictionary) -> Array[GdFunctionArgument]:
 		var arg_name := _argument_name(arg)
 		var arg_type := _argument_type(arg)
 		var arg_type_hint := _argument_hint(arg)
+		if arg_type == TYPE_DICTIONARY:
+			var dict_types := _argument_dictionary_types(arg)
+			prints("_extract_args", dict_types)
+			push_warning("typed dictionaries properties not supported yet")
+			#TODO add the dict_types to `GdFunctionArgument`
 		#var arg_class: StringName = arg["class_name"]
 		var default_value: Variant = GdFunctionArgument.UNDEFINED if defaults.is_empty() else defaults.pop_back()
 		args_.push_front(GdFunctionArgument.new(arg_name, arg_type, default_value, arg_type_hint))
@@ -262,6 +267,23 @@ static func _argument_hint(arg: Dictionary) -> int:
 			return GdObjects.string_to_type(hint_string)
 		_:
 			return 0
+
+
+static func _argument_dictionary_types(arg: Dictionary) -> Array[int]:
+	var dict_types: Array[int] = [TYPE_NIL, TYPE_NIL]
+	var hint: int = arg["hint"]
+	var hint_string: String = arg["hint_string"]
+
+	if hint != PROPERTY_HINT_DICTIONARY_TYPE:
+		return dict_types
+
+	var index := 0
+	var hint_strings := hint_string.split(";")
+	for type_as_string in hint_strings:
+		dict_types[index] = GdObjects.string_to_type(type_as_string)
+		index += 1
+
+	return dict_types
 
 
 static func _argument_type_as_string(arg: Dictionary) -> String:

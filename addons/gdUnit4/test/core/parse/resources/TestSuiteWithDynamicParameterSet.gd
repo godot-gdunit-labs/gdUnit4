@@ -16,7 +16,6 @@ func _test_parameters_typed() -> Array[Array]:
 
 
 func _dynamic_parameterset(count: int) -> Array[Array]:
-	#print_stack()
 	var iterations: Array[Array] = []
 	for i in range(count):
 		iterations.append(["name_%s"%i, i, i])
@@ -25,13 +24,13 @@ func _dynamic_parameterset(count: int) -> Array[Array]:
 
 @warning_ignore("unused_parameter")
 func test_with_dynamic_parameters_typed_array(name_: String, value: Variant, expected: Variant, _test_parameters := _test_parameters_typed()) -> void:
-	prints("test_with_dynamic_parameters_typed_array", name_, value, expected, _test_parameters)
+	pass
 
 
 @warning_ignore("unused_parameter")
 func test_with_dynamic_parameters_untyped_array(name_: String, value: Variant, expected: Variant, _test_parameters := _test_parameters_untyped()) -> void:
-	prints("test_with_dynamic_parameters_untyped_array", name_, value, expected, _test_parameters)
+	pass
 
 @warning_ignore("unused_parameter")
 func test_with_dynamic_parameterset(name_: String, value: Variant, expected: Variant, _test_parameters := _dynamic_parameterset(10)) -> void:
-	prints("test_with_dynamic_parameterset", name_, value, expected, _test_parameters)
+	pass

@@ -271,7 +271,6 @@ func test_with_dynamic_parameter_resolving(name_: String, value: Variant, expect
 	["test_d", _test_node_before_test, SubViewport],
 ]) -> void:
 	# all values must be resolved
-	prints(value, expected)
 	assert_object(value).is_not_null().is_instanceof(expected)
 	if name_ == "test_c":
 		assert_object(value).is_same(_test_node_before)

@@ -74,6 +74,7 @@ func get_parameters(instance: Node, index: int) -> Array:
 	@warning_ignore("unsafe_call_argument")
 	return _finalize_parameter_set(parameters)
 
+
 # This is a fallback option to run the expression by kind of reflection
 func _run_expression_via_script(instance: Node, expression: String) -> Array:
 	var source_script: GDScript = instance.get_script()

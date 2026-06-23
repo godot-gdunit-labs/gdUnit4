@@ -48,7 +48,8 @@ func before() -> void:
 	_test_param1 = 11
 
 
-func test_before() -> void:
+#region test data
+func before_test() -> void:
 	_test_param2 = 22
 
 
@@ -56,30 +57,46 @@ func build_param(value: float) -> Vector3:
 	return Vector3(value, value, value)
 
 
-func test_example_a(_a: int, _b: int, _test_parameters := [[1, 2], [3, 4]]) -> void:
+func using_parameters_static_int_values(_a: int, _b: int, _test_parameters := [
+	[1, 2], [3, 4]
+	]) -> void:
 	pass
 
 
-func test_example_b(_a: Vector2, _b: Vector2, _test_parameters := [
-	[Vector2.ZERO, Vector2.ONE], [Vector2(1.1, 3.2), Vector2.DOWN]]) -> void:
+func using_parameters_function_values(_a: Vector3, _b: Vector3, _test_parameters := [
+	[build_param(1), build_param(3)],
+	[Vector3.BACK, Vector3.UP]
+	]) -> void:
 	pass
 
 
-func test_example_c(_a: Object, _b: Object, _test_parameters := [
+func using_parameters_static_vector2_values(_a: Vector2, _b: Vector2, _test_parameters := [
+	[Vector2.ZERO, Vector2.ONE], [Vector2(1.1, 3.2), Vector2.DOWN]
+	]) -> void:
+	pass
+
+
+func using_parameters_static_object_values(_a: Object, _b: Object, _test_parameters := [
 	[Resource.new(), Resource.new()],
 	[Resource.new(), null]
 	]) -> void:
 	pass
 
 
-func test_resolve_parameters_static(_a: int, _b: int, _test_parameters := [
+func using_parameters_static_custom_object_values(_a: Object, _b: Object, _expected: String, _test_parameters := [
+	[TestObjNamed.new("abc"), TestObjNamed.new("def"), "abcdef"]
+	]) -> void:
+	pass
+
+
+func using_parameters_static_values(_a: int, _b: int, _test_parameters := [
 	[1, 10],
 	[2, 20]
 	]) -> void:
 	pass
 
 
-func test_resolve_parameters_at_runtime(_a: int, _b: int, _test_parameters := [
+func using_parameters_with_properties(_a: int, _b: int, _test_parameters := [
 	[1, _test_param1],
 	[2, _test_param2],
 	[3, 30]
@@ -87,11 +104,11 @@ func test_resolve_parameters_at_runtime(_a: int, _b: int, _test_parameters := [
 	pass
 
 
-func test_with_extern_const_parameter_set(_value: String, _test_parameters := [DATA1, DATA2]) -> void:
+func using_parameters_with_const_values(_value: String, _test_parameters := [DATA1, DATA2]) -> void:
 	pass
 
 
-func test_parameterized_with_comments(_a: int, _b: int, _c: String, _expected: int, _test_parameters := [
+func using_parameters_with_comments(_a: int, _b: int, _c: String, _expected: int, _test_parameters := [
 	# before data set
 	[1, 2, '3', 6], # after data set
 	# between data sets
@@ -103,17 +120,26 @@ func test_parameterized_with_comments(_a: int, _b: int, _c: String, _expected: i
 	pass
 
 
-func test_example_d(_a: Vector3, _b: Vector3, _test_parameters := [
-	[build_param(1), build_param(3)],
-	[Vector3.BACK, Vector3.UP]
+func using_typed_array_parameter(_items: Array[int], _test_parameters := [
+	[[42, 99]],
+	[[1, 2, 3]],
 	]) -> void:
 	pass
 
 
-func test_example_e(_a: Object, _b: Object, _expected: String, _test_parameters := [
-	[TestObjNamed.new("abc"), TestObjNamed.new("def"), "abcdef"]]) -> void:
+func using_typed_key_dictionary_parameter(_items: Dictionary[String, Variant], _test_parameters := [
+	[{"foo" : 10}],
+	[{"bar" : 20}],
+	]) -> void:
 	pass
 
+
+func using_typed_dictionary_parameter(_items: Dictionary[String, int], _test_parameters := [
+	[{"foo" : 10}],
+	[{"bar" : 20}],
+	]) -> void:
+	pass
+#endregion
 
 #region get_parameters
 
@@ -215,29 +241,37 @@ func test_get_parameters_with_constants() -> void:
 	assert_object(parameters[2]).is_equal([])
 
 #endregion
+#region _resolve_parameters
 
-
-#region resolve_parameters
-
-func test_load_parameter_sets() -> void:
-	assert_array(resolve_parameters("test_example_a")) \
+func test_resolve_parameters_with_different_types() -> void:
+	assert_array(_resolve_parameters("using_parameters_static_int_values")) \
 		.is_equal([[1, 2, []], [3, 4, []]])
 
-	assert_array(resolve_parameters("test_example_b")) \
+	assert_array(_resolve_parameters("using_parameters_static_vector2_values")) \
 		.is_equal([[Vector2.ZERO, Vector2.ONE, []], [Vector2(1.1, 3.2), Vector2.DOWN, []]])
 
-	assert_array(resolve_parameters("test_example_c")) \
+	assert_array(_resolve_parameters("using_parameters_static_object_values")) \
 		.is_equal([[Resource.new(), Resource.new(), []], [Resource.new(), null, []]])
 
-	assert_array(resolve_parameters("test_example_d")) \
+	assert_array(_resolve_parameters("using_parameters_function_values")) \
 		.is_equal([[Vector3(1, 1, 1), Vector3(3, 3, 3), []], [Vector3.BACK, Vector3.UP, []]])
 
-	assert_array(resolve_parameters("test_example_e")) \
+	assert_array(_resolve_parameters("using_parameters_static_custom_object_values")) \
 		.is_equal([[TestObjNamed.new("abc"), TestObjNamed.new("def"), "abcdef", []]])
 
 
-func test_load_parameter_sets_at_runtime() -> void:
-	var params := resolve_parameters("test_resolve_parameters_at_runtime")
+func test_resolve_parameters_with_static_values() -> void:
+	var params := _resolve_parameters("using_parameters_static_values")
+	assert_that(params).is_not_null()
+	assert_array(params) \
+		.is_equal([
+			[1, 10, []],
+			[2, 20, []]
+		])
+
+
+func test_resolve_parameters_with_properties() -> void:
+	var params := _resolve_parameters("using_parameters_with_properties")
 	assert_that(params).is_not_null()
 	assert_array(params) \
 		.is_equal([
@@ -249,8 +283,8 @@ func test_load_parameter_sets_at_runtime() -> void:
 			[3, 30, []]])
 
 
-func test_load_parameter_with_comments() -> void:
-	var params := resolve_parameters("test_parameterized_with_comments")
+func test_resolve_parameters_with_comments() -> void:
+	var params := _resolve_parameters("using_parameters_with_comments")
 	assert_that(params).is_not_null()
 	assert_array(params) \
 		.is_equal([
@@ -260,8 +294,69 @@ func test_load_parameter_with_comments() -> void:
 			[6, 7, "string #ABCD", 21, []]])
 
 
-func test_load_test_parameters_with_const_values() -> void:
-	var params := resolve_parameters("test_with_extern_const_parameter_set")
+func test_resolve_parameters_with_typed_array() -> void:
+	var params := _resolve_parameters("using_typed_array_parameter")
+
+	assert_array(params).contains_exactly(
+		[[42, 99], []],
+		[[1, 2, 3], []]
+	)
+
+	var first: Array = params[0][0]
+	assert_bool(first.is_typed()).is_true()
+	assert_int(first.get_typed_builtin()).is_equal(TYPE_INT)
+
+	var second: Array = params[1][0]
+	assert_bool(second.is_typed()).is_true()
+	assert_int(second.get_typed_builtin()).is_equal(TYPE_INT)
+
+
+# TODO needs to be enabled when typed dictionary support is implemented
+func test_resolve_parameters_with_typed_key_dictionary(_do_skip := true, _skip_reason  := "typed dictionary not support") -> void:
+	var params := _resolve_parameters("using_typed_key_dictionary_parameter")
+
+	assert_dict(params).is_equal(
+		[
+			[{"foo" : 10}, []],
+			[{"bar" : 20}, []],
+		]
+	)
+
+	var first: Dictionary = params[0][0]
+	assert_bool(first.is_typed()).is_true()
+	assert_int(first.get_typed_key_builtin()).is_equal(TYPE_STRING)
+	assert_int(first.get_typed_value_builtin()).is_equal(TYPE_NIL)
+
+	var second: Dictionary = params[1][0]
+	assert_bool(second.is_typed()).is_true()
+	assert_int(second.get_typed_key_builtin()).is_equal(TYPE_STRING)
+	assert_int(second.get_typed_value_builtin()).is_equal(TYPE_NIL)
+
+
+# TODO needs to be enabled when typed dictionary support is implemented
+func test_resolve_parameters_with_typed_dictionary(_do_skip := true, _skip_reason  := "typed dictionary not support") -> void:
+	var params := _resolve_parameters("using_typed_dictionary_parameter")
+
+	assert_dict(params).is_equal(
+		[
+			[{"foo" : 10}, []],
+			[{"bar" : 20}, []],
+		]
+	)
+
+	var first: Dictionary = params[0][0]
+	assert_bool(first.is_typed()).is_true()
+	assert_int(first.get_typed_key_builtin()).is_equal(TYPE_STRING)
+	assert_int(first.get_typed_value_builtin()).is_equal(TYPE_INT)
+
+	var second: Dictionary = params[1][0]
+	assert_bool(second.is_typed()).is_true()
+	assert_int(second.get_typed_key_builtin()).is_equal(TYPE_STRING)
+	assert_int(second.get_typed_value_builtin()).is_equal(TYPE_INT)
+
+
+func test_resolve_parameters_with_const_values() -> void:
+	var params := _resolve_parameters("using_parameters_with_const_values")
 	assert_that(params).is_not_null()
 	assert_array(params) \
 		.is_equal([
@@ -270,8 +365,7 @@ func test_load_test_parameters_with_const_values() -> void:
 			])
 
 
-func resolve_parameters(child_name: String) -> Array[Array]:
-	test_before()
+func _resolve_parameters(child_name: String) -> Array[Array]:
 	var script: GDScript = self.get_script()
 	var function_descriptors := GdScriptParser.new().get_function_descriptors(script, [child_name])
 	var fd: GdFunctionDescriptor = function_descriptors.front()
@@ -282,7 +376,6 @@ func resolve_parameters(child_name: String) -> Array[Array]:
 	for i in resolver.get_max_index():
 		result.append(resolver.get_parameters(self, i))
 	return result
-
 #endregion
 
 

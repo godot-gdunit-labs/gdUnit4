@@ -230,20 +230,20 @@ func test_discover_tests_with_dynamic_parameterset() -> void:
 			extr("attribute_index"))\
 		.contains_exactly(
 			# test_with_dynamic_parameters_typed_array
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_typed_array", script.resource_path, 27, 0),
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_typed_array", script.resource_path, 27, 1),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_typed_array", script.resource_path, 25, 0),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_typed_array", script.resource_path, 25, 1),
 			# test_with_dynamic_parameters_untyped_array
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_untyped_array", script.resource_path, 32, 0),
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_untyped_array", script.resource_path, 32, 1),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_untyped_array", script.resource_path, 30, 0),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_untyped_array", script.resource_path, 30, 1),
 			# test_with_dynamic_parameterset
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 36, 0),
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 36, 1),
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 36, 2),
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 36, 3),
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 36, 4),
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 36, 5),
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 36, 6),
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 36, 7),
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 36, 8),
-			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 36, 9),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 34, 0),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 34, 1),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 34, 2),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 34, 3),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 34, 4),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 34, 5),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 34, 6),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 34, 7),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 34, 8),
+			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameterset", script.resource_path, 34, 9),
 		)

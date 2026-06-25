@@ -388,11 +388,12 @@ func test_performance_single() -> void:
 	var t1 := Time.get_ticks_usec()
 	for _i in ITERATIONS:
 		resolver.get_parameters(self, 0)
-	var elapsed_callable := Time.get_ticks_usec() - t1
+	var elapsed_time := Time.get_ticks_usec() - t1
 
 	@warning_ignore_start("integer_division")
 	prints("--- GdInlineParameterSetResolver:single performance (%d iterations) ---" % ITERATIONS)
-	prints("	%8d µs  (%d µs/iteration)" % [elapsed_callable, elapsed_callable / ITERATIONS])
+	prints("	%8d µs  (%d µs/iteration)" % [elapsed_time, elapsed_time / ITERATIONS])
+	assert_int(elapsed_time/ITERATIONS).is_less(20)
 	@warning_ignore_restore("integer_division")
 
 
@@ -404,11 +405,12 @@ func test_performance_get_parameters_overall() -> void:
 	for _i in ITERATIONS:
 		for index in resolver.get_max_index():
 			resolver.get_parameters(self, index)
-	var elapsed_callable := Time.get_ticks_usec() - t1
+	var elapsed_time := Time.get_ticks_usec() - t1
 
 	@warning_ignore_start("integer_division")
 	prints("--- GdInlineParameterSetResolver:overall performance (%d iterations) ---" % ITERATIONS)
-	prints("	%8d µs  (%d µs/iteration)" % [elapsed_callable, elapsed_callable / ITERATIONS])
+	prints("	%8d µs  (%d µs/iteration)" % [elapsed_time, elapsed_time / ITERATIONS])
+	assert_int(elapsed_time/ITERATIONS).is_less(60)
 	@warning_ignore_restore("integer_division")
 
 #endregion

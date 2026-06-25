@@ -20,7 +20,7 @@ func after_test() -> void:
 			node.free()
 
 
-func install_signal_emitter(signal_name :String, signal_args: Array = [], time_out : float = 0.020) -> void:
+func install_signal_emitter(signal_name :String, signal_args: Array = [], time_out : float = 0.050) -> void:
 	var timer := Timer.new()
 	add_child(timer)
 	timer.timeout.connect(Callable(self, "emit_test_signal").bind(signal_name, signal_args))

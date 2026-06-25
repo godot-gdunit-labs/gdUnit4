@@ -19,6 +19,8 @@ func _execute(context :GdUnitExecutionContext) -> void:
 	if context.test_suite.__is_skipped:
 		await fire_test_suite_skipped(context)
 	else:
+		# Start with a fresh frame to avoid inheriting a large delta from suite loading/teardown.
+		await (Engine.get_main_loop() as SceneTree).process_frame
 		@warning_ignore("return_value_discarded")
 		GdUnitMemoryObserver.guard_instance(context.test_suite.__awaiter)
 		context.save_project_settings()

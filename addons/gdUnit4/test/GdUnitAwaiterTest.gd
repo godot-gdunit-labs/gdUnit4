@@ -26,7 +26,7 @@ func install_signal_emitter(signal_name: Signal, signal_args: Array = [], time_m
 	(Engine.get_main_loop() as SceneTree).root.add_child(timer)
 	timer.timeout.connect(emit_test_signal.bind(signal_name.get_name(), signal_args))
 	timer.one_shot = true
-	timer.start(time_ms * 0.001)
+	timer.start(time_ms * 0.001 * Engine.get_time_scale())
 
 
 func emit_test_signal(signal_name: String, signal_args: Array) -> void:

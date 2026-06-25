@@ -22,15 +22,14 @@ func _dynamic_parameterset(count: int) -> Array[Array]:
 	return iterations
 
 
-@warning_ignore("unused_parameter")
-func test_with_dynamic_parameters_typed_array(name_: String, value: Variant, expected: Variant, _test_parameters := _test_parameters_typed()) -> void:
+func test_with_dynamic_parameters_typed_array(_name: String, _value: Variant, _expected: Variant, _test_parameters := _test_parameters_typed()) -> void:
 	pass
 
 
-@warning_ignore("unused_parameter")
-func test_with_dynamic_parameters_untyped_array(name_: String, value: Variant, expected: Variant, _test_parameters := _test_parameters_untyped()) -> void:
+
+func test_with_dynamic_parameters_untyped_array(_name: String, _value: Variant, _expected: Variant, _test_parameters := _test_parameters_untyped()) -> void:
 	pass
 
-@warning_ignore("unused_parameter")
-func test_with_dynamic_parameterset(name_: String, value: Variant, expected: Variant, _test_parameters := _dynamic_parameterset(10)) -> void:
+
+func test_with_dynamic_parameterset(_name: String, _value: Variant, _expected: Variant, _test_parameters := _dynamic_parameterset(10)) -> void:
 	pass

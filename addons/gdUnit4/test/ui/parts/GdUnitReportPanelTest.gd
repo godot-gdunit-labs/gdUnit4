@@ -32,6 +32,8 @@ func test_clear_removes_all_report_children() -> void:
 	_panel.show_report([_build_report("a"), _build_report("b")])
 	_panel.clear()
 	assert_int(_panel.report_list.get_child_count()).is_equal(0)
+	# Give the engine time to queue_free marked objects
+	await await_idle_frame()
 #endregion
 
 
@@ -55,6 +57,9 @@ func test_show_report_replaces_previous_reports() -> void:
 	_panel.show_report([_build_report("first"), _build_report("second")])
 	_panel.show_report([_build_report("only")])
 	assert_int(_panel.report_list.get_child_count()).is_equal(1)
+	# Give the engine time to queue_free marked objects
+	await await_idle_frame()
+
 #endregion
 
 

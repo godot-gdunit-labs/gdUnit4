@@ -3,7 +3,7 @@ extends GdUnitTestSuite
 
 
 var _x := 42
-var _obj: Node2D = auto_free(Node2D.new())
+var _obj: Node2D
 var _color := Color.RED
 var _test_set_a := ["test_8", Color(1,1,1), Color(.1,.1,.1)]
 
@@ -15,17 +15,22 @@ class TestObj:
 
 
 @warning_ignore("unused_private_class_variable")
-var _parameters_with_references_typed := [
-	["test_0", auto_free(Node.new()), Node],
-	["test_1", auto_free(Node3D.new()), Node3D],
-	["test_2", "abc", "String"],
-	["test_3", _x, "Integer"],
-	["test_4", _obj, Node2D],
-	["test_5", TestObj.new(), TestObj],
-	["test_6", Vector3(1,1,1), Vector2(2,2)],
-	["test_7", Color(1,1,1), _color],
-	_test_set_a
-]
+var _parameters_with_references_typed: Array
+
+
+func before() -> void:
+	_obj = auto_free(Node2D.new())
+	_parameters_with_references_typed = [
+		["test_0", auto_free(Node.new()), Node],
+		["test_1", auto_free(Node3D.new()), Node3D],
+		["test_2", "abc", "String"],
+		["test_3", _x, "Integer"],
+		["test_4", _obj, Node2D],
+		["test_5", TestObj.new(), TestObj],
+		["test_6", Vector3(1,1,1), Vector2(2,2)],
+		["test_7", Color(1,1,1), _color],
+		_test_set_a
+	]
 
 
 func test_get_parameters() -> void:

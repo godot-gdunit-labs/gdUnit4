@@ -37,6 +37,8 @@ func after_test() -> void:
 	_inspector.cleanup_tree()
 	remove_child(_inspector)
 	_inspector.free()
+	# Give the engine time to queue_free marked objects
+	await await_idle_frame()
 
 
 func setup_example_tree() -> void:
@@ -82,8 +84,10 @@ func set_test_state(test_cases: Array[GdUnitTestCase], state: GdUnitInspectorTre
 		match state:
 			ERROR:
 				_inspector.set_state_error(item)
+				_inspector.add_report(item, GdUnitReport.new().create(GdUnitReport.INTERUPTED, 42, "an error"))
 			FAILED:
 				_inspector.set_state_failed(item, test_event)
+				_inspector.add_report(item, GdUnitReport.new().create(GdUnitReport.FAILURE, 42, "an failure"))
 			FLAKY:
 				_inspector.set_state_flaky(item, test_event)
 

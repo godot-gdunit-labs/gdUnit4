@@ -47,6 +47,7 @@ func test_is_instanceof() -> void:
 
 func test_is_valid() -> void:
 	assert_object(auto_free(Node.new())).is_valid()
+	assert_object(RefCounted.new()).is_valid()
 
 	var freed_obj := Node.new()
 	freed_obj.free()

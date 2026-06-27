@@ -348,11 +348,15 @@ gh issue edit "$ISSUE_NUM" --title "${PREFIX}-${ISSUE_NUM}: Brief description"
 ## AI-Harness PR Creation
 
 When you create a Pull Request as part of autonomous AI work (e.g. after fixing an issue or
-implementing a feature end-to-end without the user running `/pr`), apply these two additions:
+implementing a feature end-to-end without the user running `/pr`), apply all of the following:
 
-**Label:** always add `bot:ai-generated` via `--label "bot:ai-generated"` in the `gh pr create` call.
+**Label:** add `bot:ai-generated` via `--label "bot:ai-generated"`.
 
-**Description prefix:** prepend the following callout block at the top of every AI-harness PR body,
+**No assignee:** do not pass `--assignee`. The work was done by the harness, not a human developer.
+
+**Reviewer:** request `--reviewer MikeSchulze` so the PR is not overlooked.
+
+**Description prefix:** prepend the following callout block at the top of the PR body,
 before the `## Summary` section:
 
 ```markdown
@@ -361,7 +365,14 @@ before the `## Summary` section:
 > Please review logic, edge cases, and unit test coverage carefully before merging.
 ```
 
-Do **not** add the label or the note when the user explicitly runs `/pr` — that command is
+**Commit trailer:** every commit that is part of an AI-harness PR must include the following
+trailer in the commit message to attribute authorship without tying it to a real user account:
+
+```text
+Signed-off-by: gdunit-ai-harness[bot] <ai-harness@noreply.github.com>
+```
+
+Do **not** apply any of the above when the user explicitly runs `/pr` — that command is
 user-triggered and the PR is not considered fully AI-generated.
 
 ## Task Progress Display

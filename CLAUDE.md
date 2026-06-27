@@ -279,6 +279,20 @@ When creating or reviewing an issue, read the chosen template file and apply eve
 (`assignees`, `labels`, `type`, `projects`, etc.) to the issue. Verify all fields are correctly set
 and correct any that are missing or wrong.
 
+`gh issue create` does **not** automatically apply the `projects:` field from YAML templates — that
+field is a GitHub web UI hint only. Always add the issue to the project explicitly after creation.
+Before doing so, check whether the `read:project` scope is available:
+```bash
+gh auth status 2>&1 | grep -q "read:project"
+```
+- If the scope **is present**, add the issue: `gh project item-add <number> --owner <owner> --url <issue-url>`
+- If the scope **is missing**, do not run the command. Instead, inform the user:
+  > Project assignment requires the `read:project` scope. Please run the following command in the
+  > terminal where the Agent is running, complete the browser authorization, then ask me to update
+  > the issue again:
+  >
+  > `gh auth refresh -s read:project`
+
 `gh issue edit` does not support `--type`; correct an existing issue's type via GraphQL:
 ```bash
 # 1. fetch type IDs

@@ -348,11 +348,30 @@ gh issue edit "$ISSUE_NUM" --title "${PREFIX}-${ISSUE_NUM}: Brief description"
 ## AI-Harness PR Creation
 
 When you create a Pull Request as part of autonomous AI work (e.g. after fixing an issue or
-implementing a feature end-to-end without the user running `/pr`), apply these two additions:
+implementing a feature end-to-end without the user running `/pr`), apply all of the following:
 
-**Label:** always add `bot:ai-generated` via `--label "bot:ai-generated"` in the `gh pr create` call.
+**Bot identity — commits:** every AI-harness commit must be authored by the bot account, not the
+human user. Pass these flags to every `git commit`:
 
-**Description prefix:** prepend the following callout block at the top of every AI-harness PR body,
+```bash
+git -c user.name="gdunit4-ai-bot" \
+    -c user.email="gdunit4-ai-bot@users.noreply.github.com" \
+    commit -m "..."
+```
+
+**Bot identity — push and PR:** use the bot token from `$GH_AI_TOKEN` for both the push and
+the PR creation so that GitHub records the bot as the author:
+
+```bash
+GH_TOKEN=$GH_AI_TOKEN git push origin <branch>
+GH_TOKEN=$GH_AI_TOKEN gh pr create ...
+```
+
+**Label:** add `bot:ai-generated` via `--label "bot:ai-generated"`.
+
+**No assignee:** do not pass `--assignee`. The work was done by the harness, not a human developer.
+
+**Description prefix:** prepend the following callout block at the top of the PR body,
 before the `## Summary` section:
 
 ```markdown
@@ -361,7 +380,13 @@ before the `## Summary` section:
 > Please review logic, edge cases, and unit test coverage carefully before merging.
 ```
 
-Do **not** add the label or the note when the user explicitly runs `/pr` — that command is
+**Commit trailer:** every commit must also include this trailer in the commit message:
+
+```text
+Signed-off-by: gdunit-ai-harness[bot] <ai-harness@noreply.github.com>
+```
+
+Do **not** apply any of the above when the user explicitly runs `/pr` — that command is
 user-triggered and the PR is not considered fully AI-generated.
 
 ## Task Progress Display

@@ -262,6 +262,74 @@ The PR title must start with the issue/branch number (e.g. `GD-1234`) followed b
 <describe the changes made>
 ```
 
+## GitHub Issue Creation and Updates
+
+### Issue types and prefixes
+
+Issue templates are defined in `.github/ISSUE_TEMPLATE/`. Before creating or updating an issue, read
+the template files to determine the `name`, `title` prefix (`GD-`, `TASK-`, `DOC-`), required `labels`,
+`type`, `assignees`, `projects`, and required body sections (`validations: required: true`).
+
+If the issue type is **not obvious** from the request, ask the user and present the available template
+names as selectable options before proceeding.
+
+### Metadata — apply on both creation and update
+
+When creating or reviewing an issue, read the chosen template file and apply every top-level field
+(`assignees`, `labels`, `type`, `projects`, etc.) to the issue. Verify all fields are correctly set
+and correct any that are missing or wrong.
+
+`gh issue edit` does not support `--type`; correct an existing issue's type via GraphQL:
+```bash
+# 1. fetch type IDs
+gh api graphql -f query='query { repository(owner:"godot-gdunit-labs", name:"gdUnit4") { issueTypes(first:10) { nodes { id name } } } }'
+# 2. fetch issue node ID
+gh api graphql -f query='query { repository(owner:"godot-gdunit-labs", name:"gdUnit4") { issue(number:NNN) { id } } }'
+# 3. set the type
+gh api graphql -f query='mutation { updateIssue(input:{ id:"ISSUE_ID" issueTypeId:"TYPE_ID" }) { issue { issueType { name } } } }'
+```
+
+### Body rules
+
+- Read the chosen template file and fill every field marked `validations: required: true`.
+- Write in plain, human-readable language — no file names, function names, or class names.
+- Optional fields (`validations: required: false` or absent) can be omitted.
+- For `dropdown` fields, write the selected option value as a plain line under the section heading.
+- For the `feature-type` dropdown in Feature Request issues, infer the best-matching option from the
+  problem description rather than defaulting to the first option.
+- For version fields (e.g. `gdunit-version`), read the current version from `addons/gdUnit4/plugin.cfg`
+  (`version` key) and select the closest matching option from the dropdown.
+- For Godot version fields (e.g. `godot-version`), run `$GODOT_BIN --version` to get the exact version.
+  If `GODOT_BIN` is not set, fall back to the feature version in `project.godot` (`config/features`).
+- For environment/system fields (e.g. `system`), read the field's `placeholder` in the template to
+  understand what information is expected, then collect each item from the actual system environment
+  (OS version, relevant project settings, installed tools) and fill it in.
+- **Feature Request exception:** when the feature is a new or changed API, the Proposed Solution field
+  may include a short code snippet showing the suggested method signature or call-site usage only.
+  This exception applies only to API/code features — not to process, tooling, or documentation
+  improvements. No implementation details.
+- **Bug Report exception:** the Bug Description field may include the function name or call that is
+  misbehaving. The Steps to Reproduce field may include a full code snippet demonstrating the problem.
+
+### Title: two-step workflow
+
+The issue number is not known until after creation. Create the issue first, then immediately rename it
+using the prefix from the template's `title` field (e.g. `GD-XXX` → prefix `GD`).
+
+Class names, function names, and method names in the title must be wrapped in backticks (e.g. `is_valid()`).
+
+```bash
+ISSUE_URL=$(gh issue create \
+    --title "Brief description (no prefix yet)" \
+    --assignee MikeSchulze \
+    --label "LABEL" \
+    --type "TYPE" \
+    --body "...")
+ISSUE_NUM=$(basename "$ISSUE_URL")
+PREFIX="GD"   # derived from the template's title prefix (GD, TASK, or DOC)
+gh issue edit "$ISSUE_NUM" --title "${PREFIX}-${ISSUE_NUM}: Brief description"
+```
+
 ## Task Progress Display
 
 For any multi-step task (more than one distinct action), always start the response by

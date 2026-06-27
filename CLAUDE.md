@@ -285,6 +285,7 @@ Before doing so, check whether the `read:project` scope is available:
 ```bash
 gh auth status 2>&1 | grep -q "read:project"
 ```
+
 - If the scope **is present**, add the issue: `gh project item-add <number> --owner <owner> --url <issue-url>`
 - If the scope **is missing**, do not run the command. Instead, inform the user:
   > Project assignment requires the `read:project` scope. Please run the following command in the

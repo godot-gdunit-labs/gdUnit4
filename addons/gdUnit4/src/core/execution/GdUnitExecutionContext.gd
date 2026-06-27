@@ -275,7 +275,7 @@ func gc(gc_orphan_check: GC_ORPHANS_CHECK = GC_ORPHANS_CHECK.NONE) -> void:
 
 	match(gc_orphan_check):
 		GC_ORPHANS_CHECK.SUITE_HOOK_AFTER:
-			report_ophans(0, """
+			report_ophans(-1, """
 		func before() -> void:
 			collect_orphan_node_details())
 
@@ -283,7 +283,7 @@ func gc(gc_orphan_check: GC_ORPHANS_CHECK = GC_ORPHANS_CHECK.NONE) -> void:
 			collect_orphan_node_details())""")
 
 		GC_ORPHANS_CHECK.TEST_HOOK_AFTER:
-			report_ophans(0, """
+			report_ophans(-1, """
 		func before_test() -> void:
 			collect_orphan_node_details()
 

@@ -25,7 +25,6 @@
 </p>
 
 <h1 align="center">Compatibility Overview</h1>
-<p align="center">The latest version of GdUnit4 (master branch) is working with Godot <strong>v4.4.stable.mono.official [4c311cbee]</strong></p>
 <table align="center">
   <thead>
  <tr>

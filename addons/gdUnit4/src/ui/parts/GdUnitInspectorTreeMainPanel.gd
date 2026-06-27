@@ -95,9 +95,12 @@ func _find_first_item_by_state(parent: TreeItem, item_state: STATE, reverse := f
 	var itmes := parent.get_children()
 	if reverse:
 		itmes.reverse()
+
 	for item in itmes:
 		if item_state in [STATE.FAILED, STATE.ERROR] and get_item_reports(item).is_empty():
-			return _find_first_item_by_state(item, item_state, reverse)
+			var item_by_state := _find_first_item_by_state(item, item_state, reverse)
+			if item_by_state != null:
+				return item_by_state
 
 		if is_item_state(item, item_state):
 			return item
@@ -651,6 +654,11 @@ func add_report(item: TreeItem, report: GdUnitReport) -> void:
 	item.set_meta(META_GDUNIT_REPORT, reports)
 
 
+func add_reports(item: TreeItem, reports: Array[GdUnitReport]) -> void:
+	for report in reports:
+		add_report(item, report)
+
+
 func abort_running(items := _tree_root.get_children()) -> void:
 	for item in items:
 		if is_state_running(item):
@@ -668,7 +676,9 @@ func abort_running(items := _tree_root.get_children()) -> void:
 func _on_select_next_item_by_state(item_state: int) -> TreeItem:
 	var current_selected := _tree.get_selected()
 	# If nothing is selected, the first error is selected or the next one in the vicinity of the current selection is found
-	current_selected = _find_first_item_by_state(_tree_root, item_state) if current_selected == null else _find_item_by_state(current_selected, item_state)
+	current_selected = (_find_first_item_by_state(_tree_root, item_state)
+		if current_selected == null
+		else _find_item_by_state(current_selected, item_state))
 	# If no next failure found, then we try to select first
 	if current_selected == null:
 		current_selected = _find_first_item_by_state(_tree_root, item_state)
@@ -705,6 +715,9 @@ func update_test_suite(event: GdUnitEvent) -> void:
 	update_item_state_recursive(item)
 	update_item_elapsed_time_counter_recursive(item, event.elapsed_time())
 	update_item_orphan_counter_recursive(item)
+	# update the state and add possible reports
+	update_state(item, event)
+	add_reports(item, event.reports())
 
 
 func update_test_case(event: GdUnitEvent) -> void:
@@ -723,13 +736,12 @@ func update_test_case(event: GdUnitEvent) -> void:
 		if event.is_success() or event.is_warning():
 			update_item_processed_counter(item)
 		update_progress_counters(item)
+		# update the state and add possible reports
 		update_state(item, event)
 		# update test group
 		if is_test_group(item.get_parent()):
 			update_state(item.get_parent(), event)
-		# Add test reports
-		for report in event.reports():
-			add_report(item, report)
+		add_reports(item, event.reports())
 
 
 func create_item(parent: TreeItem, test: GdUnitTestCase, item_name: String, type: GdUnitType) -> TreeItem:
@@ -914,7 +926,7 @@ func recalculate_counters(parent: TreeItem) -> void:
 func update_item_elapsed_time_counter_recursive(item: TreeItem, elapsed_time: int) -> void:
 	if item == _tree_root:
 		return
-	if is_folder(item):
+	if is_folder(item) or is_test_group(item):
 		elapsed_time = get_item_children_elapsed_time(item)
 
 	item.set_text(1, "%s" % LocalTime.elapsed(elapsed_time))

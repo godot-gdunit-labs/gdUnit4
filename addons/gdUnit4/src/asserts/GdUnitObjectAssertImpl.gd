@@ -133,6 +133,13 @@ func is_not_inheriting(type: Variant) -> GdUnitObjectAssert:
 	return report_success()
 
 
+func is_valid() -> GdUnitObjectAssert:
+	var current: Variant = current_value()
+	if not is_instance_valid(current):
+		return report_error("Expecting the object is a valid unfreed instance.")
+	return report_success()
+
+
 func _inherits(current: Variant, type: Variant) -> GdUnitResult:
 	var type_as_string := _extract_class_type(type)
 	if type_as_string == "Object":

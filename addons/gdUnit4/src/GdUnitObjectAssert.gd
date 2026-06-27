@@ -39,6 +39,10 @@ extends GdUnitAssert
 @abstract func is_instanceof(type: Variant) -> GdUnitObjectAssert
 
 
+## Verifies the current object is an valid instance  (e.g. has not been deleted from memory).
+@abstract func is_valid() -> GdUnitObjectAssert
+
+
 ## Verifies that the current object is not an instance of the given type.
 @abstract func is_not_instanceof(type: Variant) -> GdUnitObjectAssert
 

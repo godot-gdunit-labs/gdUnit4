@@ -262,6 +262,108 @@ The PR title must start with the issue/branch number (e.g. `GD-1234`) followed b
 <describe the changes made>
 ```
 
+## GitHub Issue Creation and Updates
+
+### Issue types and prefixes
+
+Issue templates are defined in `.github/ISSUE_TEMPLATE/`. Before creating or updating an issue, read
+the template files to determine the `name`, `title` prefix (`GD-`, `TASK-`, `DOC-`), required `labels`,
+`type`, `assignees`, `projects`, and required body sections (`validations: required: true`).
+
+If the issue type is **not obvious** from the request, ask the user and present the available template
+names as selectable options before proceeding.
+
+### Metadata — apply on both creation and update
+
+When creating or reviewing an issue, read the chosen template file and apply every top-level field
+(`assignees`, `labels`, `type`, `projects`, etc.) to the issue. Verify all fields are correctly set
+and correct any that are missing or wrong.
+
+`gh issue create` does **not** automatically apply the `projects:` field from YAML templates — that
+field is a GitHub web UI hint only. Always add the issue to the project explicitly after creation.
+Before doing so, check whether the `read:project` scope is available:
+```bash
+gh auth status 2>&1 | grep -q "read:project"
+```
+
+- If the scope **is present**, add the issue: `gh project item-add <number> --owner <owner> --url <issue-url>`
+- If the scope **is missing**, do not run the command. Instead, inform the user:
+  > Project assignment requires the `read:project` scope. Please run the following command in the
+  > terminal where the Agent is running, complete the browser authorization, then ask me to update
+  > the issue again:
+  >
+  > `gh auth refresh -s read:project`
+
+`gh issue edit` does not support `--type`; correct an existing issue's type via GraphQL:
+```bash
+# 1. fetch type IDs
+gh api graphql -f query='query { repository(owner:"godot-gdunit-labs", name:"gdUnit4") { issueTypes(first:10) { nodes { id name } } } }'
+# 2. fetch issue node ID
+gh api graphql -f query='query { repository(owner:"godot-gdunit-labs", name:"gdUnit4") { issue(number:NNN) { id } } }'
+# 3. set the type
+gh api graphql -f query='mutation { updateIssue(input:{ id:"ISSUE_ID" issueTypeId:"TYPE_ID" }) { issue { issueType { name } } } }'
+```
+
+### Body rules
+
+- Read the chosen template file and fill every field marked `validations: required: true`.
+- Write in plain, human-readable language — no file names, function names, or class names.
+- Optional fields (`validations: required: false` or absent) can be omitted.
+- For `dropdown` fields, write the selected option value as a plain line under the section heading.
+- For the `feature-type` dropdown in Feature Request issues, infer the best-matching option from the
+  problem description rather than defaulting to the first option.
+- For version fields (e.g. `gdunit-version`), read the current version from `addons/gdUnit4/plugin.cfg`
+  (`version` key) and select the closest matching option from the dropdown.
+- For Godot version fields (e.g. `godot-version`), run `$GODOT_BIN --version` to get the exact version.
+  If `GODOT_BIN` is not set, fall back to the feature version in `project.godot` (`config/features`).
+- For environment/system fields (e.g. `system`), read the field's `placeholder` in the template to
+  understand what information is expected, then collect each item from the actual system environment
+  (OS version, relevant project settings, installed tools) and fill it in.
+- **Feature Request exception:** when the feature is a new or changed API, the Proposed Solution field
+  may include a short code snippet showing the suggested method signature or call-site usage only.
+  This exception applies only to API/code features — not to process, tooling, or documentation
+  improvements. No implementation details.
+- **Bug Report exception:** the Bug Description field may include the function name or call that is
+  misbehaving. The Steps to Reproduce field may include a full code snippet demonstrating the problem.
+
+### Title: two-step workflow
+
+The issue number is not known until after creation. Create the issue first, then immediately rename it
+using the prefix from the template's `title` field (e.g. `GD-XXX` → prefix `GD`).
+
+Class names, function names, and method names in the title must be wrapped in backticks (e.g. `is_valid()`).
+
+```bash
+ISSUE_URL=$(gh issue create \
+    --title "Brief description (no prefix yet)" \
+    --assignee MikeSchulze \
+    --label "LABEL" \
+    --type "TYPE" \
+    --body "...")
+ISSUE_NUM=$(basename "$ISSUE_URL")
+PREFIX="GD"   # derived from the template's title prefix (GD, TASK, or DOC)
+gh issue edit "$ISSUE_NUM" --title "${PREFIX}-${ISSUE_NUM}: Brief description"
+```
+
+## AI-Harness PR Creation
+
+When you create a Pull Request as part of autonomous AI work (e.g. after fixing an issue or
+implementing a feature end-to-end without the user running `/pr`), apply these two additions:
+
+**Label:** always add `bot:ai-generated` via `--label "bot:ai-generated"` in the `gh pr create` call.
+
+**Description prefix:** prepend the following callout block at the top of every AI-harness PR body,
+before the `## Summary` section:
+
+```markdown
+> [!NOTE]
+> 🤖 **This Pull Request was 100% generated by an AI Coding Harness.**
+> Please review logic, edge cases, and unit test coverage carefully before merging.
+```
+
+Do **not** add the label or the note when the user explicitly runs `/pr` — that command is
+user-triggered and the PR is not considered fully AI-generated.
+
 ## Task Progress Display
 
 For any multi-step task (more than one distinct action), always start the response by

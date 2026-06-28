@@ -45,6 +45,20 @@ func test_is_instanceof() -> void:
 		.has_message("Expected instance of:\n 'Tree'\n But it was '<null>'")
 
 
+func test_is_valid() -> void:
+	assert_object(auto_free(Node.new())).is_valid()
+	assert_object(RefCounted.new()).is_valid()
+
+	var freed_obj := Node.new()
+	freed_obj.free()
+	assert_failure(func() -> void: assert_object(freed_obj).is_valid()) \
+		.is_failed() \
+		.has_message("Expecting the object is a valid unfreed instance.")
+	assert_failure(func() -> void: assert_object(null).is_valid()) \
+		.is_failed() \
+		.has_message("Expecting the object is a valid unfreed instance.")
+
+
 func test_is_not_instanceof() -> void:
 	assert_object(null).is_not_instanceof(Tree)
 	# engine class test

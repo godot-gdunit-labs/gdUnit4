@@ -246,5 +246,3 @@ markdownlint-cli2 --config .github/actions/formatting_checks/.markdownlint.jsonc
 # C# format check (if C# files changed)
 dotnet format gdUnit4.csproj --verify-no-changes --verbosity diagnostic
 ```
-
-

@@ -133,7 +133,6 @@ func is_not_inheriting(type: Variant) -> GdUnitObjectAssert:
 	return report_success()
 
 
-
 func is_valid() -> GdUnitObjectAssert:
 	var current: Variant = current_value()
 	if not is_instance_valid(current):

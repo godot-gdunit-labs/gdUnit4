@@ -34,11 +34,12 @@ func before_test() -> void:
 
 
 func after_test() -> void:
-	_inspector.cleanup_tree()
-	remove_child(_inspector)
-	_inspector.free()
-	# Give the engine time to queue_free marked objects
-	await await_idle_frame()
+	if is_instance_valid(_inspector):
+		_inspector.cleanup_tree()
+		remove_child(_inspector)
+		_inspector.free()
+		# Give the engine time to queue_free marked objects
+		await await_idle_frame()
 
 
 func setup_example_tree() -> void:
@@ -224,6 +225,11 @@ func test_select_next_failure() -> void:
 	_inspector._on_select_next_item_by_state(FAILED)
 	assert_str(_inspector._tree.get_selected().get_text(0)).is_equal("test_ad")
 
+	# TODO fix the invalid orphan detection, this is actually only a hot fix!
+	_inspector.free()
+	# Give the engine time to queue_free marked objects
+	await await_idle_frame()
+
 
 func test_select_previous_failure() -> void:
 	# test initial nothing is selected
@@ -258,6 +264,12 @@ func test_select_previous_failure() -> void:
 	assert_str(_inspector._tree.get_selected().get_text(0)).is_equal("test_ce")
 	_inspector._on_select_previous_item_by_state(FAILED)
 	assert_str(_inspector._tree.get_selected().get_text(0)).is_equal("test_cc")
+
+	# TODO fix the invalid orphan detection, this is actually only a hot fix!
+	_inspector.free()
+	# Give the engine time to queue_free marked objects
+	await await_idle_frame()
+
 
 
 func test_select_next_flaky() -> void:

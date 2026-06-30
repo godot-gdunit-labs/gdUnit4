@@ -129,8 +129,51 @@ static func discover_tests_from_gd_script(script: GDScript) -> Array[GdUnitTestC
 			test_names.append(method["name"])
 	if test_names.is_empty():
 		return []
+
+	var source: Node = script.new()
 	var fds := GdScriptParser.new().get_function_descriptors(script, test_names)
-	return GdFunctionParameterSetResolver.new(fds).discover_tests(script)
+	var test_cases: Array[GdUnitTestCase] = []
+	for fd in fds:
+		if fd.is_parameterized():
+			test_cases.append_array(discover_parameterised_tests(source, fd))
+		else:
+			test_cases.append(GdUnitTestCase.from(script.resource_path, fd.source_path(), fd.begin_line(), fd.name()))
+	source.free()
+
+	return test_cases
+
+
+static func discover_parameterised_tests(source: Node, fd: GdFunctionDescriptor) -> Array[GdUnitTestCase]:
+	var fa := GdFunctionArgument.get_parameter_set(fd.args())
+	var parameter_expressions := fa.parameter_sets()
+	var count := parameter_expressions.size()
+
+	# The parameter set is not static we need to preload it to get the amount of test sets
+	if count == 0:
+		var resolver := GdParameterSetResolverFactory.create(fd, source)
+		if resolver == null:
+			return []
+		count = resolver.get_max_index()
+		for i in count:
+			var params := resolver.get_parameters(source, i)
+			# Strip trailing EMPTY_SET added by the resolver; stringify for display name
+			parameter_expressions.append(str(params.slice(0, params.size() - 1)))
+
+	var test_cases: Array[GdUnitTestCase] = []
+	for parameter_index in count:
+		var parameter_expression := parameter_expressions[parameter_index]
+
+		@warning_ignore("return_value_discarded")
+		test_cases.append(
+			GdUnitTestCase.from(
+				fd.source_path(),
+				fd.source_path(),
+				fd.begin_line(),
+				fd.name(),
+				parameter_index,
+				parameter_expression)
+			)
+	return test_cases
 
 
 static func scan_all_test_directories(root: String) -> PackedStringArray:

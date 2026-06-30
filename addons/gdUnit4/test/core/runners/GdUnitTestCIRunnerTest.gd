@@ -9,7 +9,10 @@ func test_discover_tests_on_path() -> void:
 	runner.add_test_suite("res://addons/gdUnit4/test/core/discovery/resources/")
 
 	var tests := runner.discover_tests()
-	assert_array(tests).has_size(12)
+	if GdUnit4CSharpApiLoader.is_api_loaded():
+		assert_array(tests).has_size(14)
+	else:
+		assert_array(tests).has_size(12)
 
 
 func test_discover_tests_on_file() -> void:

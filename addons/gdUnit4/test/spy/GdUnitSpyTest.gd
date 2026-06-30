@@ -200,7 +200,7 @@ func test_spy_on_singleton() -> void:
 	assert_error(func () -> void:
 		var spy_node_ :Variant = spy(Input)
 		assert_object(spy_node_).is_null()
-		await await_idle_frame()).is_push_error("Spy on a Singleton is not allowed! 'Input'")
+	).is_push_error("Spy on a Singleton is not allowed! 'Input'")
 
 
 func test_example_verify() -> void:

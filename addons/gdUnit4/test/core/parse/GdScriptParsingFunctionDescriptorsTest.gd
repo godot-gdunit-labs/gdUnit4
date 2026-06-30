@@ -444,25 +444,25 @@ func test_default_args_basic_type_transform2d() -> void:
 
 
 func test_parse_fuzz_do_skip_param_GD_1157() -> void:
-	var script: GDScript = load("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteFuzzedDoSkipParamTest.gd")
+	var script: GDScript = load("res://addons/gdUnit4/test/core/parse/resources/TestSuiteWithFuzzers.gd")
 
 	var fds := _parser.get_function_descriptors(script, [])
 	assert_that(fds[0])\
-		.is_equal(create("test_do_skip_as_first_param", script.resource_path, 6, 10, GdObjects.TYPE_VOID, [
+		.is_equal(create("test_do_skip_as_first_param", script.resource_path, 4, 8, GdObjects.TYPE_VOID, [
 				GdFunctionArgument.new("_do_skip", TYPE_BOOL, false),
 				GdFunctionArgument.new("_fuzzer", GdObjects.TYPE_FUZZER, "Fuzzers.rangei(0, 10)"),
 				GdFunctionArgument.new("_fuzzer_iterations", TYPE_INT, 3),
 			])
 		)
 	assert_that(fds[1])\
-		.is_equal(create("test_do_skip_in_middle", script.resource_path, 13, 17, GdObjects.TYPE_VOID, [
+		.is_equal(create("test_do_skip_in_middle", script.resource_path, 11, 15, GdObjects.TYPE_VOID, [
 				GdFunctionArgument.new("_fuzzer_a", GdObjects.TYPE_FUZZER, "Fuzzers.rangei(0, 10)"),
 				GdFunctionArgument.new("_do_skip", TYPE_BOOL, false),
 				GdFunctionArgument.new("_fuzzer_iterations", TYPE_INT, 3),
 			])
 		)
 	assert_that(fds[2])\
-		.is_equal(create("test_do_skip_as_last_param", script.resource_path, 20, 24, GdObjects.TYPE_VOID, [
+		.is_equal(create("test_do_skip_as_last_param", script.resource_path, 18, 22, GdObjects.TYPE_VOID, [
 				GdFunctionArgument.new("_fuzzer", GdObjects.TYPE_FUZZER, "Fuzzers.rangei(0, 10)"),
 				GdFunctionArgument.new("_fuzzer_iterations", TYPE_INT, 3),
 				GdFunctionArgument.new("_do_skip", TYPE_BOOL, false),

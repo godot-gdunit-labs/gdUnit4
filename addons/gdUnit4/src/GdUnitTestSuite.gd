@@ -99,7 +99,13 @@ func error_as_string(error_number: int) -> String:
 func auto_free(obj: Variant) -> Variant:
 	var execution_context := GdUnitThreadManager.get_current_context().get_execution_context()
 
-	assert(execution_context != null, "INTERNAL ERROR: The current execution_context is null! Please report this as bug.")
+	# If the execution context is null, we are not in the execution call stack, so we mark the object as “queued free.”
+	if execution_context == null:
+		if obj is Node:
+			@warning_ignore("unsafe_method_access")
+			obj.queue_free()
+		return obj
+
 	return execution_context.register_auto_free(obj)
 
 

@@ -21,11 +21,12 @@ body:
     id: gdunit-version
     attributes:
       label: The used GdUnit4 version
-      description: Which GdUnit4 version are you using?
+      description: Which GdUnit4 version are you using? If your version is not listed, select "Other" and fill in the field below.
       options:
-        - 6.1.3 (Pre Release/Master branch)
-        - 6.1.2 (Latest Release)
-        - 6.1.1 
+        - 6.2.0-rc1 (Pre Release/Master branch)
+        - 6.1.3 (Latest Release)
+        - 6.1.2
+        - 6.1.1
         - 6.1.0
         - 6.0.3
         - 6.0.2
@@ -39,9 +40,19 @@ body:
         - 5.0.2
         - 5.0.1
         - 5.0.0
+        - Other (not listed)
       default: 1
     validations:
       required: true
+
+  - type: input
+    id: gdunit-version-other
+    attributes:
+      label: GdUnit4 version (if not listed above)
+      description: Enter your exact version if you selected "Other" above (e.g. 6.2.0-rc1, master@abc1234).
+      placeholder: e.g. 6.2.0-rc2
+    validations:
+      required: false
 
   - type: input
     id: godot-version

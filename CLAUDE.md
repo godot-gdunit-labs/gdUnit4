@@ -55,9 +55,13 @@ Requires `gdlint` (gdscript-toolkit 4.5.0):
 ```bash
 gdlint addons/gdUnit4/bin/
 gdlint addons/gdUnit4/src/cmd/
+gdlint addons/gdUnit4/src/core/parameters
 gdlint addons/gdUnit4/src/reporters/
 gdlint addons/gdUnit4/src/network
 gdlint addons/gdUnit4/src/asserts
+
+# For tests
+gdlint addons/gdUnit4/test/core/parameters
 ```
 
 ### Markdown Linting
@@ -242,5 +246,3 @@ markdownlint-cli2 --config .github/actions/formatting_checks/.markdownlint.jsonc
 # C# format check (if C# files changed)
 dotnet format gdUnit4.csproj --verify-no-changes --verbosity diagnostic
 ```
-
-

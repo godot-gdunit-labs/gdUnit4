@@ -41,6 +41,7 @@ func run_and_wait(tests: Array[GdUnitTestCase]) -> void:
 		var script := GdUnitTestSuiteScanner.load_with_disabled_warnings(suite_path)
 		if script.get_class() == "GDScript":
 			var context := GdUnitExecutionContext.new(suite_path)
+			GdUnitThreadManager.get_current_context().set_execution_context(context)
 			var test_suite := scanner.load_suite(script as GDScript, suite_tests)
 			context.test_suite = test_suite
 			(Engine.get_main_loop() as SceneTree).root.add_child(test_suite)

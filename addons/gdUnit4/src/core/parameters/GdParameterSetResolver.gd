@@ -38,12 +38,12 @@ var _parameter_names := ""
 var _parameter_specs: Array[ParameterSpec] = []
 
 
-func _init(args: Array[GdFunctionArgument] = []) -> void:
+func _init(args: Array[GdFunctionArgument]) -> void:
 	_build_parameter_specs(args)
 
 
 ## Builds [member _parameter_specs] and [member _parameter_names] from the test function descriptors.
-func _build_parameter_specs(args: Array[GdFunctionArgument] = []) -> void:
+func _build_parameter_specs(args: Array[GdFunctionArgument]) -> void:
 	var parameter_names: PackedStringArray = []
 	for param_index in args.size():
 		var param: GdFunctionArgument = args[param_index]
@@ -128,7 +128,7 @@ func _finalize_parameter_set(parameters: Array) -> Array:
 			@warning_ignore("unsafe_cast")
 			if (val as Dictionary).is_typed():
 				@warning_ignore("unsafe_call_argument")
-				#Dictionary(base: Dictionary, key_type: int, key_class_name: StringName, key_script: Variant, value_type: int, value_class_name: StringName, value_script: Variant)
+				# Dictionary(base, key_type, key_class_name, key_script, value_type, value_class_name, value_script)
 				parameters[spec.index] = Dictionary(val, spec.value_type_hint, "", null, spec.value_type_hint, "", null)
 
 	# prevent re-initialisation of the '_test_parameters' default value on the next invocation.

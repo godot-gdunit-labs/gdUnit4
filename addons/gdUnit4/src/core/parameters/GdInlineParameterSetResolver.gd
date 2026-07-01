@@ -21,6 +21,9 @@ var _expression: Expression
 var _parameter_sets: PackedStringArray
 var _used_input_types: Array[PackedStringArray] = []
 
+
+## Lazily built map from Godot class name to a live instance, used by
+## [GdInlineParameterSetResolver] to resolve class-name tokens inside inline expressions.
 static var _global_class_type_mapping: Dictionary[String, Variant] = {}
 
 
@@ -102,12 +105,16 @@ func _run_expression_via_script(instance: Node, expression: String) -> Array:
 	return _finalize_parameter_set(parameters)
 
 
+## Returns the shared class-name-to-instance map, building it once on first access.
 static func _get_class_type_mapping() -> Dictionary[String, Variant]:
 	if _global_class_type_mapping.is_empty():
 		_global_class_type_mapping = _build_class_type_mapping()
 	return _global_class_type_mapping
 
 
+## Builds the class-name-to-instance map by generating and executing a GDScript that
+## returns a dictionary literal — the only way to obtain live class references from
+## [ClassDB] names, since GDScript has no eval or direct class-by-name lookup.
 static func _build_class_type_mapping() -> Dictionary[String, Variant]:
 	var source := """
 		extends RefCounted

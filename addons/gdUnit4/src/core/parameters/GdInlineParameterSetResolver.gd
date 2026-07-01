@@ -22,6 +22,11 @@ var _parameter_sets: PackedStringArray
 var _used_input_types: Array[PackedStringArray] = []
 
 
+## Lazily built map from Godot class name to a live instance, used by
+## [GdInlineParameterSetResolver] to resolve class-name tokens inside inline expressions.
+static var _global_class_type_mapping: Dictionary[String, Variant] = {}
+
+
 func _init(parameter_sets: PackedStringArray, args: Array[GdFunctionArgument] = []) -> void:
 	super(args)
 	_expression = Expression.new()
@@ -31,7 +36,7 @@ func _init(parameter_sets: PackedStringArray, args: Array[GdFunctionArgument] = 
 	for index in _used_input_types.resize(_parameter_sets.size()):
 		_used_input_types[index] = PackedStringArray()
 
-	for clazz_name: String in GdParameterSetResolverFactory.get_class_type_mapping().keys():
+	for clazz_name: String in _get_class_type_mapping().keys():
 		for parameter_set_index in _parameter_sets.size():
 			var paramater_set := _parameter_sets[parameter_set_index]
 			if paramater_set.contains(clazz_name):
@@ -43,7 +48,7 @@ func get_max_index() -> int:
 
 
 func get_parameters(instance: Node, index: int) -> Array:
-	var mapping := GdParameterSetResolverFactory.get_class_type_mapping()
+	var mapping := _get_class_type_mapping()
 	var input_values: Array = []
 
 	for clazz_name in _used_input_types[index]:
@@ -98,6 +103,42 @@ func _run_expression_via_script(instance: Node, expression: String) -> Array:
 	var parameters: Array = expression_runner.call("__run_expression")
 	expression_runner.free()
 	return _finalize_parameter_set(parameters)
+
+
+## Returns the shared class-name-to-instance map, building it once on first access.
+static func _get_class_type_mapping() -> Dictionary[String, Variant]:
+	if _global_class_type_mapping.is_empty():
+		_global_class_type_mapping = _build_class_type_mapping()
+	return _global_class_type_mapping
+
+
+## Builds the class-name-to-instance map by generating and executing a GDScript that
+## returns a dictionary literal — the only way to obtain live class references from
+## [ClassDB] names, since GDScript has no eval or direct class-by-name lookup.
+static func _build_class_type_mapping() -> Dictionary[String, Variant]:
+	var source := """
+		extends RefCounted
+
+		func get_class_type_mappings() -> Dictionary[String, Variant]:
+			return {
+		""".dedent()
+
+	for clazz_name in ClassDB.get_class_list():
+		if ClassDB.class_get_api_type(clazz_name) != 0 or not ClassDB.can_instantiate(clazz_name):
+			continue
+		if clazz_name.is_valid_identifier():
+			source += '\t\t"%s": %s,\n' % [clazz_name, clazz_name]
+	source += "\t}"
+
+	var script := GDScript.new()
+	script.source_code = source
+	var err := script.reload()
+	if err != OK:
+		prints("Failed to build class:type mappings: %s" % error_string(err))
+		return {}
+
+	@warning_ignore("unsafe_method_access")
+	return script.new().get_class_type_mappings()
 
 
 static func copy_properties(source: Object, dest: Object) -> void:

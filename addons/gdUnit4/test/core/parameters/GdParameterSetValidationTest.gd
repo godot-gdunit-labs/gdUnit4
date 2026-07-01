@@ -75,7 +75,6 @@ func assert_is_skipped(test_suite: GdUnitTestSuite, test_case: String, index := 
 	return assert_str(GdUnitTools.richtext_normalize(test.skip_info()))
 
 
-## Simulates _TestCase:execute_parameterized with parameter validation
 func simulate_test_execution_with_parameter_validation(test_suite: GdUnitTestSuite, test_case_name: String, index := -1) -> _TestCase:
 	var test: _TestCase = GdUnitTools.find_test_case(test_suite, test_case_name, index)
 	if test == null or not test.is_parameterized():

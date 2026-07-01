@@ -25,7 +25,6 @@ func test_parameterized_to_less_args(a: int, b :int, expected :int, test_paramet
 	[1, 2, 3, 6],
 	[3, 4, 5, 11],
 	[6, 7, 8, 21] ]) -> void:
-	prints(a, b, expected, test_parameters)
 	pass
 
 @warning_ignore('unused_parameter')

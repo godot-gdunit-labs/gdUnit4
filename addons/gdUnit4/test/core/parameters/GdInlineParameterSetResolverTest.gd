@@ -369,7 +369,10 @@ func _resolve_parameters(child_name: String) -> Array[Array]:
 	var script: GDScript = self.get_script()
 	var function_descriptors := GdScriptParser.new().get_function_descriptors(script, [child_name])
 	var fd: GdFunctionDescriptor = function_descriptors.front()
-	var resolver := GdParameterSetResolverFactory.create(fd, self)
+
+	var parameter_set_argument := GdFunctionArgument.get_parameter_set(fd.args())
+	var parameter_sets := parameter_set_argument.parameter_sets()
+	var resolver := GdInlineParameterSetResolver.new(parameter_sets, fd.args())
 	if resolver == null:
 		return []
 	var result: Array[Array] = []
@@ -412,5 +415,21 @@ func test_performance_get_parameters_overall() -> void:
 	prints("	%8d µs  (%d µs/iteration)" % [elapsed_time, elapsed_time / ITERATIONS])
 	assert_int(elapsed_time/ITERATIONS).is_less(60)
 	@warning_ignore_restore("integer_division")
+
+#endregion
+
+
+#region _get_class_type_mapping
+
+func test_get_class_type_mapping() -> void:
+	var expected_count := 0
+	for clazz_name in ClassDB.get_class_list():
+		if ClassDB.class_get_api_type(clazz_name) != 0 or not ClassDB.can_instantiate(clazz_name):
+			continue
+		expected_count += 1
+
+	assert_dict(GdInlineParameterSetResolver._get_class_type_mapping()).has_size(expected_count)
+	# Second call returns the same cached mapping without rebuilding
+	assert_dict(GdInlineParameterSetResolver._get_class_type_mapping()).has_size(expected_count)
 
 #endregion

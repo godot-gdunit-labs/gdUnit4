@@ -32,22 +32,6 @@ func _descriptor(func_name: String) -> GdFunctionDescriptor:
 	return GdScriptParser.new().get_function_descriptors(script, [func_name]).front()
 
 
-#region get_class_type_mapping
-
-func test_get_class_type_mapping() -> void:
-	var expected_count := 0
-	for clazz_name in ClassDB.get_class_list():
-		if ClassDB.class_get_api_type(clazz_name) != 0 or not ClassDB.can_instantiate(clazz_name):
-			continue
-		expected_count += 1
-
-	assert_dict(GdParameterSetResolverFactory.get_class_type_mapping()).has_size(expected_count)
-	# Second call returns the same cached mapping without rebuilding
-	assert_dict(GdParameterSetResolverFactory.get_class_type_mapping()).has_size(expected_count)
-
-#endregion
-
-
 #region create
 
 func test_create_returns_null_for_non_parameterized() -> void:

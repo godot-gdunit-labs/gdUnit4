@@ -152,14 +152,16 @@ func load_suite(script: GDScript, tests: Array[GdUnitTestCase]) -> GdUnitTestSui
 			_handle_test_suite_arguments(test_suite, script, fd)
 			continue
 
-		# Build test attributes from test method
+		# Build test attributes and test parameter resolver from test function descriptor
 		var test_attribute := _build_test_attribute(script, fd)
+		var parameter_resolver := GdParameterSetResolverFactory.create(fd, test_suite)
+
 		# Create test from descriptor and given attributes
 		var test_group: Array = grouped_by_test[fd.name()]
 		for test: GdUnitTestCase in test_group:
 			# We need a copy, because of mutable state
 			var attribute: TestCaseAttribute = test_attribute.clone()
-			test_suite.add_child(_TestCase.new(test, attribute, fd))
+			test_suite.add_child(_TestCase.new(test, attribute, parameter_resolver))
 	return test_suite
 
 

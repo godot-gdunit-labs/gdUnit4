@@ -35,5 +35,11 @@
         <!-- Controlls the Display name attribute of the TestCase. Allowed values are SimpleName and FullyQualifiedName.
              This likely determines how the test names are displayed in the test results.-->
         <DisplayName>FullyQualifiedName</DisplayName>
+
+        <!-- Compilation timeout for large projects (milliseconds) -->
+        <CompileProcessTimeout>20000</CompileProcessTimeout>
+
+        <!-- Connect timeout to the Godot runtime host for slow or variable environments (milliseconds) -->
+        <GodotConnectTimeout>10000</GodotConnectTimeout>
     </GdUnit4>
 </RunSettings>

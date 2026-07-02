@@ -38,10 +38,10 @@
       <td>master (upcoming v6.2)</td><td>v4.5, v4.5.1, v4.5.2, v4.6, v4.6.1, v4.6.2, v4.7</td>
     </tr>
     <tr>
-      <td>v6.1.x</td><td>v4.5, v4.5.1, v4.6, v4.6.1, v4.6.2</td>
+      <td>v6.1.x</td><td>v4.5, v4.5.1, v4.5.2, v4.6, v4.6.1, v4.6.2</td>
     </tr>
     <tr>
-      <td>v6.0.x+</td><td>v4.5, v4.5.1</td>
+      <td>v6.0.x+</td><td>v4.5, v4.5.1, v4.5.2</td>
     </tr>
     <tr>
       <td>v5.x+</td><td>v4.3, v4.4, v4.4.1</td>

@@ -39,9 +39,9 @@ jobs:
         godot-version: ['4.5', '4.5.1', '4.5.2', '4.6', '4.6.1', '4.6.2', '4.7']
         godot-status: ['stable']
         godot-net: ['.Net', '']
-        # include:
-        #   - godot-version: '4.7'
-        #     godot-status: 'rc2'
+        include:
+          - godot-version: '4.7.1'
+            godot-status: 'rc1'
 
     permissions:
       actions: write

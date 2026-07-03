@@ -1,4 +1,4 @@
-class_name GdUnitSpyTest
+class_name GdUnitSpyTest  # gdlint: ignore=max-public-methods
 extends GdUnitTestSuite
 
 
@@ -775,6 +775,110 @@ func test_spy_with_enum_in_constructor() -> void:
 	# test
 	@warning_ignore("unsafe_method_access")
 	verify(s, 1).set_value(ClassWithEnumConstructor.MyEnumValue.ONE)
+
+
+#region documented examples
+# The following tests verify the examples of the spy documentation page
+# documentation/doc/_advanced_testing/spy.md
+const TestClass := preload("res://addons/gdUnit4/test/spy/resources/DocExampleTestClass.gd")  # gdlint: ignore=class-definitions-order
+
+
+func test_doc_verify_example() -> void:
+	var spyed_instance: TestClass = spy(auto_free(TestClass.new()))
+
+	# Verify we have no interactions currently on this instance
+	verify_no_interactions(spyed_instance)
+
+	# Call with different arguments
+	spyed_instance.set_value(0) # 1 time
+	spyed_instance.set_value(100) # 1 time
+	spyed_instance.set_value(100) # 2 times
+
+	# Verify how often we called the function with different arguments
+	@warning_ignore("unsafe_method_access")
+	verify(spyed_instance, 1).set_value(0) # in sum one time with 0
+	@warning_ignore("unsafe_method_access")
+	verify(spyed_instance, 2).set_value(100) # in sum two times with 100
+
+	# Verify will fail because we expect the function `set_value(100)` to be called 3 times but it was only called 2 times
+	@warning_ignore("unsafe_method_access")
+	assert_failure(func() -> void: verify(spyed_instance, 3).set_value(100)).is_failed()
+
+
+func test_doc_verify_no_interactions_example() -> void:
+	var spyed_instance: TestClass = spy(auto_free(TestClass.new()))
+
+	# Test that we have no initial interactions on this spy
+	verify_no_interactions(spyed_instance)
+
+	# Interact by calling `message()`
+	spyed_instance.message()
+
+	# Now this verification will fail because we have interacted on this spy by calling `message`
+	assert_failure(func() -> void: verify_no_interactions(spyed_instance)).is_failed()
+
+
+func test_doc_verify_no_more_interactions_example() -> void:
+	var spyed_instance: TestClass = spy(auto_free(TestClass.new()))
+
+	# Interact on two functions
+	spyed_instance.message()
+	spyed_instance.set_value(42)
+
+	# Verify that the spy interacts as expected
+	@warning_ignore("unsafe_method_access")
+	verify(spyed_instance).message()
+	@warning_ignore("unsafe_method_access")
+	verify(spyed_instance).set_value(42)
+
+	# Check that there are no further interactions with the spy
+	verify_no_more_interactions(spyed_instance)
+
+	# Simulate an unexpected interaction by calling `set_value` with a not yet verified argument
+	spyed_instance.set_value(100)
+
+	# Verify that there are no further interactions with the spy
+	# and that the previous unexpected interaction is detected (the test will fail here)
+	assert_failure(func() -> void: verify_no_more_interactions(spyed_instance)).is_failed()
+
+
+func test_doc_reset_example() -> void:
+	var spyed_instance: TestClass = spy(auto_free(TestClass.new()))
+
+	# First, we test by interacting with two functions
+	spyed_instance.message()
+	spyed_instance.set_value(42)
+
+	# Verify if the interactions were recorded; at this point, two interactions are recorded
+	@warning_ignore("unsafe_method_access")
+	verify(spyed_instance).message()
+	@warning_ignore("unsafe_method_access")
+	verify(spyed_instance).set_value(42)
+
+	# Now, we want to test a different scenario and we need to reset the current recorded interactions
+	reset(spyed_instance)
+	# Verify that the previously recorded interactions have been removed
+	verify_no_more_interactions(spyed_instance)
+
+	# Continue testing
+	spyed_instance.set_value(100)
+	@warning_ignore("unsafe_method_access")
+	verify(spyed_instance).set_value(100)
+	verify_no_more_interactions(spyed_instance)
+
+
+func test_doc_argument_matchers_example() -> void:
+	var spyed_instance: TestClass = spy(auto_free(TestClass.new()))
+
+	# Call the function with different arguments
+	spyed_instance.set_value(0) # Called 1 time
+	spyed_instance.set_value(100) # Called 1 time
+	spyed_instance.set_value(100) # Called 2 times
+
+	# Verify that the function was called with any integer value 3 times
+	@warning_ignore("unsafe_method_access")
+	verify(spyed_instance, 3).set_value(any_int())
+#endregion
 
 
 func _load(resource_path: String) -> GDScript:

@@ -4,11 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Shared AI Harness Rules
 
-Security, bot identity, commit style, and PR prose conventions are defined centrally in the AI harness:
+Security, bot identity, commit style, PR prose, GDScript formatting, and documentation conventions
+are defined centrally in the AI harness:
 
 - Security: `../ai-harness-core/shared-rules/security.md`
 - Bot conventions: `../ai-harness-core/shared-rules/bot-conventions.md`
 - PR and commit style: `../ai-harness-core/shared-rules/pr-style.md`
+- GDScript style: `../ai-harness-core/shared-rules/gdscript-style.md`
+- Documentation style: `../ai-harness-core/shared-rules/documentation-style.md`
 
 ## What This Project Is
 
@@ -123,7 +126,9 @@ C#-specific tests live under `test/dotnet/`.
 
 ## Coding Style
 
-**GDScript:** Follow [Godot's GDScript style guide](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_styleguide.html).
+**GDScript:** Follow [Godot's GDScript style guide](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_styleguide.html)
+and the shared rule `../ai-harness-core/shared-rules/gdscript-style.md` — all generated GDScript uses explicitly
+typed declarations (`var x: Type = value`) with style-guide colon spacing, even where surrounding legacy code differs.
 Enforced by gdlint with these key limits (`.gdlintrc`):
 
 - Max line length: 140
@@ -175,6 +180,11 @@ section grouping conventions, mocking, scene runner, and auto-free usage.
 
 The `documentation/` folder is a Jekyll site built with the [just-the-docs](https://just-the-docs.com/) theme (Ruby 3.4.7, Jekyll ~4.4.1).
 It is published to GitHub Pages via `.github/workflows/deploy-gh-pages.yml`, triggered on release events or manual dispatch.
+
+All documentation content must follow the shared rule `../ai-harness-core/shared-rules/documentation-style.md`:
+every documented feature has a short meaningful example, and every example is proven correct by tests embedded
+in a `#region documented examples` section of the related test suite, passing with no failures, no script errors,
+no warnings, and no orphan nodes.
 
 ### Structure
 

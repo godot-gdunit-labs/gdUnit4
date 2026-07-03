@@ -31,7 +31,10 @@ content="Spy on core functions are not possible since Godot has improved the GDS
 overwriting core functions is no longer supported, so there is no way to spy on core functions anymore."
 %}
 
-To spy on an object, simply use **spy(\<instance\>)**. A spied instance is marked for auto-freeing, so you don't need to free it manually.
+To spy on an object, simply use **spy(\<instance\>)**. The spy returned by **spy(\<instance\>)** is automatically registered for auto-freeing,
+so you don't need to free the spy manually. However, when spying on a plain object, the original instance you pass in is a separate object
+and remains under your ownership — wrap it in **auto_free()** to have it released after the test. When spying on a scene, the spy is the
+scene instance itself and is auto-freed, so no additional **auto_free()** is required.
 
 ```gd
 var spy:= spy(auto_free(Node.new()))
@@ -84,7 +87,7 @@ verify(<spy>, <times>).function(<args>)
 Here's an example:
 
 ```gd
-var spyed_node :Node = spy(Node.new())
+var spyed_node :Node = spy(auto_free(Node.new()))
 
 # Verify we have no interactions currently on this instance
 verify_no_interactions(spyed_node)
@@ -113,7 +116,7 @@ verify_no_interactions(<spy>)
 Here's an example:
 
 ```gd
-var spyed_node := spy(Node.new()) as Node
+var spyed_node := spy(auto_free(Node.new())) as Node
 
 # Test that we have no initial interactions on this spy
 verify_no_interactions(spyed_node)
@@ -137,7 +140,7 @@ verify_no_more_interactions(<spy>)
 Here's an example:
 
 ```gd
-var spyed_node := spy(Node.new()) as Node
+var spyed_node := spy(auto_free(Node.new())) as Node
 
 # Interact on two functions 
 spyed_node.is_a_parent_of(null)
@@ -170,7 +173,7 @@ reset(<spy>)
 Here's an example:
 
 ```gd
-var spyed_node :Node = spy(Node.new())
+var spyed_node :Node = spy(auto_free(Node.new()))
 
 # First, we test by interacting with two functions 
 spyed_node.is_a_parent_of(null)
@@ -202,7 +205,7 @@ For example, instead of verifying that a function was called with a specific boo
 to verify that the function was called with any boolean value. Here's an example:
 
 ```gd
-var spyed_node :Node = spy(Node.new())
+var spyed_node :Node = spy(auto_free(Node.new()))
 
 # Call the function with different arguments
 spyed_node.set_process(false) # Called 1 time

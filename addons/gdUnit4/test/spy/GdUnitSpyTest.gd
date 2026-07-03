@@ -740,6 +740,32 @@ func test_spy_ready_called_once() -> void:
 	verify(spy_node, 1).only_one_time_call()
 
 
+func test_spy_on_object_is_registered_for_auto_free() -> void:
+	var instance :Node = Node.new()
+	var spy_node :Variant = spy(instance)
+
+	# check the returned spy is a new instance and is registered for auto freeing
+	assert_bool(GdUnitMemoryObserver.is_marked_auto_free(spy_node)).is_true()
+	# check the original instance is NOT registered for auto freeing, it remains under the ownership of the caller
+	assert_bool(GdUnitMemoryObserver.is_marked_auto_free(instance)).is_false()
+
+	# finally register the original instance for freeing after the test to avoid an orphan node
+	@warning_ignore("return_value_discarded")
+	auto_free(instance)
+
+
+func test_spy_on_scene_instance_is_registered_for_auto_free() -> void:
+	var resource: PackedScene = load("res://addons/gdUnit4/test/spy/resources/TestSceneWithProperties.tscn")
+	var instance :Node2D = resource.instantiate()
+	var spy_scene :Variant = spy(instance)
+
+	# check in contrast to spy on an object, the spy on a scene instance is not a new instance,
+	# the script is exchanged on the original scene instance
+	assert_object(spy_scene).is_same(instance)
+	# check the original scene instance is registered for auto freeing, no manual `auto_free` is needed
+	assert_bool(GdUnitMemoryObserver.is_marked_auto_free(instance)).is_true()
+
+
 func test_spy_with_enum_in_constructor() -> void:
 	# this test uses a class with an enum in the constructor
 	var unit := ClassWithEnumConstructor.new(ClassWithEnumConstructor.MyEnumValue.TWO, [])

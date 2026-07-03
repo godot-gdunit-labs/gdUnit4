@@ -41,7 +41,7 @@ Wrap it in **auto_free()** to have it released after the test.
 
 ```gd
 # The returned spy is auto-freed, the original instance is released by auto_free()
-var spy_node := spy(auto_free(Node.new()))
+var spy_node: Node = spy(auto_free(Node.new()))
 ```
 
 ### Spy on a scene
@@ -51,11 +51,11 @@ so no additional **auto_free()** is required. You can spy on a scene by its reso
 
 ```gd
 # Spy on a scene by the resource path, the returned spy is the scene instance and is auto-freed
-var spy_scene := spy("res://my_scene.tscn")
+var spy_scene: Node = spy("res://my_scene.tscn")
 
 # Spy on an already instantiated scene, the instance itself becomes the spy and is auto-freed
 var scene: Node = load("res://my_scene.tscn").instantiate()
-var spy_on_instance := spy(scene)
+var spy_on_instance: Node = spy(scene)
 ```
 
 Here a small example to use the spy on a instance of the class 'TestClass':
@@ -67,17 +67,17 @@ extends Node
     func message() -> String:
         return "a message"
 
-func test_spy():
-    var instance = auto_free(TestClass.new())
+func test_spy() -> void:
+    var instance: TestClass = auto_free(TestClass.new())
 
     # Build a spy on the instance
-    var spy = spy(instance)
+    var spy_instance: TestClass = spy(instance)
 
     # Call function `message` on the spy to track the interaction
-    spy.message()
+    spy_instance.message()
 
     # Verify the function 'message' is called one times
-    verify(spy, 1).message()
+    verify(spy_instance, 1).message()
 ```
 
 ## Verification of Function Calls
@@ -134,7 +134,7 @@ verify_no_interactions(<spy>)
 Here's an example:
 
 ```gd
-var spyed_node := spy(auto_free(Node.new())) as Node
+var spyed_node: Node = spy(auto_free(Node.new()))
 
 # Test that we have no initial interactions on this spy
 verify_no_interactions(spyed_node)
@@ -158,7 +158,7 @@ verify_no_more_interactions(<spy>)
 Here's an example:
 
 ```gd
-var spyed_node := spy(auto_free(Node.new())) as Node
+var spyed_node: Node = spy(auto_free(Node.new()))
 
 # Interact on two functions 
 spyed_node.is_a_parent_of(null)

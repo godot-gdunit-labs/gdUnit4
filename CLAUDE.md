@@ -126,9 +126,7 @@ C#-specific tests live under `test/dotnet/`.
 
 ## Coding Style
 
-**GDScript:** Follow [Godot's GDScript style guide](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_styleguide.html)
-and the shared rule `../ai-harness-core/shared-rules/gdscript-style.md` — all generated GDScript uses explicitly
-typed declarations (`var x: Type = value`) with style-guide colon spacing, even where surrounding legacy code differs.
+**GDScript:** Follow the shared rule `../ai-harness-core/shared-rules/gdscript-style.md`.
 Enforced by gdlint with these key limits (`.gdlintrc`):
 
 - Max line length: 140

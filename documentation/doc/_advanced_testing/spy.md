@@ -32,12 +32,30 @@ overwriting core functions is no longer supported, so there is no way to spy on 
 %}
 
 To spy on an object, simply use **spy(\<instance\>)**. The spy returned by **spy(\<instance\>)** is automatically registered for auto-freeing,
-so you don't need to free the spy manually. However, when spying on a plain object, the original instance you pass in is a separate object
-and remains under your ownership — wrap it in **auto_free()** to have it released after the test. When spying on a scene, the spy is the
-scene instance itself and is auto-freed, so no additional **auto_free()** is required.
+so you don't need to free the spy manually. The ownership of the original instance you pass in depends on whether you spy on an object or a scene.
+
+### Spy on an object
+
+The spy is created as a new instance, the original object you pass in is not touched and remains under your ownership.
+Wrap it in **auto_free()** to have it released after the test.
 
 ```gd
-var spy:= spy(auto_free(Node.new()))
+# The returned spy is auto-freed, the original instance is released by auto_free()
+var spy_node := spy(auto_free(Node.new()))
+```
+
+### Spy on a scene
+
+The spy is not a new instance, the script is exchanged on the scene instance itself. The spied scene is auto-freed,
+so no additional **auto_free()** is required. You can spy on a scene by its resource path or on an already instantiated scene.
+
+```gd
+# Spy on a scene by the resource path, the returned spy is the scene instance and is auto-freed
+var spy_scene := spy("res://my_scene.tscn")
+
+# Spy on an already instantiated scene, the instance itself becomes the spy and is auto-freed
+var scene: Node = load("res://my_scene.tscn").instantiate()
+var spy_on_instance := spy(scene)
 ```
 
 Here a small example to use the spy on a instance of the class 'TestClass':

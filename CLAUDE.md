@@ -179,10 +179,7 @@ section grouping conventions, mocking, scene runner, and auto-free usage.
 The `documentation/` folder is a Jekyll site built with the [just-the-docs](https://just-the-docs.com/) theme (Ruby 3.4.7, Jekyll ~4.4.1).
 It is published to GitHub Pages via `.github/workflows/deploy-gh-pages.yml`, triggered on release events or manual dispatch.
 
-All documentation content must follow the shared rule `../ai-harness-core/shared-rules/documentation-style.md`:
-every documented feature has a short meaningful example, and every example is proven correct by tests embedded
-in a `#region documented examples` section of the related test suite, passing with no failures, no script errors,
-no warnings, and no orphan nodes.
+All documentation content must follow the shared rule `../ai-harness-core/shared-rules/documentation-style.md`.
 
 ### Structure
 

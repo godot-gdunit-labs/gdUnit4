@@ -64,9 +64,18 @@ Here a small example to use the spy on a instance of the class 'TestClass':
 class_name TestClass
 extends Node
 
-    func message() -> String:
-        return "a message"
+var _value: int
 
+
+func message() -> String:
+    return "a message"
+
+
+func set_value(value: int) -> void:
+    _value = value
+```
+
+```gd
 func test_spy() -> void:
     var instance: TestClass = auto_free(TestClass.new())
 
@@ -84,6 +93,10 @@ func test_spy() -> void:
 
 A spy keeps track of all function calls and their arguments. Use the **verify()** method on the spy to verify that certain behavior happened at least once
 or an exact number of times. This way, you can check if a particular function was called and how many times it was called.
+
+{% include advice.html
+content="Since spying on core functions is not supported, all following examples use the class <b>TestClass</b> defined above."
+%}
 
 |Function |Description |
 |---|---|
@@ -105,22 +118,22 @@ verify(<spy>, <times>).function(<args>)
 Here's an example:
 
 ```gd
-var spyed_node: Node = spy(auto_free(Node.new()))
+var spyed_instance: TestClass = spy(auto_free(TestClass.new()))
 
 # Verify we have no interactions currently on this instance
-verify_no_interactions(spyed_node)
+verify_no_interactions(spyed_instance)
 
 # Call with different arguments
-spyed_node.set_process(false) # 1 times
-spyed_node.set_process(true) # 1 times
-spyed_node.set_process(true) # 2 times
+spyed_instance.set_value(0) # 1 time
+spyed_instance.set_value(100) # 1 time
+spyed_instance.set_value(100) # 2 times
 
-# Verify how often we called the function with different argument 
-verify(spyed_node, 1).set_process(false)# in sum one time with false
-verify(spyed_node, 2).set_process(true) # in sum two times with true
+# Verify how often we called the function with different arguments
+verify(spyed_instance, 1).set_value(0) # in sum one time with 0
+verify(spyed_instance, 2).set_value(100) # in sum two times with 100
 
-# Verify will fail because we expect the function `set_process(true)` to be called 3 times but it was only called 2 times
-verify(spyed_node, 3).set_process(true)
+# Verify will fail because we expect the function `set_value(100)` to be called 3 times but it was only called 2 times
+verify(spyed_instance, 3).set_value(100)
 ```
 
 ### verify_no_interactions
@@ -134,22 +147,23 @@ verify_no_interactions(<spy>)
 Here's an example:
 
 ```gd
-var spyed_node: Node = spy(auto_free(Node.new()))
+var spyed_instance: TestClass = spy(auto_free(TestClass.new()))
 
 # Test that we have no initial interactions on this spy
-verify_no_interactions(spyed_node)
+verify_no_interactions(spyed_instance)
 
-# Interact by calling `get_name()`
-spyed_node.get_name()
+# Interact by calling `message()`
+spyed_instance.message()
 
-# Now this verification will fail because we have interacted on this spy by calling `get_name`
-verify_no_interactions(spyed_node)
+# Now this verification will fail because we have interacted on this spy by calling `message`
+verify_no_interactions(spyed_instance)
 ```
 
 ### verify_no_more_interactions
 
 The **verify_no_more_interactions()** method verifies that all interactions on the spy have been verified.
-If the spy has recorded more interactions than you verified with **verify()**, an error is reported.
+An interaction is identified by the function and its arguments, if the spy has recorded a function and argument combination
+that you have not verified with **verify()**, an error is reported.
 
 ```gd
 verify_no_more_interactions(<spy>)
@@ -158,25 +172,25 @@ verify_no_more_interactions(<spy>)
 Here's an example:
 
 ```gd
-var spyed_node: Node = spy(auto_free(Node.new()))
+var spyed_instance: TestClass = spy(auto_free(TestClass.new()))
 
-# Interact on two functions 
-spyed_node.is_a_parent_of(null)
-spyed_node.set_process(false)
+# Interact on two functions
+spyed_instance.message()
+spyed_instance.set_value(42)
 
 # Verify that the spy interacts as expected
-verify(spyed_node).is_a_parent_of(null)
-verify(spyed_node).set_process(false)
+verify(spyed_instance).message()
+verify(spyed_instance).set_value(42)
 
 # Check that there are no further interactions with the spy
-verify_no_more_interactions(spyed_node)
+verify_no_more_interactions(spyed_instance)
 
-# Simulate an unexpected interaction with `set_process`
-spyed_node.set_process(false)
+# Simulate an unexpected interaction by calling `set_value` with a not yet verified argument
+spyed_instance.set_value(100)
 
 # Verify that there are no further interactions with the spy
 # and that the previous unexpected interaction is detected (the test will fail here)
-verify_no_more_interactions(spyed_node)
+verify_no_more_interactions(spyed_instance)
 ```
 
 ### reset
@@ -191,25 +205,25 @@ reset(<spy>)
 Here's an example:
 
 ```gd
-var spyed_node: Node = spy(auto_free(Node.new()))
+var spyed_instance: TestClass = spy(auto_free(TestClass.new()))
 
-# First, we test by interacting with two functions 
-spyed_node.is_a_parent_of(null)
-spyed_node.set_process(false)
+# First, we test by interacting with two functions
+spyed_instance.message()
+spyed_instance.set_value(42)
 
 # Verify if the interactions were recorded; at this point, two interactions are recorded
-verify(spyed_node).is_a_parent_of(null)
-verify(spyed_node).set_process(false)
+verify(spyed_instance).message()
+verify(spyed_instance).set_value(42)
 
 # Now, we want to test a different scenario and we need to reset the current recorded interactions
-reset(spyed_node)
+reset(spyed_instance)
 # Verify that the previously recorded interactions have been removed
-verify_no_more_interactions(spyed_node)
+verify_no_more_interactions(spyed_instance)
 
 # Continue testing
-spyed_node.set_process(true)
-verify(spyed_node).set_process(true)
-verify_no_more_interactions(spyed_node)
+spyed_instance.set_value(100)
+verify(spyed_instance).set_value(100)
+verify_no_more_interactions(spyed_instance)
 ```
 
 ---
@@ -219,19 +233,19 @@ verify_no_more_interactions(spyed_node)
 Argument matchers allow you to simplify the verification of function calls by verifying function arguments based on their type or class.
 This is particularly useful when working with spys because you can use argument matchers to verify function calls without specifying the exact argument values.
 
-For example, instead of verifying that a function was called with a specific boolean argument value, you can use the **any_bool()** argument matcher
-to verify that the function was called with any boolean value. Here's an example:
+For example, instead of verifying that a function was called with a specific integer argument value, you can use the **any_int()** argument matcher
+to verify that the function was called with any integer value. Here's an example:
 
 ```gd
-var spyed_node: Node = spy(auto_free(Node.new()))
+var spyed_instance: TestClass = spy(auto_free(TestClass.new()))
 
 # Call the function with different arguments
-spyed_node.set_process(false) # Called 1 time
-spyed_node.set_process(true) # Called 1 time
-spyed_node.set_process(true) # Called 2 times
+spyed_instance.set_value(0) # Called 1 time
+spyed_instance.set_value(100) # Called 1 time
+spyed_instance.set_value(100) # Called 2 times
 
-# Verify that the function was called with any boolean value 3 times
-verify(spyed_node, 3).set_process(any_bool())
+# Verify that the function was called with any integer value 3 times
+verify(spyed_instance, 3).set_value(any_int())
 ```
 
 For more details on how to use argument matchers, please see the [Argument Matchers]({{site.baseurl}}/advanced_testing/argument_matchers) section.

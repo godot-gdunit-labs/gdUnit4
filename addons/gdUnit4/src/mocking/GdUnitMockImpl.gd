@@ -48,11 +48,16 @@ func _notification(what: int) -> void:
 
 
 static func __get_verifier() -> GdUnitObjectInteractionsVerifier:
+	# not yet initialized, happens when a base class field initializer calls an overridden
+	# function before the mock's `__init()` had a chance to run `__init_doubler()`
+	if not Engine.has_meta(__INSTANCE_ID):
+		return null
 	return Engine.get_meta(__INSTANCE_ID).__verifier_instance
 
 
 static func __is_prepare_return_value() -> bool:
-	return __doubler_state().is_prepare_return
+	var doubler_state := __doubler_state()
+	return doubler_state != null and doubler_state.is_prepare_return
 
 
 static func __sort_by_argument_matcher(__left_args: Array, __right_args: Array) -> bool:
@@ -124,6 +129,9 @@ static func __return_mock_value(__func_name: String, __func_args: Array, __defau
 
 static func __is_do_not_call_real_func(__func_name: String, __func_args := []) -> bool:
 	var doubler_state := __doubler_state()
+	# not yet initialized, fall back to calling the real function
+	if doubler_state == null:
+		return false
 	var __is_call_real_func: bool = doubler_state.working_mode == GdUnitMock.CALL_REAL_FUNC  and not doubler_state.excluded_methods.has(__func_name)
 	# do not call real funcions for mocked functions
 	if __is_call_real_func and doubler_state.return_values.has(__func_name):

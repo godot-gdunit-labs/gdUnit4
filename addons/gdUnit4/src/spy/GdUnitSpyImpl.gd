@@ -38,6 +38,10 @@ func _notification(what: int) -> void:
 
 
 static func __get_verifier() -> GdUnitObjectInteractionsVerifier:
+	# not yet initialized, happens when a base class field initializer calls an overridden
+	# function before the spy's `_init()` had a chance to run `__init_doubler()`
+	if not Engine.has_meta(__INSTANCE_ID):
+		return null
 	return Engine.get_meta(__INSTANCE_ID).__verifier_instance
 
 

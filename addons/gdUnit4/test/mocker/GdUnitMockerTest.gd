@@ -120,6 +120,14 @@ func test_mock_Node() -> void:
 	assert_that(mocked_node.get_child_count()).is_equal(24)
 
 
+func test_mock_class_with_field_initializer_calling_overridden_method() -> void:
+	# GD-1234: field initializer calls a method before `__init()` runs.
+	var m: FieldInitCallTestClass = mock(FieldInitCallTestClass)
+
+	assert_that(m).is_not_null()
+	assert_str(m.greeting).is_equal("hello from the real function")
+
+
 func test_mock_source_with_class_name_by_resource_path() -> void:
 	var resource_path_ := 'res://addons/gdUnit4/test/mocker/resources/GD-256/world.gd'
 	var m: Variant = mock(resource_path_)

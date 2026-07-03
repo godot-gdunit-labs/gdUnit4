@@ -881,5 +881,14 @@ func test_doc_argument_matchers_example() -> void:
 #endregion
 
 
+func test_spy_class_with_field_initializer_calling_overridden_method() -> void:
+	# GD-1234: field initializer calls a method before `__init()` runs.
+	var instance: FieldInitCallTestClass = auto_free(FieldInitCallTestClass.new())
+	var spy_instance: FieldInitCallTestClass = spy(instance)
+
+	assert_that(spy_instance).is_not_null()
+	assert_str(spy_instance.greeting).is_equal("hello from the real function")
+
+
 func _load(resource_path: String) -> GDScript:
 	return load(resource_path)

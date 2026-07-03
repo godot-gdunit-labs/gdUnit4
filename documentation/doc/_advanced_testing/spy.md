@@ -105,7 +105,7 @@ verify(<spy>, <times>).function(<args>)
 Here's an example:
 
 ```gd
-var spyed_node :Node = spy(auto_free(Node.new()))
+var spyed_node: Node = spy(auto_free(Node.new()))
 
 # Verify we have no interactions currently on this instance
 verify_no_interactions(spyed_node)
@@ -191,7 +191,7 @@ reset(<spy>)
 Here's an example:
 
 ```gd
-var spyed_node :Node = spy(auto_free(Node.new()))
+var spyed_node: Node = spy(auto_free(Node.new()))
 
 # First, we test by interacting with two functions 
 spyed_node.is_a_parent_of(null)
@@ -223,7 +223,7 @@ For example, instead of verifying that a function was called with a specific boo
 to verify that the function was called with any boolean value. Here's an example:
 
 ```gd
-var spyed_node :Node = spy(auto_free(Node.new()))
+var spyed_node: Node = spy(auto_free(Node.new()))
 
 # Call the function with different arguments
 spyed_node.set_process(false) # Called 1 time

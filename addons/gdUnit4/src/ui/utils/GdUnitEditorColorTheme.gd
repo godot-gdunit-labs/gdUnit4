@@ -6,6 +6,13 @@ class_name GdUnitEditorColorTheme
 extends Node
 
 
+# Literal value of EditorSettings.NOTIFICATION_EDITOR_SETTINGS_CHANGED.
+# The editor classes must not be referenced by name anywhere in this script:
+# they do not exist in template builds (exported games, CLI runners), where a
+# direct reference fails to PARSE this script and every script depending on
+# it - the runtime Engine.is_editor_hint() guard never gets a chance.
+const _NOTIFICATION_EDITOR_SETTINGS_CHANGED := 10000
+
 static var text_color := Color.WEB_GRAY
 static var folder_color := Color.LIGHT_SKY_BLUE
 static var function_definition_color := Color.ANTIQUE_WHITE
@@ -28,23 +35,27 @@ func _ready() -> void:
 
 
 func _notification(what: int) -> void:
-	if what == EditorSettings.NOTIFICATION_EDITOR_SETTINGS_CHANGED:
+	if what == _NOTIFICATION_EDITOR_SETTINGS_CHANGED:
 		setup()
 
 
 static func setup() -> void:
-	if Engine.is_editor_hint():
-		var settings := EditorInterface.get_editor_settings()
-		text_color = settings.get_setting("text_editor/theme/highlighting/text_color")
-		folder_color = settings.get_setting("text_editor/theme/highlighting/member_variable_color")
-		function_definition_color = settings.get_setting("text_editor/theme/highlighting/gdscript/function_definition_color")
-		engine_type_color = settings.get_setting("text_editor/theme/highlighting/engine_type_color")
-		value_color = settings.get_setting("text_editor/theme/highlighting/function_color")
-		# init test state colors
-		state_initial = text_color
-		state_success = settings.get_setting("editors/animation/onion_layers_future_color")
-		state_warning = settings.get_setting("text_editor/theme/highlighting/comment_markers/warning_color")
-		state_flaky = settings.get_setting("text_editor/theme/highlighting/gdscript/node_reference_color")
-		state_failure = settings.get_setting("text_editor/theme/highlighting/comment_markers/critical_color")
-		state_error = settings.get_setting("editors/2d/smart_snapping_line_color")
-		state_orphan = settings.get_setting("text_editor/theme/highlighting/string_placeholder_color")
+	if not Engine.is_editor_hint() or not Engine.has_singleton("EditorInterface"):
+		return
+	# Resolved via the singleton registry instead of naming EditorInterface -
+	# see the parse-time note above; on template builds the defaults apply.
+	var editor_interface: Object = Engine.get_singleton("EditorInterface")
+	var settings: Object = editor_interface.call("get_editor_settings")
+	text_color = settings.call("get_setting", "text_editor/theme/highlighting/text_color")
+	folder_color = settings.call("get_setting", "text_editor/theme/highlighting/member_variable_color")
+	function_definition_color = settings.call("get_setting", "text_editor/theme/highlighting/gdscript/function_definition_color")
+	engine_type_color = settings.call("get_setting", "text_editor/theme/highlighting/engine_type_color")
+	value_color = settings.call("get_setting", "text_editor/theme/highlighting/function_color")
+	# init test state colors
+	state_initial = text_color
+	state_success = settings.call("get_setting", "editors/animation/onion_layers_future_color")
+	state_warning = settings.call("get_setting", "text_editor/theme/highlighting/comment_markers/warning_color")
+	state_flaky = settings.call("get_setting", "text_editor/theme/highlighting/gdscript/node_reference_color")
+	state_failure = settings.call("get_setting", "text_editor/theme/highlighting/comment_markers/critical_color")
+	state_error = settings.call("get_setting", "editors/2d/smart_snapping_line_color")
+	state_orphan = settings.call("get_setting", "text_editor/theme/highlighting/string_placeholder_color")

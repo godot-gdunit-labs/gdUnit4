@@ -258,6 +258,20 @@ func test_get_parameters_with_constants_uses_fast_path() -> void:
 	assert_array(resolver.get_parameters(self, 2)).contains_exactly(Vector4.ZERO, Vector4.ONE, Vector4.INF, [])
 	assert_array(resolver.get_parameters(self, 3)).contains_exactly(Color.RED, Color.WEB_GRAY, [])
 
+
+func test_get_parameters_binds_user_classes_on_fast_path() -> void:
+	var test_parameters := [
+		'[GdUnitBoolAssert, "bool"]',
+		'[GdUnitStringAssert, "string"]',
+	]
+	var resolver := GdInlineParameterSetResolver.new(test_parameters)
+
+	for index in resolver.get_max_index():
+		assert_object(resolver._preparsed_expressions[index]).is_not_null()
+
+	assert_array(resolver.get_parameters(self, 0)).contains_exactly(GdUnitBoolAssert, "bool", [])
+	assert_array(resolver.get_parameters(self, 1)).contains_exactly(GdUnitStringAssert, "string", [])
+
 #endregion
 #region _resolve_parameters
 
@@ -437,17 +451,16 @@ func test_performance_get_parameters_overall() -> void:
 #endregion
 
 
-#region _get_class_type_mapping
+#region _get_native_class_mapping
 
-func test_get_class_type_mapping() -> void:
+func test_get_native_class_mapping() -> void:
 	var expected_count := 0
 	for clazz_name in ClassDB.get_class_list():
 		if ClassDB.class_get_api_type(clazz_name) != 0 or not ClassDB.can_instantiate(clazz_name):
 			continue
 		expected_count += 1
 
-	assert_dict(GdInlineParameterSetResolver._get_class_type_mapping()).has_size(expected_count)
-	# Second call returns the same cached mapping without rebuilding
-	assert_dict(GdInlineParameterSetResolver._get_class_type_mapping()).has_size(expected_count)
+	assert_dict(GdInlineParameterSetResolver._get_native_class_mapping()).has_size(expected_count)
+	assert_dict(GdInlineParameterSetResolver._get_native_class_mapping()).has_size(expected_count)
 
 #endregion

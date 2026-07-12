@@ -451,17 +451,16 @@ func test_performance_get_parameters_overall() -> void:
 #endregion
 
 
-#region _get_class_type_mapping
+#region _get_native_class_mapping
 
-func test_get_class_type_mapping() -> void:
+func test_get_native_class_mapping() -> void:
 	var expected_count := 0
 	for clazz_name in ClassDB.get_class_list():
 		if ClassDB.class_get_api_type(clazz_name) != 0 or not ClassDB.can_instantiate(clazz_name):
 			continue
 		expected_count += 1
 
-	assert_dict(GdInlineParameterSetResolver._get_class_type_mapping()).has_size(expected_count)
-	# Second call returns the same cached mapping without rebuilding
-	assert_dict(GdInlineParameterSetResolver._get_class_type_mapping()).has_size(expected_count)
+	assert_dict(GdInlineParameterSetResolver._get_native_class_mapping()).has_size(expected_count)
+	assert_dict(GdInlineParameterSetResolver._get_native_class_mapping()).has_size(expected_count)
 
 #endregion

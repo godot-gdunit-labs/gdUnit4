@@ -22,9 +22,9 @@ var _preparsed_expressions: Array[Expression] = []
 var _bound_input_values: Array[Array] = []
 
 
-static var _global_class_type_mapping: Dictionary[String, Variant] = {}
-static var _global_class_path_index: Dictionary[String, String] = {}
-static var _resolved_global_classes: Dictionary[String, Variant] = {}
+static var _native_class_mapping: Dictionary[String, Variant] = {}
+static var _user_class_paths: Dictionary[String, String] = {}
+static var _resolved_user_classes: Dictionary[String, Variant] = {}
 static var _constant_token_regex: RegEx
 
 
@@ -63,8 +63,8 @@ static func _scan_bound_class_names(parameter_sets: PackedStringArray) -> Array[
 		bound_class_names[index] = PackedStringArray()
 
 	var candidate_names := PackedStringArray()
-	candidate_names.append_array(_get_class_type_mapping().keys())
-	candidate_names.append_array(_get_global_class_paths().keys())
+	candidate_names.append_array(_get_native_class_mapping().keys())
+	candidate_names.append_array(_get_user_class_paths().keys())
 	for clazz_name: String in candidate_names:
 		for index in parameter_sets.size():
 			if parameter_sets[index].contains(clazz_name) and not bound_class_names[index].has(clazz_name):
@@ -141,38 +141,38 @@ func _run_expression_via_script(instance: Node, expression: String) -> Array:
 
 
 ## Returns the shared class-name-to-instance map, building it once on first access.
-static func _get_class_type_mapping() -> Dictionary[String, Variant]:
-	if _global_class_type_mapping.is_empty():
-		_global_class_type_mapping = _build_class_type_mapping()
-	return _global_class_type_mapping
+static func _get_native_class_mapping() -> Dictionary[String, Variant]:
+	if _native_class_mapping.is_empty():
+		_native_class_mapping = _build_native_class_mapping()
+	return _native_class_mapping
 
 
 static func _class_value_of(clazz_name: String) -> Variant:
-	var native_classes := _get_class_type_mapping()
+	var native_classes := _get_native_class_mapping()
 	if native_classes.has(clazz_name):
 		return native_classes[clazz_name]
-	return _lazily_loaded_global_class(clazz_name)
+	return _lazily_loaded_user_class(clazz_name)
 
 
-static func _lazily_loaded_global_class(clazz_name: String) -> Variant:
-	if not _resolved_global_classes.has(clazz_name):
-		_resolved_global_classes[clazz_name] = load(_get_global_class_paths()[clazz_name])
-	return _resolved_global_classes[clazz_name]
+static func _lazily_loaded_user_class(clazz_name: String) -> Variant:
+	if not _resolved_user_classes.has(clazz_name):
+		_resolved_user_classes[clazz_name] = load(_get_user_class_paths()[clazz_name])
+	return _resolved_user_classes[clazz_name]
 
 
-static func _get_global_class_paths() -> Dictionary[String, String]:
-	if _global_class_path_index.is_empty():
+static func _get_user_class_paths() -> Dictionary[String, String]:
+	if _user_class_paths.is_empty():
 		for entry in ProjectSettings.get_global_class_list():
 			if entry["language"] == &"GDScript":
 				var clazz_name: String = entry["class"]
-				_global_class_path_index[clazz_name] = entry["path"]
-	return _global_class_path_index
+				_user_class_paths[clazz_name] = entry["path"]
+	return _user_class_paths
 
 
 ## Builds the class-name-to-instance map by generating and executing a GDScript that
 ## returns a dictionary literal — the only way to obtain live class references from
 ## [ClassDB] names, since GDScript has no eval or direct class-by-name lookup.
-static func _build_class_type_mapping() -> Dictionary[String, Variant]:
+static func _build_native_class_mapping() -> Dictionary[String, Variant]:
 	var source := """
 		extends RefCounted
 

@@ -86,6 +86,10 @@ func dispose_sub_contexts() -> void:
 	_sub_context.clear()
 
 
+func last_sub_context() -> GdUnitExecutionContext:
+	return null if _sub_context.is_empty() else _sub_context[-1]
+
+
 func terminate() -> void:
 	if test_case:
 		test_case.do_terminate()

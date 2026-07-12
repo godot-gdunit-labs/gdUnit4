@@ -8,4 +8,3 @@ extends IGdUnitExecutionStage
 ##  -> test_case() [br]
 func _execute(context: GdUnitExecutionContext) -> void:
 	await context.test_case.execute()
-	await context.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_CASE)

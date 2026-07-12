@@ -258,6 +258,20 @@ func test_get_parameters_with_constants_uses_fast_path() -> void:
 	assert_array(resolver.get_parameters(self, 2)).contains_exactly(Vector4.ZERO, Vector4.ONE, Vector4.INF, [])
 	assert_array(resolver.get_parameters(self, 3)).contains_exactly(Color.RED, Color.WEB_GRAY, [])
 
+
+func test_get_parameters_binds_script_global_classes_on_fast_path() -> void:
+	var test_parameters := [
+		'[GdUnitBoolAssert, "bool"]',
+		'[GdUnitStringAssert, "string"]',
+	]
+	var resolver := GdInlineParameterSetResolver.new(test_parameters)
+
+	for index in resolver.get_max_index():
+		assert_object(resolver._preparsed_expressions[index]).is_not_null()
+
+	assert_array(resolver.get_parameters(self, 0)).contains_exactly(GdUnitBoolAssert, "bool", [])
+	assert_array(resolver.get_parameters(self, 1)).contains_exactly(GdUnitStringAssert, "string", [])
+
 #endregion
 #region _resolve_parameters
 

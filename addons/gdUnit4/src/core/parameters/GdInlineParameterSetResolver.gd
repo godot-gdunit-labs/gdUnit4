@@ -23,6 +23,8 @@ var _bound_input_values: Array[Array] = []
 
 
 static var _global_class_type_mapping: Dictionary[String, Variant] = {}
+static var _global_class_path_index: Dictionary[String, String] = {}
+static var _resolved_global_classes: Dictionary[String, Variant] = {}
 static var _constant_token_regex: RegEx
 
 
@@ -60,19 +62,21 @@ static func _scan_bound_class_names(parameter_sets: PackedStringArray) -> Array[
 	for index in bound_class_names.resize(parameter_sets.size()):
 		bound_class_names[index] = PackedStringArray()
 
-	for clazz_name: String in _get_class_type_mapping().keys():
+	var candidate_names := PackedStringArray()
+	candidate_names.append_array(_get_class_type_mapping().keys())
+	candidate_names.append_array(_get_global_class_paths().keys())
+	for clazz_name: String in candidate_names:
 		for index in parameter_sets.size():
-			if parameter_sets[index].contains(clazz_name):
+			if parameter_sets[index].contains(clazz_name) and not bound_class_names[index].has(clazz_name):
 				bound_class_names[index].append(clazz_name)
 	return bound_class_names
 
 
 func _preparse_parameter_set(index: int, bound_class_names: PackedStringArray) -> void:
-	var mapping := _get_class_type_mapping()
 	var input_names := bound_class_names
 	var input_values: Array = []
 	for clazz_name in bound_class_names:
-		input_values.append(mapping[clazz_name])
+		input_values.append(_class_value_of(clazz_name))
 
 	var expression_source := _parameter_sets[index]
 	for regex_match in _get_constant_token_regex().search_all(expression_source):
@@ -141,6 +145,28 @@ static func _get_class_type_mapping() -> Dictionary[String, Variant]:
 	if _global_class_type_mapping.is_empty():
 		_global_class_type_mapping = _build_class_type_mapping()
 	return _global_class_type_mapping
+
+
+static func _class_value_of(clazz_name: String) -> Variant:
+	var native_classes := _get_class_type_mapping()
+	if native_classes.has(clazz_name):
+		return native_classes[clazz_name]
+	return _lazily_loaded_global_class(clazz_name)
+
+
+static func _lazily_loaded_global_class(clazz_name: String) -> Variant:
+	if not _resolved_global_classes.has(clazz_name):
+		_resolved_global_classes[clazz_name] = load(_get_global_class_paths()[clazz_name])
+	return _resolved_global_classes[clazz_name]
+
+
+static func _get_global_class_paths() -> Dictionary[String, String]:
+	if _global_class_path_index.is_empty():
+		for entry in ProjectSettings.get_global_class_list():
+			if entry["language"] == &"GDScript":
+				var clazz_name: String = entry["class"]
+				_global_class_path_index[clazz_name] = entry["path"]
+	return _global_class_path_index
 
 
 ## Builds the class-name-to-instance map by generating and executing a GDScript that

@@ -4,7 +4,7 @@ extends IGdUnitExecutionStage
 
 
 var _stage_before :IGdUnitExecutionStage = GdUnitTestCaseBeforeStage.new()
-var _stage_after := GdUnitTestCaseAfterStage.new()
+var _stage_after :IGdUnitExecutionStage = GdUnitTestCaseAfterStage.new()
 var _stage_test :IGdUnitExecutionStage = GdUnitTestCaseSingleTestStage.new()
 
 
@@ -13,12 +13,8 @@ func _execute(context :GdUnitExecutionContext) -> void:
 	while context.retry_execution():
 		var test_context := GdUnitExecutionContext.of(context)
 		await _stage_before.execute(test_context)
-		var test_case_context: GdUnitExecutionContext = null
 		if not test_context.is_skipped():
-			test_case_context = GdUnitExecutionContext.of(test_context)
-			await _stage_test.execute(test_case_context)
-		# gc'ed inside the after-stage, right after `after_test()` and before the parent's own orphan snapshot
-		_stage_after.test_case_context = test_case_context
+			await _stage_test.execute(GdUnitExecutionContext.of(test_context))
 		await _stage_after.execute(test_context)
 		if test_context.is_success() or test_context.is_skipped() or test_context.is_interupted():
 			break

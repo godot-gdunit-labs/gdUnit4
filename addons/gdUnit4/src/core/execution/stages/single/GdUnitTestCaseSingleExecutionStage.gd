@@ -13,9 +13,14 @@ func _execute(context :GdUnitExecutionContext) -> void:
 	while context.retry_execution():
 		var test_context := GdUnitExecutionContext.of(context)
 		await _stage_before.execute(test_context)
+		var test_case_context: GdUnitExecutionContext = null
 		if not test_context.is_skipped():
-			await _stage_test.execute(GdUnitExecutionContext.of(test_context))
+			test_case_context = GdUnitExecutionContext.of(test_context)
+			await _stage_test.execute(test_case_context)
 		await _stage_after.execute(test_context)
+		# collect test-case level orphans only after `after_test()` has run so its cleanup is accounted for
+		if test_case_context != null:
+			await test_case_context.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_CASE)
 		if test_context.is_success() or test_context.is_skipped() or test_context.is_interupted():
 			break
 

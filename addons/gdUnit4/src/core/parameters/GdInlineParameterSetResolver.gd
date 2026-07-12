@@ -17,67 +17,98 @@ func __run_expression() -> Array:
 
 """
 
-var _expression: Expression
 var _parameter_sets: PackedStringArray
-var _used_input_types: Array[PackedStringArray] = []
+var _preparsed_expressions: Array[Expression] = []
+var _bound_input_values: Array[Array] = []
 
 
-## Lazily built map from Godot class name to a live instance, used by
-## [GdInlineParameterSetResolver] to resolve class-name tokens inside inline expressions.
 static var _global_class_type_mapping: Dictionary[String, Variant] = {}
+static var _constant_token_regex: RegEx
 
 
 func _init(parameter_sets: PackedStringArray, args: Array[GdFunctionArgument] = []) -> void:
 	super(args)
-	_expression = Expression.new()
 	_parameter_sets = parameter_sets
 
-	# Scan for used types
-	for index in _used_input_types.resize(_parameter_sets.size()):
-		_used_input_types[index] = PackedStringArray()
-
-	for clazz_name: String in _get_class_type_mapping().keys():
-		for parameter_set_index in _parameter_sets.size():
-			var paramater_set := _parameter_sets[parameter_set_index]
-			if paramater_set.contains(clazz_name):
-				_used_input_types[parameter_set_index].append(clazz_name)
+	var bound_class_names := _scan_bound_class_names(_parameter_sets)
+	for index in _parameter_sets.size():
+		_preparse_parameter_set(index, bound_class_names[index])
 
 
 func get_max_index() -> int:
-	return _used_input_types.size()
+	return _parameter_sets.size()
 
 
 func get_parameters(instance: Node, index: int) -> Array:
-	var mapping := _get_class_type_mapping()
-	var input_values: Array = []
+	var expression := _preparsed_expressions[index]
+	if expression == null:
+		return _run_expression_via_script(instance, _parameter_sets[index])
 
-	for clazz_name in _used_input_types[index]:
-		input_values.append(mapping[clazz_name])
-
-	var expression := _parameter_sets[index]
-	var parse_error := _expression.parse(expression, _used_input_types[index])
-	if parse_error != OK:
-		# TODO provide better error reporting
-		prints("""
-			Warning: Fallback to slower parameter resolving!
-				GdInlineParameterSetResolver: parsing error: %s
-				'%s'
-				error: %s
-			""".dedent() % [error_string(parse_error), expression, _expression.get_error_text()])
-		return _run_expression_via_script(instance, expression)
-
-	var parameters: Variant = _expression.execute(input_values, instance, false)
-	if _expression.has_execute_failed():
-		# TODO provide better error reporting
-		prints("Expression execute error:", _expression.get_error_text())
-		return _run_expression_via_script(instance, expression)
+	var parameters: Variant = expression.execute(_bound_input_values[index], instance, false)
+	if expression.has_execute_failed():
+		prints("Expression execute error:", expression.get_error_text())
+		return _run_expression_via_script(instance, _parameter_sets[index])
 	if not parameters is Array:
-		# The expression may reference a class const or property not accessible via Object.get();
-		# fall back to a GDScript that extends the test class so it can resolve such identifiers.
-		return _run_expression_via_script(instance, expression)
+		return _run_expression_via_script(instance, _parameter_sets[index])
 
 	@warning_ignore("unsafe_call_argument")
 	return _finalize_parameter_set(parameters)
+
+
+static func _scan_bound_class_names(parameter_sets: PackedStringArray) -> Array[PackedStringArray]:
+	var bound_class_names: Array[PackedStringArray] = []
+	for index in bound_class_names.resize(parameter_sets.size()):
+		bound_class_names[index] = PackedStringArray()
+
+	for clazz_name: String in _get_class_type_mapping().keys():
+		for index in parameter_sets.size():
+			if parameter_sets[index].contains(clazz_name):
+				bound_class_names[index].append(clazz_name)
+	return bound_class_names
+
+
+func _preparse_parameter_set(index: int, bound_class_names: PackedStringArray) -> void:
+	var mapping := _get_class_type_mapping()
+	var input_names := bound_class_names
+	var input_values: Array = []
+	for clazz_name in bound_class_names:
+		input_values.append(mapping[clazz_name])
+
+	var expression_source := _parameter_sets[index]
+	for regex_match in _get_constant_token_regex().search_all(expression_source):
+		var token := regex_match.get_string(0)
+		var type_name := regex_match.get_string(1)
+		var alias := token.replace(".", "__")
+		if bound_class_names.has(type_name) or input_names.has(alias):
+			continue
+		if GdBuiltinConstants.is_known_constant(type_name, token):
+			input_names.append(alias)
+			input_values.append(GdBuiltinConstants.value_of(token))
+			expression_source = expression_source.replace(token, alias)
+
+	var expression := Expression.new()
+	if expression.parse(expression_source, input_names) != OK:
+		_print_fallback_warning(_parameter_sets[index], expression.get_error_text())
+		_preparsed_expressions.append(null)
+	else:
+		_preparsed_expressions.append(expression)
+	_bound_input_values.append(input_values)
+
+
+static func _print_fallback_warning(parameter_set: String, error_text: String) -> void:
+	prints("""
+		Warning: Fallback to slower parameter resolving!
+			GdInlineParameterSetResolver: parsing error:
+			'%s'
+			error: %s
+		""".dedent() % [parameter_set, error_text])
+
+
+static func _get_constant_token_regex() -> RegEx:
+	if _constant_token_regex == null:
+		_constant_token_regex = RegEx.new()
+		_constant_token_regex.compile("([A-Za-z_][A-Za-z0-9_]*)\\.([A-Z][A-Z0-9_]*)\\b")
+	return _constant_token_regex
 
 
 # This is a fallback option to run the expression by kind of reflection

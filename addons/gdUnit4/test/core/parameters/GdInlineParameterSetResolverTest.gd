@@ -240,6 +240,24 @@ func test_get_parameters_with_constants() -> void:
 	assert_str(parameters[1]).is_equal("Color")
 	assert_object(parameters[2]).is_equal([])
 
+
+func test_get_parameters_with_constants_uses_fast_path() -> void:
+	var test_parameters := [
+		'[Vector2.ZERO, Vector2.ONE, Vector2.DOWN, Vector2.INF]',
+		'[Vector3.ZERO, Vector3.ONE, Vector3.DOWN, Vector3.INF]',
+		'[Vector4.ZERO, Vector4.ONE, Vector4.INF]',
+		'[Color.RED, Color.WEB_GRAY]',
+	]
+	var resolver := GdInlineParameterSetResolver.new(test_parameters)
+
+	for index in resolver.get_max_index():
+		assert_object(resolver._preparsed_expressions[index]).is_not_null()
+
+	assert_array(resolver.get_parameters(self, 0)).contains_exactly(Vector2.ZERO, Vector2.ONE, Vector2.DOWN, Vector2.INF, [])
+	assert_array(resolver.get_parameters(self, 1)).contains_exactly(Vector3.ZERO, Vector3.ONE, Vector3.DOWN, Vector3.INF, [])
+	assert_array(resolver.get_parameters(self, 2)).contains_exactly(Vector4.ZERO, Vector4.ONE, Vector4.INF, [])
+	assert_array(resolver.get_parameters(self, 3)).contains_exactly(Color.RED, Color.WEB_GRAY, [])
+
 #endregion
 #region _resolve_parameters
 

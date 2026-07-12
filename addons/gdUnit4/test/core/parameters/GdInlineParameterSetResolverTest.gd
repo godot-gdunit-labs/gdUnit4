@@ -259,7 +259,7 @@ func test_get_parameters_with_constants_uses_fast_path() -> void:
 	assert_array(resolver.get_parameters(self, 3)).contains_exactly(Color.RED, Color.WEB_GRAY, [])
 
 
-func test_get_parameters_binds_script_global_classes_on_fast_path() -> void:
+func test_get_parameters_binds_user_classes_on_fast_path() -> void:
 	var test_parameters := [
 		'[GdUnitBoolAssert, "bool"]',
 		'[GdUnitStringAssert, "string"]',

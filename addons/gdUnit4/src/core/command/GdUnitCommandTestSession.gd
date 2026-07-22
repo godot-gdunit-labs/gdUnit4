@@ -42,7 +42,7 @@ func stop() -> void:
 	elif _is_valid_runner_process(_current_runner_process_id):
 		var result := OS.kill(_current_runner_process_id)
 		if result != OK:
-			push_error("ERROR checked stopping GdUnit Test Runner. error code: %s" % result)
+			push_error("Failed to stop GdUnit Test Runner (pid: %d). OS.kill() returned: %s" % [_current_runner_process_id, result])
 		_current_runner_process_id = -1
 	# We need finaly to send the test session close event because the current run is hard aborted.
 	GdUnitSignals.instance().gdunit_event.emit(GdUnitSessionClose.new())

@@ -15,6 +15,8 @@ func _init() -> void:
 	super(ID, GdUnitShortcut.ShortCut.NONE)
 	_is_running = false
 	_is_fail_fast = false
+	# Start with an invalid PID so we never treat the default `0` as a real runner process.
+	_current_runner_process_id = -1
 
 
 func is_running() -> bool:
@@ -33,15 +35,21 @@ func stop() -> void:
 	# Give the API time to commit terminate to the client
 	await get_tree().create_timer(.5).timeout
 
-	if _is_debug and EditorInterface.is_playing_scene():
-		EditorInterface.stop_playing_scene()
-	elif OS.is_process_running(_current_runner_process_id):
+	if _is_debug:
+		# In debug mode the runner is a played scene, not a spawned process, so there is no PID to kill.
+		if EditorInterface.is_playing_scene():
+			EditorInterface.stop_playing_scene()
+	elif _is_valid_runner_process(_current_runner_process_id):
 		var result := OS.kill(_current_runner_process_id)
 		if result != OK:
-			push_error("ERROR checked stopping GdUnit Test Runner. error code: %s" % result)
+			push_error("Failed to stop GdUnit Test Runner (pid: %d). OS.kill() returned: %s" % [_current_runner_process_id, result])
 		_current_runner_process_id = -1
 	# We need finaly to send the test session close event because the current run is hard aborted.
 	GdUnitSignals.instance().gdunit_event.emit(GdUnitSessionClose.new())
+
+
+static func _is_valid_runner_process(pid: int) -> bool:
+	return pid > 0 and OS.is_process_running(pid)
 
 
 ## Forces the running scene to unpause when the debugger hits a breakpoint.[br]

@@ -39,7 +39,7 @@ func test__is_valid_runner_process_true() -> void:
 
 	var pid := OS.create_process("ping", args, false)
 
-	assert_bool(_is_valid_runner_process(pid)).is_true()
+	assert_bool(GdUnitCommandTestSession._is_valid_runner_process(pid)).is_true()
 
 	# cleanup
 	if OS.is_process_running(pid):

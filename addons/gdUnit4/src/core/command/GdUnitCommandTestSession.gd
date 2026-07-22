@@ -48,10 +48,6 @@ func stop() -> void:
 	GdUnitSignals.instance().gdunit_event.emit(GdUnitSessionClose.new())
 
 
-## Returns true only when [param pid] is a PID we could have spawned and it is still alive.[br]
-## The [code]pid > 0[/code] guard short-circuits before [method OS.is_process_running] so an[br]
-## invalid PID (e.g. the default [code]0[/code] used in debug mode) never reaches the OS call,[br]
-## which on macOS raises "The process 0 does not exist or is not a child of the calling process."
 static func _is_valid_runner_process(pid: int) -> bool:
 	return pid > 0 and OS.is_process_running(pid)
 

@@ -95,7 +95,7 @@ func test_is_type_array() -> void:
 
 func test_filter_value(value: Variant, expected_type: int, _test_parameters := [
 	[[1, 2, 3, 1], TYPE_ARRAY],
-	[Array([1, 2, 3, 1]) as Array[int], TYPE_ARRAY],
+	[Array([1, 2, 3, 1], TYPE_INT, "", null), TYPE_ARRAY],
 	[PackedByteArray([1, 2, 3, 1]), TYPE_PACKED_BYTE_ARRAY],
 	[PackedInt32Array([1, 2, 3, 1]), TYPE_PACKED_INT32_ARRAY],
 	[PackedInt64Array([1, 2, 3, 1]), TYPE_PACKED_INT64_ARRAY],

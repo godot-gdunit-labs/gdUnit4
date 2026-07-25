@@ -23,7 +23,7 @@ body:
       label: The used GdUnit4 version
       description: Which GdUnit4 version are you using? If your version is not listed, select "Other" and fill in the field below.
       options:
-        - 6.2.0-rc2 (Pre Release/Master branch)
+        - 6.2.0 (Pre Release/Master branch)
         - 6.1.3 (Latest Release)
         - 6.1.2
         - 6.1.1
@@ -50,7 +50,7 @@ body:
     attributes:
       label: GdUnit4 version (if not listed above)
       description: Enter your exact version if you selected "Other" above (e.g. 6.2.0-rc1, master@abc1234).
-      placeholder: e.g. 6.2.0-rc2
+      placeholder: e.g. 6.2.0
     validations:
       required: false
 
@@ -59,7 +59,7 @@ body:
     attributes:
       label: Godot Version
       description: Which Godot version are you using?
-      placeholder: v4.2.2.stable.official [15073afe3]
+      placeholder: v4.7.stable.official [5b4e0cb0f]
     validations:
       required: true
 

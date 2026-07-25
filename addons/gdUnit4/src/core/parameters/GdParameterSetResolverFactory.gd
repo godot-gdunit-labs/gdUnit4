@@ -13,7 +13,7 @@ static func create(fd: GdFunctionDescriptor, instance: Node) -> GdParameterSetRe
 	var parameter_sets := parameter_set_argument.parameter_sets()
 
 	if not parameter_sets.is_empty():
-		return GdInlineParameterSetResolver.new(parameter_sets, fd.args())
+		return GdInlineParameterSetResolver.new(parameter_sets, fd.source_path(), fd.name(), fd.args())
 
 	# A parenthesis signals a callable expression, e.g. "my_provider()".
 	var expression: String = parameter_set_argument._default_value

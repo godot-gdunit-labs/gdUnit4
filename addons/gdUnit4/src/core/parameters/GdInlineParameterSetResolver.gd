@@ -20,6 +20,8 @@ func __run_expression() -> Array:
 var _parameter_sets: PackedStringArray
 var _preparsed_expressions: Array[Expression] = []
 var _bound_input_values: Array[Array] = []
+var _source_path := ""
+var _function_name := ""
 
 
 static var _native_class_mapping: Dictionary[String, Variant] = {}
@@ -29,9 +31,16 @@ static var _constant_token_regex: RegEx
 static var _script_variant_type_regex: RegEx
 
 
-func _init(parameter_sets: PackedStringArray, args: Array[GdFunctionArgument] = []) -> void:
+func _init(
+	parameter_sets: PackedStringArray,
+	args: Array[GdFunctionArgument] = [],
+	source_path: String = "",
+	function_name: String = ""
+) -> void:
 	super(args)
 	_parameter_sets = parameter_sets
+	_source_path = source_path
+	_function_name = function_name
 
 	var bound_class_names := _scan_bound_class_names(_parameter_sets)
 	for index in _parameter_sets.size():
@@ -99,28 +108,30 @@ func _preparse_parameter_set(index: int, bound_class_names: PackedStringArray) -
 
 	var expression := Expression.new()
 	if expression.parse(expression_source, input_names) != OK:
-		_print_fallback_warning(_parameter_sets[index], expression.get_error_text())
+		_print_fallback_warning(_parameter_sets[index], expression.get_error_text(), _source_path, _function_name)
 		_preparsed_expressions.append(null)
 	else:
 		_preparsed_expressions.append(expression)
 	_bound_input_values.append(input_values)
 
 
-static func _print_fallback_warning(parameter_set: String, error_text: String) -> void:
+static func _print_fallback_warning(parameter_set: String, error_text: String, source_path: String, function_name: String) -> void:
 	if parameter_set.contains("as Array"):
 		push_warning("""
 		Avoid type-casting with `as Array` in parameter sets; use the typed `Array(...)` constructor instead.
+			test: '%s' (%s)
 			expression: '%s'
 		Falling back to slower script-based resolver.
-		""".dedent() % [parameter_set])
+		""".dedent() % [function_name, source_path, parameter_set])
 		return
 
 	push_warning("""
 		Parameter expression parsing failed (error: %s).
 		Falling back to slower script-based resolver.
 		Check for unsupported syntax or missing class bindings.
+			test: '%s' (%s)
 			expression: '%s'
-		""".dedent() % [error_text, parameter_set])
+		""".dedent() % [error_text, function_name, source_path, parameter_set])
 
 
 static func _get_constant_token_regex() -> RegEx:

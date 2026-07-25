@@ -307,6 +307,19 @@ func test_get_parameters_binds_user_classes_on_fast_path() -> void:
 	assert_array(resolver.get_parameters(self, 0)).contains_exactly(GdUnitBoolAssert, "bool", [])
 	assert_array(resolver.get_parameters(self, 1)).contains_exactly(GdUnitStringAssert, "string", [])
 
+
+func test_fallback_warning_includes_source_context() -> void:
+	var test_parameters := ["[Array([1, 2, 3, 1]) as Array[int], TYPE_ARRAY]"]
+
+	assert_error(func() -> void:
+		GdInlineParameterSetResolver.new(test_parameters, [], "res://foo/bar.gd", "test_broken_expression")
+	).is_push_warning("""
+		Avoid type-casting with `as Array` in parameter sets; use the typed `Array(...)` constructor instead.
+			test: 'test_broken_expression' (res://foo/bar.gd)
+			expression: '%s'
+		Falling back to slower script-based resolver.
+		""".dedent() % [test_parameters[0]])
+
 #endregion
 #region _resolve_parameters
 
@@ -476,7 +489,7 @@ func _resolve_parameters(child_name: String) -> Array[Array]:
 
 	var parameter_set_argument := GdFunctionArgument.get_parameter_set(fd.args())
 	var parameter_sets := parameter_set_argument.parameter_sets()
-	var resolver := GdInlineParameterSetResolver.new(parameter_sets, fd.args())
+	var resolver := GdInlineParameterSetResolver.new(parameter_sets, fd.args(), fd.source_path(), fd.name())
 	if resolver == null:
 		return []
 	var result: Array[Array] = []

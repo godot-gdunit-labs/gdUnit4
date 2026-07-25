@@ -33,9 +33,9 @@ static var _script_variant_type_regex: RegEx
 
 func _init(
 	parameter_sets: PackedStringArray,
-	args: Array[GdFunctionArgument] = [],
-	source_path: String = "",
-	function_name: String = ""
+	source_path: String,
+	function_name: String,
+	args: Array[GdFunctionArgument] = []
 ) -> void:
 	super(args)
 	_parameter_sets = parameter_sets

@@ -179,7 +179,7 @@ func using_typed_dictionary_parameter(_items: Dictionary[String, int], _test_par
 #region get_parameters
 
 func test_get_parameters() -> void:
-	var resolver := GdInlineParameterSetResolver.new(example_parameters)
+	var resolver := GdInlineParameterSetResolver.new(example_parameters, "", "")
 
 	assert_int(resolver.get_max_index()).is_equal(9)
 
@@ -253,7 +253,7 @@ func test_get_parameters_with_constants() -> void:
 		'[Color.RED, "Color"]',
 	]
 
-	var resolver := GdInlineParameterSetResolver.new(test_parameters)
+	var resolver := GdInlineParameterSetResolver.new(test_parameters, "", "")
 
 	assert_int(resolver.get_max_index()).is_equal(3)
 
@@ -283,7 +283,7 @@ func test_get_parameters_with_constants_uses_fast_path() -> void:
 		'[Vector4.ZERO, Vector4.ONE, Vector4.INF]',
 		'[Color.RED, Color.WEB_GRAY]',
 	]
-	var resolver := GdInlineParameterSetResolver.new(test_parameters)
+	var resolver := GdInlineParameterSetResolver.new(test_parameters, "", "")
 
 	for index in resolver.get_max_index():
 		assert_object(resolver._preparsed_expressions[index]).is_not_null()
@@ -299,7 +299,7 @@ func test_get_parameters_binds_user_classes_on_fast_path() -> void:
 		'[GdUnitBoolAssert, "bool"]',
 		'[GdUnitStringAssert, "string"]',
 	]
-	var resolver := GdInlineParameterSetResolver.new(test_parameters)
+	var resolver := GdInlineParameterSetResolver.new(test_parameters, "", "")
 
 	for index in resolver.get_max_index():
 		assert_object(resolver._preparsed_expressions[index]).is_not_null()
@@ -312,7 +312,7 @@ func test_fallback_warning_includes_source_context() -> void:
 	var test_parameters := ["[Array([1, 2, 3, 1]) as Array[int], TYPE_ARRAY]"]
 
 	assert_error(func() -> void:
-		GdInlineParameterSetResolver.new(test_parameters, [], "res://foo/bar.gd", "test_broken_expression")
+		GdInlineParameterSetResolver.new(test_parameters, "res://foo/bar.gd", "test_broken_expression")
 	).is_push_warning("""
 		Avoid type-casting with `as Array` in parameter sets; use the typed `Array(...)` constructor instead.
 			test: 'test_broken_expression' (res://foo/bar.gd)
@@ -489,7 +489,7 @@ func _resolve_parameters(child_name: String) -> Array[Array]:
 
 	var parameter_set_argument := GdFunctionArgument.get_parameter_set(fd.args())
 	var parameter_sets := parameter_set_argument.parameter_sets()
-	var resolver := GdInlineParameterSetResolver.new(parameter_sets, fd.args(), fd.source_path(), fd.name())
+	var resolver := GdInlineParameterSetResolver.new(parameter_sets, fd.source_path(), fd.name(), fd.args())
 	if resolver == null:
 		return []
 	var result: Array[Array] = []
@@ -503,7 +503,7 @@ func _resolve_parameters(child_name: String) -> Array[Array]:
 
 func test_performance_single() -> void:
 	const ITERATIONS := 1000
-	var resolver := GdInlineParameterSetResolver.new(example_parameters)
+	var resolver := GdInlineParameterSetResolver.new(example_parameters, "", "")
 
 	var t1 := Time.get_ticks_usec()
 	for _i in ITERATIONS:
@@ -519,7 +519,7 @@ func test_performance_single() -> void:
 
 func test_performance_get_parameters_overall() -> void:
 	const ITERATIONS := 1000
-	var resolver := GdInlineParameterSetResolver.new(example_parameters)
+	var resolver := GdInlineParameterSetResolver.new(example_parameters, "", "")
 
 	var t1 := Time.get_ticks_usec()
 	for _i in ITERATIONS:

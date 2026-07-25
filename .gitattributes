@@ -9,6 +9,7 @@
 /documentation         export-ignore
 
 # Exclude AI agent files from asset library exports
+/addons/gdUnit4/**/AGENTS.md   export-ignore
 /addons/gdUnit4/**/CLAUDE.md   export-ignore
 /addons/gdUnit4/**/.claude     export-ignore
 

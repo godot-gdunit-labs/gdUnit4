@@ -57,7 +57,7 @@ To ensure a smooth review process, every Pull Request (PR) must meet the followi
 
 The use of AI is permitted, but you remain fully responsible for your contributions.
 
-- Follow the project-specific rules defined in the claude files: [CLAUDE.md](./CLAUDE.md).
+- Follow the project-specific rules defined in the agent files: [AGENTS.md](./AGENTS.md).
 - Never commit AI-generated code without understanding it yourself
 - Avoid unnecessary class or function documentation when names are already self-explanatory
 

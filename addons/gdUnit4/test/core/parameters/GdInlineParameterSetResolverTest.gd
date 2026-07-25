@@ -108,6 +108,15 @@ func using_parameters_with_const_values(_value: String, _test_parameters := [DAT
 	pass
 
 
+func using_parameters_with_script_constants(_func_name: String, _expected_type: int, _test_parameters := [
+	["bool", TYPE_BOOL],
+	["double", TYPE_FLOAT],
+	["array", TYPE_ARRAY],
+	["packed_array", TYPE_PACKED_BYTE_ARRAY]
+	]) -> void:
+	pass
+
+
 func using_parameters_with_comments(_a: int, _b: int, _c: String, _expected: int, _test_parameters := [
 	# before data set
 	[1, 2, '3', 6], # after data set
@@ -124,6 +133,32 @@ func using_typed_array_parameter(_items: Array[int], _test_parameters := [
 	[[42, 99]],
 	[[1, 2, 3]],
 	]) -> void:
+	pass
+
+
+func using_array_types_paramater(_value: Variant, _test_parameters := [
+	[[1, 2]],
+	[Array([1, 2], TYPE_INT, "", null)],
+	[PackedByteArray([1, 2])],
+	[PackedInt32Array([1, 2])],
+	[PackedInt64Array([1, 2])],
+	[PackedFloat32Array([1.0, 2])],
+	[PackedFloat64Array([1.0, 2])],
+	[PackedStringArray(["1", "2"])],
+	[PackedVector2Array([Vector2.ZERO, Vector2.ONE])],
+	[PackedVector3Array([Vector3.ZERO, Vector3.ONE])],
+	[PackedColorArray([Color.RED, Color.GREEN])]
+	]) -> void:
+	pass
+
+
+func using_untyped_dictionary_parameter(
+		_value : Dictionary,
+		_expected : Dictionary,
+		_test_parameters : Array = [
+			[{ "top" : 10.0},	{ "down" : 20.0}],
+		]
+	) -> void:
 	pass
 
 
@@ -326,6 +361,13 @@ func test_resolve_parameters_with_comments() -> void:
 			[6, 7, "string #ABCD", 21, []]])
 
 
+func test_resolve_parameters_with_array_types() -> void:
+	var params := _resolve_parameters("using_array_types_paramater")
+
+	prints(params)
+
+
+
 func test_resolve_parameters_with_typed_array() -> void:
 	var params := _resolve_parameters("using_typed_array_parameter")
 
@@ -341,6 +383,24 @@ func test_resolve_parameters_with_typed_array() -> void:
 	var second: Array = params[1][0]
 	assert_bool(second.is_typed()).is_true()
 	assert_int(second.get_typed_builtin()).is_equal(TYPE_INT)
+
+
+func test_resolve_parameters_with_untyped_dictionary() -> void:
+	var params := _resolve_parameters("using_untyped_dictionary_parameter")
+
+	assert_array(params).is_equal(
+		[
+			[{"top" : 10.0}, {"down" : 20.0}, []]
+		]
+	)
+
+	var value: Dictionary = params[0][0]
+	assert_bool(value.is_typed()).is_false()
+	assert_dict(value).contains_key_value("top", 10.0)
+
+	var expected: Dictionary = params[0][1]
+	assert_bool(expected.is_typed()).is_false()
+	assert_dict(expected).contains_key_value("down", 20.0)
 
 
 # TODO needs to be enabled when typed dictionary support is implemented
@@ -394,6 +454,18 @@ func test_resolve_parameters_with_const_values() -> void:
 		.is_equal([
 			["aa", []],
 			["bb", []]
+			])
+
+
+func test_resolve_parameters_with_scrip_constans() -> void:
+	var params := _resolve_parameters("using_parameters_with_script_constants")
+	assert_that(params).is_not_null()
+	assert_array(params) \
+		.is_equal([
+			["bool", TYPE_BOOL, []],
+			["double", TYPE_FLOAT, []],
+			["array", TYPE_ARRAY, []],
+			["packed_array", TYPE_PACKED_BYTE_ARRAY, []]
 			])
 
 

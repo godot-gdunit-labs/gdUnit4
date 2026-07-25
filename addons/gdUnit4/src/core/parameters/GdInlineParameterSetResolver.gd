@@ -26,6 +26,7 @@ static var _native_class_mapping: Dictionary[String, Variant] = {}
 static var _user_class_paths: Dictionary[String, String] = {}
 static var _resolved_user_classes: Dictionary[String, Variant] = {}
 static var _constant_token_regex: RegEx
+static var _script_variant_type_regex: RegEx
 
 
 func _init(parameter_sets: PackedStringArray, args: Array[GdFunctionArgument] = []) -> void:
@@ -90,6 +91,12 @@ func _preparse_parameter_set(index: int, bound_class_names: PackedStringArray) -
 			input_values.append(GdBuiltinConstants.value_of(token))
 			expression_source = expression_source.replace(token, alias)
 
+	# Fix variant type resolving
+	for regex_match in _get_script_variant_type_regex().search_all(expression_source):
+		var constant_name := regex_match.get_string(0)
+		input_names.append(constant_name)
+		input_values.append(GdBuiltinConstants.to_ordinal_value(constant_name))
+
 	var expression := Expression.new()
 	if expression.parse(expression_source, input_names) != OK:
 		_print_fallback_warning(_parameter_sets[index], expression.get_error_text())
@@ -100,12 +107,20 @@ func _preparse_parameter_set(index: int, bound_class_names: PackedStringArray) -
 
 
 static func _print_fallback_warning(parameter_set: String, error_text: String) -> void:
-	prints("""
-		Warning: Fallback to slower parameter resolving!
-			GdInlineParameterSetResolver: parsing error:
-			'%s'
-			error: %s
-		""".dedent() % [parameter_set, error_text])
+	if parameter_set.contains("as Array"):
+		push_warning("""
+		Avoid type-casting with `as Array` in parameter sets; use the typed `Array(...)` constructor instead.
+			expression: '%s'
+		Falling back to slower script-based resolver.
+		""".dedent() % [parameter_set])
+		return
+
+	push_warning("""
+		Parameter expression parsing failed (error: %s).
+		Falling back to slower script-based resolver.
+		Check for unsupported syntax or missing class bindings.
+			expression: '%s'
+		""".dedent() % [error_text, parameter_set])
 
 
 static func _get_constant_token_regex() -> RegEx:
@@ -113,6 +128,13 @@ static func _get_constant_token_regex() -> RegEx:
 		_constant_token_regex = RegEx.new()
 		_constant_token_regex.compile("([A-Za-z_][A-Za-z0-9_]*)\\.([A-Z][A-Z0-9_]*)\\b")
 	return _constant_token_regex
+
+
+static func _get_script_variant_type_regex() -> RegEx:
+	if _script_variant_type_regex == null:
+		_script_variant_type_regex = RegEx.new()
+		_script_variant_type_regex.compile("TYPE_[A-Z0-9_]*\\b")
+	return _script_variant_type_regex
 
 
 # This is a fallback option to run the expression by kind of reflection

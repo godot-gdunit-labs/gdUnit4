@@ -9,14 +9,14 @@ class TestCaseStatistics:
 	var _testcase_after_called := 0
 	var _expected_testcase_before :int
 	var _expected_testcase_after :int
-	
+
 	func _init(testcase_before_calls := 0, testcase_after_calls := 0) -> void:
 		_expected_testcase_before = testcase_before_calls
 		_expected_testcase_after = testcase_after_calls
-	
+
 	func count_test_before_test() -> void:
 		_testcase_before_called +=1
-	
+
 	func count_test_after_test() -> void:
 		_testcase_after_called +=1
 
@@ -42,7 +42,7 @@ func after() -> void:
 	assert_that(_after_called)\
 		.override_failure_message("Expecting 'after' is called only one times")\
 		.is_equal(1)
-	
+
 	for test_case :String in _metrics.keys():
 		var statistics: TestCaseStatistics = _metrics[test_case]
 		assert_int(statistics._testcase_before_called)\
@@ -139,10 +139,10 @@ func test_dictionary_div_number_types(
 		value : Dictionary,
 		expected : Dictionary,
 		test_parameters : Array = [
-			[{ top = 50.0,	bottom = 50.0,	left = 50.0,	right = 50.0},	{ top = 50, 	bottom = 50,	left = 50,  	right = 50}],
-			[{ top = 50.0,	bottom = 50.0,	left = 50.0,	right = 50.0},	{ top = 50.0,	bottom = 50.0,	left = 50.0,	right = 50.0}],
-			[{ top = 50,	bottom = 50,	left = 50,  	right = 50},	{ top = 50.0,	bottom = 50.0,	left = 50.0,	right = 50.0}],
-			[{ top = 50,	bottom = 50,	left = 50,  	right = 50},	{ top = 50, 	bottom = 50,	left = 50,  	right = 50}],
+			[{ "top" : 50.0,	"bottom" : 50.0,	"left" : 50.0,	"right" : 50.0},	{ "top" : 50, 	"bottom" : 50,	"left" : 50,  	"right" : 50}],
+			[{ "top" : 50.0,	"bottom" : 50.0,	"left" : 50.0,	"right" : 50.0},	{ "top" : 50.0,	"bottom" : 50.0,	"left" : 50.0,	"right" : 50.0}],
+			[{ "top" : 50,	"bottom" : 50,	"left" : 50,  	"right" : 50},	{ "top" : 50.0,	"bottom" : 50.0,	"left" : 50.0,	"right" : 50.0}],
+			[{ "top" : 50,	"bottom" : 50,	"left" : 50,  	"right" : 50},	{ "top" : 50, 	"bottom" : 50,	"left" : 50,  	"right" : 50}],
 		]
 	) -> void:
 		assert_that(value).is_equal(expected)

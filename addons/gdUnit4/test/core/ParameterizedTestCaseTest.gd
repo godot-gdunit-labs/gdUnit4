@@ -190,10 +190,10 @@ func test_dictionary_div_number_types(
 	value: Dictionary,
 	expected: Dictionary,
 	_test_parameters: Array = [
-		[{ top = 50.0,	bottom = 50.0,	left = 50.0,	right = 50.0},	{ top = 50, 	bottom = 50,	left = 50,  	right = 50}],
-		[{ top = 50.0,	bottom = 50.0,	left = 50.0,	right = 50.0},	{ top = 50.0,	bottom = 50.0,	left = 50.0,	right = 50.0}],
-		[{ top = 50,	bottom = 50,	left = 50,  	right = 50},	{ top = 50.0,	bottom = 50.0,	left = 50.0,	right = 50.0}],
-		[{ top = 50,	bottom = 50,	left = 50,  	right = 50},	{ top = 50, 	bottom = 50,	left = 50,  	right = 50}],
+		[{ "top" : 50.0,	"bottom" : 50.0,	"left" : 50.0,	"right" : 50.0},	{ "top" : 50, 	"bottom" : 50,	"left" : 50,  	"right" : 50}],
+		[{ "top" : 50.0,	"bottom" : 50.0,	"left" : 50.0,	"right" : 50.0},	{ "top" : 50.0,	"bottom" : 50.0,	"left" : 50.0,	"right" : 50.0}],
+		[{ "top" : 50,	"bottom" : 50,	"left" : 50,  	"right" : 50},	{ "top" : 50.0,	"bottom" : 50.0,	"left" : 50.0,	"right" : 50.0}],
+		[{ "top" : 50,	"bottom" : 50,	"left" : 50,  	"right" : 50},	{ "top" : 50, 	"bottom" : 50,	"left" : 50,  	"right" : 50}],
 	]
 ) -> void:
 	# allow to compare type unsave

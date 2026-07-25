@@ -24,6 +24,7 @@ func value() -> Variant:
 
 static var _resolved_values: Dictionary[String, Variant] = {}
 static var _unresolvable_tokens: Dictionary[String, bool] = {}
+static var _variant_types: Dictionary[String, int] = {}
 
 
 ## Resolves a dotted constant token (e.g. `Vector2.ONE`) to its runtime value, compiling it once and
@@ -48,3 +49,28 @@ static func is_known_constant(type_name: String, token: String) -> bool:
 
 static func value_of(token: String) -> Variant:
 	return _resolved_values[token]
+
+
+static func to_ordinal_value(value: String) -> int:
+	if _variant_types.is_empty():
+		_build_variant_type_mapping()
+
+	return _variant_types.get(value, TYPE_NIL)
+
+
+static func _build_variant_type_mapping() -> void:
+	for ordinal_value in range(TYPE_MAX):
+		var ordinal_name := type_string(ordinal_value)
+		var type_name := "TYPE"
+
+		# Handle complex type names
+		if ordinal_name.contains("Packed") or ordinal_name.contains("StringName") or ordinal_name.contains("NodePath"):
+			for index in range(ordinal_name.length()):
+				var character := ordinal_name[index]
+				if character == character.to_upper() and not character.is_valid_int():
+					type_name += "_"
+				type_name += character.to_upper()
+		else:
+			type_name = "TYPE_" + ordinal_name.to_upper()
+
+		_variant_types[type_name] = ordinal_value

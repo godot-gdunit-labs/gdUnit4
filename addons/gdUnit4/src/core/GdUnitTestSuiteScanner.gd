@@ -167,15 +167,24 @@ func load_suite(script: GDScript, tests: Array[GdUnitTestCase]) -> GdUnitTestSui
 
 func _build_test_attribute(script: GDScript, fd: GdFunctionDescriptor) -> TestCaseAttribute:
 	var collected_unknown_aruments := PackedStringArray()
+	var seen_config_arguments := PackedStringArray()
 	var attribute := TestCaseAttribute.new()
 
 	# Collect test attributes
 	for arg: GdFunctionArgument in fd.args():
 		if arg.type() == GdObjects.TYPE_FUZZER:
+			if not seen_config_arguments.is_empty():
+				attribute.is_skipped = true
+				attribute.skip_reason = (
+					"Fuzzer argument '%s' must be declared before the test config argument(s) %s."
+					% [arg.name(), seen_config_arguments])
+				return attribute
 			attribute.fuzzers.append(arg)
 		else:
 			# We allow underscore as prefix to prevent unused argument warnings
-			match arg.name().trim_prefix("_"):
+			var arg_name := arg.name().trim_prefix("_")
+			seen_config_arguments.append(arg_name)
+			match arg_name:
 				ARGUMENT_TIMEOUT:
 					attribute.timeout = type_convert(arg.default(), TYPE_INT)
 				ARGUMENT_SKIP:

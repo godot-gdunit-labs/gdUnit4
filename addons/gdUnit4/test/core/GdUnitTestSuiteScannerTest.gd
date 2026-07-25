@@ -303,6 +303,18 @@ func test_resolve_test_suite_path_with_src_folders() -> void:
 	assert_str(GdUnitTestSuiteScanner.resolve_test_suite_path("res://project/folder/MyClass.gd", "/")).is_equal("res://project/folder/MyClassTest.gd")
 
 
+func test_build_test_attribute_rejects_fuzzer_after_config_argument() -> void:
+	var source_path := "res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteWithFuzzerAfterConfigArg.gd"
+	var script: GDScript = load(source_path)
+	var fd: GdFunctionDescriptor = GdScriptParser.new().get_function_descriptors(script, ["test_fuzzer_after_do_skip"]).front()
+
+	var attribute := GdUnitTestSuiteScanner.new()._build_test_attribute(script, fd)
+
+	assert_bool(attribute.is_skipped).is_true()
+	assert_str(attribute.skip_reason).is_equal(
+		"Fuzzer argument 'fuzzer_value' must be declared before the test config argument(s) [\"do_skip\"].")
+
+
 func test_scan_test_suite_exclude_non_test_suites() -> void:
 	var scanner :GdUnitTestSuiteScanner = GdUnitTestSuiteScanner.new()
 	var test_suites := scanner.scan("res://addons/gdUnit4/test/core/resources/scan_testsuite_inheritance/plugin/")

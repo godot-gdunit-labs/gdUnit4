@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Getting Started
-nav_order: 4
+nav_order: 5
 ---
 
 # Getting Started with GDScript Tests
@@ -41,7 +41,7 @@ To create a test in GdUnit4, you can use the built-in "Create Test" function. Fo
 
 We have selected the full_name function to generate a test for it. The test has been automatically created using the built-in **Create Test** function.
 Congratulations, you have now created your first test!<br>
-More detailed information about naming conventions and the definition of test cases [can be found here]({{site.baseurl}}/testing/first-test/#gdunit4-testcase-definition)
+More detailed information about naming conventions and the definition of test cases [can be found here]({{site.baseurl}}/testing/test-case/#testcase-definition)
 
 The generated test case should look like this:
 ![generated-test-suite]({{site.baseurl}}/assets/images/first-steps/generated-test-suite.png){:.centered}
@@ -93,7 +93,7 @@ func test_full_name() -> void:
 
 Now, run the test again by pressing the **ReRun Debug** button in the inspector.<br>
 ![rerun-test]({{site.baseurl}}/assets/images/first-steps/rerun-test.png){:.centered}
-For more details about the inspector buttons, see [Button Bar]({{site.baseurl}}/testing/run-tests/#button-bar)
+For more details about the inspector buttons, see [Button Bar]({{site.baseurl}}/first_steps/inspector/#button-bar)
 
 The test failure is fixed but now we get a warning!
 

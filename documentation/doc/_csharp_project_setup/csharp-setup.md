@@ -107,7 +107,7 @@ The output should indicate that the project is built successfully.
 
 ### Running C# Tests inside the Godot Editor
 
-How to [run test]({{site.baseurl}}/first_steps/run-tests/#how-to-run-test)
+How to [run test]({{site.baseurl}}/first_steps/how-to-run-tests/)
 
 ## Using External C# Editor
 

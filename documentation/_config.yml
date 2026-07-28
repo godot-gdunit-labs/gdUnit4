@@ -28,9 +28,10 @@ aux_links:
 aux_links_new_tab: true
 
 # Version configuration
-current_version: "v6.1.x"
+current_version: "v6.2.x"
 versions:
   - "latest"
+  - "v6.2.x"
   - "v6.1.x"
   - "v6.0.x"
   - "v5.1.x"

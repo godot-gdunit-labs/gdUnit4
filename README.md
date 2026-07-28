@@ -37,7 +37,7 @@
   </thead>
   <tbody>
     <tr>
-      <td>master (upcoming v6.2)</td><td>v4.5, v4.5.1, v4.5.2, v4.6, v4.6.1, v4.6.2, v4.6.3, v4.7, v4.7.1-rc1</td>
+      <td>master (v6.2.0)</td><td>v4.5, v4.5.1, v4.5.2, v4.6, v4.6.1, v4.6.2, v4.6.3, v4.7, v4.7.1-rc1</td>
     </tr>
     <tr>
       <td>v6.1.x</td><td>v4.5, v4.5.1, v4.5.2, v4.6, v4.6.1, v4.6.2, v4.6.3</td>
@@ -140,6 +140,8 @@ ensure that your code is thoroughly tested and free of bugs, which can save you 
 * **Flaky Test Handling**  
   Detect and handle flaky tests by rerunning failed tests  
   Configure retry count and mark non-deterministic failures in test results
+* **Orphan Node Detection**  
+  Detect orphan nodes, listed with stack traces and detailed info
 * **Configurable Templates**  
   Customize templates for generating new test-suites
 

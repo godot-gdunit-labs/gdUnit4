@@ -12,7 +12,7 @@ content="GdUnit4 v6.x+ requires at least Godot 4.5!<br>
 %}
 
 ![GdUnit4](./assets/images/background.png)
-build on (v4.5.stable.mono.official [876b29033])
+build on (v4.7.stable.official [5b4e0cb0f])
 
 ## What is GdUnit4?
 
@@ -75,6 +75,8 @@ you can ensure that your code is thoroughly tested and free of bugs, which can s
 * **Flaky Test Handling**  
   Detect and handle flaky tests by rerunning failed tests  
   Configure retry count and mark non-deterministic failures in test results
+* **Orphan Node Detection**  
+  Detect orphan nodes, listed with stack traces and detailed info
 * **Configurable Templates**  
   Customize templates for generating new test-suites
 

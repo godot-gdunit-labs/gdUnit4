@@ -27,7 +27,7 @@ These scopes include the test suite setup, test case setup, and the tests themse
 {% tabs tools-auto_free %}
 {% tab tools-auto_free GdScript %}
 
-```ruby
+```gd
 func auto_free(obj :Object) -> Object:
 ```
 
@@ -45,7 +45,7 @@ Here’s an small example:
 {% tabs tools-auto_free-example %}
 {% tab tools-auto_free-example GdScript %}
 
-```ruby
+```gd
 # using auto_free() on Path object to register for freeing after the test is finished
 assert_object(auto_free(Path.new())).is_not_instanceof(Tree)
 ```
@@ -66,7 +66,7 @@ using static Assertions;
 
 Here's an extended example of a test suite to demonstrate the usage of auto_free() and freeing memory:
 
-```ruby
+```gd
 extends GdUnitTestSuite
 
 var _obj_a;
@@ -134,6 +134,34 @@ func print_obj_usage(name :String) :
 |      UNPARENTED | [Deleted Object] | [Deleted Object] | [Deleted Object] |
 |       PREDELETE | [Deleted Object] | [Deleted Object] | [Deleted Object] |
 
+## collect_orphan_node_details()
+
+A helper to itemize the orphan nodes detected in the current test, reporting each one's class, instance ID, and the exact
+source line where it was created.
+
+By default, GdUnit only reports how many orphan nodes were detected, since capturing this detail has a runtime cost.
+Call **collect_orphan_node_details()** at the end of a test, or in `before_test()`/`after_test()`, to itemize whatever
+orphans that scope produced. See [Orphan Nodes]({{site.baseurl}}/advanced_testing/orphan/#detailed-orphan-reporting)
+for what the itemized report looks like.
+
+```gd
+func collect_orphan_node_details() -> void:
+```
+
+Here's a small example:
+
+```gd
+func test_scene_management() -> void:
+    var scene := preload("res://TestScene.tscn").instantiate()
+    add_child(scene)
+
+    scene.some_method()
+
+    scene.queue_free()
+    # itemize any orphan nodes left after this test
+    collect_orphan_node_details()
+```
+
 ## create_temp_dir()
 
 This helper function creates a new directory under the temporary directory *user://tmp*,
@@ -143,7 +171,7 @@ The directory is automatically deleted after the test suite has finished executi
 {% tabs tools-create_temp_dir %}
 {% tab tools-create_temp_dir GdScript %}
 
-```ruby
+```gd
 func create_temp_dir(relative_path :String) -> String:
 ```
 
@@ -159,7 +187,7 @@ public static string CreateTempDir(string path);
 
 Here’s an example:
 
-```ruby
+```gd
 func test_save_game_data():
     # create a temporay directory to store test data
     var temp_dir := create_temp_dir("examples/game/save")
@@ -187,7 +215,7 @@ is clean and ready for the next test suite.
 {% tabs tools-clean_temp_dir %}
 {% tab tools-clean_temp_dir GdScript %}
 
-```ruby
+```gd
 func clean_temp_dir():
 ```
 
@@ -209,13 +237,13 @@ If successful, the returned File is automatically closed after the execution of 
 We can create a small test file at the beginning of a test suite in the **before()** function and read it later
 in the test. It is not necessary to close the file, as the GdUnit test runner will close it automatically.
 
-```ruby
+```gd
 func create_temp_file(relative_path :String, file_name :String, mode :=File.WRITE) -> File:
 ```
 
 Here’s an example:
 
-```ruby
+```gd
 # setup test data
 func before():
     # opens a tmp file with WRITE mode under "user://tmp/examples/game/game.sav" (auto closed)
@@ -237,13 +265,13 @@ func test_create_temp_file():
 
 This function reads a resource file located at the given path *\<resource_path\>* and returns its contents as a PackedStringArray.
 
-```ruby
+```gd
 func resource_as_array(resource_path :String) -> PoolStringArray:
 ```
 
 Here’s an example:
 
-```ruby
+```gd
 var rows = ["row a", "row b"]
 var file_content := resource_as_array("res://myproject/test/resources/TestRows.txt")
 assert_array(rows).contains_exactly(file_content)
@@ -253,13 +281,13 @@ assert_array(rows).contains_exactly(file_content)
 
 This function reads a resource file located at the given path \<resource_path\> and returned the content as String.
 
-```ruby
+```gd
 func resource_as_string(resource_path :String) -> String:
 ```
 
 Here’s an example:
 
-```ruby
+```gd
 var rows = "row a\nrow b\n"
 var file_content := resource_as_string("res://myproject/test/resources/TestRows.txt")
 assert_string(rows).is_equal(file_content)

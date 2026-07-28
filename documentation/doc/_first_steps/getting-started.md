@@ -16,12 +16,14 @@ It should be located at `res://first_steps/test_person.gd`.
 class_name TestPerson
 extends Node
 
-var _first_name :String
-var _last_name :String
+var _first_name: String
+var _last_name: String
 
-func _init(first_name :String, last_name :String):
+
+func _init(first_name: String, last_name: String) -> void:
     _first_name = first_name
     _last_name = last_name
+
 
 func full_name() -> String:
     return _first_name + " " + _last_name
@@ -58,12 +60,14 @@ The test run is visualized in the GdUnit4 inspector, allowing you to inspect the
 As you can see, your first test has resulted in a failure: "Test not implemented!" This is because a generated test first fails with this message since
 the assertion `assert_not_yet_implemented()` is used in the test by default.
 
-The failure report message are:
+The failure report shows the call stack that led to the failure:
 ```gd
-line 13: Test not implemented!
+Test not implemented!
+    at test_full_name in test_person_test.gd : 13
 ```
 
-You can double-click on the failed test to jump directly to the test failure.
+Every frame in the call stack is clickable and jumps straight to the corresponding source line. Double-clicking the failed test in the tree does the
+same for its first frame.
 ![jump-to-failure]({{site.baseurl}}/assets/images/first-steps/jump-to-failure.png){:.centered}
 
 ## Complete Your First Test
@@ -99,8 +103,11 @@ The test failure is fixed but now we get a warning!
 
 ![rerun-test-result]({{site.baseurl}}/assets/images/first-steps/rerun-test-result.png){:.centered}
 
-The warning message "Detected <1> orphan nodes during test execution" indicates that we have forgotten to release an object.
+The warning message "Detected 1 possible orphan nodes." indicates that we have forgotten to release an object.
 It means that we still have to release the used object (in this case, TestPerson) after the test to avoid memory leaks.
+
+Add `collect_orphan_node_details()` to get more details about the orphan node and rerun the test.
+![orphan-details-result]({{site.baseurl}}/assets/images/first-steps/run-selected-test-case-with-details.png){:.centered}
 
 To release objects manually, we can use the `free()` function of the object. Another way is to use the included `auto_free` tool,
 which automatically releases all allocated objects at the end of a test.
@@ -111,13 +118,14 @@ which automatically releases all allocated objects at the end of a test.
 func test_full_name() -> void:
     var person := TestPerson.new("King", "Arthur")
     assert_str(person.full_name()).is_equal("King Arthur")
+    
     person.free()
 ```
 {% endtab %}
 {% tab first-step-orphan auto_free() %}
 ```gd
 func test_full_name() -> void:
-    var person :TestPerson = auto_free(TestPerson.new("King", "Arthur"))
+    var person: TestPerson = auto_free(TestPerson.new("King", "Arthur"))
     assert_str(person.full_name()).is_equal("King Arthur")
 ```
 {% endtab %}

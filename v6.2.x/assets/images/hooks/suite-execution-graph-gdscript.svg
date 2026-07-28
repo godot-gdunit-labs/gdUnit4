@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1000" width="900" height="1000">
+  <!-- Background -->
+  <rect width="900" height="1000" fill="#e8e8ff"/>
+
+  <!-- Define arrow marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+      <polygon points="0 0, 10 5, 0 10" fill="#333"/>
+    </marker>
+    <marker id="dashedarrowhead" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+      <polygon points="0 0, 10 5, 0 10" fill="#666"/>
+    </marker>
+  </defs>
+
+
+  <!-- Main Test Execution Flow (center) -->
+
+  <!-- Test Session Start -->
+  <rect x="380" y="120" width="140" height="40" rx="4" fill="#5d41A4"/>
+  <text x="450" y="145" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14">Test Session Start</text>
+
+  <!-- Arrow (conditional - only if hooks succeed) -->
+  <line x1="450" y1="160" x2="450" y2="230" stroke="#333" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#dashedarrowhead)"/>
+
+  <!-- TestSuite Execution Group (including before/after) -->
+  <rect x="300" y="240" width="340" height="560" rx="12" fill="rgba(220, 220, 220, 0.3)" stroke="#666" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="470" y="265" text-anchor="middle" fill="#333" font-family="Arial, sans-serif" font-size="14" font-weight="500">TestSuite Execution</text>
+
+  <!-- before() -->
+  <rect x="390" y="290" width="120" height="40" rx="4" fill="#5d4144"/>
+  <text x="450" y="315" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14">before()</text>
+
+  <!-- Arrow -->
+  <line x1="450" y1="330" x2="450" y2="360" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- TestCase Execution Inner Group -->
+  <rect x="330" y="370" width="280" height="320" rx="10" fill="rgba(200, 200, 200, 0.2)" stroke="#666" stroke-width="1" stroke-dasharray="5,2"/>
+  <text x="470" y="395" text-anchor="middle" fill="#555" font-family="Arial, sans-serif" font-size="13" font-weight="500">TestCase Execution</text>
+
+  <!-- before_test() -->
+  <rect x="380" y="420" width="140" height="40" rx="4" fill="#1d3A44"/>
+  <text x="450" y="445" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14">before_test()</text>
+
+  <!-- Arrow -->
+  <line x1="450" y1="460" x2="450" y2="490" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- test_case() -->
+  <rect x="380" y="500" width="140" height="40" rx="4" fill="#4d4A44"/>
+  <text x="450" y="525" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14">test_case()</text>
+
+  <!-- Arrow -->
+  <line x1="450" y1="540" x2="450" y2="570" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- after_test() -->
+  <rect x="380" y="580" width="140" height="40" rx="4" fill="#1d3A44"/>
+  <text x="450" y="605" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14">after_test()</text>
+
+  <!-- Loop arrows indicating repetition -->
+  <path d="M 540 480 Q 590 430, 590 530 Q 590 630, 540 580"
+        fill="none" stroke="#666" stroke-width="2" stroke-dasharray="5,3"/>
+  <line x1="540" y1="580" x2="530" y2="575" stroke="#666" stroke-width="2"/>
+  <line x1="540" y1="580" x2="530" y2="585" stroke="#666" stroke-width="2"/>
+
+  <!-- Loop annotation -->
+  <text x="610" y="510" fill="#666" font-family="Arial, sans-serif" font-size="11" font-style="italic">Repeat for</text>
+  <text x="610" y="525" fill="#666" font-family="Arial, sans-serif" font-size="11" font-style="italic">each test</text>
+
+  <!-- Arrow from test group to after -->
+  <line x1="450" y1="690" x2="450" y2="720" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- after() -->
+  <rect x="390" y="730" width="120" height="40" rx="4" fill="#5d4144"/>
+  <text x="450" y="755" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14">after()</text>
+
+  <!-- Arrow from TestSuite group -->
+  <line x1="450" y1="800" x2="450" y2="830" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Test Session End -->
+  <rect x="380" y="840" width="140" height="40" rx="4" fill="#5d41A4"/>
+  <text x="450" y="865" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14">Test Session End</text>
+
+  <!-- Legend/Notes Section (right side) -->
+  <rect x="680" y="300" width="200" height="400" rx="8" fill="white" stroke="#ddd" stroke-width="1"/>
+  <text x="780" y="325" text-anchor="middle" fill="#333" font-family="Arial, sans-serif" font-size="13" font-weight="bold">Execution Levels</text>
+
+  <!-- Legend items -->
+  <rect x="700" y="370" width="15" height="15" rx="2" fill="#5d4144"/>
+  <text x="725" y="382" fill="#333" font-family="Arial, sans-serif" font-size="12">Suite level hooks</text>
+
+  <rect x="700" y="400" width="15" height="15" rx="2" fill="#1d3A44"/>
+  <text x="725" y="412" fill="#333" font-family="Arial, sans-serif" font-size="12">Test level hooks</text>
+
+  <!-- Divider -->
+  <line x1="690" y1="430" x2="870" y2="430" stroke="#ddd" stroke-width="1"/>
+
+  <!-- Notes -->
+  <text x="700" y="455" fill="#666" font-family="Arial, sans-serif" font-size="11" font-weight="bold">Execution Order:</text>
+  <text x="700" y="520" fill="#666" font-family="Arial, sans-serif" font-size="10">4. TestSuite:</text>
+  <text x="715" y="535" fill="#666" font-family="Arial, sans-serif" font-size="10">• before()</text>
+  <text x="715" y="550" fill="#666" font-family="Arial, sans-serif" font-size="10">• For each test:</text>
+  <text x="730" y="565" fill="#666" font-family="Arial, sans-serif" font-size="10">- before_test()</text>
+  <text x="730" y="580" fill="#666" font-family="Arial, sans-serif" font-size="10">- test_case()</text>
+  <text x="730" y="595" fill="#666" font-family="Arial, sans-serif" font-size="10">- after_test()</text>
+  <text x="715" y="610" fill="#666" font-family="Arial, sans-serif" font-size="10">• after()</text>
+
+</svg>

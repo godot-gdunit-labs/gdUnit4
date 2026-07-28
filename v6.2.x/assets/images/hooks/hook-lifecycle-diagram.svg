@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 750" width="800" height="750">
+  <!-- Background -->
+  <rect width="800" height="750" fill="#e8e8ff"/>
+  
+  <!-- Define arrow marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+      <polygon points="0 0, 10 5, 0 10" fill="#333"/>
+    </marker>
+    <marker id="dashedarrowhead" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+      <polygon points="0 0, 10 5, 0 10" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <!-- Test Session Start -->
+  <rect x="330" y="20" width="140" height="40" rx="4" fill="#3d4144"/>
+  <text x="400" y="45" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14">Test Session Start</text>
+  
+  <!-- Arrow 1 -->
+  <line x1="400" y1="60" x2="400" y2="90" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Hook Registration -->
+  <rect x="320" y="100" width="160" height="40" rx="4" fill="#2c5282"/>
+  <text x="400" y="125" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14">Hook Registration</text>
+  
+  <!-- Note 1 -->
+  <rect x="500" y="105" width="180" height="30" rx="3" fill="white" stroke="#ddd"/>
+  <text x="590" y="125" text-anchor="middle" fill="#666" font-family="Arial, sans-serif" font-size="12" font-style="italic">All enabled hooks are loaded</text>
+  
+  <!-- Arrow 2 -->
+  <line x1="400" y1="140" x2="400" y2="170" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Priority Sorting -->
+  <rect x="330" y="180" width="140" height="40" rx="4" fill="#2c5282"/>
+  <text x="400" y="205" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14">Priority Sorting</text>
+  
+  <!-- Note 2 -->
+  <rect x="500" y="185" width="160" height="30" rx="3" fill="white" stroke="#ddd"/>
+  <text x="580" y="205" text-anchor="middle" fill="#666" font-family="Arial, sans-serif" font-size="12" font-style="italic">Hooks ordered by priority</text>
+  
+  <!-- Arrow 3 -->
+  <line x1="400" y1="220" x2="400" y2="250" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Startup Phase Group -->
+  <rect x="150" y="260" width="500" height="100" rx="12" fill="rgba(220, 220, 220, 0.3)" stroke="#666" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="400" y="285" text-anchor="middle" fill="#333" font-family="Arial, sans-serif" font-size="14" font-weight="500">Startup Phase</text>
+  
+  <!-- Startup hooks -->
+  <rect x="180" y="310" width="120" height="35" rx="4" fill="#2c5282"/>
+  <text x="240" y="332" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="13">hook.startup()</text>
+  
+  <rect x="340" y="310" width="120" height="35" rx="4" fill="#2c5282"/>
+  <text x="400" y="332" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="13">hook.startup()</text>
+  
+  <rect x="500" y="310" width="120" height="35" rx="4" fill="#2c5282"/>
+  <text x="560" y="332" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="13">...</text>
+  
+  <!-- Arrow 4 (conditional) -->
+  <line x1="400" y1="360" x2="400" y2="400" stroke="#333" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#dashedarrowhead)"/>
+  
+  <!-- Note 3 -->
+  <rect x="420" y="370" width="250" height="30" rx="3" fill="white" stroke="#ddd"/>
+  <text x="545" y="390" text-anchor="middle" fill="#666" font-family="Arial, sans-serif" font-size="12" font-style="italic">only if all hooks start successfully</text>
+  
+  <!-- Test Execution Group -->
+  <rect x="200" y="410" width="400" height="80" rx="12" fill="rgba(220, 220, 220, 0.3)" stroke="#666" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="400" y="435" text-anchor="middle" fill="#333" font-family="Arial, sans-serif" font-size="14" font-weight="500">Test Execution</text>
+  
+  <rect x="320" y="450" width="160" height="35" rx="4" fill="#3d4144"/>
+  <text x="400" y="472" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="13">All test suites run</text>
+  
+  <!-- Arrow 5 -->
+  <line x1="400" y1="490" x2="400" y2="520" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Shutdown Phase Group -->
+  <rect x="150" y="530" width="500" height="100" rx="12" fill="rgba(220, 220, 220, 0.3)" stroke="#666" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="400" y="555" text-anchor="middle" fill="#333" font-family="Arial, sans-serif" font-size="14" font-weight="500">Shutdown Phase (reverse order)</text>
+  
+  <!-- Shutdown hooks -->
+  <rect x="180" y="580" width="120" height="35" rx="4" fill="#2c5282"/>
+  <text x="240" y="602" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="13">hook.shutdown()</text>
+  
+  <rect x="340" y="580" width="120" height="35" rx="4" fill="#2c5282"/>
+  <text x="400" y="602" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="13">hook.shutdown()</text>
+  
+  <rect x="500" y="580" width="120" height="35" rx="4" fill="#2c5282"/>
+  <text x="560" y="602" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="13">...</text>
+  
+  <!-- Arrow 6 -->
+  <line x1="400" y1="630" x2="400" y2="660" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Test Session End -->
+  <rect x="330" y="670" width="140" height="40" rx="4" fill="#3d4144"/>
+  <text x="400" y="695" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14">Test Session End</text>
+</svg>

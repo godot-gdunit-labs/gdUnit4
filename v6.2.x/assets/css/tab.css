@@ -1,0 +1,85 @@
+.tab {
+    background: #edf2fe;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 0px;
+    padding: 0;
+    border-style: groove;
+    border-width: 1px;
+    border-bottom: 2px solid transparent;
+    list-style: circle;
+    position: relative;
+}
+
+.tab>* {
+    border-style: none;
+    flex: none;
+    margin-right: 10px;
+    position: relative;
+}
+
+.tab>*>a {
+    display: block;
+    text-align: left;
+    padding: 0px 10px;
+    color: #999;
+    border-bottom: 4px solid transparent;
+    border-bottom-color: transparent;
+    font-size: 12px;
+    transition: color .1s ease-in-out;
+    line-height: 20px;
+}
+
+.tab>.active>a {
+    color: #222;
+    border-color: rgba(196, 39, 224, 0.722);
+}
+
+.tab li a {
+    text-decoration: none;
+    cursor: pointer;
+    color: black;
+}
+
+ul.tab-content {
+    margin-top: -20px;
+    border-style: groove;
+    border-width: 1px;
+    border-top: 2px solid transparent;
+    border-top-color: transparent;
+    padding: 5px;
+    margin-bottom: unset;
+}
+
+ul.tab {
+    padding-left: 10px;
+}
+
+ul.tab>li::before {
+    content: "";
+}
+
+ul.tab-content>li::before {
+    content: "";
+}
+
+.tab-content {
+    padding-left: 10px;
+}
+
+.tab-content li {
+    display: none;
+}
+
+.tab-content li.active {
+    display: initial;
+}
+
+th, td {
+    text-align: left;
+}
+
+div.highlighter-rouge {
+  margin-bottom: unset;
+  margin-top: 1rem;
+}

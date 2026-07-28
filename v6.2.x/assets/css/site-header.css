@@ -1,0 +1,59 @@
+.site-header {
+    height: 9rem;
+    min-height: 9rem;
+    max-height: 9rem;
+}
+
+.site-nav {
+  padding-top: unset;
+  margin-top: 10px;
+}
+
+.site-logo {
+    width: 120%;
+    height: 160px;
+}
+
+img.centered {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.advice-header {
+    border-style: solid;
+    background: #edf2fe;
+    color: rgba(196, 39, 224, 0.722);
+    cursor: help;
+    font-family: "Gill Sans", Impact, sans-serif;
+    text-transform: uppercase;
+    font-size: 20px;
+    padding: 10px 10px;
+    position: relative;
+    text-align: left;
+    -webkit-transform: translateZ(0);
+    /* webkit flicker fix */
+    -webkit-font-smoothing: antialiased;
+    /* webkit text rendering fix */
+}
+
+.advice-content {
+    background: #ffffff;
+    color: #555;
+    cursor: help;
+    text-transform: none;
+    font-family: "Gill Sans", sans-serif;
+    font-size: 14px;
+    margin-top: 10px;
+    padding: 10px 10px;
+    position: relative;
+    text-align: left;
+    -webkit-transform: translateZ(0);
+    /* webkit flicker fix */
+    -webkit-font-smoothing: antialiased;
+    /* webkit text rendering fix */
+}
+
+footer {
+  padding-left: 2rem;
+}

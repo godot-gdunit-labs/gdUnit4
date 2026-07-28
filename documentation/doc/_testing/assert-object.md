@@ -22,6 +22,7 @@ An assertion tool to verify Objects.
 |[is_not_same]({{site.baseurl}}/testing/assert-object/#is_not_same) | Verifies that the current value is not the same as the given one.|
 |[is_instanceof]({{site.baseurl}}/testing/assert-object/#is_instanceof) | Verifies that the current value is an instance of the given type.|
 |[is_not_instanceof]({{site.baseurl}}/testing/assert-object/#is_not_instanceof) | Verifies that the current value is not an instance of the given type.|
+|[is_valid]({{site.baseurl}}/testing/assert-object/#is_valid) | Verifies that the current value is a valid, unfreed instance.|
 
 {% endtab %}
 {% tab assert-obj-overview C# %}
@@ -316,3 +317,19 @@ AssertThat(new Godot.Path()).IsNotInstanceOf<Node>();
 ```
 {% endtab %}
 {% endtabs %}
+
+### is_valid
+
+Verifies that the current value is a valid, unfreed instance. GdScript only, no C# equivalent.
+```gd
+func assert_object(<current>).is_valid() -> GdUnitObjectAssert
+```
+```gd
+var node := Node.new()
+# this assertion succeeds
+assert_object(node).is_valid()
+
+node.free()
+# should fail because the node has already been freed
+assert_object(node).is_valid()
+```

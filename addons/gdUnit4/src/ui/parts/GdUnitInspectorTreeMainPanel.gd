@@ -735,9 +735,9 @@ func update_test_case(event: GdUnitEvent) -> void:
 		update_item_elapsed_time_counter_recursive(item, event.elapsed_time())
 		if event.is_success() or event.is_warning():
 			update_item_processed_counter(item)
-		update_progress_counters(item)
 		# update the state and add possible reports
 		update_state(item, event)
+		update_progress_counters(item)
 		# update test group
 		if is_test_group(item.get_parent()):
 			update_state(item.get_parent(), event)

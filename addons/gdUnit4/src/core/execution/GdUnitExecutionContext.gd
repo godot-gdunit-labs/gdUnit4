@@ -179,7 +179,7 @@ func set_error(error: GdUnitError) -> void:
 
 
 func last_error() -> GdUnitError:
-	if _report_collector.reports().is_empty():
+	if  _last_error != null:
 		return _last_error
 
 	var last_report: GdUnitReport = _report_collector.reports()[-1]

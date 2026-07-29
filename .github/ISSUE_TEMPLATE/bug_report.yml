@@ -23,8 +23,9 @@ body:
       label: The used GdUnit4 version
       description: Which GdUnit4 version are you using? If your version is not listed, select "Other" and fill in the field below.
       options:
-        - 6.2.0 (Pre Release/Master branch)
-        - 6.1.3 (Latest Release)
+        - 6.2.1 (Pre Release/Master branch)
+        - 6.2.0 (Latest Release)
+        - 6.1.3
         - 6.1.2
         - 6.1.1
         - 6.1.0

@@ -127,6 +127,7 @@ func get_exit_code() -> int:
 ## [br]
 ## [param code] The exit code to return.
 func quit(code: int) -> void:
+	set_process(false)
 	await super(code)
 	get_tree().quit(code)
 

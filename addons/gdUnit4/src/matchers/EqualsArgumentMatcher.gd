@@ -11,7 +11,7 @@ func _init(current :Variant, auto_deep_check_mode := false) -> void:
 
 
 func is_match(value :Variant) -> bool:
-	var case_sensitive_check := true
+	var case_sensitive_check := false
 	return GdObjects.equals(_current, value, case_sensitive_check, compare_mode(value))
 
 

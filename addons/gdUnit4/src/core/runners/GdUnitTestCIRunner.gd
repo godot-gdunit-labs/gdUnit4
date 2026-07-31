@@ -125,8 +125,15 @@ func get_exit_code() -> int:
 
 ## Cleanup and quit the runner.[br]
 ## [br]
+## Stops the process loop first: [method GdUnitTestSessionRunner.quit] awaits several frames
+## after disposing resources, and [method GdUnitTestSessionRunner._process] would otherwise
+## re-enter [method init_gd_unit] in those frames, because the error paths leave [member _state]
+## at [code]INIT[/code]. Re-entering after disposal turned exit code 105 into 0 on a small
+## project and into a [code]signal 11[/code] crash on a larger one.[br]
+## [br]
 ## [param code] The exit code to return.
 func quit(code: int) -> void:
+	set_process(false)
 	await super(code)
 	get_tree().quit(code)
 

@@ -79,7 +79,7 @@ jobs:
           set -euo pipefail
           # Every issue form template applies TEMPLATE_LABEL on submission. Its absence means the
           # issue bypassed every template, most commonly by being filed straight through the API.
-          if jq -e --arg label "$TEMPLATE_LABEL" '[.labels[]?.name] | index($label) != null' triage/issue.json > /dev/null; then
+          if jq -e --arg wanted_label "$TEMPLATE_LABEL" '[.labels[]?.name] | index($wanted_label) != null' triage/issue.json > /dev/null; then
             echo "bypass=false" >> "$GITHUB_OUTPUT"
           else
             echo "bypass=true" >> "$GITHUB_OUTPUT"

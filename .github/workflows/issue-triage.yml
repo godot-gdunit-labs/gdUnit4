@@ -251,6 +251,10 @@ jobs:
             and were invented to look convincing.
           - "misaligned_reasoning": the high level bug description contradicts the reproduction steps or the
             cited code path within the same report.
+          - "disproportionate_scope": the report is substantially more elaborate than the bug it describes
+            requires, evidenced by restating the same information more than once in different sections or
+            formats, such as a separate embedded draft duplicating the template's own sections. A long,
+            detailed, but non-redundant report is never this signal by itself.
 
           Code and naming artifacts:
           - "language_framework_confusion": the GDScript code mixes in Godot 3 syntax, or accidentally uses
@@ -323,9 +327,9 @@ jobs:
                       type: "STRING",
                       enum: [
                         "draft_scaffolding_leak", "line_mismatch", "invented_artifacts", "misaligned_reasoning",
-                        "language_framework_confusion", "hallucinated_cli_flags", "over_specified_solution_offer",
-                        "over_commented_repro_code", "explaining_basics_to_maintainers", "llm_transition_phrases",
-                        "fabricated_methodology_claims"
+                        "disproportionate_scope", "language_framework_confusion", "hallucinated_cli_flags",
+                        "over_specified_solution_offer", "over_commented_repro_code", "explaining_basics_to_maintainers",
+                        "llm_transition_phrases", "fabricated_methodology_claims"
                       ]
                     }
                   },

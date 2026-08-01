@@ -391,6 +391,10 @@ jobs:
             ' triage/review.json)
             confident=$(jq -rn --argjson a "$confidence" --argjson b "$MIN_CONFIDENCE" '$a >= $b')
 
+            # Plain stdout, not the step summary, so this is visible via `gh run view --log`.
+            echo "raw Gemini verdict: $(jq -c '.' triage/review.json)"
+            echo "hard signal count: $llm_hard_count, total signal count: $llm_signal_count, confident: $confident"
+
             if [ "$verdict" = 'unsubstantiated' ] && [ "$confident" = 'true' ] && [ "$unsupported_count" -gt 0 ]; then
               unsubstantiated_hit='true'
             fi

@@ -277,7 +277,8 @@ jobs:
           - "explaining_basics_to_maintainers": the report explains basic testing or framework concepts to the
             repository's own maintainers, such as why unit test assertions matter, or what a GdUnit4 checkout is.
           - "llm_transition_phrases": heavy, repeated use of stock transition phrases such as "Upon inspecting...",
-            "Furthermore...", "It is worth noting...", or "To address this issue...".
+            "Furthermore...", "It is worth noting...", "To address this issue...", "Please note that...", "It is
+            crucial to observe...", or "Upon closer inspection...".
           - "fabricated_methodology_claims": claims an elaborate discovery method such as "found while
             mutation-testing" or "discovered during automated fuzzing", paired with a reproduction that is a
             simple, hand written snippet with no trace of such tooling.

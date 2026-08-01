@@ -354,15 +354,33 @@ jobs:
             }
           }' > triage/request.json
 
-          curl --silent --show-error --fail-with-body \
+          # A curl or jq failure here must never crash the job: it would abort before the
+          # decide/apply steps report anything at all, leaving this run's outcome completely
+          # unrecorded instead of a graceful "check unavailable this run".
+          if ! curl --silent --show-error --fail-with-body \
             --retry 3 --retry-delay 5 --max-time 120 \
             -X POST "https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent" \
             -H 'content-type: application/json' \
             -H "x-goog-api-key: ${GEMINI_API_KEY}" \
-            -d @triage/request.json > triage/response.json
+            -d @triage/request.json > triage/response.json; then
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "Gemini request failed, substantiation and noise checks are skipped for this run." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
 
           jq -r '.candidates[0].content.parts[0].text' triage/response.json > triage/review.json
-          jq -e 'has("verdict")' triage/review.json > /dev/null
+
+          # Every field the decide step reads must actually be present, not just "verdict": a
+          # degraded response can carry some fields while silently missing others.
+          if ! jq -e '
+            has("verdict") and has("confidence") and has("unsupported_references")
+            and has("llm_signals") and has("llm_signal_evidence")
+          ' triage/review.json > /dev/null 2>&1; then
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "Gemini response was incomplete, substantiation and noise checks are skipped for this run." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
           echo "configured=true" >> "$GITHUB_OUTPUT"
 
       - name: Decide Triage Outcome

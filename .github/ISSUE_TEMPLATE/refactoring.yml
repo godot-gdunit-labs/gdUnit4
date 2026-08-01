@@ -1,7 +1,7 @@
 name: Refactoring
 description: Create a refactoring issue to improve GdUnit4 codebase
 title: "GD-XXX: Brief description of the refactoring"
-labels: ["refactoring"]
+labels: ["refactoring", "status:template-used"]
 projects: ["godot-gdunit-labs/3"]
 type: task
 assignees:

@@ -390,6 +390,7 @@ jobs:
               )] | length
             ' triage/review.json)
             confident=$(jq -rn --argjson a "$confidence" --argjson b "$MIN_CONFIDENCE" '$a >= $b')
+            draft_leak_hit=$(jq -r '.llm_signals | index("draft_scaffolding_leak") != null' triage/review.json)
 
             # Plain stdout, not the step summary, so this is visible via `gh run view --log`.
             echo "raw Gemini verdict: $(jq -c '.' triage/review.json)"
@@ -400,8 +401,12 @@ jobs:
             fi
             # Two signals was too easy to trip on a genuine, detailed report, so require at least
             # three independent signals, at least one of them hard evidence, before treating a
-            # report as fabricated noise.
+            # report as fabricated noise. draft_scaffolding_leak is the one exception: no genuine
+            # report can contain literal drafting or submission meta-commentary, so it closes on
+            # its own once the model is confident it actually found that text.
             if [ "$llm_signal_count" -ge 3 ] && [ "$llm_hard_count" -ge 1 ]; then
+              llm_noise_hit='true'
+            elif [ "$draft_leak_hit" = 'true' ] && [ "$confident" = 'true' ]; then
               llm_noise_hit='true'
             fi
           fi

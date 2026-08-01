@@ -34,7 +34,7 @@ env:
   MARKER: '<!-- gdunit4-issue-triage -->'
   TEMPLATE_LABEL: 'status:template-used'
   UNVERIFIABLE_LABEL: 'invalid'
-  GEMINI_MODEL: 'gemini-3.6-flash'
+  GEMINI_MODEL: 'gemini-3.5-flash'
   MIN_CONFIDENCE: '0.8'
 
 jobs:

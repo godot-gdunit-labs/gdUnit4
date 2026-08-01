@@ -1,7 +1,7 @@
 name: Bug Report
 description: Report a GdUnit4 bug
 title: "GD-XXX: Brief description of the issue"
-labels: ["API"]
+labels: ["API", "status:template-used"]
 type: bug
 projects: ["godot-gdunit-labs/3"]
 assignees:
@@ -16,6 +16,9 @@ body:
           potential duplicates before filing yours.
         - Verify that you are using a [supported Godot version](https://docs.godotengine.org/en/stable/about/release_policy.html).
           Please always check if your issue is reproducible in the latest version – it may already have been fixed!
+        - **Note on Fix Proposals & Code Research:** Bug reports should focus on describing the observed behavior and steps to reproduce.
+          If you have investigated the root cause or have a proposed fix, please submit a Pull Request directly rather than embedding technical research
+          in the issue body.
 
   - type: dropdown
     id: gdunit-version
@@ -91,6 +94,7 @@ body:
         **Additional context**
         Any other relevant information, error messages, or screenshots.
         You can include images or videos with drag and drop, and format code blocks or logs with <code>```</code> tags.
+        Note: Detailed code walkthroughs or proposed fixes should be submitted as a Pull Request rather than in the issue body.
     validations:
       required: true
 

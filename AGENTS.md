@@ -233,6 +233,37 @@ git config core.hooksPath .githooks
 
 When editing or creating `.tscn` files, do not manually remove uid attributes — the hook handles it automatically on commit.
 
+## Automated Issue Triage
+
+`.github/workflows/issue-triage.yml` checks every incoming issue when it is opened and again on every later
+edit, so content that is replaced after creation is judged like a fresh submission. The rules apply to every
+author, maintainers included.
+
+Two checks run per issue:
+
+| Check | Outcome |
+| ----- | ------- |
+| Issue was not filed through one of the provided issue templates (missing the `status:template-used` label every template applies on submission) | Closes the issue as not planned, asking the author to reopen using the "New issue" page. Free and instant, no model call |
+| Referenced GdUnit4 API does not exist in the repository, or the report shows concrete signs of fabricated content | Labels the issue `invalid`, explains why generated low quality content is not accepted, and closes it as not planned |
+
+Issues that predate the tracking label have no way to carry it and will be treated as a bypass on their next
+edit unless the label is added manually first.
+
+The second check runs on Gemini 3.6 Flash through the Google AI Studio free tier, and only fires once an issue
+already passes the first check, so quota is spent on issues worth judging. It is grounded by a static scan that
+resolves every GdUnit4 shaped name in the report against `addons/gdUnit4/` and `documentation/`. Only names in
+the GdUnit4 namespace are considered, so classes and functions from the reporter's own project are never
+flagged. All results are written into a single sticky comment that is updated in place, so repeated runs never
+flood an issue.
+
+### Enabling
+
+1. Add the repository secret `GEMINI_API_KEY` with a key from [Google AI Studio](https://aistudio.google.com/apikey).
+   Without it the substantiation and noise check reports that it is not configured and touches nothing.
+2. Real issue events (`opened`, `edited`) apply their decision immediately, there is no staged rollout. Test first
+   by triggering the workflow manually with `dry_run: true` against a real issue number to inspect the decision
+   in the job summary without the issue being modified.
+
 ### Before Pushing
 
 Run all linting locally before pushing to avoid CI failures:

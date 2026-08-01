@@ -238,16 +238,21 @@ jobs:
           cannot back with concrete evidence from the report itself.
 
           Core fabrication signals:
-          - "over_detailed": includes simulated terminal output, synthetic control tests, or a source walkthrough
-            that invents behaviour instead of describing the real code.
-          - "line_mismatch": cites specific file and line numbers whose actual content, checked against the
-            template list and this issue's own text, does not say what the report claims it says.
+          - "draft_scaffolding_leak": the report contains literal meta-commentary about its own drafting or
+            submission, such as "draft", "not yet submitted", "copy the body below verbatim", or an instruction
+            seemingly addressed to whoever writes or files the issue rather than to the maintainer reading it.
+            This is a direct, unambiguous tell on its own.
+          - "line_mismatch": cites a specific file and line number whose actual content, checked against this
+            issue's own text, does not say what the report claims it says there. Providing real terminal output,
+            a real passing counterpart test, or example identifiers for a minimal reproduction is normal practice
+            and never counts as this signal or any other, only a checkable factual citation that turns out wrong
+            does.
           - "invented_artifacts": uses settings, timing logs, or code comments that do not exist in this project
             and were invented to look convincing.
           - "misaligned_reasoning": the high level bug description contradicts the reproduction steps or the
             cited code path within the same report.
 
-           Code and naming artifacts:
+          Code and naming artifacts:
           - "language_framework_confusion": the GDScript code mixes in Godot 3 syntax, or accidentally uses
             Python syntax such as "def" or "self.foo" where GDScript syntax is required.
 
@@ -259,19 +264,12 @@ jobs:
             describes or that the templates above make clear exist.
 
           Style, formatting and corroborating signals, corroborating only:
-          These signals describe styling, organization, tone, or placeholder choices, and can occur in
-          high-quality, genuine reports too. Report them only as supporting evidence alongside a core
-          fabrication, code artifact, or structural signal above, never as your only evidence, and never
-          let them affect CHECK 1.
-          - "generic_placeholder_identifiers": the reproduction code uses abstract invented names such as
-            "ReproGreeter", "some_method", "Foo", "Bar" or "my_object" throughout, instead of the kind of
-            project specific names a real user copies out of their own script, such as "player_stats.gd" or
-            "on_health_changed".
+          These signals describe styling, organization or tone, and can occur in high-quality, genuine reports
+          too. Report them only as supporting evidence alongside a core fabrication, code artifact, or
+          structural signal above, never as your only evidence, and never let them affect CHECK 1.
           - "over_commented_repro_code": the reproduction code contains narrative explanations inside code
             comments, such as "# No call was ever made... so this should fail", instead of in the surrounding
             text.
-          - "unnecessary_control_group": the report includes a passing "control" test purely to contrast against
-            the failing one, where a real user reporting a real failure would have no reason to write one.
           - "explaining_basics_to_maintainers": the report explains basic testing or framework concepts to the
             repository's own maintainers, such as why unit test assertions matter, or what a GdUnit4 checkout is.
           - "llm_transition_phrases": heavy, repeated use of stock transition phrases such as "Upon inspecting...",
@@ -324,10 +322,10 @@ jobs:
                     items: {
                       type: "STRING",
                       enum: [
-                        "over_detailed", "line_mismatch", "invented_artifacts", "misaligned_reasoning",
-                        "generic_placeholder_identifiers", "language_framework_confusion", "over_commented_repro_code",
-                        "hallucinated_cli_flags", "over_specified_solution_offer", "unnecessary_control_group",
-                        "explaining_basics_to_maintainers", "llm_transition_phrases", "fabricated_methodology_claims"
+                        "draft_scaffolding_leak", "line_mismatch", "invented_artifacts", "misaligned_reasoning",
+                        "language_framework_confusion", "hallucinated_cli_flags", "over_specified_solution_offer",
+                        "over_commented_repro_code", "explaining_basics_to_maintainers", "llm_transition_phrases",
+                        "fabricated_methodology_claims"
                       ]
                     }
                   },
@@ -387,8 +385,7 @@ jobs:
                 . as $s
                 | ([
                     "explaining_basics_to_maintainers", "llm_transition_phrases",
-                    "fabricated_methodology_claims", "generic_placeholder_identifiers",
-                    "over_commented_repro_code", "unnecessary_control_group"
+                    "fabricated_methodology_claims", "over_commented_repro_code"
                   ] | index($s)) | not
               )] | length
             ' triage/review.json)
@@ -397,10 +394,10 @@ jobs:
             if [ "$verdict" = 'unsubstantiated' ] && [ "$confident" = 'true' ] && [ "$unsupported_count" -gt 0 ]; then
               unsubstantiated_hit='true'
             fi
-            # A single signal is easy to trip on a terse but genuine report, so require at least two
-            # independent signals, at least one of them hard evidence, before treating a report as
-            # fabricated noise.
-            if [ "$llm_signal_count" -ge 2 ] && [ "$llm_hard_count" -ge 1 ]; then
+            # Two signals was too easy to trip on a genuine, detailed report, so require at least
+            # three independent signals, at least one of them hard evidence, before treating a
+            # report as fabricated noise.
+            if [ "$llm_signal_count" -ge 3 ] && [ "$llm_hard_count" -ge 1 ]; then
               llm_noise_hit='true'
             fi
           fi

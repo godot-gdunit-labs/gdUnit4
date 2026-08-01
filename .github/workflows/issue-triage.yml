@@ -40,7 +40,7 @@ env:
 jobs:
   check-template-usage:
     name: Check Template Usage
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     outputs:
       bypass: ${{ steps.template.outputs.bypass }}
@@ -161,7 +161,7 @@ jobs:
     name: LLM Review
     needs: check-template-usage
     if: needs.check-template-usage.outputs.bypass != 'true'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
 
     steps:

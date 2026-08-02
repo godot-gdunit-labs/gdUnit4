@@ -1,9 +1,9 @@
-name: Refactoring
-description: Create a refactoring issue to improve GdUnit4 codebase
-title: "GD-XXX: Brief description of the refactoring"
-labels: ["refactoring"]
+name: Improvement
+description: Create an improvement issue to improve GdUnit4 codebase
+title: "GD-XXX: Brief description of the improvement"
+labels: ["improvement"]
 projects: ["godot-gdunit-labs/3"]
-type: refactoring
+type: improvement
 assignees:
   - MikeSchulze
 
@@ -19,7 +19,7 @@ body:
   - type: dropdown
     id: refactoring-type
     attributes:
-      label: Refactoring Type
+      label: Improvement Type
       description: What type of refactoring is this?
       options:
         - Code cleanup/organization

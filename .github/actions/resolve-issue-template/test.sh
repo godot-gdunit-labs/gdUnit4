@@ -62,9 +62,9 @@ run_case "task" \
   4 open 'Task' \
   '["task-category","task-description","acceptance-criteria"]'
 
-run_case "refactoring" \
-  '{"number":5,"state":"open","type":{"name":"Refactoring"},"labels":[{"name":"refactoring"}]}' \
-  5 open 'Refactoring' \
+run_case "improvement" \
+  '{"number":5,"state":"open","type":{"name":"Improvement"},"labels":[{"name":"improvement"}]}' \
+  5 open 'Improvement' \
   '["refactoring-type","current-state","problems-motivation","proposed-changes","affected-areas","backward-compatibility"]'
 
 run_case "unrecognized type" \

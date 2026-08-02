@@ -62,10 +62,10 @@ run_case "task" \
   4 open 'Task' \
   '["task-category","task-description","acceptance-criteria"]'
 
-run_case "refactoring" \
-  '{"number":5,"state":"open","type":{"name":"Refactoring"},"labels":[{"name":"refactoring"}]}' \
-  5 open 'Refactoring' \
-  '["refactoring-type","current-state","problems-motivation","proposed-changes","affected-areas","backward-compatibility"]'
+run_case "improvement" \
+  '{"number":5,"state":"open","type":{"name":"Improvement"},"labels":[{"name":"improvement"}]}' \
+  5 open 'Improvement' \
+  '["improvement-type","current-state","problems-motivation","proposed-changes","affected-areas","backward-compatibility"]'
 
 run_case "unrecognized type" \
   '{"number":6,"state":"open","type":null,"labels":[]}' \

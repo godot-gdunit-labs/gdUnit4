@@ -12,15 +12,15 @@ body:
     attributes:
       value: |
         ### Thanks for suggesting code improvements!
-        - Please search [existing refactoring issues](https://github.com/MikeSchulze/gdUnit4/issues?q=label%3Arefactoring%20is%3Aissue) to avoid duplicates
+        - Please search [existing improvement issues](https://github.com/MikeSchulze/gdUnit4/issues?q=label%3Aimprovement%20is%3Aissue) to avoid duplicates
         - Consider the impact on existing users and backward compatibility
         - Focus on improving code quality, maintainability, or performance
 
   - type: dropdown
-    id: refactoring-type
+    id: improvement-type
     attributes:
       label: Improvement Type
-      description: What type of refactoring is this?
+      description: What type of improvement is this?
       options:
         - Code cleanup/organization
         - Performance optimization
@@ -38,7 +38,7 @@ body:
     id: current-state
     attributes:
       label: Current State
-      description: What is the current implementation that needs refactoring?
+      description: What is the current implementation that needs improving?
       placeholder: |
         Describe the current code/implementation:
         - Which files, classes, or functions are affected?
@@ -58,9 +58,9 @@ body:
     id: problems-motivation
     attributes:
       label: Problems and Motivation
-      description: Why does this refactoring need to happen?
+      description: Why does this improvement need to happen?
       placeholder: |
-        Explain the motivation for this refactoring:
+        Explain the motivation for this improvement:
         - What problems does the current code have?
         - How does it impact maintainability, performance, or usability?
         - What technical debt would this address?
@@ -74,7 +74,7 @@ body:
       label: Proposed Changes
       description: What specific changes do you propose?
       placeholder: |
-        Describe the proposed refactoring:
+        Describe the proposed improvement:
         - What would the new implementation look like?
         - Which design patterns or approaches would you use?
         - How would the API change (if at all)?
@@ -121,7 +121,7 @@ body:
     id: implementation-approach
     attributes:
       label: Implementation Approach
-      description: How should this refactoring be implemented?
+      description: How should this improvement be implemented?
       placeholder: |
         Suggest an implementation approach:
         - Could this be done incrementally?

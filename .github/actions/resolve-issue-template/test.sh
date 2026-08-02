@@ -65,7 +65,7 @@ run_case "task" \
 run_case "improvement" \
   '{"number":5,"state":"open","type":{"name":"Improvement"},"labels":[{"name":"improvement"}]}' \
   5 open 'Improvement' \
-  '["refactoring-type","current-state","problems-motivation","proposed-changes","affected-areas","backward-compatibility"]'
+  '["improvement-type","current-state","problems-motivation","proposed-changes","affected-areas","backward-compatibility"]'
 
 run_case "unrecognized type" \
   '{"number":6,"state":"open","type":null,"labels":[]}' \

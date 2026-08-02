@@ -1,0 +1,94 @@
+name: LLM Issue Review
+description: Runs LLM based substantiation, template-completeness, and noise checks on an issue, then applies or reports the triage outcome.
+
+inputs:
+  issue-number:
+    description: Number of the issue to review.
+    required: true
+  issue-state:
+    description: The issue's current state, open or closed.
+    required: true
+  template-name:
+    description: Name of the issue template this issue used.
+    required: true
+  required-ids:
+    description: JSON array of the template's required field ids.
+    required: true
+  dry-run:
+    description: If true, only report the decision, do not touch the issue.
+    required: true
+  llm-api-key:
+    description: API key for the LLM provider. Checks are skipped when empty.
+    required: true
+  llm-model:
+    description: LLM model to call.
+    required: false
+    default: gemini-3.5-flash
+  min-confidence:
+    description: Minimum LLM confidence required to act on a check.
+    required: false
+    default: '0.8'
+  marker:
+    description: HTML comment marker used to find and update this action's sticky comment.
+    required: false
+    default: '<!-- gdunit4-issue-triage -->'
+  unverifiable-label:
+    description: Label applied when an issue is closed by this check.
+    required: false
+    default: invalid
+  github-token:
+    description: Token used to read the issue and post the outcome.
+    required: false
+    default: ${{ github.token }}
+
+runs:
+  using: composite
+  steps:
+    - name: Collect Issue Payload
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        ISSUE_NUMBER: ${{ inputs.issue-number }}
+      run: ${{ github.action_path }}/collect-issue-payload.sh
+
+    - name: Resolve Referenced API Names
+      shell: bash
+      run: ${{ github.action_path }}/resolve-referenced-api-names.sh
+
+    - name: Build Review Prompt
+      shell: bash
+      env:
+        TEMPLATE_NAME: ${{ inputs.template-name }}
+        REQUIRED_IDS: ${{ inputs.required-ids }}
+      run: ${{ github.action_path }}/build-review-prompt.sh
+
+    - id: review
+      name: Review Issue
+      shell: bash
+      env:
+        LLM_API_KEY: ${{ inputs.llm-api-key }}
+        LLM_MODEL: ${{ inputs.llm-model }}
+      run: ${{ github.action_path }}/review-issue.sh
+
+    - id: decide
+      name: Decide Triage Outcome
+      shell: bash
+      env:
+        ISSUE_STATE: ${{ inputs.issue-state }}
+        REVIEW_CONFIGURED: ${{ steps.review.outputs.configured }}
+        MARKER: ${{ inputs.marker }}
+        UNVERIFIABLE_LABEL: ${{ inputs.unverifiable-label }}
+        MIN_CONFIDENCE: ${{ inputs.min-confidence }}
+      run: ${{ github.action_path }}/decide-triage-outcome.sh
+
+    - name: Apply Triage Outcome
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        NUMBER: ${{ inputs.issue-number }}
+        ADD_LABEL: ${{ steps.decide.outputs.add_label }}
+        CLOSE: ${{ steps.decide.outputs.close }}
+        REASON: ${{ steps.decide.outputs.reason }}
+        DRY_RUN: ${{ inputs.dry-run }}
+        MARKER: ${{ inputs.marker }}
+      run: ${{ github.action_path }}/apply-triage-outcome.sh

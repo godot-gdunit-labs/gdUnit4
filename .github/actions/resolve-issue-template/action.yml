@@ -1,0 +1,35 @@
+name: Resolve Issue Template
+description: Fetches an issue and resolves which issue template its type and labels match, plus that template's required field ids.
+
+inputs:
+  issue-number:
+    description: Number of the issue to resolve.
+    required: true
+  github-token:
+    description: Token used to read the issue via the GitHub API.
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  number:
+    description: The issue number.
+    value: ${{ steps.resolve.outputs.number }}
+  state:
+    description: The issue's state, open or closed.
+    value: ${{ steps.resolve.outputs.state }}
+  template-name:
+    description: Name of the matched template. Empty if the issue's type matches no known template.
+    value: ${{ steps.resolve.outputs.template-name }}
+  required-ids:
+    description: JSON array of the matched template's required field ids.
+    value: ${{ steps.resolve.outputs.required-ids }}
+
+runs:
+  using: composite
+  steps:
+    - id: resolve
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        ISSUE_NUMBER: ${{ inputs.issue-number }}
+      run: ${{ github.action_path }}/resolve.sh

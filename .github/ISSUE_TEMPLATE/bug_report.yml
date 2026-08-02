@@ -1,7 +1,7 @@
 name: Bug Report
 description: Report a GdUnit4 bug
 title: "GD-XXX: Brief description of the issue"
-labels: ["API", "status:template-used"]
+labels: ["API"]
 type: bug
 projects: ["godot-gdunit-labs/3"]
 assignees:
@@ -126,6 +126,8 @@ body:
             # Your code here
             pass
         ```
+    validations:
+      required: true
 
   - type: textarea
     id: example-project

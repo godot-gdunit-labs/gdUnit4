@@ -1,7 +1,7 @@
 name: Task
 description: A small task to implement/fix non-API related work
 title: "TASK-XXX: Brief description of the task"
-labels: ["API", "status:template-used"]
+labels: ["API"]
 projects: ["godot-gdunit-labs/3"]
 type: task
 assignees:

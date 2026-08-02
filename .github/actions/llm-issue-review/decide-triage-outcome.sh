@@ -2,6 +2,7 @@
 set -euo pipefail
 
 add_label=''
+remove_label=''
 close='false'
 
 unsubstantiated_hit='false'
@@ -69,6 +70,7 @@ if [ "$unsubstantiated_hit" = 'true' ] || [ "$llm_noise_hit" = 'true' ] || [ "$i
   reason=$(printf '%s, ' "${reasons[@]}")
   reason=${reason%, }
   add_label="$UNVERIFIABLE_LABEL"
+  remove_label="$PASSED_LABEL"
   if [ "$ISSUE_STATE" = 'open' ]; then
     close='true'
   fi
@@ -108,23 +110,13 @@ if [ "$unsubstantiated_hit" = 'true' ] || [ "$llm_noise_hit" = 'true' ] || [ "$i
   } > triage/comment.md
 else
   reason='no action required'
-  {
-    echo "$MARKER"
-    echo
-    echo '## Triage passed'
-    echo
-    if [ "$REVIEW_CONFIGURED" = 'true' ]; then
-      echo 'This issue was filed through one of the provided issue templates and the referenced API'
-      echo 'exists in this repository. Thanks for the well prepared report.'
-    else
-      echo 'This issue was filed through one of the provided issue templates. The substantiation and'
-      echo 'noise checks were skipped because LLM_API_KEY is not configured.'
-    fi
-  } > triage/comment.md
+  add_label="$PASSED_LABEL"
+  remove_label="$UNVERIFIABLE_LABEL"
 fi
 
 {
   echo "add_label=$add_label"
+  echo "remove_label=$remove_label"
   echo "close=$close"
   echo "reason=$reason"
 } >> "$GITHUB_OUTPUT"

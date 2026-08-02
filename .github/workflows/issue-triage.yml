@@ -33,7 +33,8 @@ permissions:
 
 env:
   MARKER: '<!-- gdunit4-issue-triage -->'
-  UNVERIFIABLE_LABEL: 'invalid'
+  UNVERIFIABLE_LABEL: 'triage:failed'
+  PASSED_LABEL: 'triage:passed'
   LLM_MODEL: 'gemini-3.5-flash'
   MIN_CONFIDENCE: '0.8'
 
@@ -168,3 +169,4 @@ jobs:
           min-confidence: ${{ env.MIN_CONFIDENCE }}
           marker: ${{ env.MARKER }}
           unverifiable-label: ${{ env.UNVERIFIABLE_LABEL }}
+          passed-label: ${{ env.PASSED_LABEL }}

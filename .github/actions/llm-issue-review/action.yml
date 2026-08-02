@@ -35,7 +35,11 @@ inputs:
   unverifiable-label:
     description: Label applied when an issue is closed by this check.
     required: false
-    default: invalid
+    default: 'triage:failed'
+  passed-label:
+    description: Label applied when an issue passes every check, no comment is posted for this case.
+    required: false
+    default: 'triage:passed'
   github-token:
     description: Token used to read the issue and post the outcome.
     required: false
@@ -78,6 +82,7 @@ runs:
         REVIEW_CONFIGURED: ${{ steps.review.outputs.configured }}
         MARKER: ${{ inputs.marker }}
         UNVERIFIABLE_LABEL: ${{ inputs.unverifiable-label }}
+        PASSED_LABEL: ${{ inputs.passed-label }}
         MIN_CONFIDENCE: ${{ inputs.min-confidence }}
       run: ${{ github.action_path }}/decide-triage-outcome.sh
 
@@ -87,6 +92,7 @@ runs:
         GH_TOKEN: ${{ inputs.github-token }}
         NUMBER: ${{ inputs.issue-number }}
         ADD_LABEL: ${{ steps.decide.outputs.add_label }}
+        REMOVE_LABEL: ${{ steps.decide.outputs.remove_label }}
         CLOSE: ${{ steps.decide.outputs.close }}
         REASON: ${{ steps.decide.outputs.reason }}
         DRY_RUN: ${{ inputs.dry-run }}

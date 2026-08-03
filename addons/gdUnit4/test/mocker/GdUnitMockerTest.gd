@@ -855,6 +855,28 @@ func test_verify_fail() -> void:
 		.has_message(expected_error)
 
 
+func test_verify_string_argument_mach_case_sensitive() -> void:
+	var mocked_node: Variant = mock(Node)
+
+	# Act
+	mocked_node.set_name("foo")
+
+	# Verify it fails by checking the arguments case sensitive
+	var expected_error := """
+		Expecting interaction on:
+			'set_name(Foo :String)'	1 time's
+		But found interactions on:
+			'set_name(foo :String)'	1 time's""" \
+		.dedent().trim_prefix("\n").replace("\r", "")
+	assert_failure(func() -> void: verify(mocked_node).set_name("Foo")) \
+		.is_failed() \
+		.has_message(expected_error)
+
+	# Finally we verify by using the correct lowercase argument
+	verify(mocked_node).set_name("foo")
+	verify_no_more_interactions(mocked_node)
+
+
 func test_verify_func_interaction_wiht_PoolStringArray() -> void:
 	var mocked: Variant = mock(ClassWithPoolStringArrayFunc)
 

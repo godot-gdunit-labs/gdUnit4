@@ -60,20 +60,20 @@ func is_not_null() -> GdUnitStringAssert:
 
 
 func is_equal(expected: Variant) -> GdUnitStringAssert:
-	return _is_equal(expected, false, GdAssertMessages.error_equal)
+	return _is_equal(expected, true, GdAssertMessages.error_equal)
 
 
 func is_equal_ignoring_case(expected: Variant) -> GdUnitStringAssert:
-	return _is_equal(expected, true, GdAssertMessages.error_equal_ignoring_case)
+	return _is_equal(expected, false, GdAssertMessages.error_equal_ignoring_case)
 
 
 @warning_ignore_start("unsafe_call_argument")
-func _is_equal(expected: Variant, ignore_case: bool, message_cb: Callable) -> GdUnitStringAssert:
+func _is_equal(expected: Variant, case_sensitive: bool, message_cb: Callable) -> GdUnitStringAssert:
 	var current: Variant = current_value()
 	if current == null:
 		return report_error(message_cb.call(current, expected))
 	var cur_value := str(current)
-	if not GdObjects.equals(cur_value, expected, ignore_case):
+	if not GdObjects.equals(cur_value, expected, case_sensitive):
 		var exp_value := str(expected)
 		if contains_bbcode(cur_value):
 			# mask user bbcode
@@ -95,7 +95,7 @@ func is_not_equal(expected: Variant) -> GdUnitStringAssert:
 
 func is_not_equal_ignoring_case(expected :Variant) -> GdUnitStringAssert:
 	var current :Variant = current_value()
-	if GdObjects.equals(current, expected, true):
+	if GdObjects.equals(current, expected, false):
 		return report_error(GdAssertMessages.error_not_equal(current, expected))
 	return report_success()
 

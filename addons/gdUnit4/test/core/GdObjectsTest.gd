@@ -29,6 +29,12 @@ func test_equals_string() -> void:
 	assert_bool(GdObjects.equals(d, Vector3.ONE)).is_false()
 
 
+func test_equals_string_case_insensitive() -> void:
+	assert_bool(GdObjects.equals("abc", "abC", false)).is_true()
+	assert_bool(GdObjects.equals("abc", "ABC", false)).is_true()
+	assert_bool(GdObjects.equals("abc", "abd", false)).is_false()
+
+
 func test_equals_stringname() -> void:
 	assert_bool(GdObjects.equals("",  &"")).is_true()
 	assert_bool(GdObjects.equals("abc", &"abc")).is_true()

@@ -107,8 +107,10 @@ func _init_statistic_panels(state: STATE) -> void:
 	btn_down.texture_normal = texture_normal
 	btn_down.texture_hover = texture_hover
 	btn_down.texture_pressed = texture_pressed
-	btn_up.pressed.connect(_on_button_up.bind(state))
-	btn_down.pressed.connect(_on_button_down.bind(state))
+	if not btn_up.pressed.is_connected(_on_button_up):
+		btn_up.pressed.connect(_on_button_up.bind(state))
+	if not btn_down.pressed.is_connected(_on_button_down):
+		btn_down.pressed.connect(_on_button_down.bind(state))
 
 
 func _on_button_up(state: STATE) -> void:

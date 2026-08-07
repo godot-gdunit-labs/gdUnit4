@@ -39,16 +39,25 @@ func after() -> void:
 	await await_idle_frame()
 
 
+## Polls up to [param frames] idle frames until [param message] has been received, since TCP
+## delivery may span more than one frame. Returns true once the message is emitted.
+func await_received(collector: TestGdUnitSignalCollector, message: RPC, frames := 100) -> bool:
+	for n in frames:
+		if collector.is_emitted("rpc_data", [message]):
+			return true
+		await await_idle_frame()
+	return collector.is_emitted("rpc_data", [message])
+
+
 func test_receive_single_message() -> void:
 	var signal_collector_ := signal_collector(tcp_server)
 	await await_idle_frame()
 
 	# send a single test message
 	tcp_client.send(RPCMessage.of("Test Message"))
-	await await_idle_frame()
 
 	# expect the RPCMessage is received and emitted
-	assert_bool(signal_collector_.is_emitted("rpc_data", [RPCMessage.of("Test Message")])).is_true()
+	assert_bool(await await_received(signal_collector_, RPCMessage.of("Test Message"))).is_true()
 
 
 func test_receive_multy_message() -> void:
@@ -58,11 +67,10 @@ func test_receive_multy_message() -> void:
 	# send a two test message
 	tcp_client.send(RPCMessage.of("Test Message A"))
 	tcp_client.send(RPCMessage.of("Test Message B"))
-	await await_idle_frame()
 
-	# expect the RPCMessage is received and emitted
-	assert_bool(signal_collector_.is_emitted("rpc_data", [RPCMessage.of("Test Message A")])).is_true()
-	assert_bool(signal_collector_.is_emitted("rpc_data", [RPCMessage.of("Test Message B")])).is_true()
+	# expect both RPCMessages are received and emitted (delivery may span multiple frames)
+	assert_bool(await await_received(signal_collector_, RPCMessage.of("Test Message A"))).is_true()
+	assert_bool(await await_received(signal_collector_, RPCMessage.of("Test Message B"))).is_true()
 
 
 func add_data(package: StreamPeerBuffer, rpc_data: RPC) -> int:

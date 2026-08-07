@@ -20,6 +20,10 @@ static func run() -> Array[GdUnitTestCase]:
 
 		var collected_tests: Array[GdUnitTestCase] = []
 		if GdUnitSettings.is_discovery_cache_enabled():
+			# Sync to the main thread first: a warm cache serves tests in a few ms without
+			# loading scripts, so discovery runs on the main thread and safely creates the
+			# suite instances and emits to the inspector there.
+			await (Engine.get_main_loop() as SceneTree).process_frame
 			collected_tests = discover_tests_cached(test_suite_directories, func(test_case: GdUnitTestCase) -> void:
 				GdUnitTestDiscoverSink.discover(test_case)
 			, recovered_tests)

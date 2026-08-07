@@ -27,14 +27,22 @@ func _init(cache_file := DEFAULT_CACHE_FILE) -> void:
 	_cache_file = cache_file
 
 
-## Loads the cache from disk. Starts empty when no cache exists or the format version differs.
+## Loads the cache from disk. Starts empty when no cache exists, the file is unreadable,[br]
+## the content is not valid JSON (e.g. a partially written file), or the format version differs.
 func load_cache() -> void:
 	if not FileAccess.file_exists(_cache_file):
 		return
 	var file := FileAccess.open(_cache_file, FileAccess.READ)
 	if file == null:
 		return
-	var data: Variant = JSON.parse_string(file.get_as_text())
+	var text := file.get_as_text()
+	file.close()
+	# Parse via an instance so a malformed cache is ignored silently instead of pushing an
+	# engine error to the console; the cache is simply rebuilt on this run.
+	var json := JSON.new()
+	if json.parse(text) != OK:
+		return
+	var data: Variant = json.data
 	if not data is Dictionary:
 		return
 	# Discard a cache written by a different format version.
@@ -45,15 +53,31 @@ func load_cache() -> void:
 		_entries = entries
 
 
-## Writes the cache back to disk when it has changed.
+## Writes the cache back to disk when it has changed. The write goes to a per-instance[br]
+## temporary file that is then renamed into place, so overlapping discovery runs can never[br]
+## read a half-written cache.
 func save_cache() -> void:
 	if not _dirty:
 		return
-	var file := FileAccess.open(_cache_file, FileAccess.WRITE)
+	# Unique across processes (pid) and within a process (instance id) so overlapping
+	# writers never share a temporary file.
+	var tmp_file := "%s.%d.%d.tmp" % [_cache_file, OS.get_process_id(), get_instance_id()]
+	var file := FileAccess.open(tmp_file, FileAccess.WRITE)
 	if file == null:
 		push_warning("GdUnitDiscoverCache: unable to write cache at %s" % _cache_file)
 		return
 	file.store_string(JSON.stringify({ "version": CACHE_VERSION, "entries": _entries }))
+	file.close()
+	# Atomically replace the cache. On platforms where rename does not overwrite, remove first.
+	if DirAccess.rename_absolute(tmp_file, _cache_file) != OK:
+		if FileAccess.file_exists(_cache_file):
+			@warning_ignore("return_value_discarded")
+			DirAccess.remove_absolute(_cache_file)
+		if DirAccess.rename_absolute(tmp_file, _cache_file) != OK:
+			@warning_ignore("return_value_discarded")
+			DirAccess.remove_absolute(tmp_file)
+			push_warning("GdUnitDiscoverCache: unable to persist cache at %s" % _cache_file)
+			return
 	_dirty = false
 
 

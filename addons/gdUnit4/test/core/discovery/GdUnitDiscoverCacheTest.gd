@@ -78,6 +78,17 @@ func test_version_guard_discards_foreign_cache() -> void:
 	assert_bool(cache.is_valid("res://test/FooTest.gd", 100)).is_false()
 
 
+func test_corrupt_cache_is_ignored() -> void:
+	# A partially written / malformed cache must be ignored, not crash or spam errors.
+	var file := FileAccess.open(_cache_file, FileAccess.WRITE)
+	file.store_string('{"version": 1, "entries": {"res://a.gd": {"mtime": 1')
+	file.close()
+
+	var cache := GdUnitDiscoverCache.new(_cache_file)
+	cache.load_cache()
+	assert_bool(cache.is_valid("res://a.gd", 1)).is_false()
+
+
 func test_prune_removes_absent_files() -> void:
 	var cache := GdUnitDiscoverCache.new(_cache_file)
 	cache.put("res://test/FooTest.gd", 100, [_test_case("res://test/FooTest.gd")])

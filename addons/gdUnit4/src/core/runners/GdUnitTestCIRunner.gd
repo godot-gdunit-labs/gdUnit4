@@ -415,7 +415,6 @@ func discover_tests() -> Array[GdUnitTestCase]:
 		var scripts := scanner.scan(path)
 		for script in scripts:
 			GdUnitTestDiscoverer.discover_tests(script, func(test: GdUnitTestCase) -> void:
-				#_console.println_message("discoverd %s" % test.display_name)
 				if not is_skipped(test):
 					_test_cases.append(test)
 					gdunit_test_discover_added.emit(test)

@@ -59,23 +59,29 @@ func load_cache() -> void:
 func save_cache() -> void:
 	if not _dirty:
 		return
+	# The DirAccess *_absolute APIs operate on filesystem paths, so resolve res://.
+	var abs_cache := ProjectSettings.globalize_path(_cache_file)
+	var abs_dir := abs_cache.get_base_dir()
+	if not DirAccess.dir_exists_absolute(abs_dir):
+		@warning_ignore("return_value_discarded")
+		DirAccess.make_dir_recursive_absolute(abs_dir)
 	# Unique across processes (pid) and within a process (instance id) so overlapping
 	# writers never share a temporary file.
-	var tmp_file := "%s.%d.%d.tmp" % [_cache_file, OS.get_process_id(), get_instance_id()]
-	var file := FileAccess.open(tmp_file, FileAccess.WRITE)
+	var abs_tmp := "%s.%d.%d.tmp" % [abs_cache, OS.get_process_id(), get_instance_id()]
+	var file := FileAccess.open(abs_tmp, FileAccess.WRITE)
 	if file == null:
 		push_warning("GdUnitDiscoverCache: unable to write cache at %s" % _cache_file)
 		return
 	file.store_string(JSON.stringify({ "version": CACHE_VERSION, "entries": _entries }))
 	file.close()
 	# Atomically replace the cache. On platforms where rename does not overwrite, remove first.
-	if DirAccess.rename_absolute(tmp_file, _cache_file) != OK:
-		if FileAccess.file_exists(_cache_file):
+	if DirAccess.rename_absolute(abs_tmp, abs_cache) != OK:
+		if FileAccess.file_exists(abs_cache):
 			@warning_ignore("return_value_discarded")
-			DirAccess.remove_absolute(_cache_file)
-		if DirAccess.rename_absolute(tmp_file, _cache_file) != OK:
+			DirAccess.remove_absolute(abs_cache)
+		if DirAccess.rename_absolute(abs_tmp, abs_cache) != OK:
 			@warning_ignore("return_value_discarded")
-			DirAccess.remove_absolute(tmp_file)
+			DirAccess.remove_absolute(abs_tmp)
 			push_warning("GdUnitDiscoverCache: unable to persist cache at %s" % _cache_file)
 			return
 	_dirty = false

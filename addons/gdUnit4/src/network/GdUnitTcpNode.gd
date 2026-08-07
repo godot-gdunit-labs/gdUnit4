@@ -5,6 +5,10 @@ extends Node
 const FRAME_MAGIC := 0xDEADBEEF
 ## Size in bytes of a frame header: the magic marker (u32) plus the payload length (u32).
 const FRAME_HEADER_SIZE := 8
+## Upper bound on a single frame's payload. Guards against a false-positive magic marker whose
+## bogus size would otherwise grow the receive buffer without bound while waiting for bytes that
+## never arrive; such a header is treated as garbage and the reader resyncs past it.
+const MAX_FRAME_PAYLOAD_SIZE := 64 * 1024 * 1024
 
 # Bytes received but not yet forming a complete frame are kept here between calls, so a
 # message split across multiple TCP reads is reassembled instead of parsed in pieces.
@@ -34,6 +38,8 @@ func rpc_send(stream: StreamPeerTCP, data: RPC) -> void:
 func receive_packages(stream: StreamPeerTCP, rpc_cb: Callable = noop) -> Array[RPC]:
 	var received_packages: Array[RPC] = []
 	if stream.get_status() != StreamPeerTCP.STATUS_CONNECTED:
+		# Drop any partial bytes so a reconnect on the same node starts from a clean frame boundary.
+		_receive_buffer.clear()
 		return received_packages
 
 	# Drain everything currently available and append it to the reassembly buffer.
@@ -78,6 +84,14 @@ static func extract_frames(buffer: PackedByteArray) -> Dictionary:
 			offset = next
 			continue
 		var size := buffer.decode_u32(offset + 4)
+		if size > MAX_FRAME_PAYLOAD_SIZE:
+			# Implausible size: this magic was a false positive, resync to the next marker.
+			var next := _find_magic(buffer, offset + 1)
+			if next == -1:
+				offset = maxi(offset, buffer.size() - 3)
+				break
+			offset = next
+			continue
 		if buffer.size() - offset - FRAME_HEADER_SIZE < size:
 			# Header known but payload not fully arrived yet.
 			break

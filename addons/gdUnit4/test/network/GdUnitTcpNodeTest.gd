@@ -78,4 +78,19 @@ func test_resyncs_past_leading_garbage_to_next_frame() -> void:
 	var result := GdUnitTcpNode.extract_frames(buffer)
 	assert_array(_payload_texts(result)).contains_exactly(["recovered"])
 	assert_int((result["remainder"] as PackedByteArray).size()).is_equal(0)
+
+
+func test_resyncs_past_implausible_frame_size() -> void:
+	# A false-positive magic declaring a bogus huge size must not stall the reader.
+	var buffer := PackedByteArray()
+	@warning_ignore("return_value_discarded")
+	buffer.resize(GdUnitTcpNode.FRAME_HEADER_SIZE)
+	@warning_ignore("return_value_discarded")
+	buffer.encode_u32(0, GdUnitTcpNode.FRAME_MAGIC)
+	@warning_ignore("return_value_discarded")
+	buffer.encode_u32(4, GdUnitTcpNode.MAX_FRAME_PAYLOAD_SIZE + 1)
+	buffer.append_array(_frame("recovered"))
+	var result := GdUnitTcpNode.extract_frames(buffer)
+	assert_array(_payload_texts(result)).contains_exactly(["recovered"])
+	assert_int((result["remainder"] as PackedByteArray).size()).is_equal(0)
 #endregion

@@ -402,13 +402,21 @@ func discover_tests() -> Array[GdUnitTestCase]:
 	var gdunit_test_discover_added := GdUnitSignals.instance().gdunit_test_discover_added
 
 	_test_cases = _runner_config.test_cases()
+	if GdUnitSettings.is_discovery_cache_enabled():
+		GdUnitTestDiscoverer.discover_tests_cached(_included_tests, func(test: GdUnitTestCase) -> void:
+			if not is_skipped(test):
+				_test_cases.append(test)
+				gdunit_test_discover_added.emit(test)
+		)
+		return _test_cases
+
 	var scanner := GdUnitTestSuiteScanner.new()
 	for path in _included_tests:
 		var scripts := scanner.scan(path)
 		for script in scripts:
 			GdUnitTestDiscoverer.discover_tests(script, func(test: GdUnitTestCase) -> void:
+				#_console.println_message("discoverd %s" % test.display_name)
 				if not is_skipped(test):
-					#_console.println_message("discoverd %s" % test.display_name)
 					_test_cases.append(test)
 					gdunit_test_discover_added.emit(test)
 			)

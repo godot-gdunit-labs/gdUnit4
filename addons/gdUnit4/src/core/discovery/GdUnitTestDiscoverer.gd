@@ -19,20 +19,25 @@ static func run() -> Array[GdUnitTestCase]:
 		var scanner := GdUnitTestSuiteScanner.new()
 
 		var collected_tests: Array[GdUnitTestCase] = []
-		var collected_test_suites: Array[Script] = []
-		# collect test suites
-		for test_suite_dir in test_suite_directories:
-			collected_test_suites.append_array(scanner.scan_directory(test_suite_dir))
-
-		# Do sync the main thread before emit the discovered test suites to the inspector
-		await (Engine.get_main_loop() as SceneTree).process_frame
-		for test_suites_script in collected_test_suites:
-			discover_tests(test_suites_script, func(test_case: GdUnitTestCase) -> void:
-				# Sync test uid from last test session
-				recover_test_guid(test_case, recovered_tests)
-				collected_tests.append(test_case)
+		if GdUnitSettings.is_discovery_cache_enabled():
+			collected_tests = discover_tests_cached(test_suite_directories, func(test_case: GdUnitTestCase) -> void:
 				GdUnitTestDiscoverSink.discover(test_case)
-			)
+			, recovered_tests)
+		else:
+			var collected_test_suites: Array[Script] = []
+			# collect test suites
+			for test_suite_dir in test_suite_directories:
+				collected_test_suites.append_array(scanner.scan_directory(test_suite_dir))
+
+			# Do sync the main thread before emit the discovered test suites to the inspector
+			await (Engine.get_main_loop() as SceneTree).process_frame
+			for test_suites_script in collected_test_suites:
+				discover_tests(test_suites_script, func(test_case: GdUnitTestCase) -> void:
+					# Sync test uid from last test session
+					recover_test_guid(test_case, recovered_tests)
+					collected_tests.append(test_case)
+					GdUnitTestDiscoverSink.discover(test_case)
+				)
 
 		console_log_discover_results(collected_tests)
 		if !recovered_tests.is_empty():
@@ -118,6 +123,89 @@ static func discover_tests(source_script: Script, discover_sink := default_disco
 			return
 		for test_case in GdUnit4CSharpApiLoader.discover_tests(source_script):
 			discover_sink.call(test_case)
+
+
+## Discovers tests across [param root_paths], serving unchanged files from a persistent[br]
+## modification-time cache so their scripts are never loaded. Each discovered test is passed[br]
+## to [param discover_sink] and, when [param recovered_tests] is provided, its GUID is synced[br]
+## from the previous session. Returns all discovered tests.
+static func discover_tests_cached(
+	root_paths: PackedStringArray,
+	discover_sink := default_discover_sink,
+	recovered_tests: Array[GdUnitTestCase] = []) -> Array[GdUnitTestCase]:
+
+	var cache := GdUnitDiscoverCache.new()
+	cache.load_cache()
+	var scanner := GdUnitTestSuiteScanner.new()
+	scanner.prescan_testsuite_classes()
+
+	var collected: Array[GdUnitTestCase] = []
+	var visited := PackedStringArray()
+	for root in root_paths:
+		var files := PackedStringArray()
+		if FileAccess.file_exists(root):
+			@warning_ignore("return_value_discarded")
+			files.append(root)
+		else:
+			collect_test_files(root, files)
+		for source_file in files:
+			@warning_ignore("return_value_discarded")
+			visited.append(source_file)
+			var mtime := int(FileAccess.get_modified_time(source_file))
+			var tests: Array[GdUnitTestCase]
+			if cache.is_valid(source_file, mtime):
+				tests = cache.get_tests(source_file)
+			else:
+				tests = discover_file(scanner, source_file)
+				cache.put(source_file, mtime, tests)
+			for test_case in tests:
+				if not recovered_tests.is_empty():
+					recover_test_guid(test_case, recovered_tests)
+				collected.append(test_case)
+				discover_sink.call(test_case)
+	cache.prune(visited)
+	cache.save_cache()
+	return collected
+
+
+## Loads [param source_file] and returns its test cases, or an empty array when it is not a suite.
+static func discover_file(scanner: GdUnitTestSuiteScanner, source_file: String) -> Array[GdUnitTestCase]:
+	var script := scanner.discover_suite_script(source_file)
+	if script == null:
+		return []
+	var tests: Array[GdUnitTestCase] = []
+	discover_tests(script, func(test_case: GdUnitTestCase) -> void:
+		tests.append(test_case)
+	)
+	return tests
+
+
+## Recursively collects supported script paths under [param root_path] without loading them,[br]
+## honoring [code].gdignore[/code] files and the scanner's excluded directories.
+static func collect_test_files(root_path: String, collected: PackedStringArray) -> PackedStringArray:
+	if GdUnitTestSuiteScanner.exclude_scan_directories.has(root_path):
+		return collected
+	var dir := DirAccess.open(root_path)
+	if dir == null:
+		return collected
+	if dir.file_exists(".gdignore"):
+		return collected
+	if dir.list_dir_begin() != OK:
+		return collected
+	var file_name := dir.get_next()
+	while file_name != "":
+		var current := dir.get_current_dir()
+		var path := current + file_name if current.ends_with("/") else current + "/" + file_name
+		if dir.current_is_dir():
+			@warning_ignore("return_value_discarded")
+			collect_test_files(path, collected)
+		else:
+			var ext := path.get_extension()
+			if ext == "gd" or (ext == "cs" and ClassDB.class_exists("CSharpScript")):
+				@warning_ignore("return_value_discarded")
+				collected.append(path)
+		file_name = dir.get_next()
+	return collected
 
 
 static func discover_tests_from_gd_script(script: GDScript) -> Array[GdUnitTestCase]:

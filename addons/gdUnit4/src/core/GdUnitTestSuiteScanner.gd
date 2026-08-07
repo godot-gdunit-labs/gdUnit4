@@ -54,6 +54,12 @@ func scan(resource_path: String) -> Array[Script]:
 	return scan_directory(resource_path)
 
 
+## Loads the script at [param resource_path] and returns it when it is a test suite,[br]
+## otherwise null. Expects [method prescan_testsuite_classes] to have been called once.
+func discover_suite_script(resource_path: String) -> Script:
+	return _load_is_test_suite(resource_path)
+
+
 func scan_directory(resource_path: String) -> Array[Script]:
 	prescan_testsuite_classes()
 	# We use the global cache to fast scan for test suites.

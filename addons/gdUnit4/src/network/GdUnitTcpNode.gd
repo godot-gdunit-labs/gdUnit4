@@ -1,17 +1,12 @@
 class_name GdUnitTcpNode
 extends Node
 
-## Marks the start of a framed message on the wire.
 const FRAME_MAGIC := 0xDEADBEEF
-## Size in bytes of a frame header: the magic marker (u32) plus the payload length (u32).
 const FRAME_HEADER_SIZE := 8
-## Upper bound on a single frame's payload. Guards against a false-positive magic marker whose
-## bogus size would otherwise grow the receive buffer without bound while waiting for bytes that
-## never arrive; such a header is treated as garbage and the reader resyncs past it.
 const MAX_FRAME_PAYLOAD_SIZE := 64 * 1024 * 1024
 
-# Bytes received but not yet forming a complete frame are kept here between calls, so a
-# message split across multiple TCP reads is reassembled instead of parsed in pieces.
+# Bytes received but not yet forming a complete frame, kept between calls so a message split
+# across multiple TCP reads is reassembled instead of parsed in pieces.
 var _receive_buffer := PackedByteArray()
 
 
@@ -38,11 +33,9 @@ func rpc_send(stream: StreamPeerTCP, data: RPC) -> void:
 func receive_packages(stream: StreamPeerTCP, rpc_cb: Callable = noop) -> Array[RPC]:
 	var received_packages: Array[RPC] = []
 	if stream.get_status() != StreamPeerTCP.STATUS_CONNECTED:
-		# Drop any partial bytes so a reconnect on the same node starts from a clean frame boundary.
 		_receive_buffer.clear()
 		return received_packages
 
-	# Drain everything currently available and append it to the reassembly buffer.
 	var available := stream.get_available_bytes()
 	if available > 0:
 		var chunk := stream.get_data(available)
@@ -51,57 +44,54 @@ func receive_packages(stream: StreamPeerTCP, rpc_cb: Callable = noop) -> Array[R
 			return received_packages
 		_receive_buffer.append_array(chunk[1])
 
-	# Process only the frames that have fully arrived; keep the remainder for next time.
-	var result := extract_frames(_receive_buffer)
-	_receive_buffer = result["remainder"]
-	for payload: PackedByteArray in result["payloads"]:
+	var consumed := extract_frames(_receive_buffer, func(payload: PackedByteArray) -> void:
 		var json := payload.get_string_from_utf16()
 		if json.is_empty():
 			push_warning("json is empty, can't process data")
-			continue
+			return
 		var data := RPC.deserialize(json)
 		if data == null:
-			continue
+			return
 		received_packages.append(data)
-		rpc_cb.call(data)
+		rpc_cb.call(data))
+
+	if consumed >= _receive_buffer.size():
+		_receive_buffer.clear()
+	elif consumed > 0:
+		_receive_buffer = _receive_buffer.slice(consumed)
 	return received_packages
 
 
-## Extracts every complete frame from [param buffer] and returns[br]
-## [code]{ "payloads": Array[PackedByteArray], "remainder": PackedByteArray }[/code].[br]
-## Incomplete trailing data is returned as the remainder to be completed by later reads.[br]
-## If the buffer is not aligned to a frame header the reader resyncs to the next magic marker.
-static func extract_frames(buffer: PackedByteArray) -> Dictionary:
-	var payloads: Array[PackedByteArray] = []
+## Dispatches every complete frame in [param buffer] to [param on_payload] and returns the number of
+## bytes consumed; the caller keeps [code]buffer[/code] from that offset on as the remainder for the
+## next read. Resyncs to the next magic marker when the buffer is not aligned to a frame header.
+static func extract_frames(buffer: PackedByteArray, on_payload: Callable) -> int:
+	var size := buffer.size()
 	var offset := 0
-	while buffer.size() - offset >= FRAME_HEADER_SIZE:
+	while size - offset >= FRAME_HEADER_SIZE:
 		if buffer.decode_u32(offset) != FRAME_MAGIC:
 			var next := _find_magic(buffer, offset + 1)
 			if next == -1:
-				# No further marker; keep only a possible split marker at the tail.
-				offset = maxi(offset, buffer.size() - 3)
-				break
+				# No further marker; keep only a possibly split marker in the last 3 bytes.
+				return maxi(offset, size - 3)
 			offset = next
 			continue
-		var size := buffer.decode_u32(offset + 4)
-		if size > MAX_FRAME_PAYLOAD_SIZE:
+		var payload_size := buffer.decode_u32(offset + 4)
+		if payload_size > MAX_FRAME_PAYLOAD_SIZE:
 			# Implausible size: this magic was a false positive, resync to the next marker.
 			var next := _find_magic(buffer, offset + 1)
 			if next == -1:
-				offset = maxi(offset, buffer.size() - 3)
-				break
+				return maxi(offset, size - 3)
 			offset = next
 			continue
-		if buffer.size() - offset - FRAME_HEADER_SIZE < size:
-			# Header known but payload not fully arrived yet.
-			break
-		payloads.append(buffer.slice(offset + FRAME_HEADER_SIZE, offset + FRAME_HEADER_SIZE + size))
-		offset += FRAME_HEADER_SIZE + size
-	return { "payloads": payloads, "remainder": buffer.slice(offset) }
+		if size - offset - FRAME_HEADER_SIZE < payload_size:
+			return offset
+		var start := offset + FRAME_HEADER_SIZE
+		on_payload.call(buffer.slice(start, start + payload_size))
+		offset = start + payload_size
+	return offset
 
 
-## Returns the byte offset of the next [constant FRAME_MAGIC] marker at or after [param from],
-## or -1 when none is present.
 static func _find_magic(buffer: PackedByteArray, from: int) -> int:
 	for index in range(from, buffer.size() - 3):
 		if buffer.decode_u32(index) == FRAME_MAGIC:

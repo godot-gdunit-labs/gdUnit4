@@ -14,15 +14,15 @@ extends RefCounted
 
 var _snapshot: Dictionary = {}
 
+static var _setting_names: PackedStringArray
+
 
 func save() -> void:
 	_snapshot.clear()
-	for property: Dictionary in ProjectSettings.get_property_list():
-		var name: String = property["name"]
-		if ProjectSettings.has_setting(name):
-			var value: Variant = ProjectSettings.get_setting(name)
-			@warning_ignore("unsafe_method_access")
-			_snapshot[name] = value.duplicate() if (value is Dictionary or value is Array) else value
+	for name in _cached_setting_names():
+		var value: Variant = ProjectSettings.get_setting(name)
+		@warning_ignore("unsafe_method_access")
+		_snapshot[name] = value.duplicate() if (value is Dictionary or value is Array) else value
 
 
 func restore() -> void:
@@ -34,3 +34,13 @@ func restore() -> void:
 		if current != original:
 			ProjectSettings.set_setting(name, original)
 	_snapshot.clear()
+
+
+static func _cached_setting_names() -> PackedStringArray:
+	if _setting_names.is_empty():
+		for property: Dictionary in ProjectSettings.get_property_list():
+			var name: String = property["name"]
+			if ProjectSettings.has_setting(name):
+				@warning_ignore("return_value_discarded")
+				_setting_names.append(name)
+	return _setting_names

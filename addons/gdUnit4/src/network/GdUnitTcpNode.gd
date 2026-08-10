@@ -8,24 +8,21 @@ const MAX_FRAME_PAYLOAD_SIZE := 64 * 1024 * 1024
 # Bytes received but not yet forming a complete frame, kept between calls so a message split
 # across multiple TCP reads is reassembled instead of parsed in pieces.
 var _receive_buffer := PackedByteArray()
-
-
-## Encodes [param payload] as a length-prefixed frame: [magic][payload size][payload].
-static func encode_frame(payload: PackedByteArray) -> PackedByteArray:
-	var frame := PackedByteArray()
-	@warning_ignore("return_value_discarded")
-	frame.resize(FRAME_HEADER_SIZE)
-	@warning_ignore("return_value_discarded")
-	frame.encode_u32(0, FRAME_MAGIC)
-	@warning_ignore("return_value_discarded")
-	frame.encode_u32(4, payload.size())
-	frame.append_array(payload)
-	return frame
+# Reused across sends so a frame header is not allocated per message.
+var _send_header := PackedByteArray()
 
 
 func rpc_send(stream: StreamPeerTCP, data: RPC) -> void:
 	var payload := data.serialize().to_utf16_buffer()
-	var status_code := stream.put_data(encode_frame(payload))
+	@warning_ignore_start("return_value_discarded")
+	if _send_header.is_empty():
+		_send_header.resize(FRAME_HEADER_SIZE)
+	_send_header.encode_u32(0, FRAME_MAGIC)
+	_send_header.encode_u32(4, payload.size())
+	@warning_ignore_restore("return_value_discarded")
+	var status_code := stream.put_data(_send_header)
+	if status_code == OK:
+		status_code = stream.put_data(payload)
 	if status_code != OK:
 		push_error("'rpc_send:' Can't put_data(), error: %s" % error_string(status_code))
 
@@ -44,7 +41,7 @@ func receive_packages(stream: StreamPeerTCP, rpc_cb: Callable = noop) -> Array[R
 			return received_packages
 		_receive_buffer.append_array(chunk[1])
 
-	var consumed := extract_frames(_receive_buffer, func(payload: PackedByteArray) -> void:
+	var consumed := extract_payload(_receive_buffer, func(payload: PackedByteArray) -> void:
 		var json := payload.get_string_from_utf16()
 		if json.is_empty():
 			push_warning("json is empty, can't process data")
@@ -65,7 +62,7 @@ func receive_packages(stream: StreamPeerTCP, rpc_cb: Callable = noop) -> Array[R
 ## Dispatches every complete frame in [param buffer] to [param on_payload] and returns the number of
 ## bytes consumed; the caller keeps [code]buffer[/code] from that offset on as the remainder for the
 ## next read. Resyncs to the next magic marker when the buffer is not aligned to a frame header.
-static func extract_frames(buffer: PackedByteArray, on_payload: Callable) -> int:
+static func extract_payload(buffer: PackedByteArray, on_payload: Callable) -> int:
 	var size := buffer.size()
 	var offset := 0
 	while size - offset >= FRAME_HEADER_SIZE:

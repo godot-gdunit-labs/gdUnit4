@@ -7,6 +7,7 @@ var _thread_id: int
 var _signal_collector: GdUnitSignalCollector
 var _execution_context: GdUnitExecutionContext
 var _asserts := []
+var _project_setting_names: PackedStringArray = PackedStringArray()
 
 
 func _init(thread: Thread = null) -> void:
@@ -61,6 +62,16 @@ func get_execution_context_id() -> int:
 
 func get_signal_collector() -> GdUnitSignalCollector:
 	return _signal_collector
+
+
+func project_setting_names() -> PackedStringArray:
+	if _project_setting_names.is_empty():
+		for property: Dictionary in ProjectSettings.get_property_list():
+			var name: String = property["name"]
+			if ProjectSettings.has_setting(name):
+				@warning_ignore("return_value_discarded")
+				_project_setting_names.append(name)
+	return _project_setting_names
 
 
 func thread_id() -> int:

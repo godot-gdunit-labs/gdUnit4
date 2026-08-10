@@ -14,12 +14,10 @@ extends RefCounted
 
 var _snapshot: Dictionary = {}
 
-static var _setting_names: PackedStringArray = PackedStringArray()
-
 
 func save() -> void:
 	_snapshot.clear()
-	for name in _cached_setting_names():
+	for name: String in GdUnitThreadManager.get_current_context().project_setting_names():
 		if not ProjectSettings.has_setting(name):
 			continue
 		var value: Variant = ProjectSettings.get_setting(name)
@@ -35,13 +33,3 @@ func restore() -> void:
 		if current != original:
 			ProjectSettings.set_setting(name, original)
 	_snapshot.clear()
-
-
-static func _cached_setting_names() -> PackedStringArray:
-	if _setting_names.is_empty():
-		for property: Dictionary in ProjectSettings.get_property_list():
-			var name: String = property["name"]
-			if ProjectSettings.has_setting(name):
-				@warning_ignore("return_value_discarded")
-				_setting_names.append(name)
-	return _setting_names

@@ -14,14 +14,15 @@ extends RefCounted
 
 var _snapshot: Dictionary = {}
 
-static var _setting_names: PackedStringArray
+static var _setting_names: PackedStringArray = PackedStringArray()
 
 
 func save() -> void:
 	_snapshot.clear()
 	for name in _cached_setting_names():
+		if not ProjectSettings.has_setting(name):
+			continue
 		var value: Variant = ProjectSettings.get_setting(name)
-		@warning_ignore("unsafe_method_access")
 		_snapshot[name] = value.duplicate() if (value is Dictionary or value is Array) else value
 
 

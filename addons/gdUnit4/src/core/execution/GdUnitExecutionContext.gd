@@ -182,6 +182,9 @@ func last_error() -> GdUnitError:
 	if  _last_error != null:
 		return _last_error
 
+	if _report_collector.reports().is_empty():
+		return null
+
 	var last_report: GdUnitReport = _report_collector.reports()[-1]
 	return last_report._error if last_report != null else _last_error
 

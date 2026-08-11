@@ -134,6 +134,38 @@ func print_obj_usage(name :String) :
 |      UNPARENTED | [Deleted Object] | [Deleted Object] | [Deleted Object] |
 |       PREDELETE | [Deleted Object] | [Deleted Object] | [Deleted Object] |
 
+## save_project_settings() / restore_project_settings()
+
+Helpers to snapshot and restore the in-memory [`ProjectSettings`](https://docs.godotengine.org/en/stable/classes/class_projectsettings.html)
+around a test that changes them, so the change does not leak into later tests.
+
+By default GdUnit automatically saves and restores your project settings around every test execution
+(the **Auto Save Project Settings** setting). If you turn that off — for example to save time in a suite
+where almost no test touches the settings — you can snapshot on demand in just the tests that need it:
+call **save_project_settings()** in `before()`/`before_test()` and **restore_project_settings()** in
+`after()`/`after_test()`.
+
+```gd
+func save_project_settings() -> void:
+func restore_project_settings() -> void:
+```
+
+Here's a small example:
+
+```gd
+func before_test() -> void:
+    save_project_settings()
+
+func after_test() -> void:
+    restore_project_settings()
+
+func test_changes_a_setting() -> void:
+    ProjectSettings.set_setting("application/config/custom", true)
+    # the change is rolled back in after_test(), so later tests see the original value
+```
+
+---
+
 ## collect_orphan_node_details()
 
 A helper to itemize the orphan nodes detected in the current test, reporting each one's class, instance ID, and the exact

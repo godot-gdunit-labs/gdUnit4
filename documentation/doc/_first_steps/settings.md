@@ -36,6 +36,12 @@ To access these settings, simply press the 'tools' button located in the GdUnit 
     This setting configures the maximum number of times a test is rerun when using **Run Tests Until Fail** from the Inspector Context Menu.
     Once the limit is reached or a failure occurs, the run stops. The default value is **10**.
 
+  * **Auto Save Project Settings**<br>
+    When enabled (the default), GdUnit automatically saves your project settings before each test execution and restores them afterwards,
+    so a test that changes a setting cannot leak that change into later tests. Disable it to skip this snapshot when your suites rarely
+    touch the project settings, and instead snapshot on demand with `save_project_settings()` / `restore_project_settings()`
+    (see [Tools and Helpers]({{ site.baseurl }}/advanced_testing/tools/)) in only the tests that need it.
+
   * **Test Discovery**<br>
    This setting configures the auto-discovery of tests. If enabled, it will scan the configured Test Root Folder for available tests at startup.
    Directories containing a `.gdignore` file are excluded from test discovery,

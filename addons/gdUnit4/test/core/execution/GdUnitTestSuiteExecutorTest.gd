@@ -554,6 +554,42 @@ func test_execute_failure_and_orphans_report_orphan_disabled() -> void:
 		])
 
 
+# GD-1291
+func test_execute_success_with_pending_queue_free_nodes() -> void:
+	# nodes released with queue_free() during a test are freed one frame later and must not be reported as orphans
+	var tests := GdUnitTestResourceLoader.load_tests(
+		"res://addons/gdUnit4/test/core/execution/resources/orphans/TestSuiteWithPendingQueueFreeNodes.gd")
+	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
+	var test_case1: GdUnitTestCase = tests["test_removes_and_queues_children_for_free"]
+	# simulate test suite execution
+	var events := await run_tests(all_tests)
+
+	# (before_test+after_test) * test count + before+after hooks
+	var expected_event_count := tests.size() * 2 + 2
+	assert_array(events)\
+		.override_failure_message("Expecting be %d events emitted, but counts %d." % [expected_event_count, events.size()])\
+		.has_size(expected_event_count)
+
+	# verify all counters are zero / no errors, failures, orphans
+	assert_test_counters(events).contains_exactly([
+		tuple(any_class(GdUnitGUID), GdUnitEvent.TESTSUITE_BEFORE, 0, 0, 0),
+		tuple(test_case1.guid, GdUnitEvent.TESTCASE_BEFORE, 0, 0, 0),
+		tuple(test_case1.guid, GdUnitEvent.TESTCASE_AFTER, 0, 0, 0),
+		tuple(any_class(GdUnitGUID), GdUnitEvent.TESTSUITE_AFTER, 0, 0, 0),
+	])
+	# all tests passses
+	assert_event_states(events).contains_exactly([
+		tuple(any_class(GdUnitGUID), SUCCEEDED, NOT_SKIPPED, NO_WARNING, NO_FAILURES, NO_ERRORS),
+		tuple(test_case1.guid, SUCCEEDED, NOT_SKIPPED, NO_WARNING, NO_FAILURES, NO_ERRORS),
+		tuple(test_case1.guid, SUCCEEDED, NOT_SKIPPED, NO_WARNING, NO_FAILURES, NO_ERRORS),
+		tuple(any_class(GdUnitGUID), SUCCEEDED, NOT_SKIPPED, NO_WARNING, NO_FAILURES, NO_ERRORS),
+	])
+	# all success no reports expected
+	assert_event_reports(events, [
+			[], [], [], []
+		])
+
+
 func test_execute_error_on_test_timeout() -> void:
 	# this tests a timeout on a test case reported as error
 	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteErrorOnTestTimeout.resource")

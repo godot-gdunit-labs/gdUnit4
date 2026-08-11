@@ -117,8 +117,6 @@ func _tag_object(obj :Variant) -> void:
 func gc() -> void:
 	if _store.is_empty():
 		return
-	# give engine time to free objects to process objects marked by queue_free()
-	await (Engine.get_main_loop() as SceneTree).process_frame
 	if _is_stdout_verbose:
 		print_verbose("GdUnit4:gc():running", " freeing %d objects .." % _store.size())
 	var tagged_objects: Array = Engine.get_meta(TAG_AUTO_FREE, [])

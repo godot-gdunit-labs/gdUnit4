@@ -279,8 +279,6 @@ func gc(gc_orphan_check: GC_ORPHANS_CHECK = GC_ORPHANS_CHECK.NONE) -> void:
 	if _orphan_monitor.orphans_count() > 0:
 		# Give the engine time to free resources otherwies we do orphan false detection
 		await test_suite.get_tree().process_frame
-		# Resample after the grace frame, nodes released by a pending queue_free() are no longer orphans
-		orphan_monitor_stop()
 
 	match(gc_orphan_check):
 		GC_ORPHANS_CHECK.SUITE_HOOK_AFTER:

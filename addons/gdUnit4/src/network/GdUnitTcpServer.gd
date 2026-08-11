@@ -29,7 +29,7 @@ class TcpConnection extends GdUnitTcpNode:
 	func close() -> void:
 		if _stream != null and _stream.get_status() == StreamPeerTCP.STATUS_CONNECTED:
 			_stream.disconnect_from_host()
-			queue_free()
+		queue_free()
 
 
 	func id() -> int:

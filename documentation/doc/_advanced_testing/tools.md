@@ -164,6 +164,9 @@ func test_changes_a_setting() -> void:
     # the change is rolled back in after_test(), so later tests see the original value
 ```
 
+Only one snapshot is kept, not a stack: each **save_project_settings()** replaces the previous snapshot,
+so the last save wins and **restore_project_settings()** returns to it.
+
 ---
 
 ## collect_orphan_node_details()

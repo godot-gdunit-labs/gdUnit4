@@ -112,7 +112,9 @@ func auto_free(obj: Variant) -> Variant:
 ## Saves the current project settings into the active execution context.[br]
 ## Call this in [code]before()[/code]/[code]before_test()[/code] to snapshot the settings a test
 ## is about to change, then pair it with [method restore_project_settings]. Useful when the
-## "Auto Save Project Settings" setting is disabled and a test needs settings isolation on demand.
+## "Auto Save Project Settings" setting is disabled and a test needs settings isolation on demand.[br]
+## The context keeps a single snapshot, not a stack: each call replaces the previous one, so the
+## last [method save_project_settings] wins and [method restore_project_settings] returns to it.
 func save_project_settings() -> void:
 	var execution_context := GdUnitThreadManager.get_current_context().get_execution_context()
 	if execution_context == null:

@@ -8,7 +8,7 @@ const __source = "res://addons/gdUnit4/src/GdUnitTestSuite.gd"
 const IGNORE := GdUnitSettings.GdScriptWarningMode.IGNORE
 const ERROR := GdUnitSettings.GdScriptWarningMode.ERROR
 
-const MUTATION_SUITE := "res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteProjectSettingsMutation.resource"
+const MUTATION_SUITE := "res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteProjectSettingsMutation.gd"
 const PROBE_KEY := "application/config/name"
 
 

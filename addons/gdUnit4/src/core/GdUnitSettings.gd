@@ -214,13 +214,6 @@ static func is_update_notification_enabled() -> bool:
 	return false
 
 
-## Returns whether the framework automatically saves and restores the project settings
-## around each test execution. When disabled, use [method GdUnitTestSuite.save_project_settings]
-## and [method GdUnitTestSuite.restore_project_settings] to snapshot settings on demand.
-static func is_project_settings_auto_save() -> bool:
-	return get_setting(TEST_PROJECT_SETTINGS_AUTO_SAVE, true)
-
-
 static func set_update_notification(enable :bool) -> void:
 	ProjectSettings.set_setting(UPDATE_NOTIFICATION_ENABLED, enable)
 	@warning_ignore("return_value_discarded")
@@ -327,6 +320,13 @@ static func is_test_discover_enabled() -> bool:
 
 static func is_test_flaky_check_enabled() -> bool:
 	return get_setting(TEST_FLAKY_CHECK, false)
+
+
+## Returns whether the framework automatically saves and restores the project settings
+## around each test execution. When disabled, use [method GdUnitTestSuite.save_project_settings]
+## and [method GdUnitTestSuite.restore_project_settings] to snapshot settings on demand.
+static func is_project_settings_auto_save() -> bool:
+	return get_setting(TEST_PROJECT_SETTINGS_AUTO_SAVE, true)
 
 
 static func is_feature_enabled(feature: String) -> bool:

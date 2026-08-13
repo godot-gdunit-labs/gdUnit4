@@ -109,6 +109,28 @@ func auto_free(obj: Variant) -> Variant:
 	return execution_context.register_auto_free(obj)
 
 
+## Saves the current project settings into the active execution context.[br]
+## Useful when the "Auto Save Project Settings" setting is disabled and a test needs settings isolation on demand.[br]
+## [br]
+## Call this in [code]before()[/code]/[code]before_test()[/code] to snapshot the settings a test
+## is about to change, to restore see [method restore_project_settings].
+func save_project_settings() -> void:
+	var execution_context := GdUnitThreadManager.get_current_context().get_execution_context()
+	if execution_context == null:
+		return
+	execution_context.save_project_settings()
+
+
+## Restores the project settings previously captured by [method save_project_settings].[br]
+## [br]
+## Call this in [code]after()[/code]/[code]after_test()[/code] to undo any settings a test changed.
+func restore_project_settings() -> void:
+	var execution_context := GdUnitThreadManager.get_current_context().get_execution_context()
+	if execution_context == null:
+		return
+	execution_context.restore_project_settings()
+
+
 @warning_ignore("native_method_override")
 func add_child(node: Node, force_readable_name := false, internal := Node.INTERNAL_MODE_DISABLED) -> void:
 	super.add_child(node, force_readable_name, internal)

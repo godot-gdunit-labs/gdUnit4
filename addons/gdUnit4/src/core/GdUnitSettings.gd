@@ -22,6 +22,7 @@ const TEST_DISCOVER_ENABLED = GROUP_TEST + "/test_discovery"
 const TEST_FLAKY_CHECK = GROUP_TEST + "/flaky_check_enable"
 const TEST_FLAKY_MAX_RETRIES = GROUP_TEST + "/flaky_max_retries"
 const TEST_RERUN_UNTIL_FAILURE_RETRIES = GROUP_TEST + "/rerun_until_failure_retries"
+const TEST_PROJECT_SETTINGS_AUTO_SAVE = GROUP_TEST + "/project_settings_auto_save"
 
 
 # Report Setiings
@@ -131,6 +132,7 @@ static func setup() -> void:
 	create_property_if_need(TEST_FLAKY_CHECK, false, "Rerun tests on failure and mark them as FLAKY")
 	create_property_if_need(TEST_FLAKY_MAX_RETRIES, 3, "Sets the number of retries for rerunning a flaky test")
 	create_property_if_need(TEST_RERUN_UNTIL_FAILURE_RETRIES, 10, "The number of reruns until the test fails.")
+	create_property_if_need(TEST_PROJECT_SETTINGS_AUTO_SAVE, true, "Save and restore your project settings around each test execution")
 	# report settings
 	create_property_if_need(REPORT_PUSH_ERRORS, false, "Report push_error() as failure")
 	create_property_if_need(REPORT_SCRIPT_ERRORS, true, "Report script errors as failure")
@@ -318,6 +320,13 @@ static func is_test_discover_enabled() -> bool:
 
 static func is_test_flaky_check_enabled() -> bool:
 	return get_setting(TEST_FLAKY_CHECK, false)
+
+
+## Returns whether the framework automatically saves and restores the project settings
+## around each test execution. When disabled, use [method GdUnitTestSuite.save_project_settings]
+## and [method GdUnitTestSuite.restore_project_settings] to snapshot settings on demand.
+static func is_project_settings_auto_save() -> bool:
+	return get_setting(TEST_PROJECT_SETTINGS_AUTO_SAVE, true)
 
 
 static func is_feature_enabled(feature: String) -> bool:

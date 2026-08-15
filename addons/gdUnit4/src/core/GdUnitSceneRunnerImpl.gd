@@ -103,7 +103,7 @@ func _init(p_scene: Variant, p_verbose: bool, p_hide_push_errors := false) -> vo
 
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_PREDELETE and is_instance_valid(self):
+	if what == NOTIFICATION_PREDELETE and is_instance_valid(self) and not _is_disposed:
 		# reset time factor to normal
 		__deactivate_time_factor()
 		if is_instance_valid(_current_scene):

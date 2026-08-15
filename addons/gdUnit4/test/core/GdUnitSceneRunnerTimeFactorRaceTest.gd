@@ -13,7 +13,7 @@ func load_test_scene() -> Node:
 
 
 #region time_factor_leaks_across_tests
-## Regression test for GD-1299: a corrupted baseline captured by an earlier test's overlapping
+## Regression test for GD-1300: a corrupted baseline captured by an earlier test's overlapping
 ## runners used to leak into a later, unrelated test's engine tick rate once the framework's
 ## end-of-test gc() deactivated each runner on its own (possibly corrupted) saved baseline.
 ## See also GdUnitSceneRunnerTimeFactorBaselineTest for the underlying baseline-capture defect.

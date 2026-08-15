@@ -13,7 +13,7 @@ func load_test_scene() -> Node:
 
 
 #region time_factor_baseline_corruption
-## Regression test for GD-1299: GdUnitSceneRunnerImpl used to capture its "restore" baseline
+## Regression test for GD-1300: GdUnitSceneRunnerImpl used to capture its "restore" baseline
 ## from the engine's CURRENT physics tick rate at construction time, instead of a true,
 ## untouched baseline. When a second runner was created while an earlier runner's time factor
 ## was still active, the second runner's baseline was already scaled, so its own

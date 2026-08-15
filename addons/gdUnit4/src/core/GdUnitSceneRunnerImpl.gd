@@ -3,9 +3,6 @@ class_name GdUnitSceneRunnerImpl
 extends GdUnitSceneRunner
 
 
-var GdUnitFuncAssertImpl: GDScript = ResourceLoader.load("res://addons/gdUnit4/src/asserts/GdUnitFuncAssertImpl.gd", "GDScript", ResourceLoader.CACHE_MODE_REUSE)
-
-
 # mapping of mouse buttons and his masks
 const MAP_MOUSE_BUTTON_MASKS := {
 	MOUSE_BUTTON_LEFT : MOUSE_BUTTON_MASK_LEFT,
@@ -17,6 +14,13 @@ const MAP_MOUSE_BUTTON_MASKS := {
 	MOUSE_BUTTON_XBUTTON1 : MOUSE_BUTTON_MASK_MB_XBUTTON1,
 	MOUSE_BUTTON_XBUTTON2 : MOUSE_BUTTON_MASK_MB_XBUTTON2,
 }
+
+# shared, engine-global bookkeeping for the time factor so overlapping runners don't
+# stomp each other's saved baseline tick rate
+const _META_BASELINE_TPS := "GdUnitSceneRunner_baseline_tps"
+const _META_ACTIVE_COUNT := "GdUnitSceneRunner_active_count"
+
+var GdUnitFuncAssertImpl: GDScript = ResourceLoader.load("res://addons/gdUnit4/src/asserts/GdUnitFuncAssertImpl.gd", "GDScript", ResourceLoader.CACHE_MODE_REUSE)
 
 var _is_disposed := false
 var _current_scene: Node = null
@@ -42,7 +46,15 @@ var _scene_auto_free := false
 
 func _init(p_scene: Variant, p_verbose: bool, p_hide_push_errors := false) -> void:
 	_verbose = p_verbose
-	_saved_iterations_per_second = Engine.get_physics_ticks_per_second()
+	# the baseline must be captured once and shared across overlapping runners, otherwise a
+	# runner created while another runner's time factor is still active would save an
+	# already-scaled rate as its own "original" value.
+	if not Engine.has_meta(_META_BASELINE_TPS):
+		Engine.set_meta(_META_BASELINE_TPS, Engine.get_physics_ticks_per_second())
+	@warning_ignore("unsafe_cast")
+	_saved_iterations_per_second = Engine.get_meta(_META_BASELINE_TPS) as float
+	@warning_ignore("unsafe_cast")
+	Engine.set_meta(_META_ACTIVE_COUNT, (Engine.get_meta(_META_ACTIVE_COUNT, 0) as int) + 1)
 	@warning_ignore("return_value_discarded")
 	set_time_factor(1)
 	# handle scene loading by resource path
@@ -506,6 +518,15 @@ func __activate_time_factor() -> void:
 
 
 func __deactivate_time_factor() -> void:
+	@warning_ignore("unsafe_cast")
+	var active_count: int = (Engine.get_meta(_META_ACTIVE_COUNT, 1) as int) - 1
+	# only restore the shared engine state once the last overlapping runner deactivates,
+	# otherwise we would stomp the tick rate/time scale still relied on by other active runners.
+	if active_count > 0:
+		Engine.set_meta(_META_ACTIVE_COUNT, active_count)
+		return
+	Engine.remove_meta(_META_ACTIVE_COUNT)
+	Engine.remove_meta(_META_BASELINE_TPS)
 	Engine.set_time_scale(1)
 	Engine.set_physics_ticks_per_second(_saved_iterations_per_second as int)
 

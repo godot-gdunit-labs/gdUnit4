@@ -36,13 +36,11 @@ var _current_touch_drag_position: Vector2 = Vector2.ZERO
 
 # time factor settings
 var _time_factor := 1.0
-var _saved_iterations_per_second: float
 var _scene_auto_free := false
 
 
 func _init(p_scene: Variant, p_verbose: bool, p_hide_push_errors := false) -> void:
 	_verbose = p_verbose
-	_saved_iterations_per_second = Engine.get_physics_ticks_per_second()
 	@warning_ignore("return_value_discarded")
 	set_time_factor(1)
 	# handle scene loading by resource path
@@ -406,7 +404,7 @@ func set_time_factor(time_factor: float = 1.0) -> GdUnitSceneRunner:
 	_time_factor = min(9.0, time_factor)
 	__activate_time_factor()
 	__print("set time factor: %f" % _time_factor)
-	__print("set physics physics_ticks_per_second: %d" % (_saved_iterations_per_second*_time_factor))
+	__print("set physics physics_ticks_per_second: %d" % (get_project_physics_ticks_per_second() * _time_factor))
 	return self
 
 
@@ -502,12 +500,16 @@ func _scene_name() -> String:
 
 func __activate_time_factor() -> void:
 	Engine.set_time_scale(_time_factor)
-	Engine.set_physics_ticks_per_second((_saved_iterations_per_second * _time_factor) as int)
+	Engine.set_physics_ticks_per_second((get_project_physics_ticks_per_second() * _time_factor) as int)
 
 
 func __deactivate_time_factor() -> void:
 	Engine.set_time_scale(1)
-	Engine.set_physics_ticks_per_second(_saved_iterations_per_second as int)
+	Engine.set_physics_ticks_per_second(get_project_physics_ticks_per_second())
+
+
+func get_project_physics_ticks_per_second() -> int:
+	return ProjectSettings.get_setting("physics/common/physics_ticks_per_second")
 
 
 # copy over current active modifiers

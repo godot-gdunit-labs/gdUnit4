@@ -231,7 +231,7 @@ static func _get_orphan_node_ids() -> Array[int]:
 	@warning_ignore("unsafe_property_access", "unsafe_method_access")
 	var ids: Array[int] = Engine.get_main_loop().root.get_orphan_node_ids()
 	# a node already queued for deletion is guaranteed to be freed, it is never a leak
-	return ids.filter(func(id: int) -> bool:
-		var node := instance_from_id(id) as Node
+	return ids.filter(func(node_id: int) -> bool:
+		var node := instance_from_id(node_id) as Node
 		return node == null or not node.is_queued_for_deletion()
 	)

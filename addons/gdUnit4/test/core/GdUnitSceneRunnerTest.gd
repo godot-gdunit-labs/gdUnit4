@@ -7,19 +7,31 @@ extends GdUnitTestSuite
 const __source = 'res://addons/gdUnit4/src/core/GdUnitSceneRunnerImpl.gd'
 
 
-# loads the test runner and register for auto freeing after test
-func load_test_scene() -> Node:
-	@warning_ignore("unsafe_method_access")
-	return auto_free(load("res://addons/gdUnit4/test/mocker/resources/scenes/TestScene.tscn").instantiate())
-
+var _saved_before_time_scale: float
+var _saved_before_physics_ticks_per_second: int
 
 func before() -> void:
 	# use a dedicated FPS because we calculate frames by time
 	Engine.set_max_fps(60)
+	_saved_before_time_scale = Engine.get_time_scale()
+	_saved_before_physics_ticks_per_second = ProjectSettings.get_setting("physics/common/physics_ticks_per_second")
 
 
 func after() -> void:
 	Engine.set_max_fps(0)
+	assert_float(Engine.get_time_scale()).is_equal(_saved_before_time_scale)
+	assert_int(Engine.get_physics_ticks_per_second()).is_equal(_saved_before_physics_ticks_per_second)
+
+
+func before_test() -> void:
+	assert_float(Engine.get_time_scale()).is_equal(_saved_before_time_scale)
+	assert_int(Engine.get_physics_ticks_per_second()).is_equal(_saved_before_physics_ticks_per_second)
+
+
+# loads the test runner and register for auto freeing after test
+func load_test_scene() -> Node:
+	@warning_ignore("unsafe_method_access")
+	return auto_free(load("res://addons/gdUnit4/test/mocker/resources/scenes/TestScene.tscn").instantiate())
 
 
 func test_get_property() -> void:
@@ -206,7 +218,7 @@ func test_await_signal_without_time_factor() -> void:
 		# should be interrupted is will never change to Color.KHAKI
 		await assert_failure_await(func x() -> void: await runner.await_signal( "panel_color_change", [box1, Color.KHAKI], 300))
 	).has_message("await_signal_on(panel_color_change, [%s, %s]) timed out after 300ms" % [str(box1), str(Color.KHAKI)])\
-		.has_line(207)
+		.has_line(219)
 
 
 func test_await_signal_with_time_factor() -> void:
@@ -223,7 +235,33 @@ func test_await_signal_with_time_factor() -> void:
 		# should be interrupted is will never change to Color.KHAKI
 		await assert_failure_await(func x() -> void: await runner.await_signal("panel_color_change", [box1, Color.KHAKI], 30))
 	).has_message("await_signal_on(panel_color_change, [%s, %s]) timed out after 30ms" % [str(box1), str(Color.KHAKI)])\
-		.has_line(224)
+		.has_line(236)
+
+
+func test_manipulate_time_scale() -> void:
+	# setup single scene
+	var runner_1 := scene_runner(_create_example_scene())
+	# act
+	runner_1.set_time_factor(5.3)
+	# verify
+	assert_float(Engine.get_time_scale()).is_equal(5.3)
+
+
+# https://github.com/godot-gdunit-labs/gdUnit4/issues/1300
+func test_manipulate_time_scale_using_multiple_scene_runners() -> void:
+	# setup first scene
+	var runner_1 := scene_runner(_create_example_scene())
+	# act
+	runner_1.set_time_factor(5.3)
+	# verify
+	assert_float(Engine.get_time_scale()).is_equal(5.3)
+
+	# setup second scene
+	var runner_2 := scene_runner(_create_example_scene())
+	# act
+	runner_2.set_time_factor(7.3)
+	# verify
+	assert_float(Engine.get_time_scale()).is_equal(7.3)
 
 
 func test_simulate_until_signal() -> void:
@@ -487,3 +525,13 @@ func test_load_scene_with_audio_player() -> void:
 # we override the scene runner function for test purposes to hide push_error notifications
 func scene_runner(scene :Variant, verbose := false) -> GdUnitSceneRunner:
 	return auto_free(GdUnitSceneRunnerImpl.new(scene, verbose, true))
+
+
+static func _create_example_scene() -> Node:
+	var packed_scene := PackedScene.new()
+	var node := Node3D.new()
+	node.queue_free()
+	packed_scene.pack(node)
+	var scene := packed_scene.instantiate()
+	scene.queue_free()
+	return scene

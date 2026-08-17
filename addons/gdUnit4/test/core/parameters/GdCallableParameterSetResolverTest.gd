@@ -53,6 +53,14 @@ func _parameters_with_references_typed() -> Array[Array]:
 	]
 
 
+func _parameters_string_arg(arg1: String, arg2: String) -> Array[Array]:
+	return [[arg1, arg2]]
+
+
+func _parameters_string_args(arg1: String, arg2: String) ->  Array[Array]:
+	return [[arg1, arg2]]
+
+
 func before() -> void:
 	_obj = auto_free(Node2D.new())
 
@@ -172,6 +180,83 @@ func test_get_parameters_dynamic_referenced() -> void:
 
 	# We used the function `_parameters_with_references_typed()` that builds a parameter set with size 9
 	assert_int(resolver.get_max_index()).is_equal(9)
+
+
+func test_get_parameters_string_values() -> void:
+	# Using double qoutas
+	var resolver := GdCallableParameterSetResolver.new(self, """_parameters_string_arg("abc", "def")""")
+
+	var parameters := resolver.get_parameters(self, 0)
+	assert_array(parameters).has_size(3)
+	assert_str(parameters[0]).is_equal("abc")
+	assert_str(parameters[1]).is_equal("def")
+	assert_object(parameters[2]).is_equal([])
+
+	# Using single qoutas see https://github.com/godot-gdunit-labs/gdUnit4/issues/1302
+	resolver = GdCallableParameterSetResolver.new(self, """_parameters_string_arg('abc', 'd'ef')""")
+
+	parameters = resolver.get_parameters(self, 0)
+	assert_array(parameters).has_size(3)
+	assert_str(parameters[0]).is_equal("abc")
+	assert_str(parameters[1]).is_equal("d'ef")
+	assert_object(parameters[2]).is_equal([])
+
+
+func test_get_parameters_string_values_with_comma() -> void:
+	# Using comma in strings
+	var resolver := GdCallableParameterSetResolver.new(self, """_parameters_string_arg("abc", "d,ef")""")
+
+	var parameters := resolver.get_parameters(self, 0)
+	assert_array(parameters).has_size(3)
+	assert_str(parameters[0]).is_equal("abc")
+	assert_str(parameters[1]).is_equal("d,ef")
+	assert_object(parameters[2]).is_equal([])
+
+
+func test_split_argumens1(arg1: String, arg2: String, _test_parameters := _parameters_string_arg("abc", "d,ef")) -> void:
+	assert_str(arg1).is_equal("abc")
+	assert_str(arg2).is_equal("d,ef")
+
+
+func test_split_argumens2(arg1: String, arg2: String, _test_parameters := _parameters_string_arg('abc', 'd"ef')) -> void:
+	assert_str(arg1).is_equal("abc")
+	assert_str(arg2).is_equal("d\"ef")
+
+
+# TODO, the parsing '"d\"ef"' let Godot crash here
+func _test_split_argumens3(arg1: String, arg2: String, _test_parameters := _parameters_string_arg('abc', "d\"ef")) -> void:
+	assert_str(arg1).is_equal("abc")
+	assert_str(arg2).is_equal("d\"ef")
+
+
+func test_split_argumens() -> void:
+	assert_array(GdCallableParameterSetResolver._split_argumens('"abc", "d,ef"'))\
+		.contains_exactly([
+			'"abc"',
+			'"d,ef"'
+		])
+	assert_array(GdCallableParameterSetResolver._split_argumens('"abc", "d\"ef"'))\
+		.contains_exactly([
+			'"abc"',
+			'"d\"ef"'
+		])
+	assert_array(GdCallableParameterSetResolver._split_argumens("'abc', 'd,ef'"))\
+		.contains_exactly([
+			"'abc'",
+			"'d,ef'"
+		])
+	assert_array(GdCallableParameterSetResolver._split_argumens("'abc', 'd\"ef'"))\
+		.contains_exactly([
+			"'abc'",
+			"'d\"ef'"
+		])
+	assert_array(GdCallableParameterSetResolver._split_argumens('12, Node3d.new(), true, "d,ef"'))\
+		.contains_exactly([
+			"12",
+			'Node3d.new()',
+			"true",
+			'"d,ef"'
+		])
 
 #region performance
 

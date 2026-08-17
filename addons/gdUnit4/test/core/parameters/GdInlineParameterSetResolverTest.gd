@@ -18,6 +18,9 @@ var example_parameters := [
 	'_test_set_a]'
 	]
 
+func parameters_as_array(arg1: String, arg2: String) -> Array[String]:
+	return [arg1, arg2]
+
 class TestObj:
 
 	func _init() -> void:
@@ -480,6 +483,14 @@ func test_resolve_parameters_with_scrip_constans() -> void:
 			["array", TYPE_ARRAY, []],
 			["packed_array", TYPE_PACKED_BYTE_ARRAY, []]
 			])
+
+
+# TODO the parameter resolver has issues with using callables inside inline parameter sets
+func _test_resolve_parameters_with_array_functions(arg1: String, arg2: String, _test_parameters := [
+	parameters_as_array("abc", "d,ef")
+	]) -> void:
+	assert_str(arg1).is_equal("abc")
+	assert_str(arg2).is_equal("d,ef")
 
 
 func _resolve_parameters(child_name: String) -> Array[Array]:

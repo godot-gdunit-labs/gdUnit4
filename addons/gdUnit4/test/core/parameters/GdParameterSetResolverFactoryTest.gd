@@ -15,6 +15,9 @@ func _callable_parameters(_a: int, _b: int, _test_parameters := _build_params())
 	pass
 
 
+func _callable_parameters_with_args(_a: int, _b: int, _test_parameters := _parameters_string_args("abc", "def")) -> void:
+	pass
+
 func _properties_parameters(_a: int, _b: int, _test_parameters := _test_properties) -> void:
 	pass
 
@@ -25,6 +28,10 @@ func _no_parameters(_a: int, _b: int) -> void:
 
 func _build_params() -> Array[Array]:
 	return [[1, 2], [3, 4]]
+
+
+func _parameters_string_args(arg1: String, arg2: String) ->  Array[Array]:
+	return [[arg1, arg2]]
 
 
 func _descriptor(func_name: String) -> GdFunctionDescriptor:
@@ -49,6 +56,12 @@ func test_create_returns_callable_resolver() -> void:
 	var resolver := GdParameterSetResolverFactory.create(_descriptor("_callable_parameters"), self)
 	assert_object(resolver).is_instanceof(GdCallableParameterSetResolver)
 	assert_int(resolver.get_max_index()).is_equal(2)
+
+
+func test_create_returns_callable_resolver_with_args() -> void:
+	var resolver := GdParameterSetResolverFactory.create(_descriptor("_callable_parameters_with_args"), self)
+	assert_object(resolver).is_instanceof(GdCallableParameterSetResolver)
+	assert_int(resolver.get_max_index()).is_equal(1)
 
 
 func test_create_returns_property_resolver() -> void:

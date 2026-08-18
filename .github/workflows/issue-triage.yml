@@ -46,9 +46,10 @@ jobs:
     outputs:
       bypass: ${{ steps.verdict.outputs.bypass }}
       number: ${{ steps.resolve.outputs.number }}
-      state: ${{ steps.resolve.outputs.state }}
+      state: ${{ steps.reopen.outputs.state || steps.resolve.outputs.state }}
       template-name: ${{ steps.resolve.outputs.template-name }}
       required-ids: ${{ steps.resolve.outputs.required-ids }}
+      labels: ${{ steps.resolve.outputs.labels }}
 
     steps:
       - name: Checkout GdUnit Repository
@@ -144,6 +145,74 @@ jobs:
           if [ "$close" = 'true' ]; then
             gh issue close "$NUMBER" --repo "$GITHUB_REPOSITORY" --reason 'not planned'
           fi
+
+      # Native issue type can only be set via a GraphQL call made after the issue already exists,
+      # so the `opened` webhook always sees an untyped issue and the step above closes it even when
+      # the issue was filed correctly through a template. A later `edited` run (e.g. the creating
+      # tool's title-rename, done once the type is set) resolves the template correctly here, but
+      # that only skips the reject step above — it does not undo the earlier wrongful close. This
+      # step detects that case and reopens the issue instead.
+      - name: Reopen Previously Bypassed Issue
+        id: reopen
+        if: steps.verdict.outputs.bypass == 'false' && steps.resolve.outputs.state == 'closed' && !contains(steps.resolve.outputs.labels, env.PASSED_LABEL) && !contains(steps.resolve.outputs.labels, env.UNVERIFIABLE_LABEL)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMBER: ${{ steps.resolve.outputs.number }}
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          DRY_RUN='false'
+          if [ "$EVENT_NAME" = 'workflow_dispatch' ]; then
+            DRY_RUN="$INPUT_DRY_RUN"
+          fi
+
+          {
+            echo "$MARKER"
+            echo
+            echo '## This issue was reopened by automated triage'
+            echo
+            echo 'This issue was closed earlier for appearing to skip the issue templates, but a'
+            echo 'later edit now resolves it to a recognized template type. The earlier closure no'
+            echo 'longer applies, so the issue has been reopened.'
+          } > triage/comment.md
+
+          {
+            echo "## Issue triage for #$NUMBER"
+            echo
+            if [ "$DRY_RUN" = 'true' ]; then
+              echo 'Mode: **DRY RUN, nothing was written**'
+            else
+              echo 'Mode: **applied**'
+            fi
+            echo
+            echo 'Decision: a previously bypass-rejected issue now resolves to a recognized template type'
+            echo
+            echo '- issue reopened: true'
+            echo
+            echo '<details><summary>Triage comment</summary>'
+            echo
+            cat triage/comment.md
+            echo
+            echo '</details>'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$DRY_RUN" = 'true' ]; then
+            exit 0
+          fi
+
+          comment_id=$(gh api --paginate "repos/$GITHUB_REPOSITORY/issues/$NUMBER/comments" \
+            --jq "[.[] | select(.body | contains(\"$MARKER\")) | .id] | first // empty")
+          jq -n --rawfile body triage/comment.md '{body: $body}' > triage/comment.json
+          if [ -z "$comment_id" ]; then
+            gh api --method POST "repos/$GITHUB_REPOSITORY/issues/$NUMBER/comments" --input triage/comment.json
+          else
+            gh api --method PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$comment_id" --input triage/comment.json
+          fi
+
+          gh issue reopen "$NUMBER" --repo "$GITHUB_REPOSITORY"
+          echo "state=open" >> "$GITHUB_OUTPUT"
 
   llm-review:
     name: LLM Review

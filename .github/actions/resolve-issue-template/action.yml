@@ -23,6 +23,9 @@ outputs:
   required-ids:
     description: JSON array of the matched template's required field ids.
     value: ${{ steps.resolve.outputs.required-ids }}
+  labels:
+    description: Comma separated list of the issue's current label names.
+    value: ${{ steps.resolve.outputs.labels }}
 
 runs:
   using: composite

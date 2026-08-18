@@ -6,6 +6,7 @@ gh api "repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER" > triage/issue.json
 
 echo "number=$(jq -r '.number' triage/issue.json)" >> "$GITHUB_OUTPUT"
 echo "state=$(jq -r '.state // "open"' triage/issue.json)" >> "$GITHUB_OUTPUT"
+echo "labels=$(jq -r '[.labels[].name] | join(",")' triage/issue.json)" >> "$GITHUB_OUTPUT"
 
 type_name=$(jq -r '.type.name // empty' triage/issue.json | tr '[:upper:]' '[:lower:]')
 

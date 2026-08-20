@@ -218,7 +218,7 @@
   },"31": {
     "doc": "Settings",
     "title": "Common Settings",
-    "content": ". | Common . | Server Connection Timeout The server connection timeout determines the maximum wait time in minutes for the test runner client when communication between the editor and runner is interrupted. | Update Notification Enabled This option enables or disables the GdUnit update notification. If enabled, a notification will appear when starting Godot to inform you about new updates available for installation. | . | Test . | Flaky Test With this setting, you can activate or deactivate the detection of faulty tests and automatically run the test again if it fails. | Flaky Max Retries This setting is used to configure the number of retries that a test should perform if it fails. | Rerun Until Failure Retries This setting configures the maximum number of times a test is rerun when using Run Tests Until Fail from the Inspector Context Menu. Once the limit is reached or a failure occurs, the run stops. The default value is 10. | Test Discovery This setting configures the auto-discovery of tests. If enabled, it will scan the configured Test Root Folder for available tests at startup. Directories containing a .gdignore file are excluded from test discovery, consistent with how Godot itself ignores those directories. | Test Root Folder This setting defines the root folder where automated tests will be generated. By default, tests are usually located parallel to the source code in a folder named ‘test’. However, you can customize this location by specifying a different folder path. The default root folder is test. res://project/src/folder_a/folder_b/my_class.gd res://project/test/folder_a/folder_b/my_class_test.gd . | Test Suite Naming Nonvention Configures how to generate the test-suite file name. | AUTO_DETECT - generates the file name by source file naming convention. | SNAKE_CASE - generates the file name in snake case convention. | PASCAL_CASE - generates the file name in pascal case convention. | . | Test Timeout Seconds This setting configures the default timeout for a test case in seconds. If a test case runs longer than the specified timeout, the test will be interrupted and fail. You can override the default timeout on a per-test-case basis by specifying a different timeout using the timeout argument. | . | . | GdScript | C# | . | # Configures the test case to fail after a maximum of 2 seconds runtime func test_foo(timeout = 2000) -&gt; void: ... | // Configures the test case to fail after a maximum of 2 seconds runtime [TestCase(Timeout = 2000)] public async Task foo() { } . | . ",
+    "content": ". | Common . | Server Connection Timeout The server connection timeout determines the maximum wait time in minutes for the test runner client when communication between the editor and runner is interrupted. | Update Notification Enabled This option enables or disables the GdUnit update notification. If enabled, a notification will appear when starting Godot to inform you about new updates available for installation. | . | Test . | Flaky Test With this setting, you can activate or deactivate the detection of faulty tests and automatically run the test again if it fails. | Flaky Max Retries This setting is used to configure the number of retries that a test should perform if it fails. | Rerun Until Failure Retries This setting configures the maximum number of times a test is rerun when using Run Tests Until Fail from the Inspector Context Menu. Once the limit is reached or a failure occurs, the run stops. The default value is 10. | Auto Save Project Settings When enabled (the default), GdUnit automatically saves your project settings before each test execution and restores them afterwards, so a test that changes a setting cannot leak that change into later tests. Disable it to skip this snapshot when your suites rarely touch the project settings, and instead snapshot on demand with save_project_settings() / restore_project_settings() (see Tools and Helpers) in only the tests that need it. | Test Discovery This setting configures the auto-discovery of tests. If enabled, it will scan the configured Test Root Folder for available tests at startup. Directories containing a .gdignore file are excluded from test discovery, consistent with how Godot itself ignores those directories. | Test Root Folder This setting defines the root folder where automated tests will be generated. By default, tests are usually located parallel to the source code in a folder named ‘test’. However, you can customize this location by specifying a different folder path. The default root folder is test. res://project/src/folder_a/folder_b/my_class.gd res://project/test/folder_a/folder_b/my_class_test.gd . | Test Suite Naming Nonvention Configures how to generate the test-suite file name. | AUTO_DETECT - generates the file name by source file naming convention. | SNAKE_CASE - generates the file name in snake case convention. | PASCAL_CASE - generates the file name in pascal case convention. | . | Test Timeout Seconds This setting configures the default timeout for a test case in seconds. If a test case runs longer than the specified timeout, the test will be interrupted and fail. You can override the default timeout on a per-test-case basis by specifying a different timeout using the timeout argument. | . | . | GdScript | C# | . | # Configures the test case to fail after a maximum of 2 seconds runtime func test_foo(timeout = 2000) -&gt; void: ... | // Configures the test case to fail after a maximum of 2 seconds runtime [TestCase(Timeout = 2000)] public async Task foo() { } . | . ",
     "url": "/gdUnit4/v6.2.x/first_steps/settings/#common-settings",
     
     "relUrl": "/first_steps/settings/#common-settings"
@@ -1771,208 +1771,215 @@
     "relUrl": "/advanced_testing/tools/#auto_free"
   },"253": {
     "doc": "Tools and Helpers",
+    "title": "save_project_settings() / restore_project_settings()",
+    "content": "Helpers to snapshot and restore the in-memory ProjectSettings around a test that changes them, so the change does not leak into later tests. By default GdUnit automatically saves and restores your project settings around every test execution (the Auto Save Project Settings setting). If you turn that off — for example to save time in a suite where almost no test touches the settings — you can snapshot on demand in just the tests that need it: call save_project_settings() in before()/before_test() and restore_project_settings() in after()/after_test(). func save_project_settings() -&gt; void: func restore_project_settings() -&gt; void: . Here’s a small example: . func before_test() -&gt; void: save_project_settings() func after_test() -&gt; void: restore_project_settings() func test_changes_a_setting() -&gt; void: ProjectSettings.set_setting(\"application/config/custom\", true) # the change is rolled back in after_test(), so later tests see the original value . ",
+    "url": "/gdUnit4/v6.2.x/advanced_testing/tools/#save_project_settings--restore_project_settings",
+    
+    "relUrl": "/advanced_testing/tools/#save_project_settings--restore_project_settings"
+  },"254": {
+    "doc": "Tools and Helpers",
     "title": "collect_orphan_node_details()",
     "content": "A helper to itemize the orphan nodes detected in the current test, reporting each one’s class, instance ID, and the exact source line where it was created. By default, GdUnit only reports how many orphan nodes were detected, since capturing this detail has a runtime cost. Call collect_orphan_node_details() at the end of a test, or in before_test()/after_test(), to itemize whatever orphans that scope produced. See Orphan Nodes for what the itemized report looks like. func collect_orphan_node_details() -&gt; void: . Here’s a small example: . func test_scene_management() -&gt; void: var scene := preload(\"res://TestScene.tscn\").instantiate() add_child(scene) scene.some_method() scene.queue_free() # itemize any orphan nodes left after this test collect_orphan_node_details() . ",
     "url": "/gdUnit4/v6.2.x/advanced_testing/tools/#collect_orphan_node_details",
     
     "relUrl": "/advanced_testing/tools/#collect_orphan_node_details"
-  },"254": {
+  },"255": {
     "doc": "Tools and Helpers",
     "title": "create_temp_dir()",
     "content": "This helper function creates a new directory under the temporary directory user://tmp, which can be useful for storing data during test execution. The directory is automatically deleted after the test suite has finished executing. | GdScript | C# | . | func create_temp_dir(relative_path :String) -&gt; String: . | public static string CreateTempDir(string path); . | . Here’s an example: . func test_save_game_data(): # create a temporay directory to store test data var temp_dir := create_temp_dir(\"examples/game/save\") var file_to_save := temp_dir + \"/save_game.dat\" var data = { 'user': \"Hoschi\", 'level': 42 } var file := File.new() file.open(file_to_save, File.WRITE) file.store_line(JSON.print(data)) file.close() # the data is saved at \"user://tmp/examples/game/save/save_game.dat\" assert_bool(file.file_exists(file_to_save)).is_true() . ",
     "url": "/gdUnit4/v6.2.x/advanced_testing/tools/#create_temp_dir",
     
     "relUrl": "/advanced_testing/tools/#create_temp_dir"
-  },"255": {
+  },"256": {
     "doc": "Tools and Helpers",
     "title": "clean_temp_dir()",
     "content": "Deletes the temporary directory created by create_temp_dir(). This function is called automatically after each execution of the test suite to ensure that the temporary directory is clean and ready for the next test suite. | GdScript | C# | . | func clean_temp_dir(): . | public static void ClearTempDir(); . | . ",
     "url": "/gdUnit4/v6.2.x/advanced_testing/tools/#clean_temp_dir",
     
     "relUrl": "/advanced_testing/tools/#clean_temp_dir"
-  },"256": {
+  },"257": {
     "doc": "Tools and Helpers",
     "title": "create_temp_file()",
     "content": "The create_temp_file() function creates a new File under the temporary directory user://tmp + &lt;relative_path&gt; with the given name &lt;file_name&gt; and file &lt;mode&gt; (default = File.WRITE). If successful, the returned File is automatically closed after the execution of the test suite. We can create a small test file at the beginning of a test suite in the before() function and read it later in the test. It is not necessary to close the file, as the GdUnit test runner will close it automatically. func create_temp_file(relative_path :String, file_name :String, mode :=File.WRITE) -&gt; File: . Here’s an example: . # setup test data func before(): # opens a tmp file with WRITE mode under \"user://tmp/examples/game/game.sav\" (auto closed) var file := create_temp_file(\"examples/game\", \"game.sav\") assert_object(file).is_not_null() # write some example data file.store_line(\"some data\") # not needs to be manually close, will be auto closed before test execution func test_create_temp_file(): # opens the stored tmp file with READ mode under \"user://tmp/examples/game/game.sav\" (auto closed) var file_read := create_temp_file(\"examples/game\", \"game.sav\", File.READ) assert_object(file_read).is_not_null() assert_str(file_read.get_as_text()).is_equal(\"some data\\n\") # not needs to be manually close, will be auto closed after test suite execution . ",
     "url": "/gdUnit4/v6.2.x/advanced_testing/tools/#create_temp_file",
     
     "relUrl": "/advanced_testing/tools/#create_temp_file"
-  },"257": {
+  },"258": {
     "doc": "Tools and Helpers",
     "title": "resource_as_array()",
     "content": "This function reads a resource file located at the given path &lt;resource_path&gt; and returns its contents as a PackedStringArray. func resource_as_array(resource_path :String) -&gt; PoolStringArray: . Here’s an example: . var rows = [\"row a\", \"row b\"] var file_content := resource_as_array(\"res://myproject/test/resources/TestRows.txt\") assert_array(rows).contains_exactly(file_content) . ",
     "url": "/gdUnit4/v6.2.x/advanced_testing/tools/#resource_as_array",
     
     "relUrl": "/advanced_testing/tools/#resource_as_array"
-  },"258": {
+  },"259": {
     "doc": "Tools and Helpers",
     "title": "resource_as_string()",
     "content": "This function reads a resource file located at the given path &lt;resource_path&gt; and returned the content as String. func resource_as_string(resource_path :String) -&gt; String: . Here’s an example: . var rows = \"row a\\nrow b\\n\" var file_content := resource_as_string(\"res://myproject/test/resources/TestRows.txt\") assert_string(rows).is_equal(file_content) . ",
     "url": "/gdUnit4/v6.2.x/advanced_testing/tools/#resource_as_string",
     
     "relUrl": "/advanced_testing/tools/#resource_as_string"
-  },"259": {
+  },"260": {
     "doc": "Fixing Orphan Nodes",
     "title": "How to Fix Orphan Nodes",
     "content": "With GdUnit, you can easily identify orphaned nodes that are marked as WARNING in the GdUnit inspector. It is important to fix any orphaned nodes that are discovered to ensure that your project does not leak memory over time. ",
     "url": "/gdUnit4/v6.2.x/tutorials/fixing-orphan-nodes/#how-to-fix-orphan-nodes",
     
     "relUrl": "/tutorials/fixing-orphan-nodes/#how-to-fix-orphan-nodes"
-  },"260": {
+  },"261": {
     "doc": "Fixing Orphan Nodes",
     "title": "How to Recognize Orphan Nodes in Your Code",
     "content": "Finding the code location where the orphaned nodes are located can be a little difficult and often time-consuming. If you are not an expert and have no idea what the problem is, we recommend a step-by-step approach to find and fix orphan nodes. See Orphan Nodes for how GdUnit reports orphan nodes in the first place. Here is a small example of a class with an orphan node: . extends GdUnitTestSuite class MyClassWithOrphan extends Node: var orphan_node: Node func _init() -&gt; void: orphan_node = Node.new() func test_orphan_detected() -&gt; void: var t := MyClassWithOrphan.new() assert_object(t).is_not_null() collect_orphan_node_details() . When we execute the testcase test_orphan_detected we will see no failures, but it ends with a warning detecting two orphan nodes. The orphan_node in the class MyClassWithOrphan is not being used or referenced elsewhere, so it will become an orphan node when the instance is destroyed. Also, the instance of t is referenced elsewhere and is not finally released. ",
     "url": "/gdUnit4/v6.2.x/tutorials/fixing-orphan-nodes/#how-to-recognize-orphan-nodes-in-your-code",
     
     "relUrl": "/tutorials/fixing-orphan-nodes/#how-to-recognize-orphan-nodes-in-your-code"
-  },"261": {
+  },"262": {
     "doc": "Fixing Orphan Nodes",
     "title": "How to Fix Orphan Nodes Step by Step",
     "content": "Step One: Fix your Testcase To fix orphan nodes, it is important to ensure that all nodes used in a test case are covered by the auto_free function. When the test case is finished, auto_free will free the instance automatically. auto_free is a GdUnit function that automatically adds the object to the GdUnit object registry and calls free on the object when the test case ends. This ensures that any nodes created during the test case are cleaned up properly. Here is an example of how to fix the test case from the previous section: . extends GdUnitTestSuite class MyClassWithOrphan extends Node: var orphan_node: Node func _init() -&gt; void: orphan_node = Node.new() func test_orphan_partially_fixed() -&gt; void: var t: MyClassWithOrphan = auto_free(MyClassWithOrphan.new()) assert_object(t).is_not_null() collect_orphan_node_details() . We added the auto_free around the instantiation of MyClassWithOrphan to register the automatic release after the test execution. If we run this test case, we will see that we have fixed an orphaned node, but there is still one present. The orphan_node in the class MyClassWithOrphan is not being used or referenced elsewhere, so it will become an orphan node when the instance is destroyed. Step Two: Fix the orphan node inside of MyClassWithOrphan We need to fix the class MyClassWithOrphan now to ensure the node orphan_node will be released. The best way to fix orphan nodes is to ensure that all nodes are added as children of a parent node. When a parent node is freed, all of its child nodes are also freed. Here is an example of how to fix the MyClassWithOrphan example above: . extends GdUnitTestSuite class MyClassFixed extends Node: var orphan_node: Node func _init() -&gt; void: orphan_node = Node.new() add_child(orphan_node) func test_orphan_fixed() -&gt; void: var t: MyClassFixed = auto_free(MyClassFixed.new()) assert_object(t).is_not_null() collect_orphan_node_details() . In this fixed version, the orphan_node is added as a child of t. When the instance of MyClassFixed is destroyed, t and orphan_node will also be freed. Rerun your test and you see the orphan nodes are fixed. ",
     "url": "/gdUnit4/v6.2.x/tutorials/fixing-orphan-nodes/#how-to-fix-orphan-nodes-step-by-step",
     
     "relUrl": "/tutorials/fixing-orphan-nodes/#how-to-fix-orphan-nodes-step-by-step"
-  },"262": {
+  },"263": {
     "doc": "Fixing Orphan Nodes",
     "title": "Fixing Orphan Nodes",
     "content": " ",
     "url": "/gdUnit4/v6.2.x/tutorials/fixing-orphan-nodes/",
     
     "relUrl": "/tutorials/fixing-orphan-nodes/"
-  },"263": {
+  },"264": {
     "doc": "Tutorials",
     "title": "GdUnit4 Tutorials",
     "content": "Welcome to the GdUnit4 tutorial page! Here, we’ll go through a set of tutorials that will help you learn how to use GdUnit4 to write tests for your Godot game. Prerequisites Before starting these tutorials, you should have a basic understanding of the Godot engine and the GDScript language. You should also have GdUnit4 installed and set up in your Godot project. ",
     "url": "/gdUnit4/v6.2.x/tutorials/index/#gdunit4-tutorials",
     
     "relUrl": "/tutorials/index/#gdunit4-tutorials"
-  },"264": {
+  },"265": {
     "doc": "Tutorials",
     "title": "Tutorial List",
     "content": "Here’s a list of tutorials we currently have available: . | Getting Started with GDScript Tests | Test Fixtures and Setup Methods | Assertions and Expectations | Test Doubles: Stubs, Mocks, and Spies | Running Tests from the Command Line | Testing Signals and Events | Test Driven Development (TDD) with GdUnit4 | Testing Scene Interactions | . ",
     "url": "/gdUnit4/v6.2.x/tutorials/index/#tutorial-list",
     
     "relUrl": "/tutorials/index/#tutorial-list"
-  },"265": {
+  },"266": {
     "doc": "Tutorials",
     "title": "Basics",
     "content": "This is a list of sample test cases that can serve as examples to inspire you to write your own tests. These cases provide a wide range of testing scenarios that cover different aspects of software development. By reviewing these examples, you can get ideas for how to structure and design your own tests, as well as identify potential pitfalls to avoid. Keep in mind that these tests are not exhaustive and may need to be adapted to your specific application or framework. However, they can provide a valuable starting point for creating effective and comprehensive tests. Here’s a list we currently have available: . | Verify a Message for Length and Content | . ",
     "url": "/gdUnit4/v6.2.x/tutorials/index/#basics",
     
     "relUrl": "/tutorials/index/#basics"
-  },"266": {
+  },"267": {
     "doc": "Tutorials",
     "title": "Tutorials",
     "content": " ",
     "url": "/gdUnit4/v6.2.x/tutorials/index/",
     
     "relUrl": "/tutorials/index/"
-  },"267": {
+  },"268": {
     "doc": "Testing Scene Interactions",
     "title": "Testing Scene Interactions",
     "content": " ",
     "url": "/gdUnit4/v6.2.x/tutorials/scenerunner_examples/",
     
     "relUrl": "/tutorials/scenerunner_examples/"
-  },"268": {
+  },"269": {
     "doc": "Testing Scene Interactions",
     "title": "Verified 3D Platformer with GdUnit4",
     "content": "In this tutorial, I explain how to use the Scene Runner in GdUnit4 to verify that a character in a 3D platformer can make certain jumps and cannot make others. This tutorial focuses on how to use Scene Runner, but it may also be helpful if you are just starting to make a 3D platformer in Godot. The full project can be found here. Many thanks to ACG8 for providing this nice tutorial. ",
     "url": "/gdUnit4/v6.2.x/tutorials/scenerunner_examples/#verified-3d-platformer-with-gdunit4",
     
     "relUrl": "/tutorials/scenerunner_examples/#verified-3d-platformer-with-gdunit4"
-  },"269": {
+  },"270": {
     "doc": "Test Driven Development",
     "title": "Test Driven Development (TDD) with GdUnit4",
     "content": "Test Driven Development is a software development methodology in which tests are written before the code. In TDD, developers write a failing test first, then write the minimum amount of code needed to pass the test, and then refactor the code to improve its design. The cycle is repeated until all the requirements are implemented. GdUnit4 provides a framework for writing and running tests in the Godot game engine. With GdUnit4, developers can write tests for their code and run them automatically. TDD with GdUnit4 involves writing tests that check the expected behavior of the code before writing the code itself. By writing tests first, developers can ensure that the code meets the requirements and works as expected. ",
     "url": "/gdUnit4/v6.2.x/tutorials/tdd/#test-driven-development-tdd-with-gdunit4",
     
     "relUrl": "/tutorials/tdd/#test-driven-development-tdd-with-gdunit4"
-  },"270": {
+  },"271": {
     "doc": "Test Driven Development",
     "title": "Verified TicTacToe with GdUnit4",
     "content": "The Verified TicTacToe example tutorial walks you through creating a TicTacToe game using TDD with GdUnit4. The tutorial shows you how to write tests for the different components of the game, including game logic. By following this tutorial, you will learn how to use TDD with GdUnit4 to develop high-quality, reliable code. The full project can be found here. Many thanks to ACG8 for providing this nice tutorial. ",
     "url": "/gdUnit4/v6.2.x/tutorials/tdd/#verified-tictactoe-with-gdunit4",
     
     "relUrl": "/tutorials/tdd/#verified-tictactoe-with-gdunit4"
-  },"271": {
+  },"272": {
     "doc": "Test Driven Development",
     "title": "Test Driven Development",
     "content": " ",
     "url": "/gdUnit4/v6.2.x/tutorials/tdd/",
     
     "relUrl": "/tutorials/tdd/"
-  },"272": {
+  },"273": {
     "doc": "Basics",
     "title": "Examples",
     "content": "This page contains a collection of examples that demonstrate how to use GdUnit4 to write tests for your Godot projects. These examples cover a range of use cases and will be expanded over time to provide more comprehensive coverage of GdUnit4 features. Verify a Message for Length and Content . This example demonstrates how to use GdUnit4 to test a given string for expected length and content. This type of test can be useful in verifying the output of various functions, such as text formatting or input validation. To use this example, simply copy the code into a new GdUnit4 test script and modify the message and expected length and content to match your own requirements. When you run the test, GdUnit4 will compare the actual message length and content to the expected values, and report any discrepancies. | GdScript | C# | . | extends GdUnitTestSuite func test_example(): # Verify the given string by using `assert_str` assert_str(\"This is a example message\")\\ # We expect a lenght equal 25 characters .has_length(25)\\ # The message must start wiht `This is a ex` .starts_with(\"This is a ex\") . | [TestCase] public Example2() // Verify the given string by using `AssertString` AssertString(\"This is a example message\") // We expect a lenght equal 25 characters .HasLength(25) // The message must start wiht `This is a ex` .StartsWith(\"This is a ex\"); . | . If the test fails, GdUnit4 will report an failure message that shows the expected and actual values. ",
     "url": "/gdUnit4/v6.2.x/tutorials/tutorial_basics/#examples",
     
     "relUrl": "/tutorials/tutorial_basics/#examples"
-  },"273": {
+  },"274": {
     "doc": "Basics",
     "title": "Basics",
     "content": " ",
     "url": "/gdUnit4/v6.2.x/tutorials/tutorial_basics/",
     
     "relUrl": "/tutorials/tutorial_basics/"
-  },"274": {
+  },"275": {
     "doc": "Continuous Integration Testing",
     "title": "Continuous Integration Testing (CI)",
     "content": " ",
     "url": "/gdUnit4/v6.2.x/faq/ci/#continuous-integration-testing-ci",
     
     "relUrl": "/faq/ci/#continuous-integration-testing-ci"
-  },"275": {
+  },"276": {
     "doc": "Continuous Integration Testing",
     "title": "Definition",
     "content": "Continuous Integration (CI) is a method for automating the integration of code changes made by multiple contributors to a single software project. It is a primary DevOps best practice that allows developers to frequently merge code changes into a central repository where builds and tests are executed. Automated tools are used to confirm the new code is bug-free before integration. Wiki - Continuous Integration . ",
     "url": "/gdUnit4/v6.2.x/faq/ci/#definition",
     
     "relUrl": "/faq/ci/#definition"
-  },"276": {
+  },"277": {
     "doc": "Continuous Integration Testing",
     "title": "Command Line Tool",
     "content": "GdUnit4 provides a command line tool that allows you to automate your testing workflow, including CI. For more details please show at Command Line Tool . ",
     "url": "/gdUnit4/v6.2.x/faq/ci/#command-line-tool",
     
     "relUrl": "/faq/ci/#command-line-tool"
-  },"277": {
+  },"278": {
     "doc": "Continuous Integration Testing",
     "title": "Howto deploy with GitHub Action",
     "content": "To deploy with GitHub Actions, you need to create a new workflow file in the .github/workflows/ directory and name it ci.yml. Please visit GitHub Workflows Page . Using the gdUnit4-action . This GitHub Action automates the execution of GdUnit4 unit tests within the Godot Engine 4.x environment. It provides flexibility in configuring the Godot version, GdUnit4 version, test paths, and other parameters to suit your testing needs. Find here on GitHub Marketplace gdUnit4-action . Example workflow: (Please note that this is just an example and needs to be adapted to your project environment.) . name: ci-pr-example run-name: ${{ github.head_ref || github.ref_name }}-ci-pr-example on: pull_request: paths-ignore: - '**.yml' - '**.md' workflow_dispatch: concurrency: group: ci-pr-example${{ github.event.number }} cancel-in-progress: true jobs: unit-test: name: \"CI Unit Test\" runs-on: 'ubuntu-22.04' timeout-minutes: 10 # The overall timeout permissions: actions: write checks: write contents: write pull-requests: write statuses: write steps: # checkout your repository - uses: actions/checkout@v4 with: lfs: true # run tests by using the gdUnit4-action with Godot version 4.2.1 and the latest GdUnit4 release - uses: MikeSchulze/gdUnit4-action@v1.0.2 with: godot-version: '4.2.1' paths: | res://project/tests/ timeout: 5 report-name: test_report.xml . ",
     "url": "/gdUnit4/v6.2.x/faq/ci/#howto-deploy-with-github-action",
     
     "relUrl": "/faq/ci/#howto-deploy-with-github-action"
-  },"278": {
+  },"279": {
     "doc": "Continuous Integration Testing",
     "title": "Howto deploy with GitLab CI",
     "content": "You have to create a new workflow file on GitLab and named it .gitlab-ci.yml. Please visit GitLab CI Documentation for more detaild instructions . Thanks to mzoeller to providing this example workflow. image: barichello/godot-ci:4.0.0 cache: key: import-assets paths: - .import/ stages: - export - tests - deploy variables: EXPORT_NAME: $CI_PROJECT_NAME GIT_SUBMODULE_STRATEGY: recursive linux: stage: export script: - mkdir -v -p build/linux - godot -v --export \"Linux/X11\" build/linux/$EXPORT_NAME.x86_64 artifacts: name: $EXPORT_NAME-$CI_JOB_NAME paths: - build/linux gdunit4: stage: tests dependencies: - linux script: - export GODOT_BIN=/usr/local/bin/godot - ./runtest.sh -a ./test || if [ $? -eq 101 ]; then echo \"warnings\"; elif [ $? -eq 0 ]; then echo \"success\"; else exit 1; fi artifacts: when: always reports: junit: ./reports/report_1/results.xml . ",
     "url": "/gdUnit4/v6.2.x/faq/ci/#howto-deploy-with-gitlab-ci",
     
     "relUrl": "/faq/ci/#howto-deploy-with-gitlab-ci"
-  },"279": {
+  },"280": {
     "doc": "Continuous Integration Testing",
     "title": "Continuous Integration Testing",
     "content": " ",
     "url": "/gdUnit4/v6.2.x/faq/ci/",
     
     "relUrl": "/faq/ci/"
-  },"280": {
+  },"281": {
     "doc": "Problems & Solutions",
     "title": "Problems &amp; Solutions",
     "content": "This section lists known problems and possible solutions/workarounds. ",
     "url": "/gdUnit4/v6.2.x/faq/solutions/#problems--solutions",
     
     "relUrl": "/faq/solutions/#problems--solutions"
-  },"281": {
+  },"282": {
     "doc": "Problems & Solutions",
     "title": "Problems",
     "content": ". | Script/Resource Errors after the plugin is installed | Modifying the Game Engine State ‘mainLoop.Paused = true’ during Tests | Modifying ProjectSettings during Tests | Export Failures with GdUnit4 Plugin Installed | How to Exclude Directories from Test Discovery | . Script/Resource Errors after the plugin is installed . When installing the GdUnit4 plugin and activating it, you may encounter a lot of script and resource loading errors. These errors occur due to a cache problem in the Godot Engine. Solution . To solve the errors, you need to restart the Godot Editor. If this does not help, you may need to manually delete the Godot cache folder: . | Close the Godot Editor. | Delete the .godot folder from your working directory. | Start the Godot Editor (you may still see loading errors). | Close and restart the Godot Editor. The loading errors should no longer occur. | . Modifying the Game Engine State ‘mainLoop.Paused = true’ during Tests . When a test modifies the game engine state Paused on the SceneTree, it can affect the test execution. Setting the main loop to paused will stop the engine running, including the test execution running in the main loop, causing the GdUnit4 test window to remain open even after tests are complete. Solution . When you modify engine states during tests, ensure you restore them to their previous values when the test is finished. You can achieve this by adding an “after test” stage to your test suite. | GDScript | C# | . | # Reset the paused mode back to false after each test func after_test() -&gt; void: Engine.get_main_loop().paused = false # Simple example test to modify the game state func test_game_paused() -&gt; void: var mainLoop :SceneTree = Engine.get_main_loop() assert_that(mainLoop.paused).is_false() # The following lines cause the GdUnit4 test window to remain open even after tests are complete mainLoop.paused = true assert_that(mainLoop.paused).is_true() . | // Reset the paused mode back to false after each test [AfterTest] public void TearDown() =&gt; ((SceneTree)Engine.GetMainLoop()).Paused = false; [TestCase] public void GamePaused() { var mainLoop = (SceneTree)Engine.GetMainLoop(); AssertThat(mainLoop.Paused).IsFalse(); // The following lines cause the GdUnit4 test window to remain open even after tests are complete mainLoop.Paused = true; AssertThat(mainLoop.Paused).IsTrue(); } . | . Modifying ProjectSettings during Tests . When a test modifies ProjectSettings — for example changing a warning mode or a feature flag — those changes persist across tests within the same Godot session and can cause later tests to behave unexpectedly. Solution . GdUnit4 automatically snapshots all ProjectSettings before each test suite and each individual test, and restores any changed values afterwards. There is no need to manually save and restore settings in after hooks: . | GDScript | C# | . | # unnecessary — the framework restores ProjectSettings automatically func before() -&gt; void: _saved = ProjectSettings.get_setting(\"debug/gdscript/warnings/inferred_declaration\") ProjectSettings.set_setting(\"debug/gdscript/warnings/inferred_declaration\", 0) func after() -&gt; void: ProjectSettings.set_setting(\"debug/gdscript/warnings/inferred_declaration\", _saved) . Simply set what the tests need — the original value is restored automatically: . func before() -&gt; void: ProjectSettings.set_setting(\"debug/gdscript/warnings/inferred_declaration\", 0) . | // unnecessary — the framework restores ProjectSettings automatically [Before] public void Setup() { _saved = ProjectSettings.GetSetting(\"debug/gdscript/warnings/inferred_declaration\"); ProjectSettings.SetSetting(\"debug/gdscript/warnings/inferred_declaration\", 0); } [After] public void TearDown() { ProjectSettings.SetSetting(\"debug/gdscript/warnings/inferred_declaration\", _saved); } . Simply set what the tests need — the original value is restored automatically: . [Before] public void Setup() { ProjectSettings.SetSetting(\"debug/gdscript/warnings/inferred_declaration\", 0); } . | . Export Failures with GdUnit4 Plugin Installed . When exporting games with the GdUnit4 plugin installed, you may encounter crashes during the export process, particularly in CI/CD environments. The crash typically shows a “Program crashed with signal 11” error and occurs because Godot has issues when exporting projects that include editor-only plugins like GdUnit4. Solution . The recommended solution is to exclude the GdUnit4 addon from the export rather than disabling the plugin entirely. This allows you to keep the plugin active for development while ensuring clean exports. Exclude GdUnit4 from Export Settings . | Open your project in the Godot Editor | Go to Project &gt; Export… | Select your export preset (e.g., “Windows Desktop”, “macOS”, etc.) | In the Resources tab, locate the Filters to exclude files/folders from project section | Add the following filter to exclude the GdUnit4 addon: addons/gdunit4/* . | Export your game - the crash should no longer occur | . Important Notes: . | The export exclusion method is preferred over disabling the plugin because it keeps GdUnit4 functional during development | The GdUnit4 addon is designed for development and testing environments and should not be included in production builds | After applying the exclusion filters, test your export to ensure it works correctly | . How to Exclude Directories from Test Discovery . When your project contains directories that should not be scanned for tests — such as third-party plugins, subprojects, or generated content — you can prevent GdUnit4 from scanning them by placing a .gdignore file in those directories. GdUnit4’s test discovery scanner respects .gdignore files the same way Godot does: any directory containing a .gdignore file is skipped entirely during the scan. Solution . Create an empty .gdignore file in any directory you want to exclude from test discovery: . touch addons/some_other_plugin/.gdignore . GdUnit4 will no longer scan that directory or any of its subdirectories for test suites. ",
     "url": "/gdUnit4/v6.2.x/faq/solutions/#problems",
     
     "relUrl": "/faq/solutions/#problems"
-  },"282": {
+  },"283": {
     "doc": "Problems & Solutions",
     "title": "Problems & Solutions",
     "content": " ",

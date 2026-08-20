@@ -223,10 +223,14 @@ func test_split_argumens2(arg1: String, arg2: String, _test_parameters := _param
 	assert_str(arg2).is_equal("d\"ef")
 
 
-# TODO, the parsing '"d\"ef"' let Godot crash here
-func _test_split_argumens3(arg1: String, arg2: String, _test_parameters := _parameters_string_arg('abc', "d\"ef")) -> void:
+func test_split_argumens3(arg1: String, arg2: String, _test_parameters := _parameters_string_arg('abc', "d\"ef")) -> void:
 	assert_str(arg1).is_equal("abc")
 	assert_str(arg2).is_equal("d\"ef")
+
+
+func test_split_argumens4(arg1: String, arg2: String, _test_parameters := _parameters_string_arg('abc', 'd\'ef')) -> void:
+	assert_str(arg1).is_equal("abc")
+	assert_str(arg2).is_equal("d'ef")
 
 
 func test_split_argumens() -> void:

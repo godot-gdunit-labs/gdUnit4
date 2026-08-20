@@ -107,8 +107,9 @@ func validate(parameters: Array, index: int) -> GdUnitResult:
 ## Duplicates [param parameters] first when it is read-only (e.g. a GDScript class constant).
 ## Also coerces untyped [Array] values to typed arrays
 func _finalize_parameter_set(parameters: Array) -> Array:
-	if parameters.is_read_only():
-		parameters = parameters.duplicate()
+	# need an untyped copy, else appending EMPTY_SET below fails on a typed Array.
+	if parameters.is_read_only() or parameters.is_typed():
+		parameters = Array(parameters, TYPE_NIL, "", null)
 
 	# Convert to typed Array and Dictionary parameters if required
 	for spec: ParameterSpec in _parameter_specs:

@@ -4,14 +4,15 @@ This file provides guidance to working with code in this repository.
 
 ## Shared AI Harness Rules
 
-Security, bot identity, commit style, PR prose, GDScript formatting, and documentation conventions
-are defined centrally in the AI harness:
+Security, bot identity, commit style, PR prose, GDScript formatting, documentation conventions, and
+agent memory conventions are defined centrally in the AI harness:
 
 - Security: `../ai-harness-core/shared-rules/security.md`
 - Bot conventions: `../ai-harness-core/shared-rules/bot-conventions.md`
 - PR and commit style: `../ai-harness-core/shared-rules/pr-style.md`
 - GDScript style: `../ai-harness-core/shared-rules/gdscript-style.md`
 - Documentation style: `../ai-harness-core/shared-rules/documentation-style.md`
+- Agent memory conventions: `../ai-harness-core/shared-rules/agent-memory-conventions.md`
 
 ## What This Project Is
 

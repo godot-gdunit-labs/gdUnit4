@@ -470,7 +470,25 @@ func test_parse_fuzz_do_skip_param_GD_1157() -> void:
 		)
 
 
+func test_static_functions() -> void:
+	var script: GDScript = load("res://addons/gdUnit4/test/core/resources/parsing/functions/ClassWithStaticFunctions.gd")
+
+	var fds := _parser.get_function_descriptors(script, [])
+	assert_that(fds[0])\
+		.is_equal(create_static("_static_init", script.resource_path, 4, 5, GdObjects.TYPE_VOID, [])
+		)
+	assert_that(fds[1])\
+		.is_equal(create_static("_static_init2", script.resource_path, 8, 9, GdObjects.TYPE_VOID, [])
+		)
+
+
 static func create(func_name: String, source_path: String, begin_line: int, end_line: int, return_type: int, args: Array[GdFunctionArgument] = []) -> GdFunctionDescriptor:
 	var fd := GdFunctionDescriptor.new(func_name, false, false, false, return_type, "", args)
+	fd.enrich_file_info(source_path, begin_line, end_line)
+	return fd
+
+
+static func create_static(func_name: String, source_path: String, begin_line: int, end_line: int, return_type: int, args: Array[GdFunctionArgument] = []) -> GdFunctionDescriptor:
+	var fd := GdFunctionDescriptor.new(func_name, false, true, false, return_type, "", args)
 	fd.enrich_file_info(source_path, begin_line, end_line)
 	return fd

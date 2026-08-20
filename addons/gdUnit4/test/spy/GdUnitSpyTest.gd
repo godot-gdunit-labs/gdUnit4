@@ -436,6 +436,9 @@ func test_verify_no_more_interactions_but_has() -> void:
 
 class ClassWithStaticFunctions:
 
+	static func _static_init() -> void:
+		return
+
 	static func foo() -> void:
 		pass
 

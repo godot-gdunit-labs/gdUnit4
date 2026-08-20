@@ -152,7 +152,7 @@ func _to_string() -> String:
 
 
 # extract function description given by Object.get_method_list()
-static func extract_from(descriptor :Dictionary, is_engine_ := true) -> GdFunctionDescriptor:
+static func extract_from(descriptor: Dictionary, is_engine_ := true) -> GdFunctionDescriptor:
 	var func_name: String = descriptor["name"]
 	var function_flags: int = descriptor["flags"]
 	var return_descriptor: Dictionary = descriptor["return"]
@@ -162,6 +162,11 @@ static func extract_from(descriptor :Dictionary, is_engine_ := true) -> GdFuncti
 	var is_vararg_: bool = function_flags & METHOD_FLAG_VARARG
 
 	var return_type_ := _extract_return_type(return_descriptor)
+
+	# Add hotfix to handle Godot bug https://github.com/godotengine/godot/issues/122629
+	if func_name == '_static_init':
+		return_type_ = GdObjects.TYPE_VOID
+
 	return GdFunctionDescriptor.new(
 		func_name,
 		is_virtual_,
@@ -198,8 +203,8 @@ const enum_fix := [
 
 
 static func _extract_return_type(return_info: Dictionary) -> int:
-	var type :int = return_info["type"]
-	var usage :int = return_info["usage"]
+	var type: int = return_info["type"]
+	var usage: int = return_info["usage"]
 	if usage & PROPERTY_USAGE_CLASS_IS_ENUM:
 		return GdObjects.TYPE_ENUM
 	if usage & PROPERTY_USAGE_NIL_IS_VARIANT:

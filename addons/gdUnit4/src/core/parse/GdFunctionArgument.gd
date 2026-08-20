@@ -154,6 +154,7 @@ static func _parse_parameters(input: String) -> PackedStringArray:
 	work.resize(buf.size())
 	var wp := 0
 	var array_depth := 0
+	var func_call_depth := 0
 	var after_comma := false
 
 	for c: int in buf:
@@ -163,7 +164,7 @@ static func _parse_parameters(input: String) -> PackedStringArray:
 		if c == 32:
 			if in_string:
 				work[wp] = c; wp += 1; after_comma = false
-			elif array_depth > 0 and not after_comma:
+			elif (array_depth > 0 or func_call_depth > 0) and not after_comma:
 				work[wp] = c; wp += 1
 
 		# '\n': strip newlines outside quoted strings, preserve inside
@@ -173,7 +174,7 @@ static func _parse_parameters(input: String) -> PackedStringArray:
 
 		# ',': step over array element seperator ','
 		elif c == 44:
-			if array_depth == 0:
+			if array_depth == 0 and func_call_depth == 0:
 				if wp > 0:
 					@warning_ignore("return_value_discarded")
 					output.append(work.slice(0, wp).get_string_from_utf8())
@@ -211,6 +212,21 @@ static func _parse_parameters(input: String) -> PackedStringArray:
 		elif c == 93:
 			if not in_string:
 				array_depth -= 1
+			after_comma = false
+			work[wp] = c; wp += 1
+
+		# '('
+		elif c == 40:
+			if not in_string:
+				func_call_depth += 1
+			if after_comma:
+				work[wp] = 32; wp += 1; after_comma = false
+			work[wp] = c; wp += 1
+
+		# ')'
+		elif c == 41:
+			if not in_string:
+				func_call_depth -= 1
 			after_comma = false
 			work[wp] = c; wp += 1
 		else:

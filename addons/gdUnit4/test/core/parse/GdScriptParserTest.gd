@@ -121,6 +121,29 @@ func test_parse_arguments_default_build_in_type_string() -> void:
 		])
 
 
+func test_parse_arguments_default_build_in_type_string_with_escaped_quote() -> void:
+	# https://github.com/godot-gdunit-labs/gdUnit4/issues/1309
+	# an escaped double quote inside a callable argument value must not be treated as the string end
+	assert_array(_parser._parse_function_arguments(
+		"""func foo(arg1: String, arg2: String, test_parameters := _parameters_string_arg('abc', "d\\"ef")):"""))\
+		.has_size(3)\
+		.contains([
+			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
+			{"name" : "arg2", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
+			{"name" : "test_parameters", "type" : TYPE_VARIANT, "value" : """_parameters_string_arg('abc', "d\\"ef")"""},
+		])
+
+	# same for an escaped single quote inside a single quoted argument value
+	assert_array(_parser._parse_function_arguments(
+		"""func foo(arg1: String, arg2: String, test_parameters := _parameters_string_arg("abc", 'd\\'ef')):"""))\
+		.has_size(3)\
+		.contains([
+			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
+			{"name" : "arg2", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
+			{"name" : "test_parameters", "type" : TYPE_VARIANT, "value" : """_parameters_string_arg("abc", 'd\\'ef')"""},
+		])
+
+
 func test_parse_arguments_default_build_in_type_boolean() -> void:
 	assert_array(_parser._parse_function_arguments("func foo(arg1 :String, arg2=false):")) \
 		.has_size(2)\

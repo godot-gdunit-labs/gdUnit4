@@ -486,8 +486,10 @@ func test_resolve_parameters_with_scrip_constans() -> void:
 
 
 func test_resolve_parameters_with_array_functions(index: int, arg1: String, arg2: String, _test_parameters := [
-	parameters_as_array(0, "abc", "d,ef"),
-	parameters_as_array(1, "xxx", "foo(y)"),
+	[0, "abc", "d,ef"],
+	[1, "xxx", "foo(y)"],
+	[2, 'y"yy', "d\"ef"],
+	[3, "z'zz", 'd\'ef'],
 	]) -> void:
 	if index == 0:
 		assert_str(arg1).is_equal("abc")
@@ -495,6 +497,12 @@ func test_resolve_parameters_with_array_functions(index: int, arg1: String, arg2
 	elif index == 1:
 		assert_str(arg1).is_equal("xxx")
 		assert_str(arg2).is_equal("foo(y)")
+	elif index == 2:
+		assert_str(arg1).is_equal('y"yy')
+		assert_str(arg2).is_equal("d\"ef")
+	elif index == 3:
+		assert_str(arg1).is_equal("z'zz")
+		assert_str(arg2).is_equal('d\'ef')
 
 
 func _resolve_parameters(child_name: String) -> Array[Array]:

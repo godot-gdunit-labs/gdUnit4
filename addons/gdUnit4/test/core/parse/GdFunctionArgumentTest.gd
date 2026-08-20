@@ -193,6 +193,19 @@ func test_parse_parameter_array_literal_with_multiple_callable_calls() -> void:
 	)
 
 
+# https://github.com/godot-gdunit-labs/gdUnit4/issues/1309
+# a literal quote of the *other* quote type, mixed with an escaped quote of the *same*
+# quote type, must not corrupt the quote/bracket tracking and merge separate call elements
+func test_parse_parameter_array_literal_with_escaped_quotes() -> void:
+	var test_parameters := """[parameters_as_array(2, 'y"yy', "d\\"ef"), parameters_as_array(3, "z'zz", 'd\\'ef')]"""
+	var fa := GdFunctionArgument.new("test_parameters", TYPE_STRING, test_parameters)
+	assert_array(fa.parameter_sets()).contains_exactly([
+		"""parameters_as_array(2, 'y"yy', "d\\"ef")""",
+		"""parameters_as_array(3, "z'zz", 'd\\'ef')"""
+		]
+	)
+
+
 func test_parse_parameter_set() -> void:
 	var result := GdFunctionArgument._parse_parameters(PARAMETER_SET_EXAMPLE)
 	assert_array(result).contains_exactly([

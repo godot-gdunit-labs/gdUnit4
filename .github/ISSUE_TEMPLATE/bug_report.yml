@@ -12,7 +12,7 @@ body:
     attributes:
       value: |
         ### Thanks for taking the time to fill out this bug report!
-        - Please search [open](https://github.com/MikeSchulze/gdUnit4/issues?q=is%3Aissue) for existing issues for
+        - Please search [open](https://github.com/godot-gdunit-labs/gdUnit4/issues?q=label%3Abug%20is%3Aissue) for existing issues for
           potential duplicates before filing yours.
         - Verify that you are using a [supported Godot version](https://docs.godotengine.org/en/stable/about/release_policy.html).
           Please always check if your issue is reproducible in the latest version – it may already have been fixed!

@@ -12,7 +12,7 @@ body:
     attributes:
       value: |
         ### Thanks for suggesting code improvements!
-        - Please search [existing improvement issues](https://github.com/MikeSchulze/gdUnit4/issues?q=label%3Aimprovement%20is%3Aissue) to avoid duplicates
+        - Please search [existing improvement issues](https://github.com/godot-gdunit-labs/gdUnit4/issues?q=label%3Aimprovement%20is%3Aissue) to avoid duplicates
         - Consider the impact on existing users and backward compatibility
         - Focus on improving code quality, maintainability, or performance
 

@@ -14,7 +14,7 @@ body:
         ### A Task is not a bug or feature request!
         Tasks are for small implementation work, maintenance, or improvements that don't change the public API.
 
-        - Please search [existing tasks](https://github.com/MikeSchulze/gdUnit4/issues?q=label%3Atask%20is%3Aissue) to avoid duplicates
+        - Please search [existing tasks](https://github.com/godot-gdunit-labs/gdUnit4/issues?q=label%3Atask%20is%3Aissue) to avoid duplicates
         - Consider if this should be a bug report, feature request, or refactoring issue instead
         - Keep tasks focused and small for easier completion
 

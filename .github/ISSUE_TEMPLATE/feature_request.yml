@@ -12,7 +12,7 @@ body:
     attributes:
       value: |
         ### Thanks for suggesting a new feature!
-        - Please search [existing feature requests](https://github.com/MikeSchulze/gdUnit4/issues?q=label%3Aenhancement%20is%3Aissue) to avoid duplicates
+        - Please search [existing feature requests](https://github.com/godot-gdunit-labs/gdUnit4/issues?q=label%3Aenhancement%20is%3Aissue) to avoid duplicates
         - Consider if this might be better as a GitHub Discussion to gather community feedback first
         - Check if this feature might already exist in the latest version
 

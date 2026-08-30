@@ -12,7 +12,7 @@ body:
     attributes:
       value: |
         ### Thanks for helping improve GdUnit4 documentation!
-        - Please search [existing documentation issues](https://github.com/godot-gdunit-labs/gdUnit4/issues?q=label%3Adocumentation%20is%3Aissue) to avoid duplicates
+        - Please search [existing issues](https://github.com/godot-gdunit-labs/gdUnit4/issues?q=label%3Adocumentation%20is%3Aissue) to avoid duplicates
         - Check the [official GdUnit4 documentation](https://godot-gdunit-labs.github.io/gdUnit4/latest/) first
         - Consider if this might be better as a GitHub Discussion for questions
 

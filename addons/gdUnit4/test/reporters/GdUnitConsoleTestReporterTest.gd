@@ -71,6 +71,12 @@ func test_suite_status_is_failed_when_a_test_failed() -> void:
 	assert_array(recorded).is_equal(["FAILED", "FAILED"])
 
 
+func test_suite_status_is_failed_when_a_test_errors() -> void:
+	var recorded := _run_suite({GdUnitEvent.ERRORS: true, GdUnitEvent.ERROR_COUNT: 1}, {})
+
+	assert_array(recorded).is_equal(["FAILED", "FAILED"])
+
+
 func test_suite_status_is_failed_when_a_suite_hook_failed() -> void:
 	var recorded := _run_suite({}, {GdUnitEvent.FAILED: true, GdUnitEvent.FAILED_COUNT: 1})
 

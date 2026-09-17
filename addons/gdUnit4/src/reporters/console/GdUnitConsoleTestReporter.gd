@@ -58,8 +58,9 @@ func on_gdunit_event(event: GdUnitEvent) -> void:
 				print_message("finalize()", GdUnitEditorColorTheme.function_definition_color)
 				_writer.indent(-1)
 				_print_failure_report(event.reports())
-			_print_statistics(_reporter.build_test_suite_statisitcs(event))
-			_print_status(event)
+			var statistics := _reporter.build_test_suite_statisitcs(event)
+			_print_statistics(statistics)
+			_print_suite_status(event, statistics)
 			println_message("")
 			if _detailed:
 				println_message("")
@@ -117,6 +118,22 @@ func _print_status(event: GdUnitEvent) -> void:
 			.style(GdUnitMessageWriter.UNDERLINE) \
 			.print_at("WARNING", _status_indent)
 
+	println_message(" %s" % LocalTime.elapsed(event.elapsed_time()), Color.CORNFLOWER_BLUE)
+
+
+## A suite event carries only its own hook results, so `event.is_success()` stays true when a test
+## failed. The statistics already count those failures, so the status is taken from them.
+func _print_suite_status(event: GdUnitEvent, statistics: Dictionary) -> void:
+	var failed_count: int = statistics[GdUnitEvent.FAILED_COUNT]
+	var error_count: int = statistics[GdUnitEvent.ERROR_COUNT]
+	if failed_count == 0 and error_count == 0:
+		_print_status(event)
+		return
+
+	_writer.color(Color.FIREBRICK) \
+		.style(GdUnitMessageWriter.BOLD) \
+		.effect(GdUnitMessageWriter.Effect.WAVE) \
+		.print_at("FAILED", _status_indent)
 	println_message(" %s" % LocalTime.elapsed(event.elapsed_time()), Color.CORNFLOWER_BLUE)
 
 

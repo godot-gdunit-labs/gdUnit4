@@ -8,7 +8,9 @@ func before_test() -> void:
 	_holder = Node.new()
 	add_child(_holder)
 	for _index in range(0, 10):
-		_holder.add_child(Node.new())
+		var child := Node.new()
+		child.add_child(Node.new())
+		_holder.add_child(child)
 
 
 func after_test() -> void:
@@ -17,7 +19,7 @@ func after_test() -> void:
 
 
 func test_removes_and_queues_children_for_free() -> void:
-	# The nodes are pending for deletion and must not be reported as orphans
+	# The nodes and their children are pending for deletion and must not be reported as orphans
 	for child: Node in _holder.get_children():
 		_holder.remove_child(child)
 		child.queue_free()

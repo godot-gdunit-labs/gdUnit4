@@ -15,6 +15,16 @@ static func init_file_command_ids() -> void:
 	if _command_ids_initalizied:
 		return
 
+	if Engine.get_version_info().hex >= 0x40700:
+		prints("init_file_command_ids")
+		FILE_CLOSE = 1
+		FILE_CLOSE_ALL = 2
+		FILE_SAVE = 3
+		FILE_SAVE_ALL = 4
+		_command_ids_initalizied = true
+		return
+
+	# deprecated
 	var popup := get_file_menu_popup()
 	for itemIndex in popup.item_count:
 		var command := popup.get_item_text(itemIndex)
@@ -89,20 +99,27 @@ static func edit_script(script_path: String, line_number := -1) -> void:
 		EditorInterface.edit_script(script, line_number)
 
 
+# deprecated
 static func get_file_menu_popup() -> PopupMenu:
 	@warning_ignore("unsafe_method_access")
 	return EditorInterface.get_script_editor().get_child(0).get_child(0).get_child(0).get_popup()
 
 
 static func run_file_command(command_id: int) -> void:
-	if Engine.is_editor_hint():
-		get_file_menu_popup().id_pressed.emit(command_id)
+	if !Engine.is_editor_hint():
+		return
 
-
-static func _print_menu(popup: PopupMenu) -> void:
-	for itemIndex in popup.item_count:
-		prints("get_item_id", popup.get_item_id(itemIndex))
-		prints("get_item_accelerator", popup.get_item_accelerator(itemIndex))
-		prints("get_item_shortcut", popup.get_item_shortcut(itemIndex))
-		prints("get_item_text", popup.get_item_text(itemIndex))
-		prints()
+	match command_id:
+		FILE_SAVE, FILE_SAVE_ALL:
+			if Engine.get_version_info().hex >= 0x40700:
+				EditorInterface.get_script_editor().save_all_scripts()
+			else:
+				# deprecated
+				get_file_menu_popup().id_pressed.emit(command_id)
+		FILE_CLOSE, FILE_CLOSE_ALL:
+			if Engine.get_version_info().hex >= 0x40700:
+				var script := EditorInterface.get_script_editor().get_current_script()
+				EditorInterface.get_script_editor().close_file(script.resource_path)
+			else:
+				# deprecated
+				get_file_menu_popup().id_pressed.emit(command_id)

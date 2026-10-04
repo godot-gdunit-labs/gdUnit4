@@ -3,10 +3,6 @@ class_name GdUnitInspecor
 extends Control
 
 
-var _command_handler := GdUnitCommandHandler.instance()
-var _wait_time := 0.0
-
-
 func _ready() -> void:
 	@warning_ignore("return_value_discarded")
 	GdUnitSignals.instance().gdunit_event.connect(func(event: GdUnitEvent) -> void:
@@ -24,10 +20,5 @@ func _ready() -> void:
 
 	# Register for editor theme updates
 	add_child(GdUnitEditorColorTheme.new(), true, Node.INTERNAL_MODE_BACK)
-
-
-func _process(delta: float) -> void:
-	_wait_time += delta
-	if _wait_time > 2.0:
-		_wait_time = 0
-		_command_handler._do_process()
+	# Add command handler
+	add_child(GdUnitCommandHandler.instance(), true, Node.INTERNAL_MODE_BACK)

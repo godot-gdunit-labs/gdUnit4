@@ -8,9 +8,12 @@ const __source = "res://addons/gdUnit4/src/core/command/GdUnitCommandTestSession
 
 var _command: GdUnitCommandTestSession
 
+class TestGdUnitCommandTestSession extends GdUnitCommandTestSession:
+	pass
+
 
 func before_test() -> void:
-	_command = GdUnitCommandTestSession.new()
+	_command = TestGdUnitCommandTestSession.new("TestGdUnitCommandTestSession", GdUnitShortcut.ShortCut.NONE)
 
 
 func after_test() -> void:
@@ -25,13 +28,13 @@ func test_runner_process_id_initialized_to_invalid() -> void:
 
 func test__is_valid_runner_process_false() -> void:
 	assert_bool(GdUnitCommandTestSession._is_valid_runner_process(-1)).is_false()
-	
+
 	# `0` is the uninitialized/debug-mode value and must never be treated as a killable process.
 	assert_bool(GdUnitCommandTestSession._is_valid_runner_process(0)).is_false()
-	
-func test__is_valid_runner_process_true() -> void:	
+
+func test__is_valid_runner_process_true() -> void:
 	var args: PackedStringArray
-	
+
 	if OS.get_name() == "Windows":
 		args = ["-n", "5", "127.0.0.1"]
 	else:

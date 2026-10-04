@@ -16,7 +16,6 @@ static func init_file_command_ids() -> void:
 		return
 
 	if Engine.get_version_info().hex >= 0x40700:
-		prints("init_file_command_ids")
 		FILE_CLOSE = 1
 		FILE_CLOSE_ALL = 2
 		FILE_SAVE = 3

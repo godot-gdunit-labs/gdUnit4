@@ -1,15 +1,9 @@
 @abstract class_name GdUnitCommandScriptEditor
-extends GdUnitBaseCommand
+extends GdUnitCommandTestSession
 
-var _test_session_command: GdUnitCommandTestSession
 
-func _init(p_id: String, p_shortcut: GdUnitShortcut.ShortCut, test_session_command: GdUnitCommandTestSession) -> void:
+func _init(p_id: String, p_shortcut: GdUnitShortcut.ShortCut) -> void:
 	super(p_id, p_shortcut)
-	_test_session_command = test_session_command
-
-
-func is_running() -> bool:
-	return _test_session_command.is_running()
 
 
 func execute_tests(with_debug: bool) -> void:
@@ -27,7 +21,7 @@ func execute_tests(with_debug: bool) -> void:
 				selected_tests.append(func_name)
 
 	var tests_to_execute := _collect_tests(_active_script(), selected_tests)
-	_test_session_command.execute(tests_to_execute, with_debug)
+	super.execute(tests_to_execute, with_debug)
 
 
 func _collect_tests(script: Script, tests: PackedStringArray) -> Array[GdUnitTestCase]:

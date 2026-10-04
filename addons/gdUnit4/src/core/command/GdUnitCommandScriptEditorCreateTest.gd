@@ -10,10 +10,6 @@ func _init() -> void:
 	icon =  GdUnitUiTools.get_icon("New")
 
 
-func is_running() -> bool:
-	return false
-
-
 func execute(..._parameters: Array) -> void:
 	if not _is_active_script_editor():
 		return
@@ -27,6 +23,10 @@ func execute(..._parameters: Array) -> void:
 	var script_path: String = info.get("path")
 	var script_line: int = info.get("line")
 	GdUnitScriptEditorControls.edit_script(script_path, script_line)
+
+
+func _do_stop() -> void:
+	pass
 
 
 func _is_active_script_editor() -> bool:

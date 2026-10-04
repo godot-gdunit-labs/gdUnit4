@@ -5,8 +5,8 @@ extends GdUnitCommandFileSystem
 const ID := "Debug FileSystem Tests"
 
 
-func _init(test_session_command: GdUnitCommandTestSession) -> void:
-	super(ID, GdUnitShortcut.ShortCut.RUN_TESTSUITE_DEBUG, test_session_command)
+func _init() -> void:
+	super(ID, GdUnitShortcut.ShortCut.RUN_TESTSUITE_DEBUG)
 	icon =  GdUnitUiTools.get_icon("PlayStart")
 
 

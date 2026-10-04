@@ -5,8 +5,8 @@ extends GdUnitCommandScriptEditor
 const ID := "Debug ScriptEditor Tests"
 
 
-func _init(test_session_command: GdUnitCommandTestSession) -> void:
-	super(ID, GdUnitShortcut.ShortCut.RUN_TESTCASE_DEBUG, test_session_command)
+func _init() -> void:
+	super(ID, GdUnitShortcut.ShortCut.RUN_TESTCASE_DEBUG)
 	icon =  GdUnitUiTools.get_icon("PlayStart")
 
 

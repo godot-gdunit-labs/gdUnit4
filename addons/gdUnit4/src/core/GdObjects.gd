@@ -609,8 +609,8 @@ static func extract_inner_clazz_names(clazz_name :String, script_path :PackedStr
 	return inner_classes
 
 
-static func extract_class_functions(clazz_name :String, script_path :PackedStringArray) -> Array:
-	if ClassDB.class_get_method_list(clazz_name):
+static func extract_class_functions(clazz_name: String, script_path: PackedStringArray) -> Array:
+	if ClassDB.class_exists(clazz_name) and ClassDB.class_get_method_list(clazz_name):
 		return ClassDB.class_get_method_list(clazz_name)
 
 	if not FileAccess.file_exists(script_path[0]):

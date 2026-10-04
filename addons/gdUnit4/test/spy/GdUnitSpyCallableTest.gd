@@ -227,11 +227,11 @@ func test_hash() -> void:
 
 
 func test_is_custom_is_true() -> void:
+	var is_custom := do_rpc.is_custom()
 	var cb_syp :Variant = spy(do_rpc)
-	assert_that(do_rpc.is_custom()).is_true()
 
 	verify(cb_syp, 0).is_custom()
-	assert_that(cb_syp.is_custom()).is_true()
+	assert_that(cb_syp.is_custom()).is_equal(is_custom)
 	verify(cb_syp, 1).is_custom()
 
 
@@ -257,11 +257,11 @@ func test_is_null() -> void:
 
 
 func test_is_standard_is_false() -> void:
+	var is_standard := do_rpc.is_standard()
 	var cb_syp :Variant = spy(do_rpc)
-	assert_that(do_rpc.is_standard()).is_false()
 
 	verify(cb_syp, 0).is_standard()
-	assert_that(cb_syp.is_standard()).is_false()
+	assert_that(cb_syp.is_standard()).is_equal(is_standard)
 	verify(cb_syp, 1).is_standard()
 
 

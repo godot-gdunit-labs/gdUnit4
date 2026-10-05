@@ -1,35 +1,33 @@
 class_name GdUnitCommandHandler
-extends Object
+extends Node
 
-
-const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
 var _commnand_mappings: Dictionary[String, GdUnitBaseCommand]= {}
-var test_session_command := GdUnitCommandTestSession.new()
+var _running_command: GdUnitBaseCommand = null
+var _wait_time := 0.0
+
 
 static func instance() -> GdUnitCommandHandler:
 	return GdUnitSingleton.instance("GdUnitCommandHandler", func() -> GdUnitCommandHandler: return GdUnitCommandHandler.new())
 
 
-@warning_ignore("return_value_discarded")
 func _init() -> void:
 	GdUnitSignals.instance().gdunit_event.connect(_on_event)
 	GdUnitSignals.instance().gdunit_client_disconnected.connect(_on_client_disconnected)
 	GdUnitSignals.instance().gdunit_settings_changed.connect(_on_settings_changed)
 
-	_register_command(test_session_command)
-	_register_command(GdUnitCommandStopTestSession.new(test_session_command))
-	_register_command(GdUnitCommandInspectorRunTests.new(test_session_command))
-	_register_command(GdUnitCommandInspectorDebugTests.new(test_session_command))
-	_register_command(GdUnitCommandInspectorRerunTestsUntilFailure.new(test_session_command))
+	_register_command(GdUnitCommandStopTestSession.new())
+	_register_command(GdUnitCommandInspectorRunTests.new())
+	_register_command(GdUnitCommandInspectorDebugTests.new())
+	_register_command(GdUnitCommandInspectorRerunTestsUntilFailure.new())
 	_register_command(GdUnitCommandInspectorTreeCollapse.new())
 	_register_command(GdUnitCommandInspectorTreeExpand.new())
-	_register_command(GdUnitCommandScriptEditorRunTests.new(test_session_command))
-	_register_command(GdUnitCommandScriptEditorDebugTests.new(test_session_command))
+	_register_command(GdUnitCommandScriptEditorRunTests.new())
+	_register_command(GdUnitCommandScriptEditorDebugTests.new())
 	_register_command(GdUnitCommandScriptEditorCreateTest.new())
-	_register_command(GdUnitCommandFileSystemRunTests.new(test_session_command))
-	_register_command(GdUnitCommandFileSystemDebugTests.new(test_session_command))
-	_register_command(GdUnitCommandRunTestsOverall.new(test_session_command))
+	_register_command(GdUnitCommandFileSystemRunTests.new())
+	_register_command(GdUnitCommandFileSystemDebugTests.new())
+	_register_command(GdUnitCommandRunTestsOverall.new())
 
 	# schedule discover tests if enabled and running inside the editor
 	if Engine.is_editor_hint() and GdUnitSettings.is_test_discover_enabled():
@@ -47,12 +45,25 @@ func _notification(what: int) -> void:
 		_commnand_mappings.clear()
 
 
-func _do_process() -> void:
+func _process(delta: float) -> void:
+	_wait_time += delta
+	if _wait_time < 0.500:
+		return
+	_wait_time = 0
+
 	# Do stop test execution when the user has stoped the test runner manually by hit the Godot editor stop button
-	if test_session_command._is_debug and test_session_command.is_running() and not EditorInterface.is_playing_scene():
+	if isDebugCommandRunning() and not EditorInterface.is_playing_scene():
 		if GdUnitSettings.is_verbose_assert_warnings():
 			print_debug("Test Runner scene was stopped manually, force stopping the current test run!")
 		command_execute(GdUnitCommandStopTestSession.ID)
+
+
+func isDebugCommandRunning() -> bool:
+	if (_running_command != null
+		and _running_command.is_running
+		and _running_command.id in [GdUnitCommandScriptEditorDebugTests.ID, GdUnitCommandInspectorDebugTests.ID, GdUnitCommandInspectorRerunTestsUntilFailure.ID]):
+		return true
+	return false
 
 
 func command_icon(command_id: String) -> Texture2D:
@@ -82,7 +93,17 @@ func command_execute(...parameters: Array) -> void:
 		push_error("GdUnitCommandHandler:command_execute(): No command id '%s' is registered." % command_id)
 		print_stack()
 		return
-	await _commnand_mappings[command_id].callv("execute", parameters)
+
+	if command_id == GdUnitCommandStopTestSession.ID:
+		if _running_command != null and _running_command.is_running:
+			@warning_ignore("redundant_await")
+			await _running_command.stop()
+		_running_command = null
+		return
+
+	_running_command =  _commnand_mappings[command_id]
+	_running_command.is_running = true
+	await _running_command.callv("execute", parameters)
 
 
 func _register_command(command: GdUnitBaseCommand) -> void:

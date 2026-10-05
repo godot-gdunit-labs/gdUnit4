@@ -1,16 +1,9 @@
 @abstract class_name GdUnitCommandFileSystem
-extends GdUnitBaseCommand
+extends GdUnitCommandTestSession
 
 
-var _test_session_command: GdUnitCommandTestSession
-
-func _init(p_id: String, p_shortcut: GdUnitShortcut.ShortCut, test_session_command: GdUnitCommandTestSession) -> void:
+func _init(p_id: String, p_shortcut: GdUnitShortcut.ShortCut) -> void:
 	super(p_id, p_shortcut)
-	_test_session_command = test_session_command
-
-
-func is_running() -> bool:
-	return _test_session_command.is_running()
 
 
 func execute_tests(paths: PackedStringArray, with_debug: bool) -> void:
@@ -39,4 +32,4 @@ func execute_tests(paths: PackedStringArray, with_debug: bool) -> void:
 		)
 	GdUnitSignals.instance().gdunit_event.emit(GdUnitEventTestDiscoverEnd.new(0, 0))
 	GdUnitTestDiscoverer.console_log_discover_results(tests_to_execute)
-	_test_session_command.execute(tests_to_execute, with_debug)
+	super.execute(tests_to_execute, with_debug)

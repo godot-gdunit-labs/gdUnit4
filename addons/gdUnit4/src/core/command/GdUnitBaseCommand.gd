@@ -6,6 +6,7 @@ var id: String
 var icon: Texture2D
 var shortcut: Shortcut = null
 var shortcut_type: GdUnitShortcut.ShortCut
+var is_running := false
 
 
 func _init(p_id: String, p_shortcut: GdUnitShortcut.ShortCut = GdUnitShortcut.ShortCut.NONE) -> void:
@@ -15,16 +16,12 @@ func _init(p_id: String, p_shortcut: GdUnitShortcut.ShortCut = GdUnitShortcut.Sh
 
 
 func _shortcut_input(event: InputEvent) -> void:
-	if is_running():
+	if is_running:
 		return
 
 	if shortcut and shortcut.matches_event(event):
 		execute()
 		get_viewport().set_input_as_handled()
-
-
-func update_shortcut() -> void:
-	_set_shortcut()
 
 
 func _set_shortcut() -> void:
@@ -59,6 +56,18 @@ func _create_shortcut_input_even(key_codes: PackedInt32Array) -> InputEventKey:
 	return inputEvent
 
 
-@abstract func is_running() -> bool
+func stop() -> void:
+	if not is_running:
+		return
+	is_running = false
+	@warning_ignore("redundant_await")
+	await _do_stop()
+
+
+func update_shortcut() -> void:
+	_set_shortcut()
+
 
 @abstract func execute(...parameters: Array) -> void
+
+@abstract func _do_stop() -> void

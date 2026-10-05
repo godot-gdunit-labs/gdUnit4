@@ -10,10 +10,6 @@ func _init() -> void:
 	icon = GdUnitUiTools.get_icon("ExpandTree")
 
 
-func is_running() -> bool:
-	return false
-
-
 func execute(..._parameters: Array) -> void:
 	var inspector: GdUnitInspectorTreeMainPanel = EditorInterface.get_base_control().get_meta("GdUnit4Inspector")
 	var selected_item := inspector._tree.get_selected()
@@ -23,3 +19,7 @@ func execute(..._parameters: Array) -> void:
 		selected_item = selected_item.get_parent()
 
 	inspector.do_collapse_all(false, selected_item)
+
+
+func _do_stop() -> void:
+	pass

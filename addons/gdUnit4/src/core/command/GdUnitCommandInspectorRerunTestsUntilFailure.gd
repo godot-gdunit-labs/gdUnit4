@@ -70,7 +70,8 @@ func _prepare_test_session() -> void:
 
 func _on_test_event(event: GdUnitEvent) -> void:
 	if event.type() == GdUnitEvent.SESSION_START:
-		GdUnitSignals.instance().gdunit_message.emit("[color=RED]Execution Mode: ReRun until failure! (iteration %d)[/color]" % _current_execution_count)
+		GdUnitSignals.instance().gdunit_message.emit("[color=RED]Execution Mode: ReRun until failure! (iteration %d:%d)[/color]" % [
+			_current_execution_count, GdUnitSettings.get_rerun_max_retries()])
 	if event.type() == GdUnitEvent.SESSION_CLOSE:
 		session_closed.emit()
 	if event.type() == GdUnitEvent.TESTCASE_AFTER:

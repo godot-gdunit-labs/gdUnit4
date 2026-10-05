@@ -233,11 +233,11 @@ static func _get_orphan_node_ids() -> Array[int]:
 	# a node queued for deletion, or inside a subtree queued for deletion, is guaranteed to be freed, it is never a leak
 	return ids.filter(func(node_id: int) -> bool:
 		var node := instance_from_id(node_id) as Node
-		return node == null or not _is_pending_deletion(node)
+		return node == null or not _is_node_or_ancestor_queued_for_deletion(node)
 	)
 
 
-static func _is_pending_deletion(node: Node) -> bool:
+static func _is_node_or_ancestor_queued_for_deletion(node: Node) -> bool:
 	var current := node
 	while current != null:
 		if current.is_queued_for_deletion():

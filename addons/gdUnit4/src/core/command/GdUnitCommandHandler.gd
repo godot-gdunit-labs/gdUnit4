@@ -126,7 +126,11 @@ func cmd_discover_tests() -> void:
 # signals handles
 ################################################################################
 func _on_event(event: GdUnitEvent) -> void:
-	if event.type() == GdUnitEvent.SESSION_CLOSE:
+	if (
+		event.type() == GdUnitEvent.SESSION_CLOSE
+		and _running_command != null
+		and _running_command.id != GdUnitCommandInspectorRerunTestsUntilFailure.ID
+		):
 		command_execute(GdUnitCommandStopTestSession.ID)
 
 
@@ -144,4 +148,6 @@ func _on_settings_changed(property: GdUnitProperty) -> void:
 # Network stuff
 ################################################################################
 func _on_client_disconnected(_client_id: int) -> void:
-	command_execute(GdUnitCommandStopTestSession.ID)
+	if (_running_command != null
+		and _running_command.id != GdUnitCommandInspectorRerunTestsUntilFailure.ID):
+		command_execute(GdUnitCommandStopTestSession.ID)

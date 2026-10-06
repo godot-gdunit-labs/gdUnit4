@@ -57,3 +57,74 @@ func test_on_gdunit_event_full_test_suite() -> void:
 	assert_int(reporter.total_skipped_count()).is_equal(0)
 	assert_int(reporter.total_orphan_count()).is_equal(0)
 	assert_int(reporter.elapsed_time()).is_equal(0)
+
+
+func test_suite_status_is_passed_when_nothing_failed() -> void:
+	var recorded := _run_suite({}, {})
+
+	assert_array(recorded).is_equal(["PASSED", "PASSED"])
+
+
+func test_suite_status_is_failed_when_a_test_failed() -> void:
+	var recorded := _run_suite({GdUnitEvent.FAILED: true, GdUnitEvent.FAILED_COUNT: 1}, {})
+
+	assert_array(recorded).is_equal(["FAILED", "FAILED"])
+
+
+func test_suite_status_is_failed_when_a_test_errors() -> void:
+	var recorded := _run_suite({GdUnitEvent.ERRORS: true, GdUnitEvent.ERROR_COUNT: 1}, {})
+
+	assert_array(recorded).is_equal(["FAILED", "FAILED"])
+
+
+func test_suite_status_is_failed_when_a_suite_hook_failed() -> void:
+	var recorded := _run_suite({}, {GdUnitEvent.FAILED: true, GdUnitEvent.FAILED_COUNT: 1})
+
+	assert_array(recorded).is_equal(["PASSED", "FAILED"])
+
+
+## Simulates a suite run with one test and returns the status words printed for the test and then for the suite.
+func _run_suite(test_statistics: Dictionary, suite_statistics: Dictionary) -> Array[String]:
+	var writer := TestMessageWriter.new()
+	var console := GdUnitConsoleTestReporter.new(writer)
+	console.test_session = GdUnitTestSession.new([], "res://reports")
+	console.on_gdunit_event(GdUnitInit.new())
+
+	var test_id := GdUnitGUID.new()
+	console.on_gdunit_event(GdUnitEvent.new().suite_before("res://tests/suite_a.gd", "suite_a", 1))
+	console.on_gdunit_event(GdUnitEvent.new().test_before(test_id))
+	console.on_gdunit_event(GdUnitEvent.new().test_after(test_id, "test_a", test_statistics))
+	console.on_gdunit_event(GdUnitEvent.new().suite_after("res://tests/suite_a.gd", "suite_a", suite_statistics))
+	return writer.printed_at
+
+
+@warning_ignore("missing_tool")
+class TestMessageWriter extends GdUnitMessageWriter:
+	var printed_at: Array[String] = []
+
+
+	func _print_stack_trace(_stack_trace: GdUnitStackTrace, _indent: int) -> void:
+		pass
+
+
+	func _print_message(_message: String, _color: Color, _indent: int, _flags: int) -> void:
+		pass
+
+
+	func _println_message(_message: String, _color: Color, _indent: int, _flags: int) -> void:
+		pass
+
+
+	func _print_at(
+		message: String,
+		_cursor_pos: int,
+		_color: Color,
+		_effect: GdUnitMessageWriter.Effect,
+		_align: GdUnitMessageWriter.Align,
+		_flags: int
+	) -> void:
+		printed_at.append(message)
+
+
+	func clear() -> void:
+		printed_at.clear()

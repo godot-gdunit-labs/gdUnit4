@@ -83,10 +83,9 @@ func test_suite_status_is_failed_when_a_suite_hook_failed() -> void:
 	assert_array(recorded).is_equal(["PASSED", "FAILED"])
 
 
-## Runs one test inside one suite and returns the words printed at the status column, the test's
-## first and the suite's second.
+## Simulates a suite run with one test and returns the status words printed for the test and then for the suite.
 func _run_suite(test_statistics: Dictionary, suite_statistics: Dictionary) -> Array[String]:
-	var writer := RecordingWriter.new()
+	var writer := TestMessageWriter.new()
 	var console := GdUnitConsoleTestReporter.new(writer)
 	console.test_session = GdUnitTestSession.new([], "res://reports")
 	console.on_gdunit_event(GdUnitInit.new())
@@ -95,18 +94,16 @@ func _run_suite(test_statistics: Dictionary, suite_statistics: Dictionary) -> Ar
 	console.on_gdunit_event(GdUnitEvent.new().suite_before("res://tests/suite_a.gd", "suite_a", 1))
 	console.on_gdunit_event(GdUnitEvent.new().test_before(test_id))
 	console.on_gdunit_event(GdUnitEvent.new().test_after(test_id, "test_a", test_statistics))
-	console.on_gdunit_event(
-		GdUnitEvent.new().suite_after("res://tests/suite_a.gd", "suite_a", suite_statistics)
-	)
+	console.on_gdunit_event(GdUnitEvent.new().suite_after("res://tests/suite_a.gd", "suite_a", suite_statistics))
 	return writer.printed_at
 
 
-## A writer that keeps what was printed at the status column instead of printing it.
-class RecordingWriter extends GdUnitMessageWriter:
+@warning_ignore("missing_tool")
+class TestMessageWriter extends GdUnitMessageWriter:
 	var printed_at: Array[String] = []
 
 
-	func _print_stack_trace(_stack_trace: GdUnitStackTrace, _current_indent: int) -> void:
+	func _print_stack_trace(_stack_trace: GdUnitStackTrace, _indent: int) -> void:
 		pass
 
 

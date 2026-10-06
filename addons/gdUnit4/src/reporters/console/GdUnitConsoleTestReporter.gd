@@ -60,7 +60,7 @@ func on_gdunit_event(event: GdUnitEvent) -> void:
 				_print_failure_report(event.reports())
 			var statistics := _reporter.build_test_suite_statisitcs(event)
 			_print_statistics(statistics)
-			_print_suite_status(event, statistics)
+			_print_status(event, statistics)
 			println_message("")
 			if _detailed:
 				println_message("")
@@ -77,7 +77,7 @@ func on_gdunit_event(event: GdUnitEvent) -> void:
 			if _detailed:
 				var test := test_session.find_test_by_id(event.guid())
 				_print_test_path(test, event.guid())
-			_print_status(event)
+			_print_status(event, {})
 			_writer.indent(-1)
 			_print_failure_report(event.reports())
 			if _detailed:
@@ -96,17 +96,30 @@ func _print_test_path(test: GdUnitTestCase, uid: GdUnitGUID) -> void:
 	print_message(test.display_name, GdUnitEditorColorTheme.function_definition_color)
 
 
-func _print_status(event: GdUnitEvent) -> void:
+## Prints the status of a test or a test suite.[br]
+## A suite event only carries its own hook results, so the suite status is taken from the collected `statistics`.
+## For test events the `statistics` are not used and can be empty.
+func _print_status(event: GdUnitEvent, statistics: Dictionary) -> void:
+	@warning_ignore("unsafe_cast")
+	var is_failed := (event.is_failed()
+		if event.type() == GdUnitEvent.TESTCASE_AFTER
+		else (statistics[GdUnitEvent.FAILED_COUNT] as int != 0))
+	@warning_ignore("unsafe_cast")
+	var is_error := (event.is_error()
+		if event.type() == GdUnitEvent.TESTCASE_AFTER
+		else (statistics[GdUnitEvent.ERROR_COUNT] as int != 0))
+	var is_success := !is_failed and !is_error
+
 	if event.is_flaky() and event.is_success():
 		var retries: int = event.statistic(GdUnitEvent.RETRY_COUNT)
 		_writer.color(Color.GREEN_YELLOW) \
 			.style(GdUnitMessageWriter.ITALIC) \
 			.print_at("FLAKY (%d retries)" % retries, _status_indent)
-	elif event.is_success():
+	elif is_success:
 		_writer.color(Color.FOREST_GREEN).print_at("PASSED", _status_indent)
 	elif event.is_skipped():
 		_writer.color(Color.GOLDENROD).style(GdUnitMessageWriter.ITALIC).print_at("SKIPPED", _status_indent)
-	elif event.is_failed() or event.is_error():
+	elif is_failed or is_error:
 		var retries: int = event.statistic(GdUnitEvent.RETRY_COUNT)
 		var message := "FAILED (retry %d)" % retries if retries > 1 else "FAILED"
 		_writer.color(Color.FIREBRICK) \
@@ -118,22 +131,6 @@ func _print_status(event: GdUnitEvent) -> void:
 			.style(GdUnitMessageWriter.UNDERLINE) \
 			.print_at("WARNING", _status_indent)
 
-	println_message(" %s" % LocalTime.elapsed(event.elapsed_time()), Color.CORNFLOWER_BLUE)
-
-
-## A suite event carries only its own hook results, so `event.is_success()` stays true when a test
-## failed. The statistics already count those failures, so the status is taken from them.
-func _print_suite_status(event: GdUnitEvent, statistics: Dictionary) -> void:
-	var failed_count: int = statistics[GdUnitEvent.FAILED_COUNT]
-	var error_count: int = statistics[GdUnitEvent.ERROR_COUNT]
-	if failed_count == 0 and error_count == 0:
-		_print_status(event)
-		return
-
-	_writer.color(Color.FIREBRICK) \
-		.style(GdUnitMessageWriter.BOLD) \
-		.effect(GdUnitMessageWriter.Effect.WAVE) \
-		.print_at("FAILED", _status_indent)
 	println_message(" %s" % LocalTime.elapsed(event.elapsed_time()), Color.CORNFLOWER_BLUE)
 
 

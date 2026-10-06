@@ -486,3 +486,67 @@ func test_is_equal_on_rich_text() -> void:
 			 '[lb]color=ffff00]test[lb]/color]'
 			 but was
 			 '[lb]color=ff00ff]test[lb]/color]'""".dedent().trim_prefix("\n"))
+
+
+#region large values GD-1327
+func _random_text(length: int, seed_value: int) -> String:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_value
+	var text := PackedStringArray()
+	for i in length:
+		text.append(char(97 + rng.randi_range(0, 3)))
+	return "".join(text)
+
+
+func test_is_equal_large_different_values() -> void:
+	# a failing assertion on large values must report a failure and not run out of memory
+	var current := _random_text(131072, 1)
+	var expected := _random_text(131072, 2)
+
+	assert_failure(func() -> void: assert_str(current).is_equal(expected)) \
+		.is_failed() \
+		.starts_with_message("Expecting:")
+
+
+func test_is_equal_large_similar_values() -> void:
+	var current := _random_text(131072, 1)
+
+	assert_failure(func() -> void: assert_str(current).is_equal(current + "x")) \
+		.is_failed() \
+		.starts_with_message("Expecting:")
+
+
+func _large_text() -> String:
+	var lines := PackedStringArray()
+	for i in 2000:
+		lines.append("line %d: the quick brown fox jumps over the lazy dog" % i)
+	return "\n".join(lines)
+
+
+func test_is_equal_large_text_with_two_inserted_values() -> void:
+	var current := _large_text()
+	# insert two values of 5-10 characters at different lines, the later position first to keep the earlier one valid
+	var expected := current \
+		.insert(current.find("line 1500:") + 10, "#PATCH#") \
+		.insert(current.find("line 500:") + 9, "ERROR_042")
+
+	# the message is compared as plain text, the values missing in the current value are shown inline (highlighted)
+	# in the 'but was' part, so without the markup both parts contain the inserted values
+	assert_failure(func() -> void: assert_str(current).is_equal(expected)) \
+		.is_failed() \
+		.has_message("Expecting:\n '%s'\n but was\n '%s'" % [expected, expected])
+
+
+func test_is_equal_large_text_highlights_two_inserted_values() -> void:
+	var current := _large_text()
+	var pos1 := current.find("line 500:") + 9
+	var pos2 := current.find("line 1500:") + 10
+	var expected := current.insert(pos2, "#PATCH#").insert(pos1, "ERROR_042")
+
+	var colored := GdAssertMessages.colored_diff(current, expected, GdDiffTool.diff(current, expected))
+
+	# the inserted values are missing in the current value, shown as separate marked blocks at the insert positions
+	var missing := "[bgcolor=#ff000026][color=white]%s[/color][/bgcolor]"
+	assert_str(colored).is_equal(
+		current.substr(0, pos1) + missing % "ERROR_042" + current.substr(pos1, pos2 - pos1) + missing % "#PATCH#" + current.substr(pos2))
+#endregion

@@ -20,6 +20,7 @@ const CONTROL_CHARS = {
 }
 
 
+static var _control_char_regex: RegEx = RegEx.create_from_string("[\\x00-\\x1F\\x7F]")
 static var _warn_color :=  GdUnitEditorColorTheme.state_warning.to_html()
 static var _error_color := GdUnitEditorColorTheme.state_failure.to_html()
 static var _value_color := GdUnitEditorColorTheme.value_color.to_html()
@@ -80,43 +81,23 @@ static func input_event_as_text(event :InputEvent) -> String:
 	return text.dedent()
 
 
-static func _colored_string_div(characters: String) -> String:
-	return colored_array_div(characters.to_utf32_buffer().to_int32_array())
-
-
-static func colored_array_div(characters: PackedInt32Array) -> String:
-	if characters.is_empty():
+@warning_ignore_start("return_value_discarded")
+static func colored_diff(current: String, expected: String, hunks: Array[GdDiffTool.Hunk]) -> String:
+	if current.is_empty() and hunks.is_empty():
 		return "<empty>"
-	var result := PackedInt32Array()
-	var index := 0
-	var missing_chars := PackedInt32Array()
-	var additional_chars := PackedInt32Array()
-
-	while index < characters.size():
-		var character := characters[index]
-		match character:
-			GdDiffTool.DIV_ADD:
-				index += 1
-				@warning_ignore("return_value_discarded")
-				additional_chars.append(characters[index])
-			GdDiffTool.DIV_SUB:
-				index += 1
-				@warning_ignore("return_value_discarded")
-				missing_chars.append(characters[index])
-			_:
-				if not missing_chars.is_empty():
-					result.append_array(format_chars(missing_chars, SUB_COLOR))
-					missing_chars = PackedInt32Array()
-				if not additional_chars.is_empty():
-					result.append_array(format_chars(additional_chars, ADD_COLOR))
-					additional_chars = PackedInt32Array()
-				@warning_ignore("return_value_discarded")
-				result.append(character)
-		index += 1
-
-	result.append_array(format_chars(missing_chars, SUB_COLOR))
-	result.append_array(format_chars(additional_chars, ADD_COLOR))
-	return result.to_byte_array().get_string_from_utf32()
+	var result := PackedStringArray()
+	var position: int = 0
+	for hunk: GdDiffTool.Hunk in hunks:
+		result.append(current.substr(position, hunk.current_start - position))
+		# characters only found in the expected value are missing, characters only found in the current value are additional
+		if hunk.expected_len > 0:
+			result.append(format_chars(expected.substr(hunk.expected_start, hunk.expected_len), SUB_COLOR))
+		if hunk.current_len > 0:
+			result.append(format_chars(current.substr(hunk.current_start, hunk.current_len), ADD_COLOR))
+		position = hunk.current_start + hunk.current_len
+	result.append(current.substr(position))
+	return "".join(result)
+@warning_ignore_restore("return_value_discarded")
 
 
 static func _typed_value(value :Variant) -> String:
@@ -148,7 +129,8 @@ static func _colored(value: Variant, color: Color) -> String:
 static func _colored_value(value :Variant) -> String:
 	match typeof(value):
 		TYPE_STRING, TYPE_STRING_NAME:
-			return "'[color=%s]%s[/color]'" % [_value_color, _colored_string_div(str(value))]
+			var text := str(value)
+			return "'[color=%s]%s[/color]'" % [_value_color, "<empty>" if text.is_empty() else text]
 		TYPE_INT:
 			return "[color=%s]%d[/color]" % [_value_color, value]
 		TYPE_FLOAT:
@@ -702,36 +684,26 @@ static func error_contains_exactly(current: Array, expected: Array) -> String:
 	return "%s\n %s\n but was\n %s" % [_error("Expecting exactly equal:"), _colored_value(expected), _colored_value(current)]
 
 
-static func format_chars(characters: PackedInt32Array, type: Color) -> PackedInt32Array:
-	if characters.size() == 0:# or characters[0] == 10:
+static func format_chars(characters: String, type: Color) -> String:
+	if characters.is_empty():
 		return characters
 
 	# Replace each control character with its readable form
-	var formatted_text := characters.to_byte_array().get_string_from_utf32()
+	var formatted_text := characters
 	for control_char: String in CONTROL_CHARS:
 		var replace_text: String = CONTROL_CHARS[control_char]
 		formatted_text = formatted_text.replace(control_char, replace_text)
 
-	# Handle special ASCII control characters (0x00-0x1F, 0x7F)
-	var ascii_text := ""
-	for i in formatted_text.length():
-		var character := formatted_text[i]
-		var code := character.unicode_at(0)
-		if code < 0x20 and not CONTROL_CHARS.has(character):  # Control characters not handled above
-			ascii_text += "<0x%02X>" % code
-		elif code == 0x7F:  # DEL character
-			ascii_text += "<DEL>"
-		else:
-			ascii_text += character
+	# Handle special ASCII control characters (0x00-0x1F, 0x7F) not handled above.
+	# Collect the distinct characters first, a replace per character is much faster than visiting every character of a large text.
+	var found_control_chars := {}
+	for control_match in _control_char_regex.search_all(formatted_text):
+		found_control_chars[control_match.get_string()] = true
+	for control_char: String in found_control_chars:
+		var code := control_char.unicode_at(0)
+		formatted_text = formatted_text.replace(control_char, "<DEL>" if code == 0x7F else "<0x%02X>" % code)
 
-	var message := "[bgcolor=#%s][color=white]%s[/color][/bgcolor]" % [
-		type.to_html(),
-		ascii_text
-	]
-
-	var result := PackedInt32Array()
-	result.append_array(message.to_utf32_buffer().to_int32_array())
-	return result
+	return "[bgcolor=#%s][color=white]%s[/color][/bgcolor]" % [type.to_html(), formatted_text]
 
 
 static func format_invalid(value :String) -> String:

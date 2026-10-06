@@ -79,8 +79,8 @@ func _is_equal(expected: Variant, case_sensitive: bool, message_cb: Callable) ->
 			# mask user bbcode
 			# https://docs.godotengine.org/en/4.5/tutorials/ui/bbcode_in_richtextlabel.html#handling-user-input-safely
 			return report_error(message_cb.call(cur_value.replace("[", "[lb]"), exp_value.replace("[", "[lb]")))
-		var diffs := GdDiffTool.string_diff(cur_value, exp_value)
-		var formatted_current := GdAssertMessages.colored_array_div(diffs[1])
+		var hunks: Array[GdDiffTool.Hunk] = GdDiffTool.diff(cur_value, exp_value)
+		var formatted_current := GdAssertMessages.colored_diff(cur_value, exp_value, hunks)
 		return report_error(message_cb.call(formatted_current, exp_value))
 	return report_success()
 @warning_ignore_restore("unsafe_call_argument")

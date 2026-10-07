@@ -1,3 +1,4 @@
+# gdlint: disable=max-public-methods
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
 
@@ -309,6 +310,34 @@ func test_get_parameters_binds_user_classes_on_fast_path() -> void:
 
 	assert_array(resolver.get_parameters(self, 0)).contains_exactly(GdUnitBoolAssert, "bool", [])
 	assert_array(resolver.get_parameters(self, 1)).contains_exactly(GdUnitStringAssert, "string", [])
+
+
+func test_get_parameters_with_underscored_numbers(expression: String, expected: Array, _test_parameters := [
+	["[234_567, 234567]", [234567, 234567]],
+	["[123.456_789, 123.456789]", [123.456789, 123.456789]],
+	["[0x0123_abcd, 0b1010_1010]", [0x0123abcd, 0b10101010]],
+	["[1_000.5e1_0, -1_0]", [1000.5e10, -10]],
+]) -> void:
+	var resolver := GdInlineParameterSetResolver.new([expression], "", "")
+
+	assert_array(resolver.get_parameters(self, 0)).is_equal(expected + [[]])
+
+
+func test_strip_number_separators(expression: String, expected: String, _test_parameters := [
+	# separators are removed from number literals
+	["[234_567, 1_0]", "[234567, 10]"],
+	["[123.456_789]", "[123.456789]"],
+	["[0x0123_abcd, 0b1010_1010]", "[0x0123abcd, 0b10101010]"],
+	["[1_000.5e1_0]", "[1000.5e10]"],
+	["Vector2(1_0, 2_0)", "Vector2(10, 20)"],
+	# string literals and identifiers must not be modified
+	["['a_1_000', 'b_2_000']", "['a_1_000', 'b_2_000']"],
+	["[\"a_1_000\", 1_000]", "[\"a_1_000\", 1000]"],
+	["[value_1_0, _1_0]", "[value_1_0, _1_0]"],
+	# expressions without separators are unchanged
+	["[1, 2.5, 0xff]", "[1, 2.5, 0xff]"],
+]) -> void:
+	assert_str(GdInlineParameterSetResolver._strip_number_separators(expression)).is_equal(expected)
 
 
 func test_fallback_warning_includes_source_context() -> void:

@@ -28,6 +28,7 @@ static var _native_class_mapping: Dictionary[String, Variant] = {}
 static var _user_class_paths: Dictionary[String, String] = {}
 static var _resolved_user_classes: Dictionary[String, Variant] = {}
 static var _constant_token_regex: RegEx
+static var _number_literal_regex: RegEx
 static var _script_variant_type_regex: RegEx
 
 
@@ -88,7 +89,7 @@ func _preparse_parameter_set(index: int, bound_class_names: PackedStringArray) -
 	for clazz_name in bound_class_names:
 		input_values.append(_class_value_of(clazz_name))
 
-	var expression_source := _parameter_sets[index]
+	var expression_source := _strip_number_separators(_parameter_sets[index])
 	for regex_match in _get_constant_token_regex().search_all(expression_source):
 		var token := regex_match.get_string(0)
 		var type_name := regex_match.get_string(1)
@@ -113,6 +114,31 @@ func _preparse_parameter_set(index: int, bound_class_names: PackedStringArray) -
 	else:
 		_preparsed_expressions.append(expression)
 	_bound_input_values.append(input_values)
+
+
+## Removes the underscore separators from number literals (e.g. `1_000`, `0xff_ff`), because
+## [Expression] does not support them (see godotengine/godot#97324). String literals are left untouched.
+static func _strip_number_separators(expression_source: String) -> String:
+	var result := ""
+	var last_end := 0
+	for regex_match in _get_number_literal_regex().search_all(expression_source):
+		var number_literal := regex_match.get_string("number")
+		if number_literal.is_empty() or not number_literal.contains("_"):
+			continue
+		result += expression_source.substr(last_end, regex_match.get_start("number") - last_end)
+		result += number_literal.replace("_", "")
+		last_end = regex_match.get_end("number")
+	return result + expression_source.substr(last_end)
+
+
+static func _get_number_literal_regex() -> RegEx:
+	if _number_literal_regex == null:
+		_number_literal_regex = RegEx.new()
+		# String literals are matched first, so numbers inside of them are skipped.
+		_number_literal_regex.compile(
+			"\"(?:\\\\.|[^\"\\\\])*\"|'(?:\\\\.|[^'\\\\])*'"
+			+ "|(?<![A-Za-z0-9_])(?<number>0[xX][0-9a-fA-F_]+|0[bB][01_]+|[0-9][0-9_]*(?:\\.[0-9_]+)?(?:[eE][+-]?[0-9_]+)?)")
+	return _number_literal_regex
 
 
 static func _print_fallback_warning(parameter_set: String, error_text: String, source_path: String, function_name: String) -> void:

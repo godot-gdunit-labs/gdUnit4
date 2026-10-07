@@ -36,7 +36,7 @@ static func unregister(p_singleton: String, use_call_deferred: bool = false) -> 
 		GdUnitTools.prints_verbose("\n	Unregister singleton '%s'" % p_singleton);
 		var index := singletons.find(p_singleton)
 		singletons.remove_at(index)
-		var instance_: Object = Engine.get_meta(p_singleton)
+		var instance_: Variant = Engine.get_meta(p_singleton)
 		GdUnitTools.prints_verbose("	Free singleton instance '%s:%s'" % [p_singleton, instance_])
 		@warning_ignore("return_value_discarded")
 		GdUnitTools.free_instance(instance_, use_call_deferred)

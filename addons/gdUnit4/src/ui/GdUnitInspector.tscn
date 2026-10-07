@@ -9,7 +9,7 @@
 
 [node name="GdUnit" type="Control" unique_id=272268338]
 clip_contents = true
-custom_minimum_size = Vector2(360, 440)
+custom_minimum_size = Vector2(120, 440)
 layout_mode = 3
 anchors_preset = 9
 anchor_bottom = 1.0

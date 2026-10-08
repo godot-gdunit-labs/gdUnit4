@@ -20,43 +20,14 @@ body:
           If you have investigated the root cause or have a proposed fix, please submit a Pull Request directly rather than embedding technical research
           in the issue body.
 
-  - type: dropdown
+  - type: input
     id: gdunit-version
     attributes:
       label: The used GdUnit4 version
-      description: Which GdUnit4 version are you using? If your version is not listed, select "Other" and fill in the field below.
-      options:
-        - 6.2.1 (Pre Release/Master branch)
-        - 6.2.0 (Latest Release)
-        - 6.1.3
-        - 6.1.2
-        - 6.1.1
-        - 6.1.0
-        - 6.0.3
-        - 6.0.2
-        - 6.0.1
-        - 6.0.0
-        - 5.1.1
-        - 5.1.0
-        - 5.0.5
-        - 5.0.4
-        - 5.0.3
-        - 5.0.2
-        - 5.0.1
-        - 5.0.0
-        - Other (not listed)
-      default: 1
+      description: Which GdUnit4 version are you using? You can find it in the plugin list of the Project Settings or in the file `addons/gdUnit4/plugin.cfg`.
+      placeholder: e.g. 6.2.2 or master@abc1234
     validations:
       required: true
-
-  - type: input
-    id: gdunit-version-other
-    attributes:
-      label: GdUnit4 version (if not listed above)
-      description: Enter your exact version if you selected "Other" above (e.g. 6.2.0-rc1, master@abc1234).
-      placeholder: e.g. 6.2.0
-    validations:
-      required: false
 
   - type: input
     id: godot-version

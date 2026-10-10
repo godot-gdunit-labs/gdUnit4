@@ -18,7 +18,7 @@ static func init_fonts(item: CanvasItem) -> float:
 		#var output_source := base_control.get_theme_font("output_source", "EditorFonts")
 		var settings := EditorInterface.get_editor_settings()
 		var scale_factor := EditorInterface.get_editor_scale()
-		var font_size: float = settings.get_setting("interface/editor/main_font_size")
+		var font_size: float = _main_font_size(settings)
 
 		font_size *= scale_factor
 		#item.set("theme_override_fonts/normal_font", output_source)
@@ -34,3 +34,9 @@ static func init_fonts(item: CanvasItem) -> float:
 		item.set("theme_override_font_sizes/mono_font_size", font_size)
 		return font_size
 	return 16.0
+
+
+static func _main_font_size(settings: Object) -> float:
+	if settings.call("has_setting", "interface/editor/fonts/main_font_size"):
+		return settings.call("get_setting", "interface/editor/fonts/main_font_size")
+	return settings.call("get_setting", "interface/editor/main_font_size")

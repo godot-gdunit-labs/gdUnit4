@@ -68,6 +68,8 @@ func _init(name: StringName, parent_context: GdUnitExecutionContext = null) -> v
 
 
 func dispose() -> void:
+	if _parent_context == null:
+		error_monitor.dispose()
 	if test_suite != null:
 		test_suite.free()
 	_timer = null

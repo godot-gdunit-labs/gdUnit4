@@ -3,7 +3,7 @@ extends GdUnitGodotErrorAssert
 var _custom_failure_message := ""
 var _additional_failure_message := ""
 var _callable: Callable
-var _logger := GodotGdErrorMonitor.GdUnitLogger.new(true, true)
+var _logger: GodotGdErrorMonitor.GdUnitLogger
 
 
 func _init(callable: Callable) -> void:
@@ -13,8 +13,15 @@ func _init(callable: Callable) -> void:
 	_callable = callable
 
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PREDELETE and _logger != null:
+		_logger.dispose()
+
+
 func _execute() -> Array[ErrorLogEntry]:
+	_logger = GodotGdErrorMonitor.GdUnitLogger.new(true, true)
 	await _callable.call()
+	_logger.dispose()
 	return _logger.entries()
 
 

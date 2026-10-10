@@ -344,6 +344,18 @@ func test_simmulate_flaky_test(retry_count: int, is_flaky: bool, is_failed: bool
 			})
 		ctx_suite.dispose()
 
+
+func test_dispose_releases_error_monitor_logger() -> void:
+	var ctx_suite: GdUnitExecutionContext = GdUnitExecutionContext.new("")
+	var logger_ref: WeakRef = weakref(ctx_suite.error_monitor._logger)
+	assert_bool(logger_ref.get_ref() != null).is_true()
+
+	ctx_suite.dispose()
+	ctx_suite = null
+
+	assert_object(logger_ref.get_ref()).is_null()
+
+
 static func create_test_case(p_name: String, p_line_number: int, p_script_path: String) -> _TestCase:
 	var test_case := GdUnitTestCase.new()
 	test_case.test_name = p_name

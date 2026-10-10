@@ -9,12 +9,20 @@ class GdUnitLogger extends Logger:
 	var _entries: Array[ErrorLogEntry] = []
 	var _is_report_push_errors: bool
 	var _is_report_script_errors: bool
+	var _is_registered := false
 
 
 	func _init(is_report_push_errors: bool, is_report_script_errors: bool) -> void:
 		_is_report_push_errors = is_report_push_errors
 		_is_report_script_errors = is_report_script_errors
 		OS.add_logger(self)
+		_is_registered = true
+
+
+	func dispose() -> void:
+		if _is_registered:
+			OS.remove_logger(self)
+			_is_registered = false
 
 
 	func entries() -> Array[ErrorLogEntry]:
@@ -80,6 +88,10 @@ func start() -> void:
 
 func stop() -> void:
 	pass
+
+
+func dispose() -> void:
+	_logger.dispose()
 
 
 func log_entries() -> Array[ErrorLogEntry]:

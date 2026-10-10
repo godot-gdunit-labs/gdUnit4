@@ -136,6 +136,19 @@ func test_is_runtime_error_using_argument_matcher(
 	).is_failed().has_message("Only 'any()' and 'any_string()' argument matchers are allowed!")
 
 
+func test_assert_error_releases_logger() -> void:
+	var error_assert := assert_error(produce_assert_success)
+	error_assert.is_success()
+	@warning_ignore("unsafe_property_access")
+	var logger_ref: WeakRef = weakref(error_assert._logger)
+	assert_bool(logger_ref.get_ref() != null).override_failure_message("The assert has no logger to verify").is_true()
+
+	error_assert = null
+	GdUnitThreadManager.get_current_context().clear_assert()
+
+	assert_bool(logger_ref.get_ref() == null).override_failure_message("The logger is still registered on the OS").is_true()
+
+
 func produce_assert_success() -> void:
 	@warning_ignore("assert_always_true")
 	assert(true, "no error" )

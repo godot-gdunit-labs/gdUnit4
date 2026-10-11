@@ -48,7 +48,7 @@ static func api_instance() -> RefCounted:
 
 
 static func is_engine_version_supported(engine_version: int = Engine.get_version_info().hex) -> bool:
-	return engine_version >= 0x40200
+	return engine_version >= 0x40700
 
 
 ## Checks if the .NET environment is properly configured and available.[br]

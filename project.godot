@@ -16,7 +16,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 config/name="gdUnit4"
 config/tags=PackedStringArray("addon", "godot4", "testing")
-config/features=PackedStringArray("4.6", "C#")
+config/features=PackedStringArray("4.7", "C#")
 run/flush_stdout_on_print=true
 config/icon="res://icon.png"
 

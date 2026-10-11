@@ -183,7 +183,7 @@ You can also rerun the latest test execution (executed over the UI GdUnit-inspec
 {% endtab %}
 {% endtabs %}
 
-The report is stored by default under `/reports`.
+The report is stored by default under `res://reports`.
 You can also set the default directory for reports with the option `-rd [directory]`.
 By default, the last 20 reports are saved, older reports are automatically deleted.
 You can change the number with `-rc [number]`.

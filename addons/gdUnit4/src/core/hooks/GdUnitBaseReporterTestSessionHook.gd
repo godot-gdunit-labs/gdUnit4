@@ -37,7 +37,7 @@ func startup(session: GdUnitTestSession) -> GdUnitResult:
 
 func shutdown(session: GdUnitTestSession) -> GdUnitResult:
 	var report_path := _report_writer.write(session.report_path, _report_summary)
-	session.send_message("Open {0} Report at: file://{1}".format([_report_writer.output_format(), report_path]))
+	session.send_message("Open {0} Report at: {1}".format([_report_writer.output_format(), GdUnitFileAccess.as_file_uri(report_path)]))
 
 	return GdUnitResult.success()
 

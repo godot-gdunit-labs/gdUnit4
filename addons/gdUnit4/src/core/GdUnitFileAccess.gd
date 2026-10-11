@@ -92,6 +92,7 @@ static func copy_directory(from_dir :String, to_dir :String, recursive :bool = f
 static func delete_directory(path :String, only_content := false) -> void:
 	var dir := DirAccess.open(path)
 	if dir != null:
+		var dir_path: String = dir.get_current_dir()
 		dir.include_hidden = true
 		@warning_ignore("return_value_discarded")
 		dir.list_dir_begin()
@@ -100,7 +101,7 @@ static func delete_directory(path :String, only_content := false) -> void:
 			file_name = dir.get_next()
 			if file_name.is_empty() or file_name == "." or file_name == "..":
 				continue
-			var next := path + "/" +file_name
+			var next := dir_path + "/" +file_name
 			if dir.current_is_dir():
 				delete_directory(next)
 			else:
@@ -109,9 +110,9 @@ static func delete_directory(path :String, only_content := false) -> void:
 				if err:
 					push_error("Delete %s failed: %s" % [next, error_string(err)])
 		if not only_content:
-			var err := dir.remove(path)
+			var err := dir.remove(dir_path)
 			if err:
-				push_error("Delete %s failed: %s" % [path, error_string(err)])
+				push_error("Delete %s failed: %s" % [dir_path, error_string(err)])
 
 
 static func delete_path_index_lower_equals_than(path :String, prefix :String, index :int) -> int:
@@ -161,6 +162,18 @@ static func as_resource_path(value: String) -> String:
 	return "res://" + value.trim_prefix("//").trim_prefix("/").trim_suffix("/")
 
 
+static func as_file_uri(path: String) -> String:
+	var absolute_path: String = ProjectSettings.globalize_path(path)
+	if not absolute_path.is_absolute_path():
+		var working_dir: DirAccess = DirAccess.open(".")
+		if working_dir != null:
+			absolute_path = working_dir.get_current_dir().path_join(absolute_path)
+	absolute_path = absolute_path.simplify_path()
+	if not absolute_path.begins_with("/"):
+		absolute_path = "/" + absolute_path
+	return "file://" + absolute_path
+
+
 static func scan_dir(path :String) -> PackedStringArray:
 	var dir := DirAccess.open(path)
 	if dir == null or not dir.dir_exists(path):
@@ -197,16 +210,6 @@ static func resource_as_string(resource_path :String) -> String:
 		push_error("ERROR: Can't read resource '%s'. %s" % [resource_path, error_string(FileAccess.get_open_error())])
 		return ""
 	return file.get_as_text()
-
-
-static func make_qualified_path(path :String) -> String:
-	if path.begins_with("res://"):
-		return path
-	if path.begins_with("//"):
-		return path.replace("//", "res://")
-	if path.begins_with("/"):
-		return "res:/" + path
-	return path
 
 
 static func extract_zip(zip_package :String, dest_path :String) -> GdUnitResult:

@@ -158,7 +158,7 @@ func console_warning(message: String) -> void:
 ## [br]
 ## [param path] The path where reports should be written.
 func set_report_dir(path: String) -> void:
-	report_base_path  = ProjectSettings.globalize_path(GdUnitFileAccess.make_qualified_path(path))
+	report_base_path = ProjectSettings.globalize_path(path)
 	console_info(
 		"Set write reports to %s" % report_base_path,
 		Color.DEEP_SKY_BLUE

@@ -8,11 +8,20 @@ const __source = 'res://addons/gdUnit4/src/core/GdUnitFileAccess.gd'
 
 
 var file_to_save :String
+var _test_paths: PackedStringArray = []
 
 
 func after() -> void:
 	# verify tmp files are deleted automatically
 	assert_bool(FileAccess.file_exists(file_to_save)).is_false()
+
+
+func after_test() -> void:
+	for test_path in _test_paths:
+		var dir: DirAccess = DirAccess.open(test_path)
+		if dir != null:
+			GdUnitFileAccess.delete_directory(dir.get_current_dir())
+	_test_paths.clear()
 
 
 func _create_file(p_path :String, p_name :String) -> void:
@@ -64,14 +73,6 @@ func test_create_temp_file() -> void:
 	assert_object(file_read).is_not_null()
 	assert_str(file_read.get_as_text()).is_equal("some data\n")
 	# not needs to be manually close, will be auto closed after test suite execution
-
-
-func test_make_qualified_path() -> void:
-	assert_str(GdUnitFileAccess.make_qualified_path("MyTest")).is_equal("MyTest")
-	assert_str(GdUnitFileAccess.make_qualified_path("/MyTest.gd")).is_equal("res://MyTest.gd")
-	assert_str(GdUnitFileAccess.make_qualified_path("/foo/bar/MyTest.gd")).is_equal("res://foo/bar/MyTest.gd")
-	assert_str(GdUnitFileAccess.make_qualified_path("res://MyTest.gd")).is_equal("res://MyTest.gd")
-	assert_str(GdUnitFileAccess.make_qualified_path("res://foo/bar/MyTest.gd")).is_equal("res://foo/bar/MyTest.gd")
 
 
 func test_find_last_path_index() -> void:
@@ -201,6 +202,113 @@ func test_delete_directory_content_only() -> void:
 	assert_array(GdUnitFileAccess.scan_dir(tmp_dir)).is_empty()
 
 
+func _relative_path(path: String) -> String:
+	_test_paths.append(path.get_slice("/", 0))
+	return path
+
+
+func _absolute_path(path: String) -> String:
+	var absolute_path: String = ProjectSettings.globalize_path(path)
+	_test_paths.append(absolute_path)
+	return absolute_path
+
+
+func _create_file_at(file_path: String) -> void:
+	DirAccess.make_dir_recursive_absolute(file_path.get_base_dir())
+	var file: FileAccess = FileAccess.open(file_path, FileAccess.WRITE)
+	file.store_string("some content")
+	file.close()
+
+
+func _create_report_dirs(test_dir: String, count: int) -> void:
+	for index in range(1, count + 1):
+		_create_file_at(test_dir + "/report_%d/index.html" % index)
+
+
+#region relative paths
+func test_delete_directory_by_relative_path() -> void:
+	var test_dir: String = _relative_path(".gdunit_test_delete_dir")
+	_create_file_at(test_dir + "/example_a.txt")
+	_create_file_at(test_dir + "/data1/example.txt")
+	assert_bool(DirAccess.dir_exists_absolute(test_dir + "/data1")).is_true()
+	assert_bool(FileAccess.file_exists(test_dir + "/example_a.txt")).is_true()
+
+	GdUnitFileAccess.delete_directory(test_dir)
+	assert_bool(DirAccess.dir_exists_absolute(test_dir)).is_false()
+
+
+func test_delete_path_index_lower_equals_than_by_relative_path() -> void:
+	var test_dir: String = _relative_path(".gdunit_test_report_history")
+	_create_report_dirs(test_dir, 5)
+	assert_array(DirAccess.get_directories_at(test_dir)).has_size(5)
+
+	assert_int(GdUnitFileAccess.delete_path_index_lower_equals_than(test_dir, "report_", 3)).is_equal(3)
+	assert_array(DirAccess.get_directories_at(test_dir)).contains_exactly_in_any_order(["report_4", "report_5"])
+#endregion
+
+
+#region absolute paths
+func test_delete_directory_by_absolute_path() -> void:
+	var test_dir: String = _absolute_path("user://tmp/gdunit_test_delete_dir")
+	_create_file_at(test_dir + "/example_a.txt")
+	_create_file_at(test_dir + "/data1/example.txt")
+	assert_bool(DirAccess.dir_exists_absolute(test_dir + "/data1")).is_true()
+	assert_bool(FileAccess.file_exists(test_dir + "/example_a.txt")).is_true()
+
+	GdUnitFileAccess.delete_directory(test_dir)
+	assert_bool(DirAccess.dir_exists_absolute(test_dir)).is_false()
+
+
+func test_delete_path_index_lower_equals_than_by_absolute_path() -> void:
+	var test_dir: String = _absolute_path("user://tmp/gdunit_test_report_history")
+	_create_report_dirs(test_dir, 5)
+	assert_array(DirAccess.get_directories_at(test_dir)).has_size(5)
+
+	assert_int(GdUnitFileAccess.delete_path_index_lower_equals_than(test_dir, "report_", 3)).is_equal(3)
+	assert_array(DirAccess.get_directories_at(test_dir)).contains_exactly_in_any_order(["report_4", "report_5"])
+#endregion
+
+
+#region as_file_uri
+func test_as_file_uri_by_relative_path() -> void:
+	var test_dir: String = _relative_path(".gdunit_test_file_uri")
+	_create_file_at(test_dir + "/report_1/index.html")
+	var working_dir: String = DirAccess.open(test_dir).get_current_dir().get_base_dir()
+
+	assert_str(GdUnitFileAccess.as_file_uri(".gdunit_test_file_uri/report_1/index.html")) \
+		.is_equal("file:///" + working_dir.trim_prefix("/") + "/.gdunit_test_file_uri/report_1/index.html")
+
+
+func test_as_file_uri_by_relative_path_with_dot_segments() -> void:
+	var test_dir: String = _relative_path(".gdunit_test_file_uri")
+	_create_file_at(test_dir + "/report_1/index.html")
+	var working_dir: String = DirAccess.open(test_dir).get_current_dir().get_base_dir()
+
+	assert_str(GdUnitFileAccess.as_file_uri("./.gdunit_test_file_uri/report_1/../report_1/index.html")) \
+		.is_equal("file:///" + working_dir.trim_prefix("/") + "/.gdunit_test_file_uri/report_1/index.html")
+
+
+func test_as_file_uri_by_absolute_path() -> void:
+	var test_dir: String = _absolute_path("user://tmp/gdunit_test_file_uri")
+
+	assert_str(GdUnitFileAccess.as_file_uri(test_dir + "/report_1/index.html")) \
+		.is_equal("file:///" + test_dir.trim_prefix("/") + "/report_1/index.html")
+
+
+func test_as_file_uri_by_resource_path() -> void:
+	assert_str(GdUnitFileAccess.as_file_uri("res://reports/report_1/index.html")) \
+		.is_equal("file:///" + ProjectSettings.globalize_path("res://reports/report_1/index.html").trim_prefix("/"))
+
+
+func test_as_file_uri_by_unix_root_path() -> void:
+	assert_str(GdUnitFileAccess.as_file_uri("/tmp/reports/report_1/index.html")).is_equal("file:///tmp/reports/report_1/index.html")
+
+
+func test_as_file_uri_by_windows_drive_path() -> void:
+	assert_str(GdUnitFileAccess.as_file_uri("C:/reports/report_1/index.html")).is_equal("file:///C:/reports/report_1/index.html")
+#endregion
+
+
 func test_extract_package() -> void:
 	clean_temp_dir()
 	var tmp_path := GdUnitFileAccess.create_temp_dir("test_update")
@@ -230,4 +338,3 @@ func test_extract_package_invalid_package() -> void:
 	assert_result(result).is_error()\
 		.contains_message("Extracting `%s` failed! Please collect the error log and report this. Error Code: 1" % source)
 	assert_array(GdUnitFileAccess.scan_dir(tmp_path)).is_empty()
-

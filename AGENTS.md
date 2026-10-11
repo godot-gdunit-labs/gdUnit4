@@ -13,6 +13,7 @@ agent memory conventions are defined centrally in the AI harness:
 - GDScript style: `../ai-harness-core/shared-rules/gdscript-style.md`
 - Documentation style: `../ai-harness-core/shared-rules/documentation-style.md`
 - Agent memory conventions: `../ai-harness-core/shared-rules/agent-memory-conventions.md`
+- Git branching: `../ai-harness-core/shared-rules/git-branching.md`
 
 ## What This Project Is
 

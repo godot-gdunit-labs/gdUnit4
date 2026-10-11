@@ -189,3 +189,14 @@ func test_cleanup_report_history_on_relative_report_dir() -> void:
 	runner.cleanup_report_history()
 	assert_array(DirAccess.get_directories_at(runner.report_base_path)).contains_exactly_in_any_order(["report_4", "report_5"])
 #endregion
+
+
+#region session runner registration
+func test_new_runner_does_not_replace_the_session_runner() -> void:
+	var session_runner: Object = Engine.get_meta(GdUnitSettings.GDUNIT_RUNNER)
+	var runner := GdUnitTestCIRunner.new()
+
+	assert_object(Engine.get_meta(GdUnitSettings.GDUNIT_RUNNER)).is_same(session_runner)
+	runner.free()
+	assert_object(Engine.get_meta(GdUnitSettings.GDUNIT_RUNNER, null)).is_same(session_runner)
+#endregion

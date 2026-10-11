@@ -3,6 +3,8 @@ class_name GdUnitSettings
 extends RefCounted
 
 
+const GDUNIT_RUNNER = "GdUnitRunner"
+
 const MAIN_CATEGORY = "gdunit4"
 # Common Settings
 const COMMON_SETTINGS = MAIN_CATEGORY + "/settings"
@@ -215,8 +217,7 @@ static func is_update_notification_enabled() -> bool:
 
 static func set_update_notification(enable :bool) -> void:
 	ProjectSettings.set_setting(UPDATE_NOTIFICATION_ENABLED, enable)
-	@warning_ignore("return_value_discarded")
-	ProjectSettings.save()
+	_save_settings()
 
 
 static func get_log_path() -> String:
@@ -226,8 +227,7 @@ static func get_log_path() -> String:
 static func set_log_path(path :String) -> void:
 	ProjectSettings.set_setting(STDOUT_ENABLE_TO_FILE, true)
 	ProjectSettings.set_setting(STDOUT_WITE_TO_FILE, path)
-	@warning_ignore("return_value_discarded")
-	ProjectSettings.save()
+	_save_settings()
 
 
 static func get_session_hooks() -> Dictionary[String, bool]:
@@ -418,7 +418,13 @@ static func save_property(name :String, value :Variant) -> void:
 	_save_settings()
 
 
+static func _is_test_session_running() -> bool:
+	return Engine.has_meta(GDUNIT_RUNNER)
+
+
 static func _save_settings() -> void:
+	if _is_test_session_running():
+		return
 	var err := ProjectSettings.save()
 	if err != OK:
 		push_error("Save GdUnit4 settings failed : %s" % error_string(err))

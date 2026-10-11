@@ -254,3 +254,32 @@ func test_validate_is_inferred_declaration_enabled_when_error_and_addon_not_excl
 		.is_error()\
 		.contains_message(expected_message)
 #endregion
+
+
+#region project file is not written during a test session
+func test_save_property_does_not_write_project_file() -> void:
+	var project_file := FileAccess.get_file_as_string("res://project.godot")
+
+	GdUnitSettings.save_property(GdUnitSettings.REPORT_SCRIPT_ERRORS, true)
+
+	assert_bool(ProjectSettings.get_setting(GdUnitSettings.REPORT_SCRIPT_ERRORS)).is_true()
+	assert_str(FileAccess.get_file_as_string("res://project.godot")).is_equal(project_file)
+
+
+func test_set_update_notification_does_not_write_project_file() -> void:
+	var project_file := FileAccess.get_file_as_string("res://project.godot")
+
+	GdUnitSettings.set_update_notification(true)
+
+	assert_bool(GdUnitSettings.is_update_notification_enabled()).is_true()
+	assert_str(FileAccess.get_file_as_string("res://project.godot")).is_equal(project_file)
+
+
+func test_set_log_path_does_not_write_project_file() -> void:
+	var project_file := FileAccess.get_file_as_string("res://project.godot")
+
+	GdUnitSettings.set_log_path("user://logs/custom.log")
+
+	assert_str(GdUnitSettings.get_log_path()).is_equal("user://logs/custom.log")
+	assert_str(FileAccess.get_file_as_string("res://project.godot")).is_equal(project_file)
+#endregion

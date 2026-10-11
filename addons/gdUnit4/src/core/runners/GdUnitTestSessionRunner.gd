@@ -24,7 +24,7 @@ const RETURN_ERROR_SCRIPT_ERRORS_DETECTED = 105
 const RETURN_WARNING = 101
 
 ## Specifies the Node name under which the runner is registered
-const GDUNIT_RUNNER = "GdUnitRunner"
+const GDUNIT_RUNNER = GdUnitSettings.GDUNIT_RUNNER
 
 ## The current runner configuration
 @warning_ignore("unused_private_class_variable")
@@ -93,7 +93,8 @@ func _init() -> void:
 		# minimize scene window checked debug mode
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MINIMIZED)
 	# store current runner instance to engine meta data to can be access in as a singleton
-	Engine.set_meta(GDUNIT_RUNNER, self)
+	if not Engine.has_meta(GDUNIT_RUNNER):
+		Engine.set_meta(GDUNIT_RUNNER, self)
 
 
 # Called when the node enters the scene tree for the first time.
@@ -109,7 +110,7 @@ func _ready() -> void:
 
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_PREDELETE:
+	if what == NOTIFICATION_PREDELETE and Engine.get_meta(GDUNIT_RUNNER, null) == self:
 		Engine.remove_meta(GDUNIT_RUNNER)
 
 

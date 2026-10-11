@@ -44,7 +44,6 @@ const STDOUT_WITE_TO_FILE = CATEGORY_LOGGING + "log_path"
 # Godot GDScript warning settings
 const CATEGORY_GDSCRIPT_WARNINGS := "debug/gdscript/warnings/"
 const GDSCRIPT_WARNINGS_INFERRED_DECLARATION := CATEGORY_GDSCRIPT_WARNINGS + "inferred_declaration"
-const GDSCRIPT_WARNINGS_EXCLUDE_ADDONS := CATEGORY_GDSCRIPT_WARNINGS + "exclude_addons"
 const GDSCRIPT_WARNINGS_DIRECTORY_RULES := CATEGORY_GDSCRIPT_WARNINGS + "directory_rules"
 
 enum GdScriptWarningMode {
@@ -355,25 +354,18 @@ static func validate_is_inferred_declaration_enabled() -> GdUnitResult:
 	if ProjectSettings.get_setting(GDSCRIPT_WARNINGS_INFERRED_DECLARATION) == GdScriptWarningMode.IGNORE:
 		return GdUnitResult.success()
 
-	if Engine.get_version_info().hex >= 0x40600:
-		var directory_rules: Dictionary = ProjectSettings.get_setting(GDSCRIPT_WARNINGS_DIRECTORY_RULES)
-		# Find the most specific matching rule (longest path wins)
-		var best_match := ""
-		for path: String in directory_rules.keys():
-			if "res://addons/gdUnit4".begins_with(path) and path.length() > best_match.length():
-				best_match = path
-		var is_excluded :bool = not best_match.is_empty() and directory_rules[best_match] == GdScriptWarningDirectoryMode.EXCLUDE
-		if not is_excluded:
-			return GdUnitResult.error("""
-				GdUnit4: 'inferred_declaration' is set to Warning/Error!
-				GdUnit4 is not 'inferred_declaration' safe, you have to exclude the addon (debug/gdscript/warnings/directory_rules)
-				""".dedent().strip_edges())
-	else:
-		if not ProjectSettings.get_setting(GDSCRIPT_WARNINGS_EXCLUDE_ADDONS):
-			return GdUnitResult.error("""
-				GdUnit4: 'inferred_declaration' is set to Warning/Error!
-				GdUnit4 is not 'inferred_declaration' safe, you have to exclude addons (debug/gdscript/warnings/exclude_addons)
-				""".dedent().strip_edges())
+	var directory_rules: Dictionary = ProjectSettings.get_setting(GDSCRIPT_WARNINGS_DIRECTORY_RULES)
+	# Find the most specific matching rule (longest path wins)
+	var best_match := ""
+	for path: String in directory_rules.keys():
+		if "res://addons/gdUnit4".begins_with(path) and path.length() > best_match.length():
+			best_match = path
+	var is_excluded :bool = not best_match.is_empty() and directory_rules[best_match] == GdScriptWarningDirectoryMode.EXCLUDE
+	if not is_excluded:
+		return GdUnitResult.error("""
+			GdUnit4: 'inferred_declaration' is set to Warning/Error!
+			GdUnit4 is not 'inferred_declaration' safe, you have to exclude the addon (debug/gdscript/warnings/directory_rules)
+			""".dedent().strip_edges())
 	return GdUnitResult.success()
 
 

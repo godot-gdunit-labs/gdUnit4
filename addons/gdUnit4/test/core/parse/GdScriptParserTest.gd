@@ -570,8 +570,7 @@ func test_parse_class_inherits() -> void:
 				GdFunctionArgument.new("name", TYPE_STRING, "test"),
 			]),
 			# see https://github.com/godotengine/godot/pull/118032
-			create("foo5", "res://addons/gdUnit4/test/mocker/resources/CustomResourceTestClass.gd", 17, 18,
-				GdObjects.TYPE_VARIANT if Engine.get_version_info()["minor"] >= 7 else GdObjects.TYPE_VOID),
+			create("foo5", "res://addons/gdUnit4/test/mocker/resources/CustomResourceTestClass.gd", 17, 18, GdObjects.TYPE_VARIANT),
 		])
 
 
@@ -698,9 +697,7 @@ func test_parse_func_descriptor_with_fuzzers() -> void:
 	""")
 	var fds := _parser.get_function_descriptors(script, ["test_foo"])
 	# see https://github.com/godotengine/godot/pull/118032
-	var untyped_return_type: int = GdObjects.TYPE_VARIANT if Engine.get_version_info()["minor"] >= 7 else GdObjects.TYPE_VOID
-
-	assert_that(fds[0]).is_equal(create("test_foo", script.resource_path, 12, 17, untyped_return_type, [
+	assert_that(fds[0]).is_equal(create("test_foo", script.resource_path, 12, 17, GdObjects.TYPE_VARIANT, [
 		# all fuzzer must by type TYPE_FUZZER
 		GdFunctionArgument.new("fuzzer_a", GdObjects.TYPE_FUZZER, "fuzz_a()"),
 		GdFunctionArgument.new("fuzzer_b", GdObjects.TYPE_FUZZER, "fuzz_b()"),

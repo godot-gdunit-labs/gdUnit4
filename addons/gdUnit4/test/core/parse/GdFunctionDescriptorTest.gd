@@ -210,15 +210,11 @@ func test_extract_from_return_types(func_name: String, expected_type: int, _test
 	assert_int(fd.return_type()).is_equal(expected_type)
 
 
-# Since Godot 4.7 (https://github.com/godotengine/godot/pull/118032), untyped functions
-# correctly report TYPE_VARIANT via PROPERTY_USAGE_NIL_IS_VARIANT. On earlier versions,
-# both untyped and explicit-void pass-body functions report usage=6 and are indistinguishable.
+# Untyped functions report TYPE_VARIANT via PROPERTY_USAGE_NIL_IS_VARIANT (https://github.com/godotengine/godot/pull/118032)
 func test_extract_from_inferred_void_pass() -> void:
 	var method_descriptor := GdScriptTestHelper.get_script_method_descriptor(_return_type_variants_script, "inferred_void_pass")
 	var fd := GdFunctionDescriptor.extract_from(method_descriptor, false)
-	var version := Engine.get_version_info()
-	var expected_type: int = GdObjects.TYPE_VARIANT if version["minor"] >= 7 else GdObjects.TYPE_VOID
-	assert_int(fd.return_type()).is_equal(expected_type)
+	assert_int(fd.return_type()).is_equal(GdObjects.TYPE_VARIANT)
 #endregion
 
 

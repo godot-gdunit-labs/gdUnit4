@@ -98,8 +98,8 @@ func _init() -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	if Engine.get_version_info().hex < 0x40300:
-		printerr("The GdUnit4 plugin requires Godot version 4.3 or higher to run.")
+	if Engine.get_version_info().hex < 0x40700:
+		printerr("The GdUnit4 plugin requires Godot version 4.7 or higher to run.")
 		quit(RETURN_ERROR_GODOT_VERSION_NOT_SUPPORTED)
 		return
 	_executor = GdUnitTestSuiteExecutor.new()

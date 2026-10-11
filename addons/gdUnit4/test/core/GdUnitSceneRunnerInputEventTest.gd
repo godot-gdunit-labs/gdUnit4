@@ -482,33 +482,29 @@ func test_simulate_keypressed_as_action() -> void:
 
 
 func test_simulate_set_mouse_pos() -> void:
-	# save current global mouse pos
-	var gmp := _runner.get_global_mouse_position()
 	# set mouse to pos 100, 100
 	_runner.set_mouse_position(Vector2(100, 100))
 	await _runner.await_input_processed()
 	var event := InputEventMouseMotion.new()
 	event.position = Vector2(100, 100)
-	GodotVersionFixures.set_event_global_position(event, gmp)
+	event.global_position = event.position
 	verify(_scene_spy, 1)._input(event)
 
 	# set mouse to pos 800, 400
-	gmp = _runner.get_global_mouse_position()
 	_runner.set_mouse_position(Vector2(800, 400))
 	await _runner.await_input_processed()
 	event = InputEventMouseMotion.new()
 	event.position = Vector2(800, 400)
-	GodotVersionFixures.set_event_global_position(event, gmp)
+	event.global_position = event.position
 	verify(_scene_spy, 1)._input(event)
 
 	# and again back to 100,100
 	reset(_scene_spy)
-	gmp = _runner.get_global_mouse_position()
 	_runner.set_mouse_position(Vector2(100, 100))
 	await _runner.await_input_processed()
 	event = InputEventMouseMotion.new()
 	event.position = Vector2(100, 100)
-	GodotVersionFixures.set_event_global_position(event, gmp)
+	event.global_position = event.position
 	verify(_scene_spy, 1)._input(event)
 
 
@@ -548,24 +544,22 @@ func test_simulate_set_mouse_pos_with_modifiers() -> void:
 
 func test_simulate_mouse_move() -> void:
 	_runner.set_mouse_position(Vector2(10, 10))
-	var gmp := _runner.get_global_mouse_position()
 	_runner.simulate_mouse_move(Vector2(400, 100))
 	await _runner.await_input_processed()
 
 	var event := InputEventMouseMotion.new()
 	event.position = Vector2(400, 100)
-	GodotVersionFixures.set_event_global_position(event, gmp)
+	event.global_position = event.position
 	event.relative = Vector2(400, 100) - Vector2(10, 10)
 	verify(_scene_spy, 1)._input(event)
 
 	# move mouse to next pos
-	gmp = _runner.get_global_mouse_position()
 	_runner.simulate_mouse_move(Vector2(55, 42))
 	await await_idle_frame()
 
 	event = InputEventMouseMotion.new()
 	event.position = Vector2(55, 42)
-	GodotVersionFixures.set_event_global_position(event, gmp)
+	event.global_position = event.position
 	event.relative = Vector2(55, 42) - Vector2(400, 100)
 	verify(_scene_spy, 1)._input(event)
 

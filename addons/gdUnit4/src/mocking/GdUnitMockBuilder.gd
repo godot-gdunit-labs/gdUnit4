@@ -106,9 +106,8 @@ static func mock_on_script(instance :Object, clazz :Variant, function_excludes :
 	var lines := load_template(mock_template, class_info)
 	lines += double_functions(instance, clazz_name, clazz_path, function_doubler, function_excludes)
 	# We disable warning/errors for inferred_declaration
-	if Engine.get_version_info().hex >= 0x40400:
-		lines.insert(0, '@warning_ignore_start("inferred_declaration")')
-		lines.append('@warning_ignore_restore("inferred_declaration")')
+	lines.insert(0, '@warning_ignore_start("inferred_declaration")')
+	lines.append('@warning_ignore_restore("inferred_declaration")')
 
 	var mock := GDScript.new()
 	mock.source_code = "\n".join(lines)

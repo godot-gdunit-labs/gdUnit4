@@ -15,13 +15,14 @@ func before(do_skip := not GdUnit4CSharpApiLoader.is_api_loaded(), skip_reason :
 
 @warning_ignore("unused_parameter")
 func test_is_engine_version_supported(version :int, expected :bool, test_parameters := [
-	[0x40101, false],
-	[0x40102, false],
 	[0x40100, false],
-	[0x40300, true],
-	[0x40400, true]]) -> void:
+	[0x40500, false],
+	[0x40603, false],
+	[0x40700, true],
+	[0x40701, true],
+	[0x40800, true]]) -> void:
 
-	assert_that(GdUnit4CSharpApiLoader.is_engine_version_supported(version)).is_equal(expected)
+	assert_bool(GdUnit4CSharpApiLoader.is_engine_version_supported(version)).is_equal(expected)
 
 
 func test_api_version() -> void:

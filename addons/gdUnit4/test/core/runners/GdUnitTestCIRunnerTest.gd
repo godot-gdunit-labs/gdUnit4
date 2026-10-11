@@ -9,9 +9,7 @@ var _test_paths: PackedStringArray = []
 
 func after_test() -> void:
 	for test_path in _test_paths:
-		var dir: DirAccess = DirAccess.open(test_path)
-		if dir != null:
-			GdUnitFileAccess.delete_directory(dir.get_current_dir())
+		GdUnitFileAccess.delete_directory(test_path)
 	_test_paths.clear()
 
 
@@ -21,16 +19,16 @@ func _relative_path(path: String) -> String:
 
 
 func _absolute_path(path: String) -> String:
-	var absolute_path: String = ProjectSettings.globalize_path(path)
+	var absolute_path := ProjectSettings.globalize_path(path)
 	_test_paths.append(absolute_path)
 	return absolute_path
 
 
 func _create_report_history(report_base_path: String, count: int) -> void:
 	for index in range(1, count + 1):
-		var report_dir: String = report_base_path + "/" + GdUnitConstants.REPORT_DIR_PREFIX + str(index)
+		var report_dir := report_base_path.path_join(GdUnitConstants.REPORT_DIR_PREFIX + str(index))
 		DirAccess.make_dir_recursive_absolute(report_dir)
-		var file: FileAccess = FileAccess.open(report_dir + "/index.html", FileAccess.WRITE)
+		var file := FileAccess.open(report_dir.path_join("index.html"), FileAccess.WRITE)
 		file.store_string("report")
 		file.close()
 
@@ -132,15 +130,35 @@ func test_set_report_dir_resource_path() -> void:
 	var runner: GdUnitTestCIRunner = auto_free(GdUnitTestCIRunner.new())
 
 	runner.set_report_dir("res://reports/shard_1")
-	assert_str(runner.report_base_path).is_equal(ProjectSettings.globalize_path("res://reports/shard_1"))
+	assert_bool(runner.report_base_path.is_absolute_path()).is_true()
+	assert_str(runner.report_base_path) \
+		.not_contains("res:") \
+		.ends_with("/reports/shard_1")
+
+
+func test_set_report_dir_user_path() -> void:
+	var runner: GdUnitTestCIRunner = auto_free(GdUnitTestCIRunner.new())
+
+	runner.set_report_dir("user://tmp/gdunit_test_reports")
+	assert_bool(runner.report_base_path.is_absolute_path()).is_true()
+	assert_str(runner.report_base_path) \
+		.not_contains("user:") \
+		.ends_with("/tmp/gdunit_test_reports")
 
 
 func test_set_report_dir_absolute_path() -> void:
 	var runner: GdUnitTestCIRunner = auto_free(GdUnitTestCIRunner.new())
-	var report_dir: String = _absolute_path("user://tmp/gdunit_test_reports")
+	var report_dir := _absolute_path("user://tmp/gdunit_test_reports")
 
 	runner.set_report_dir(report_dir)
 	assert_str(runner.report_base_path).is_equal(report_dir)
+
+
+func test_set_report_dir_relative_path() -> void:
+	var runner: GdUnitTestCIRunner = auto_free(GdUnitTestCIRunner.new())
+
+	runner.set_report_dir("reports/shard_1")
+	assert_str(runner.report_base_path).is_equal("reports/shard_1")
 
 
 func test_set_report_dir_absolute_root_path() -> void:
@@ -148,8 +166,10 @@ func test_set_report_dir_absolute_root_path() -> void:
 
 	runner.set_report_dir("/tmp/gdunit4/reports")
 	assert_str(runner.report_base_path).is_equal("/tmp/gdunit4/reports")
+#endregion
 
 
+#region cleanup_report_history
 func test_cleanup_report_history_on_absolute_report_dir() -> void:
 	var runner: GdUnitTestCIRunner = auto_free(GdUnitTestCIRunner.new())
 	runner.set_report_dir(_absolute_path("user://tmp/gdunit_test_report_history"))

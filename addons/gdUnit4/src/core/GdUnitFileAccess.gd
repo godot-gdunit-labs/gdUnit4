@@ -92,7 +92,7 @@ static func copy_directory(from_dir :String, to_dir :String, recursive :bool = f
 static func delete_directory(path :String, only_content := false) -> void:
 	var dir := DirAccess.open(path)
 	if dir != null:
-		var dir_path: String = dir.get_current_dir()
+		var dir_path := dir.get_current_dir()
 		dir.include_hidden = true
 		@warning_ignore("return_value_discarded")
 		dir.list_dir_begin()
@@ -101,7 +101,7 @@ static func delete_directory(path :String, only_content := false) -> void:
 			file_name = dir.get_next()
 			if file_name.is_empty() or file_name == "." or file_name == "..":
 				continue
-			var next := dir_path + "/" +file_name
+			var next := dir_path.path_join(file_name)
 			if dir.current_is_dir():
 				delete_directory(next)
 			else:
@@ -163,15 +163,15 @@ static func as_resource_path(value: String) -> String:
 
 
 static func as_file_uri(path: String) -> String:
-	var absolute_path: String = ProjectSettings.globalize_path(path)
+	var absolute_path := ProjectSettings.globalize_path(path)
 	if not absolute_path.is_absolute_path():
-		var working_dir: DirAccess = DirAccess.open(".")
+		var working_dir := DirAccess.open(".")
 		if working_dir != null:
 			absolute_path = working_dir.get_current_dir().path_join(absolute_path)
 	absolute_path = absolute_path.simplify_path()
 	if not absolute_path.begins_with("/"):
 		absolute_path = "/" + absolute_path
-	return "file://" + absolute_path
+	return "file://" + absolute_path.uri_encode().replace("%2F", "/").replace("%3A", ":")
 
 
 static func scan_dir(path :String) -> PackedStringArray:

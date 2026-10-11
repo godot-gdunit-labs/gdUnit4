@@ -18,9 +18,7 @@ func after() -> void:
 
 func after_test() -> void:
 	for test_path in _test_paths:
-		var dir: DirAccess = DirAccess.open(test_path)
-		if dir != null:
-			GdUnitFileAccess.delete_directory(dir.get_current_dir())
+		GdUnitFileAccess.delete_directory(test_path)
 	_test_paths.clear()
 
 
@@ -208,37 +206,55 @@ func _relative_path(path: String) -> String:
 
 
 func _absolute_path(path: String) -> String:
-	var absolute_path: String = ProjectSettings.globalize_path(path)
+	var absolute_path := ProjectSettings.globalize_path(path)
 	_test_paths.append(absolute_path)
 	return absolute_path
 
 
 func _create_file_at(file_path: String) -> void:
 	DirAccess.make_dir_recursive_absolute(file_path.get_base_dir())
-	var file: FileAccess = FileAccess.open(file_path, FileAccess.WRITE)
+	var file := FileAccess.open(file_path, FileAccess.WRITE)
 	file.store_string("some content")
 	file.close()
 
 
 func _create_report_dirs(test_dir: String, count: int) -> void:
 	for index in range(1, count + 1):
-		_create_file_at(test_dir + "/report_%d/index.html" % index)
+		_create_file_at(test_dir.path_join("report_%d/index.html" % index))
+
+
+func _file_uri_to_path(uri: String) -> String:
+	var path := uri.trim_prefix("file://").uri_decode()
+	if path.find(":") == 2:
+		return path.substr(1)
+	return path
 
 
 #region relative paths
 func test_delete_directory_by_relative_path() -> void:
-	var test_dir: String = _relative_path(".gdunit_test_delete_dir")
-	_create_file_at(test_dir + "/example_a.txt")
-	_create_file_at(test_dir + "/data1/example.txt")
-	assert_bool(DirAccess.dir_exists_absolute(test_dir + "/data1")).is_true()
-	assert_bool(FileAccess.file_exists(test_dir + "/example_a.txt")).is_true()
+	var test_dir := _relative_path(".gdunit_test_delete_dir")
+	_create_file_at(test_dir.path_join("example_a.txt"))
+	_create_file_at(test_dir.path_join("data1/example.txt"))
+	assert_bool(DirAccess.dir_exists_absolute(test_dir.path_join("data1"))).is_true()
+	assert_bool(FileAccess.file_exists(test_dir.path_join("example_a.txt"))).is_true()
 
 	GdUnitFileAccess.delete_directory(test_dir)
 	assert_bool(DirAccess.dir_exists_absolute(test_dir)).is_false()
 
 
+func test_delete_directory_content_only_by_relative_path() -> void:
+	var test_dir := _relative_path(".gdunit_test_delete_content")
+	_create_file_at(test_dir.path_join("example_a.txt"))
+	_create_file_at(test_dir.path_join("data1/example.txt"))
+
+	GdUnitFileAccess.delete_directory(test_dir, true)
+	assert_bool(DirAccess.dir_exists_absolute(test_dir)).is_true()
+	assert_array(DirAccess.get_files_at(test_dir)).is_empty()
+	assert_array(DirAccess.get_directories_at(test_dir)).is_empty()
+
+
 func test_delete_path_index_lower_equals_than_by_relative_path() -> void:
-	var test_dir: String = _relative_path(".gdunit_test_report_history")
+	var test_dir := _relative_path(".gdunit_test_report_history")
 	_create_report_dirs(test_dir, 5)
 	assert_array(DirAccess.get_directories_at(test_dir)).has_size(5)
 
@@ -249,18 +265,31 @@ func test_delete_path_index_lower_equals_than_by_relative_path() -> void:
 
 #region absolute paths
 func test_delete_directory_by_absolute_path() -> void:
-	var test_dir: String = _absolute_path("user://tmp/gdunit_test_delete_dir")
-	_create_file_at(test_dir + "/example_a.txt")
-	_create_file_at(test_dir + "/data1/example.txt")
-	assert_bool(DirAccess.dir_exists_absolute(test_dir + "/data1")).is_true()
-	assert_bool(FileAccess.file_exists(test_dir + "/example_a.txt")).is_true()
+	var test_dir := _absolute_path("user://tmp/gdunit_test_delete_dir")
+	_create_file_at(test_dir.path_join("example_a.txt"))
+	_create_file_at(test_dir.path_join("data1/example.txt"))
+	assert_bool(DirAccess.dir_exists_absolute(test_dir.path_join("data1"))).is_true()
+	assert_bool(FileAccess.file_exists(test_dir.path_join("example_a.txt"))).is_true()
 
 	GdUnitFileAccess.delete_directory(test_dir)
 	assert_bool(DirAccess.dir_exists_absolute(test_dir)).is_false()
 
 
+func test_delete_directory_by_path_with_space() -> void:
+	var test_dir := _absolute_path("user://tmp/gdunit test delete dir")
+	_create_file_at(test_dir.path_join("data 1/example.txt"))
+
+	GdUnitFileAccess.delete_directory(test_dir)
+	assert_bool(DirAccess.dir_exists_absolute(test_dir)).is_false()
+
+
+func test_delete_directory_by_not_existing_path() -> void:
+	GdUnitFileAccess.delete_directory("user://tmp/gdunit_test_not_existing_dir")
+	assert_bool(DirAccess.dir_exists_absolute("user://tmp/gdunit_test_not_existing_dir")).is_false()
+
+
 func test_delete_path_index_lower_equals_than_by_absolute_path() -> void:
-	var test_dir: String = _absolute_path("user://tmp/gdunit_test_report_history")
+	var test_dir := _absolute_path("user://tmp/gdunit_test_report_history")
 	_create_report_dirs(test_dir, 5)
 	assert_array(DirAccess.get_directories_at(test_dir)).has_size(5)
 
@@ -271,33 +300,60 @@ func test_delete_path_index_lower_equals_than_by_absolute_path() -> void:
 
 #region as_file_uri
 func test_as_file_uri_by_relative_path() -> void:
-	var test_dir: String = _relative_path(".gdunit_test_file_uri")
-	_create_file_at(test_dir + "/report_1/index.html")
-	var working_dir: String = DirAccess.open(test_dir).get_current_dir().get_base_dir()
+	_create_file_at(_relative_path(".gdunit_test_file_uri").path_join("report_1/index.html"))
 
-	assert_str(GdUnitFileAccess.as_file_uri(".gdunit_test_file_uri/report_1/index.html")) \
-		.is_equal("file:///" + working_dir.trim_prefix("/") + "/.gdunit_test_file_uri/report_1/index.html")
+	var uri := GdUnitFileAccess.as_file_uri(".gdunit_test_file_uri/report_1/index.html")
+	assert_str(uri) \
+		.starts_with("file:///") \
+		.ends_with("/.gdunit_test_file_uri/report_1/index.html")
+	assert_bool(FileAccess.file_exists(_file_uri_to_path(uri))).is_true()
 
 
 func test_as_file_uri_by_relative_path_with_dot_segments() -> void:
-	var test_dir: String = _relative_path(".gdunit_test_file_uri")
-	_create_file_at(test_dir + "/report_1/index.html")
-	var working_dir: String = DirAccess.open(test_dir).get_current_dir().get_base_dir()
+	_create_file_at(_relative_path(".gdunit_test_file_uri").path_join("report_1/index.html"))
 
-	assert_str(GdUnitFileAccess.as_file_uri("./.gdunit_test_file_uri/report_1/../report_1/index.html")) \
-		.is_equal("file:///" + working_dir.trim_prefix("/") + "/.gdunit_test_file_uri/report_1/index.html")
+	var uri := GdUnitFileAccess.as_file_uri("./.gdunit_test_file_uri/report_1/../report_1/index.html")
+	assert_str(uri) \
+		.starts_with("file:///") \
+		.ends_with("/.gdunit_test_file_uri/report_1/index.html") \
+		.not_contains("/./") \
+		.not_contains("..")
+	assert_bool(FileAccess.file_exists(_file_uri_to_path(uri))).is_true()
 
 
 func test_as_file_uri_by_absolute_path() -> void:
-	var test_dir: String = _absolute_path("user://tmp/gdunit_test_file_uri")
+	var file_path := _absolute_path("user://tmp/gdunit_test_file_uri").path_join("report_1/index.html")
+	_create_file_at(file_path)
 
-	assert_str(GdUnitFileAccess.as_file_uri(test_dir + "/report_1/index.html")) \
-		.is_equal("file:///" + test_dir.trim_prefix("/") + "/report_1/index.html")
+	var uri := GdUnitFileAccess.as_file_uri(file_path)
+	assert_str(uri).starts_with("file:///")
+	assert_str(_file_uri_to_path(uri)).is_equal(file_path)
 
 
 func test_as_file_uri_by_resource_path() -> void:
-	assert_str(GdUnitFileAccess.as_file_uri("res://reports/report_1/index.html")) \
-		.is_equal("file:///" + ProjectSettings.globalize_path("res://reports/report_1/index.html").trim_prefix("/"))
+	var uri := GdUnitFileAccess.as_file_uri("res://addons/gdUnit4/plugin.cfg")
+	assert_str(uri) \
+		.starts_with("file:///") \
+		.ends_with("/addons/gdUnit4/plugin.cfg")
+	assert_bool(FileAccess.file_exists(_file_uri_to_path(uri))).is_true()
+
+
+func test_as_file_uri_by_user_path() -> void:
+	_test_paths.append("user://tmp/gdunit_test_file_uri")
+	_create_file_at("user://tmp/gdunit_test_file_uri/report_1/index.html")
+
+	var uri := GdUnitFileAccess.as_file_uri("user://tmp/gdunit_test_file_uri/report_1/index.html")
+	assert_str(uri) \
+		.starts_with("file:///") \
+		.not_contains("user:") \
+		.ends_with("/tmp/gdunit_test_file_uri/report_1/index.html")
+	assert_bool(FileAccess.file_exists(_file_uri_to_path(uri))).is_true()
+
+
+func test_as_file_uri_by_empty_path() -> void:
+	var uri := GdUnitFileAccess.as_file_uri("")
+	assert_str(uri).starts_with("file:///")
+	assert_bool(DirAccess.dir_exists_absolute(_file_uri_to_path(uri))).is_true()
 
 
 func test_as_file_uri_by_unix_root_path() -> void:
@@ -306,6 +362,24 @@ func test_as_file_uri_by_unix_root_path() -> void:
 
 func test_as_file_uri_by_windows_drive_path() -> void:
 	assert_str(GdUnitFileAccess.as_file_uri("C:/reports/report_1/index.html")).is_equal("file:///C:/reports/report_1/index.html")
+
+
+func test_as_file_uri_by_windows_backslash_path() -> void:
+	assert_str(GdUnitFileAccess.as_file_uri("C:\\reports\\report_1\\index.html")).is_equal("file:///C:/reports/report_1/index.html")
+
+
+func test_as_file_uri_by_path_with_space() -> void:
+	assert_str(GdUnitFileAccess.as_file_uri("C:/Users/John Doe/reports/index.html")) \
+		.is_equal("file:///C:/Users/John%20Doe/reports/index.html")
+
+
+func test_as_file_uri_by_path_with_non_ascii_characters() -> void:
+	assert_str(GdUnitFileAccess.as_file_uri("/home/jürgen/reports/index.html")).is_equal("file:///home/j%C3%BCrgen/reports/index.html")
+
+
+func test_as_file_uri_by_path_with_reserved_characters() -> void:
+	assert_str(GdUnitFileAccess.as_file_uri("C:/Users/me/proj#1/100%/index.html")) \
+		.is_equal("file:///C:/Users/me/proj%231/100%25/index.html")
 #endregion
 
 

@@ -131,7 +131,7 @@ C#-specific tests live under `test/dotnet/`.
 **GDScript:** Follow the shared rule `../ai-harness-core/shared-rules/gdscript-style.md`.
 Enforced by gdlint with these key limits (`.gdlintrc`):
 
-- Max line length: 140
+- Max line length: 180
 - Max file lines: 1000
 - Max public methods: 40
 - Function argument count: 11

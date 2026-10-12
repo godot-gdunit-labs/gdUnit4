@@ -90,7 +90,7 @@ assert_that(button.get_label()).is_equal("Start Game")
 
 **Fluent chain — break only when necessary:**
 
-Keep the chain on one line when it fits within the 140-character limit and uses a single
+Keep the chain on one line when it fits within the 180-character limit and uses a single
 validation call. Break with `\` continuation when the line would be too long, or when
 chaining more than one validation method.
 
@@ -99,7 +99,7 @@ chaining more than one validation method.
 assert_bool(player.is_alive()).is_true()
 assert_str(player.name()).is_equal("Hero")
 
-# Preferred — break because the line would exceed 140 characters
+# Preferred — break because the line would exceed 180 characters
 assert_str(player.get_full_description()) \
     .is_equal("Hero the Brave, level 42, wielder of the Sword of Destiny")
 
@@ -161,7 +161,7 @@ in isolation, or when the expected object cannot be constructed easily.
 
 **Inline expected values — avoid unnecessary variables:**
 
-Put the expected value directly in the assertion unless the line would exceed the 140-character
+Put the expected value directly in the assertion unless the line would exceed the 180-character
 limit. An extra `var expected` adds noise without adding clarity.
 
 ```gdscript
@@ -169,7 +169,7 @@ limit. An extra `var expected` adds noise without adding clarity.
 assert_str(player.name()).is_equal("Hero")
 assert_that(result).is_equal(Player.new("Hero", 100, Vector3(1, 2, 3)))
 
-# Accepted — variable needed to stay within the 140-character line limit
+# Accepted — variable needed to stay within the 180-character line limit
 var expected := Player.new(
     "Hero", 100, Vector3(1, 2, 3), ["sword", "shield"], {"speed": 5.0}
 )

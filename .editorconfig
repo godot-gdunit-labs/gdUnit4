@@ -92,6 +92,7 @@ indent_style = tab
 ##########################################
 
 [*.{cs,csx,cake,vb,vbx}]
+end_of_line = lf
 # Default severity for all .NET Code Style rules
 dotnet_analyzer_diagnostic.severity = warning
 

@@ -16,13 +16,6 @@ signal select_orphan_prevous()
 signal tree_view_mode_changed(flat :bool)
 
 
-@onready var _button_sync: Button = %btn_tree_sync
-@onready var _button_view_mode: MenuButton = %btn_tree_mode
-@onready var _button_sort_mode: MenuButton = %btn_tree_sort
-@onready var _icon_template: SpinBox = %icon_template
-@onready var time_value: Label = %time_value
-@onready var time_icon: TextureRect = %time_icon
-
 const STATE = GdUnitInspectorTreeConstants.STATE
 
 var total_failed := 0
@@ -30,8 +23,6 @@ var total_errors := 0
 var total_flaky := 0
 var total_skipped := 0
 var total_orphans := 0
-var _timer: LocalTime
-
 
 var icon_mappings := {
 	# tree sort modes
@@ -43,6 +34,15 @@ var icon_mappings := {
 	0x200 + GdUnitInspectorTreeConstants.TREE_VIEW_MODE.TREE : GdUnitUiTools.get_icon("Tree", Color.GHOST_WHITE),
 	0x200 + GdUnitInspectorTreeConstants.TREE_VIEW_MODE.FLAT : GdUnitUiTools.get_icon("AnimationTrackGroup", Color.GHOST_WHITE)
 }
+
+var _timer: LocalTime
+
+@onready var time_value: Label = %time_value
+@onready var time_icon: TextureRect = %time_icon
+@onready var _button_sync: Button = %btn_tree_sync
+@onready var _button_view_mode: MenuButton = %btn_tree_mode
+@onready var _button_sort_mode: MenuButton = %btn_tree_sort
+@onready var _icon_template: SpinBox = %icon_template
 
 
 @warning_ignore("return_value_discarded")

@@ -140,5 +140,4 @@ static func load_tags(template_id :int) -> String:
 		return "Error checked loading tags"
 	if template_id == TEMPLATE_ID_GD:
 		return SUPPORTED_TAGS_GD
-	else:
-		return SUPPORTED_TAGS_CS
+	return SUPPORTED_TAGS_CS

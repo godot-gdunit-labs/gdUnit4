@@ -12,6 +12,7 @@ func is_match(value :Variant) -> bool:
 	return _type.has(typeof(value))
 
 
+# gdlint: disable=max-returns
 func _to_string() -> String:
 	match _type[0]:
 		TYPE_BOOL: return "any_bool()"
@@ -48,3 +49,4 @@ func _to_string() -> String:
 		TYPE_PACKED_VECTOR3_ARRAY: return "any_packed_vector3_array()"
 		TYPE_PACKED_COLOR_ARRAY: return "any_packed_color_array()"
 		_: return "any()"
+# gdlint: enable=max-returns

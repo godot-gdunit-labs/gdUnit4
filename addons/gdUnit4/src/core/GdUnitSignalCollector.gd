@@ -63,6 +63,7 @@ func unregister_emitter(emitter :Object) -> void:
 		_collected_signals.erase(emitter)
 
 
+# gdlint: disable=function-arguments-number
 # receives the signal from the emitter with all emitted signal arguments and additional the emitter and signal_name as last two arguements
 func _on_signal_emmited(
 	arg0 :Variant= NO_ARG,
@@ -85,6 +86,7 @@ func _on_signal_emmited(
 	if is_signal_collecting(emitter, signal_name):
 		@warning_ignore("unsafe_cast")
 		(_collected_signals[emitter][signal_name] as Array).append(signal_args)
+# gdlint: enable=function-arguments-number
 
 
 func reset_received_signals(emitter: Object, signal_name: String, signal_args: Array) -> void:

@@ -2,6 +2,9 @@
 extends ScrollContainer
 
 
+var selected_style := StyleBoxFlat.new()
+var _selected_row: Control = null
+
 @onready var _hooks_list: VBoxContainer = %hook_list
 @onready var _hook_row_template: Panel = %row_template
 @onready var _hook_description: RichTextLabel = %hook_description
@@ -10,10 +13,6 @@ extends ScrollContainer
 @onready var _btn_delete: Button = %hook_actions/btn_delete_hook
 @onready var _select_hook_dlg: FileDialog = %select_hook_dlg
 @onready var _error_msg_popup: AcceptDialog = %error_msg_popup
-
-
-var _selected_row: Control = null
-var selected_style := StyleBoxFlat.new()
 
 
 func _ready() -> void:

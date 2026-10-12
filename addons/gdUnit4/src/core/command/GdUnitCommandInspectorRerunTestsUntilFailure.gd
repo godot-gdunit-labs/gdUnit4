@@ -9,9 +9,9 @@ const GdUnitInspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts
 const ID := "Rerun Inspector Tests Until Failure"
 
 
-var _current_execution_count := 0
 var saved_flaky_settings: bool
 var force_stop := false
+var _current_execution_count := 0
 
 
 func _init() -> void:

@@ -5,12 +5,12 @@ extends RefCounted
 const TAG_OBSERVE_INSTANCE := "GdUnit4_observe_instance_"
 const TAG_AUTO_FREE = "GdUnit4_marked_auto_free"
 const GdUnitTools = preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
+const _show_debug := false
 
 
 var _store :Array[Variant] = []
 # enable for debugging purposes
 var _is_stdout_verbose := false
-const _show_debug := false
 
 
 ## Registration of an instance to be released when an execution phase is completed
@@ -49,7 +49,17 @@ static func debug_observe(name :String, obj :Object, indent :int = 0) -> void:
 	if script:
 		var base_script :GDScript = script.get_base_script()
 		@warning_ignore("unsafe_method_access")
-		prints("".lpad(indent, "	"), name, obj, obj.get_class(), "reference_count:", obj.get_reference_count() if obj is RefCounted else 0, "script:", script, script.resource_path)
+		prints(
+			"".lpad(indent, "	"),
+			name,
+			obj,
+			obj.get_class(),
+			"reference_count:",
+			obj.get_reference_count() if obj is RefCounted else 0,
+			"script:",
+			script,
+			script.resource_path
+		)
 		if base_script:
 			debug_observe("+", base_script, indent+1)
 	else:

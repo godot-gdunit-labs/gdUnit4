@@ -201,7 +201,6 @@ func _build_test_attribute(script: GDScript, fd: GdFunctionDescriptor) -> TestCa
 					attribute.test_seed = type_convert(arg.default(), TYPE_INT)
 				ARGUMENT_PARAMETER_SET:
 					collected_unknown_aruments.clear()
-					pass
 				_:
 					collected_unknown_aruments.append(arg.name())
 

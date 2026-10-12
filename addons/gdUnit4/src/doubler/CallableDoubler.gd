@@ -149,7 +149,9 @@ func rpc_id(peer_id: int, ...varargs: Array) -> void:
 		6: _cb.rpc_id(peer_id, varargs[0], varargs[1], varargs[2], varargs[3], varargs[4], varargs[5], varargs[6])
 		7: _cb.rpc_id(peer_id, varargs[0], varargs[1], varargs[2], varargs[3], varargs[4], varargs[5], varargs[6], varargs[7])
 		8: _cb.rpc_id(peer_id, varargs[0], varargs[1], varargs[2], varargs[3], varargs[4], varargs[5], varargs[6], varargs[7], varargs[8])
-		9: _cb.rpc_id(peer_id, varargs[0], varargs[1], varargs[2], varargs[3], varargs[4], varargs[5], varargs[6], varargs[7], varargs[8], varargs[9])
+		9: _cb.rpc_id(
+			peer_id, varargs[0], varargs[1], varargs[2], varargs[3], varargs[4], varargs[5], varargs[6], varargs[7], varargs[8], varargs[9]
+		)
 
 func unbind(argcount: int) -> Callable:
 	_cb = _cb.unbind(argcount)

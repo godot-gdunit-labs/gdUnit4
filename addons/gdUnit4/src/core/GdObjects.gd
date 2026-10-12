@@ -2,6 +2,11 @@
 class_name GdObjects
 extends Resource
 
+enum COMPARE_MODE {
+	OBJECT_REFERENCE,
+	PARAMETER_DEEP_TEST
+}
+
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
 
@@ -139,12 +144,6 @@ const NOTIFICATION_AS_STRING_MAPPINGS := {
 }
 
 
-enum COMPARE_MODE {
-	OBJECT_REFERENCE,
-	PARAMETER_DEEP_TEST
-}
-
-
 # prototype of better object to dictionary
 static func obj2dict(obj: Object, hashed_objects := Dictionary()) -> Dictionary:
 	if obj == null:
@@ -199,11 +198,21 @@ static func obj2dict(obj: Object, hashed_objects := Dictionary()) -> Dictionary:
 	return {"%s" % clazz_name : dict}
 
 
-static func equals(obj_a: Variant, obj_b: Variant, case_sensitive: bool = true, compare_mode: COMPARE_MODE = COMPARE_MODE.PARAMETER_DEEP_TEST) -> bool:
+static func equals(
+	obj_a: Variant,
+	obj_b: Variant,
+	case_sensitive: bool = true,
+	compare_mode: COMPARE_MODE = COMPARE_MODE.PARAMETER_DEEP_TEST
+) -> bool:
 	return _equals(obj_a, obj_b, case_sensitive, compare_mode, [], 0)
 
 
-static func equals_sorted(obj_a: Array[Variant], obj_b: Array[Variant], case_sensitive: bool = true, compare_mode: COMPARE_MODE = COMPARE_MODE.PARAMETER_DEEP_TEST) -> bool:
+static func equals_sorted(
+	obj_a: Array[Variant],
+	obj_b: Array[Variant],
+	case_sensitive: bool = true,
+	compare_mode: COMPARE_MODE = COMPARE_MODE.PARAMETER_DEEP_TEST
+) -> bool:
 	var a: Array[Variant] = obj_a.duplicate()
 	var b: Array[Variant] = obj_b.duplicate()
 	a.sort()
@@ -211,7 +220,14 @@ static func equals_sorted(obj_a: Array[Variant], obj_b: Array[Variant], case_sen
 	return equals(a, b, case_sensitive, compare_mode)
 
 
-static func _equals(obj_a: Variant, obj_b: Variant, case_sensitive: bool, compare_mode: COMPARE_MODE, deep_stack: Array, stack_depth: int ) -> bool:
+static func _equals(
+	obj_a: Variant,
+	obj_b: Variant,
+	case_sensitive: bool,
+	compare_mode: COMPARE_MODE,
+	deep_stack: Array,
+	stack_depth: int
+) -> bool:
 	var type_a := typeof(obj_a)
 	var type_b := typeof(obj_b)
 	if stack_depth > 32:
@@ -287,9 +303,8 @@ static func _equals(obj_a: Variant, obj_b: Variant, case_sensitive: bool, compar
 		TYPE_STRING:
 			if case_sensitive:
 				return obj_a == obj_b
-			else:
-				@warning_ignore("unsafe_method_access")
-				return obj_a.to_lower() == obj_b.to_lower()
+			@warning_ignore("unsafe_method_access")
+			return obj_a.to_lower() == obj_b.to_lower()
 	return obj_a == obj_b
 
 
@@ -486,15 +501,13 @@ static func create_instance(clazz :Variant) -> GdUnitResult:
 				if not ClassDB.can_instantiate(clazz_name):
 					return  GdUnitResult.error("Can't instance Engine class '%s'." % clazz_name)
 				return GdUnitResult.success(ClassDB.instantiate(clazz_name))
-			else:
-				var clazz_path :String = extract_class_path(clazz_name)[0]
-				if not FileAccess.file_exists(clazz_path):
-					return GdUnitResult.error("Class '%s' not found." % clazz_name)
-				var script: GDScript = load(clazz_path)
-				if script != null:
-					return GdUnitResult.success(script.new())
-				else:
-					return GdUnitResult.error("Can't create instance for '%s'." % clazz_name)
+			var clazz_path :String = extract_class_path(clazz_name)[0]
+			if not FileAccess.file_exists(clazz_path):
+				return GdUnitResult.error("Class '%s' not found." % clazz_name)
+			var script: GDScript = load(clazz_path)
+			if script != null:
+				return GdUnitResult.success(script.new())
+			return GdUnitResult.error("Can't create instance for '%s'." % clazz_name)
 	return GdUnitResult.error("Can't create instance for class '%s'." % str(clazz))
 
 

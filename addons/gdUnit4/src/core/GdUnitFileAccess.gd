@@ -84,9 +84,8 @@ static func copy_directory(from_dir :String, to_dir :String, recursive :bool = f
 				return false
 
 		return true
-	else:
-		push_error("Directory not found: " + from_dir)
-		return false
+	push_error("Directory not found: " + from_dir)
+	return false
 
 
 static func delete_directory(path :String, only_content := false) -> void:

@@ -4,12 +4,11 @@ extends Control
 const GdUnitUpdateClient = preload("res://addons/gdUnit4/src/update/GdUnitUpdateClient.gd")
 const TITLE = "gdUnit4 ${version} Console"
 
+var _test_reporter: GdUnitConsoleTestReporter
+
 @onready var header := $VBoxContainer/Header
 @onready var title: RichTextLabel = $VBoxContainer/Header/header_title
 @onready var output: RichTextLabel = $VBoxContainer/Console/TextEdit
-
-
-var _test_reporter: GdUnitConsoleTestReporter
 
 
 func _ready() -> void:

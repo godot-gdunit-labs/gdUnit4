@@ -83,6 +83,14 @@ const DEFAULT_ENUM_RETURN_VALUES = {
 }
 
 
+var fd: GdFunctionDescriptor
+var func_args: Array
+var default_return: String
+var verify_block: String = ""
+var prepare_block: String = ""
+var mock_return: String = ""
+
+
 static var def_constructor := """
 	func _init({constructor_args}) -> void:
 		__init_doubler()
@@ -126,14 +134,6 @@ static var def_void_mock_return := """
 	if __is_do_not_call_real_func("{func_name}", __args):
 		return
 	""".dedent().indent("\t").trim_suffix("\n")
-
-
-var fd: GdFunctionDescriptor
-var func_args: Array
-var default_return: String
-var verify_block: String = ""
-var prepare_block: String = ""
-var mock_return: String = ""
 
 
 func _init(descriptor: GdFunctionDescriptor) -> void:

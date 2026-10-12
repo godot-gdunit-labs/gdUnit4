@@ -29,7 +29,10 @@ static func check_leaked_instances() -> void:
 	for key in Engine.get_meta_list():
 		if key.begins_with(DOUBLER_INSTANCE_ID_PREFIX):
 			var instance: Variant = Engine.get_meta(key)
-			push_error("GdUnit internal error: an spy/mock instance '%s', class:'%s' is not removed from the engine and will lead in a leaked instance!" % [instance, instance.__SOURCE_CLASS])
+			push_error(
+				"GdUnit internal error: an spy/mock instance '%s', class:'%s' is not removed from the engine and will lead in a leaked instance!"
+				% [instance, instance.__SOURCE_CLASS]
+			)
 			await (Engine.get_main_loop() as SceneTree).process_frame
 
 
@@ -37,14 +40,15 @@ static func check_leaked_instances() -> void:
 # class_info = { "class_name": <>, "class_path" : <>}
 static func load_template(template: String, class_info: Dictionary) -> PackedStringArray:
 	var clazz_name: String = class_info.get("class_name")
+	# Replace template class_name DoubledClass<class> with source class name
 	var source_code := template\
 		.replace("${source_class}", clazz_name)\
-		# Replace template class_name DoubledClass<class> with source class name
 		.replace("SourceClassName", clazz_name.replace(".", "_"))
 	var lines := GdScriptParser.to_unix_format(source_code).split("\n")
 	@warning_ignore("return_value_discarded")
 	lines.insert(1, extends_clazz(class_info))
-	lines.insert(0, "@warning_ignore_start('unsafe_call_argument', 'shadowed_variable', 'untyped_declaration', 'native_method_override', 'int_as_enum_without_cast')")
+	lines.insert(0, "@warning_ignore_start('unsafe_call_argument', 'shadowed_variable', 'untyped_declaration', "
+		+ "'native_method_override', 'int_as_enum_without_cast')")
 	return lines
 
 
@@ -60,7 +64,13 @@ static func extends_clazz(class_info: Dictionary) -> String:
 
 
 # double all functions of given instance
-static func double_functions(instance: Object, clazz_name: String, clazz_path: PackedStringArray, func_doubler: GdFunctionDoubler, exclude_functions: Array) -> PackedStringArray:
+static func double_functions(
+	instance: Object,
+	clazz_name: String,
+	clazz_path: PackedStringArray,
+	func_doubler: GdFunctionDoubler,
+	exclude_functions: Array
+) -> PackedStringArray:
 	var doubled_source := PackedStringArray()
 	var parser := GdScriptParser.new()
 	var exclude_override_functions := EXCLUDE_VIRTUAL_FUNCTIONS + EXCLUDE_FUNCTIONS + exclude_functions

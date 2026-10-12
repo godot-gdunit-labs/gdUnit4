@@ -13,6 +13,17 @@ extends Node
 ## - [b]GdUnitCLRunner[/b]: A command line interface runner, writes test reports to file[br]
 ## The test runner runs checked default in fail-fast mode, it stops checked first test failure.
 
+
+## Runner state machine
+enum {
+	READY,
+	INIT,
+	RUN,
+	STOP,
+	EXIT
+}
+
+
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
 ## Overall test run status codes used by the runners
@@ -25,20 +36,6 @@ const RETURN_WARNING = 101
 
 ## Specifies the Node name under which the runner is registered
 const GDUNIT_RUNNER = GdUnitSettings.GDUNIT_RUNNER
-
-## The current runner configuration
-@warning_ignore("unused_private_class_variable")
-var _runner_config := GdUnitRunnerConfig.new()
-
-## The test suite executor instance
-var _executor: GdUnitTestSuiteExecutor
-var _hooks : GdUnitTestSessionHookService
-
-## Current runner state
-var _state := READY
-
-## Current tests to be processed
-var _test_cases: Array[GdUnitTestCase] =  []
 
 
 ## Configured report base path (can be set on CI test runner)
@@ -58,8 +55,7 @@ var current_report_history_index: int:
 	get:
 		if max_report_history > 1:
 			return  GdUnitFileAccess.find_last_path_index(report_base_path, GdUnitConstants.REPORT_DIR_PREFIX) + 1
-		else:
-			return 1
+		return 1
 
 
 ## Controls how many report historys will be hold
@@ -70,18 +66,24 @@ var max_report_history: int = GdUnitConstants.DEFAULT_REPORT_HISTORY_COUNT:
 		max_report_history = value
 
 
+## The current runner configuration
+@warning_ignore("unused_private_class_variable")
+var _runner_config := GdUnitRunnerConfig.new()
+
+## The test suite executor instance
+var _executor: GdUnitTestSuiteExecutor
+var _hooks : GdUnitTestSessionHookService
+
+## Current runner state
+var _state := READY
+
+## Current tests to be processed
+var _test_cases: Array[GdUnitTestCase] =  []
+
 # holds the current test session context
 var _test_session: GdUnitTestSession
 var _is_editor_debug_run: bool
 
-## Runner state machine
-enum {
-	READY,
-	INIT,
-	RUN,
-	STOP,
-	EXIT
-}
 
 func _init() -> void:
 	_is_editor_debug_run = OS.get_cmdline_args().has("--scene")
@@ -181,7 +183,7 @@ func prints_warning(message: String) -> void:
 ## Default event handler to process test events.[br]
 ## Should be overridden by concrete runner implementation.
 @warning_ignore("unused_parameter")
-func _on_gdunit_event(event: GdUnitEvent) -> void:
+func _on_gdunit_event(_event: GdUnitEvent) -> void:
 	pass
 
 

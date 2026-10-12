@@ -10,24 +10,6 @@ enum GC_ORPHANS_CHECK {
 }
 
 
-var _parent_context: GdUnitExecutionContext
-var _sub_context: Array[GdUnitExecutionContext] = []
-var _orphan_monitor: GdUnitOrphanNodesMonitor
-var _memory_observer: GdUnitMemoryObserver
-var _report_collector: GdUnitTestReportCollector
-var _timer: LocalTime
-var _test_case_name: StringName
-var _test_case_parameter_set: Array
-var _name: String
-var _test_execution_iteration: int = 0
-var _flaky_test_check := GdUnitSettings.is_test_flaky_check_enabled()
-var _flaky_test_retries := GdUnitSettings.get_flaky_max_retries()
-var _last_error: GdUnitError = null
-
-
-var _settings_snapshot: GdUnitProjectSettingsSnapshot = null
-
-
 var error_monitor: GodotGdErrorMonitor = null:
 	get:
 		if _parent_context != null:
@@ -49,6 +31,24 @@ var test_case: _TestCase = null:
 		if test_case == null and _parent_context != null:
 			return _parent_context.test_case
 		return test_case
+
+
+var _parent_context: GdUnitExecutionContext
+var _sub_context: Array[GdUnitExecutionContext] = []
+var _orphan_monitor: GdUnitOrphanNodesMonitor
+var _memory_observer: GdUnitMemoryObserver
+var _report_collector: GdUnitTestReportCollector
+var _timer: LocalTime
+var _test_case_name: StringName
+var _test_case_parameter_set: Array
+var _name: String
+var _test_execution_iteration: int = 0
+var _flaky_test_check := GdUnitSettings.is_test_flaky_check_enabled()
+var _flaky_test_retries := GdUnitSettings.get_flaky_max_retries()
+var _last_error: GdUnitError = null
+
+
+var _settings_snapshot: GdUnitProjectSettingsSnapshot = null
 
 
 func _init(name: StringName, parent_context: GdUnitExecutionContext = null) -> void:
@@ -111,7 +111,11 @@ static func of_test_case(pe: GdUnitExecutionContext, p_test_case: _TestCase) -> 
 	return context
 
 
-static func of_parameterized_test(pe: GdUnitExecutionContext, test_case_name: String, test_case_parameter_set: Array) -> GdUnitExecutionContext:
+static func of_parameterized_test(
+	pe: GdUnitExecutionContext,
+	test_case_name: String,
+	test_case_parameter_set: Array
+) -> GdUnitExecutionContext:
 	var context := GdUnitExecutionContext.new(test_case_name, pe)
 	context._test_case_name = test_case_name
 	context._test_case_parameter_set = test_case_parameter_set

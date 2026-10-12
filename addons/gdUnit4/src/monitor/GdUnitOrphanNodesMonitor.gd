@@ -177,10 +177,9 @@ func _find_orphan_on_backtraces(orphan_node: Object, script_backtraces: Array[Sc
 							orphan_node.get_class(),
 							GdUnitStackTraceElement.new(source_script, source_line, variable_name)
 							)
-					else:
-						var orphan_info := _find_orphan_at_node(orphan_node, node)
-						if orphan_info:
-							return orphan_info
+					var orphan_info := _find_orphan_at_node(orphan_node, node)
+					if orphan_info:
+						return orphan_info
 
 			# Scan class members
 			for m_index in script_backtrace.get_member_variable_count(frame):
@@ -199,10 +198,9 @@ func _find_orphan_on_backtraces(orphan_node: Object, script_backtraces: Array[Sc
 								script_backtrace.get_frame_file(frame),
 								script_backtrace.get_frame_line(frame),
 								member_name))
-					else:
-						var orphan_info := _find_orphan_at_node(orphan_node, node)
-						if orphan_info:
-							return orphan_info
+					var orphan_info := _find_orphan_at_node(orphan_node, node)
+					if orphan_info:
+						return orphan_info
 	return null
 
 

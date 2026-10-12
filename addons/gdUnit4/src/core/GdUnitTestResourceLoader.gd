@@ -1,12 +1,12 @@
 class_name GdUnitTestResourceLoader
 extends RefCounted
 
-const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
-
 enum {
 	GD_SUITE,
 	CS_SUITE
 }
+
+const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
 
 static func load_test_suite(resource_path: String, script_type := GD_SUITE) -> Node:

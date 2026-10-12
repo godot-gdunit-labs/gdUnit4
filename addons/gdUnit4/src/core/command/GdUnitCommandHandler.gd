@@ -61,7 +61,11 @@ func _process(delta: float) -> void:
 func isDebugCommandRunning() -> bool:
 	if (_running_command != null
 		and _running_command.is_running
-		and _running_command.id in [GdUnitCommandScriptEditorDebugTests.ID, GdUnitCommandInspectorDebugTests.ID, GdUnitCommandInspectorRerunTestsUntilFailure.ID]):
+		and _running_command.id in [
+			GdUnitCommandScriptEditorDebugTests.ID,
+			GdUnitCommandInspectorDebugTests.ID,
+			GdUnitCommandInspectorRerunTestsUntilFailure.ID
+		]):
 		return true
 	return false
 
@@ -115,7 +119,12 @@ func _register_command(command: GdUnitBaseCommand) -> void:
 	_commnand_mappings[command.id] = command
 	if Engine.is_editor_hint():
 		EditorInterface.get_base_control().add_child(command)
-		EditorInterface.get_command_palette().add_command(command.id, "GdUnit4/"+command.id, command.execute, command.shortcut.get_as_text() if command.shortcut else "None")
+		EditorInterface.get_command_palette().add_command(
+			command.id,
+			"GdUnit4/"+command.id,
+			command.execute,
+			command.shortcut.get_as_text() if command.shortcut else "None"
+		)
 
 
 func cmd_discover_tests() -> void:

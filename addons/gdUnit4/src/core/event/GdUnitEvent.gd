@@ -1,18 +1,6 @@
 class_name GdUnitEvent
 extends Resource
 
-const WARNINGS = "warnings"
-const FAILED = "failed"
-const FLAKY = "flaky"
-const ERRORS = "errors"
-const SKIPPED = "skipped"
-const ELAPSED_TIME = "elapsed_time"
-const ORPHAN_NODES = "orphan_nodes"
-const ERROR_COUNT = "error_count"
-const FAILED_COUNT = "failed_count"
-const SKIPPED_COUNT = "skipped_count"
-const RETRY_COUNT = "retry_count"
-
 enum {
 	INIT,
 	STOP,
@@ -25,6 +13,18 @@ enum {
 	SESSION_START,
 	SESSION_CLOSE
 }
+
+const WARNINGS = "warnings"
+const FAILED = "failed"
+const FLAKY = "flaky"
+const ERRORS = "errors"
+const SKIPPED = "skipped"
+const ELAPSED_TIME = "elapsed_time"
+const ORPHAN_NODES = "orphan_nodes"
+const ERROR_COUNT = "error_count"
+const FAILED_COUNT = "failed_count"
+const SKIPPED_COUNT = "skipped_count"
+const RETRY_COUNT = "retry_count"
 
 var _event_type: int
 var _guid: GdUnitGUID
@@ -46,7 +46,12 @@ func suite_before(p_resource_path: String, p_suite_name: String, p_total_count: 
 	return self
 
 
-func suite_after(p_resource_path: String, p_suite_name: String, p_statistics: Dictionary = {}, p_reports: Array[GdUnitReport] = []) -> GdUnitEvent:
+func suite_after(
+	p_resource_path: String,
+	p_suite_name: String,
+	p_statistics: Dictionary = {},
+	p_reports: Array[GdUnitReport] = []
+) -> GdUnitEvent:
 	_guid = GdUnitGUID.new()
 	_event_type = TESTSUITE_AFTER
 	_resource_path = p_resource_path

@@ -4,7 +4,7 @@ extends RefCounted
 
 
 @warning_ignore("unused_parameter")
-func is_match(value: Variant) -> bool:
+func is_match(_value: Variant) -> bool:
 	return true
 
 

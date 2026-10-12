@@ -3,13 +3,13 @@ class_name GdUnitUiTools
 extends RefCounted
 
 
-const STATE = GdUnitInspectorTreeConstants.STATE
-
-
 enum ImageFlipMode {
 	HORIZONTAl,
 	VERITCAL
 }
+
+
+const STATE = GdUnitInspectorTreeConstants.STATE
 
 
 static var _spinner: AnimatedTexture

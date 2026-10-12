@@ -5,6 +5,8 @@ const EAXAMPLE_URL := "https://github.com/MikeSchulze/gdUnit4-examples/archive/r
 const GdUnitTools := preload ("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 const GdUnitUpdateClient = preload ("res://addons/gdUnit4/src/update/GdUnitUpdateClient.gd")
 
+var _font_size: float
+
 @onready var _update_client: GdUnitUpdateClient = $GdUnitUpdateClient
 @onready var _version_label: RichTextLabel = %version
 @onready var _btn_install: Button = %btn_install_examples
@@ -19,8 +21,6 @@ const GdUnitUpdateClient = preload ("res://addons/gdUnit4/src/update/GdUnitUpdat
 @onready var _property_error: Window = % "propertyError"
 @onready var _tab_container: TabContainer = %Properties
 @onready var _update_tab: Control = %Update
-
-var _font_size: float
 
 
 func _ready() -> void:
@@ -240,12 +240,14 @@ func check_for_update() -> void:
 
 func _on_btn_report_bug_pressed() -> void:
 	@warning_ignore("return_value_discarded")
-	OS.shell_open("https://github.com/MikeSchulze/gdUnit4/issues/new?assignees=MikeSchulze&labels=bug&projects=projects%2F5&template=bug_report.yml&title=GD-XXX%3A+Describe+the+issue+briefly")
+	OS.shell_open("https://github.com/MikeSchulze/gdUnit4/issues/new?assignees=MikeSchulze&labels=bug&projects=projects%2F5"
+		+ "&template=bug_report.yml&title=GD-XXX%3A+Describe+the+issue+briefly")
 
 
 func _on_btn_request_feature_pressed() -> void:
 	@warning_ignore("return_value_discarded")
-	OS.shell_open("https://github.com/MikeSchulze/gdUnit4/issues/new?assignees=MikeSchulze&labels=enhancement&projects=&template=feature_request.md&title=")
+	OS.shell_open("https://github.com/MikeSchulze/gdUnit4/issues/new?assignees=MikeSchulze&labels=enhancement&projects="
+		+ "&template=feature_request.md&title=")
 
 
 func _on_btn_install_examples_pressed() -> void:

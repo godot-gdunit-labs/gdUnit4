@@ -3,6 +3,24 @@ class_name GdUnitSettings
 extends RefCounted
 
 
+enum GdScriptWarningMode {
+	IGNORE = 0,
+	WARN = 1,
+	ERROR = 2,
+}
+
+enum GdScriptWarningDirectoryMode {
+	EXCLUDE = 0,
+	INCLUDE = 1,
+}
+
+enum NAMING_CONVENTIONS {
+	AUTO_DETECT,
+	SNAKE_CASE,
+	PASCAL_CASE,
+}
+
+
 const GDUNIT_RUNNER = "GdUnitRunner"
 
 const MAIN_CATEGORY = "gdunit4"
@@ -47,18 +65,6 @@ const STDOUT_WITE_TO_FILE = CATEGORY_LOGGING + "log_path"
 const CATEGORY_GDSCRIPT_WARNINGS := "debug/gdscript/warnings/"
 const GDSCRIPT_WARNINGS_INFERRED_DECLARATION := CATEGORY_GDSCRIPT_WARNINGS + "inferred_declaration"
 const GDSCRIPT_WARNINGS_DIRECTORY_RULES := CATEGORY_GDSCRIPT_WARNINGS + "directory_rules"
-
-enum GdScriptWarningMode {
-	IGNORE = 0,
-	WARN = 1,
-	ERROR = 2,
-}
-
-enum GdScriptWarningDirectoryMode {
-	EXCLUDE = 0,
-	INCLUDE = 1,
-}
-
 
 # GdUnit Templates
 const TEMPLATES = MAIN_CATEGORY + "/templates"
@@ -113,12 +119,6 @@ const DEFAULT_TEST_LOOKUP_FOLDER :String = "test"
 # help texts
 const HELP_TEST_LOOKUP_FOLDER := "Subfolder where test suites are located (or empty to use source folder directly)"
 
-enum NAMING_CONVENTIONS {
-	AUTO_DETECT,
-	SNAKE_CASE,
-	PASCAL_CASE,
-}
-
 static var _property_help :Dictionary[String, String] = {}
 
 
@@ -128,7 +128,8 @@ static func setup() -> void:
 	create_property_if_need(SERVER_TIMEOUT, DEFAULT_SERVER_TIMEOUT, "Server connection timeout in minutes")
 	create_property_if_need(TEST_TIMEOUT, DEFAULT_TEST_TIMEOUT, "Test case runtime timeout in seconds")
 	create_property_if_need(TEST_LOOKUP_FOLDER, DEFAULT_TEST_LOOKUP_FOLDER, HELP_TEST_LOOKUP_FOLDER)
-	create_property_if_need(TEST_SUITE_NAMING_CONVENTION, NAMING_CONVENTIONS.AUTO_DETECT, "Naming convention to use when generating testsuites", NAMING_CONVENTIONS.keys())
+	create_property_if_need(TEST_SUITE_NAMING_CONVENTION, NAMING_CONVENTIONS.AUTO_DETECT,
+		"Naming convention to use when generating testsuites", NAMING_CONVENTIONS.keys())
 	create_property_if_need(TEST_DISCOVER_ENABLED, false, "Automatically detect new tests in test lookup folders at runtime")
 	create_property_if_need(TEST_FLAKY_CHECK, false, "Rerun tests on failure and mark them as FLAKY")
 	create_property_if_need(TEST_FLAKY_MAX_RETRIES, 3, "Sets the number of retries for rerunning a flaky test")
@@ -157,18 +158,38 @@ static func setup() -> void:
 
 static func create_shortcut_properties_if_need() -> void:
 	# inspector
-	create_property_if_need(SHORTCUT_INSPECTOR_RERUN_TEST, GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.RERUN_TESTS), "Rerun the most recently executed tests")
-	create_property_if_need(SHORTCUT_INSPECTOR_RERUN_TEST_DEBUG, GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.RERUN_TESTS_DEBUG), "Rerun the most recently executed tests (Debug mode)")
-	create_property_if_need(SHORTCUT_INSPECTOR_RERUN_TEST_UNTIL_FAILURE, GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.RERUN_TESTS_UNTIL_FAILURE), "Rerun tests until failure occurs")
-	create_property_if_need(SHORTCUT_INSPECTOR_RUN_TEST_OVERALL, GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.RUN_TESTS_OVERALL), "Runs all tests (Debug mode)")
-	create_property_if_need(SHORTCUT_INSPECTOR_RUN_TEST_STOP, GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.STOP_TEST_RUN), "Stop the current test execution")
+	create_property_if_need(SHORTCUT_INSPECTOR_RERUN_TEST,
+		GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.RERUN_TESTS),
+		"Rerun the most recently executed tests")
+	create_property_if_need(SHORTCUT_INSPECTOR_RERUN_TEST_DEBUG,
+		GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.RERUN_TESTS_DEBUG),
+		"Rerun the most recently executed tests (Debug mode)")
+	create_property_if_need(SHORTCUT_INSPECTOR_RERUN_TEST_UNTIL_FAILURE,
+		GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.RERUN_TESTS_UNTIL_FAILURE),
+		"Rerun tests until failure occurs")
+	create_property_if_need(SHORTCUT_INSPECTOR_RUN_TEST_OVERALL,
+		GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.RUN_TESTS_OVERALL),
+		"Runs all tests (Debug mode)")
+	create_property_if_need(SHORTCUT_INSPECTOR_RUN_TEST_STOP,
+		GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.STOP_TEST_RUN),
+		"Stop the current test execution")
 	# script editor
-	create_property_if_need(SHORTCUT_EDITOR_RUN_TEST, GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.RUN_TESTCASE), "Run the currently selected test")
-	create_property_if_need(SHORTCUT_EDITOR_RUN_TEST_DEBUG, GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.RUN_TESTCASE_DEBUG), "Run the currently selected test (Debug mode).")
-	create_property_if_need(SHORTCUT_EDITOR_CREATE_TEST, GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.CREATE_TEST), "Create a new test case for the currently selected function")
+	create_property_if_need(SHORTCUT_EDITOR_RUN_TEST,
+		GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.RUN_TESTCASE),
+		"Run the currently selected test")
+	create_property_if_need(SHORTCUT_EDITOR_RUN_TEST_DEBUG,
+		GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.RUN_TESTCASE_DEBUG),
+		"Run the currently selected test (Debug mode).")
+	create_property_if_need(SHORTCUT_EDITOR_CREATE_TEST,
+		GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.CREATE_TEST),
+		"Create a new test case for the currently selected function")
 	# filesystem
-	create_property_if_need(SHORTCUT_FILESYSTEM_RUN_TEST, GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.RUN_TESTSUITE), "Run all test suites in the selected folder or file")
-	create_property_if_need(SHORTCUT_FILESYSTEM_RUN_TEST_DEBUG, GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.RUN_TESTSUITE_DEBUG), "Run all test suites in the selected folder or file (Debug)")
+	create_property_if_need(SHORTCUT_FILESYSTEM_RUN_TEST,
+		GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.RUN_TESTSUITE),
+		"Run all test suites in the selected folder or file")
+	create_property_if_need(SHORTCUT_FILESYSTEM_RUN_TEST_DEBUG,
+		GdUnitShortcut.default_keys(GdUnitShortcut.ShortCut.RUN_TESTSUITE_DEBUG),
+		"Run all test suites in the selected folder or file (Debug)")
 
 
 static func create_property_if_need(
@@ -453,7 +474,13 @@ static func build_property(property_name: String, property: Dictionary) -> GdUni
 	return GdUnitProperty.new(property_name, value_type, value, default, help_text, value_set)
 
 
-static func migrate_property(old_property :String, new_property :String, default_value :Variant, help :String, converter := Callable()) -> void:
+static func migrate_property(
+	old_property :String,
+	new_property :String,
+	default_value :Variant,
+	help :String,
+	converter := Callable()
+) -> void:
 	var property := get_property(old_property)
 	if property == null:
 		prints("Migration not possible, property '%s' not found" % old_property)

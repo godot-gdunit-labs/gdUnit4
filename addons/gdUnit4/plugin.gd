@@ -17,7 +17,8 @@ func _enter_tree() -> void:
 
 	if check_running_in_test_env():
 		@warning_ignore("return_value_discarded")
-		GdUnitCSIMessageWriter.new().prints_warning("It was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed!")
+		GdUnitCSIMessageWriter.new().prints_warning(
+			"It was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed!")
 		return
 
 	if Engine.get_version_info().hex < 0x40700:
@@ -64,13 +65,19 @@ func _exit_tree() -> void:
 func check_running_in_test_env() -> bool:
 	var args: PackedStringArray = OS.get_cmdline_args()
 	args.append_array(OS.get_cmdline_user_args())
-	return DisplayServer.get_name() == "headless" or args.has("--selftest") or args.has("--add") or args.has("-a") or args.has("--quit-after") or args.has("--import")
+	return (DisplayServer.get_name() == "headless"
+		or args.has("--selftest")
+		or args.has("--add")
+		or args.has("-a")
+		or args.has("--quit-after")
+		or args.has("--import"))
 
 
 func _add_context_menus() -> void:
 	_filesystem_context_menu = preload("res://addons/gdUnit4/src/ui/menu/GdUnitEditorFileSystemContextMenuHandler.gd").new()
-	_editor_context_menu = preload("res://addons/gdUnit4/src/ui/menu/GdUnitScriptEditorContextMenuHandler.gd").new()
-	_editor_code_context_menu = preload("res://addons/gdUnit4/src/ui/menu/GdUnitScriptEditorContextMenuHandler.gd").new()
+	const ScriptEditorContextMenuHandler := preload("res://addons/gdUnit4/src/ui/menu/GdUnitScriptEditorContextMenuHandler.gd")
+	_editor_context_menu = ScriptEditorContextMenuHandler.new()
+	_editor_code_context_menu = ScriptEditorContextMenuHandler.new()
 	add_context_menu_plugin(EditorContextMenuPlugin.CONTEXT_SLOT_FILESYSTEM, _filesystem_context_menu)
 	add_context_menu_plugin(EditorContextMenuPlugin.CONTEXT_SLOT_SCRIPT_EDITOR, _editor_context_menu)
 	add_context_menu_plugin(EditorContextMenuPlugin.CONTEXT_SLOT_SCRIPT_EDITOR_CODE, _editor_code_context_menu)

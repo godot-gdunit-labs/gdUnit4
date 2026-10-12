@@ -94,6 +94,7 @@ func _on_type_Dictionary(dict: Dictionary) -> String:
 	return str(dict)
 
 
+# gdlint: disable=max-returns
 func _on_type_Array(value: Variant, type: int) -> String:
 	match type:
 		TYPE_ARRAY:
@@ -191,6 +192,7 @@ func _on_type_Vector(value: Variant, type: int) -> String:
 				return "Vector4i()"
 			return "Vector4i%s" % value
 	return "unknown vector type %d" % type
+# gdlint: enable=max-returns
 
 
 func _on_type_Transform2D(transform: Transform2D) -> String:
@@ -202,7 +204,12 @@ func _on_type_Transform2D(transform: Transform2D) -> String:
 func _on_type_Transform3D(transform: Transform3D) -> String:
 	if transform == Transform3D():
 		return "Transform3D()"
-	return "Transform3D(Vector3%s, Vector3%s, Vector3%s, Vector3%s)" % [transform.basis.x, transform.basis.y, transform.basis.z, transform.origin]
+	return "Transform3D(Vector3%s, Vector3%s, Vector3%s, Vector3%s)" % [
+		transform.basis.x,
+		transform.basis.y,
+		transform.basis.z,
+		transform.origin
+	]
 
 
 func _on_type_Projection(projection: Projection) -> String:
@@ -210,7 +217,7 @@ func _on_type_Projection(projection: Projection) -> String:
 
 
 @warning_ignore("unused_parameter")
-func _on_type_RID(value: RID) -> String:
+func _on_type_RID(_value: RID) -> String:
 	return "RID()"
 
 
@@ -260,7 +267,10 @@ static func decode(value: Variant) -> String:
 		type = typeof(value)
 	var decoder := _get_value_decoder(type)
 	if decoder == null:
-		push_error("No value decoder registered for type '%d'! Please open a Bug issue at 'https://github.com/MikeSchulze/gdUnit4/issues/new/choose'." % type)
+		push_error(
+			"No value decoder registered for type '%d'! " % type
+			+ "Please open a Bug issue at 'https://github.com/MikeSchulze/gdUnit4/issues/new/choose'."
+		)
 		return "null"
 	if type == TYPE_OBJECT:
 		return decoder.call(value, type)
@@ -275,7 +285,10 @@ static func decode_typed(type: int, value: Variant) -> String:
 		type = typeof(value)
 	var decoder := _get_value_decoder(type)
 	if decoder == null:
-		push_error("No value decoder registered for type '%d'! Please open a Bug issue at 'https://github.com/MikeSchulze/gdUnit4/issues/new/choose'." % type)
+		push_error(
+			"No value decoder registered for type '%d'! " % type
+			+ "Please open a Bug issue at 'https://github.com/MikeSchulze/gdUnit4/issues/new/choose'."
+		)
 		return "null"
 	if type == TYPE_OBJECT:
 		return decoder.call(value, type)

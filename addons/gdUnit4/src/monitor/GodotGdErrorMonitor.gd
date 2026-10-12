@@ -112,9 +112,7 @@ func to_reports() -> Array[GdUnitReport]:
 
 static func _to_report(errorLog: ErrorLogEntry) -> GdUnitReport:
 
-	var failure := """
-		%s
-		  %s""".dedent().trim_prefix("\n") % [
+	var failure := "%s\n  %s" % [
 		GdAssertMessages._error("Godot Runtime Error !"),
 		GdAssertMessages._colored_value(errorLog._message)]
 	var error := GdUnitError.new(failure, errorLog._line, errorLog._stack_trace)

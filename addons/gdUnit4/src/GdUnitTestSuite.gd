@@ -1,3 +1,4 @@
+# gdlint: disable=max-public-methods
 ## The main class for all GdUnit test suites[br]
 ## This class is the main class to implement your unit tests[br]
 ## You have to extend and implement your test cases as described[br]
@@ -13,6 +14,14 @@
 @icon("res://addons/gdUnit4/src/ui/settings/logo.png")
 class_name GdUnitTestSuite
 extends Node
+
+## do return a default value for primitive types or null
+const RETURN_DEFAULTS = GdUnitMock.RETURN_DEFAULTS
+## do call the real implementation
+const CALL_REAL_FUNC = GdUnitMock.CALL_REAL_FUNC
+## do return a default value for primitive types and a fully mocked value for Object types
+## builds full deep mocked object
+const RETURN_DEEP_STUB = GdUnitMock.RETURN_DEEP_STUB
 
 
 ### internal runtime variables that must not be overwritten!!!
@@ -271,15 +280,6 @@ func scene_runner(scene: Variant, verbose := false) -> GdUnitSceneRunner:
 
 
 # === Mocking  & Spy ===========================================================
-
-## do return a default value for primitive types or null
-const RETURN_DEFAULTS = GdUnitMock.RETURN_DEFAULTS
-## do call the real implementation
-const CALL_REAL_FUNC = GdUnitMock.CALL_REAL_FUNC
-## do return a default value for primitive types and a fully mocked value for Object types
-## builds full deep mocked object
-const RETURN_DEEP_STUB = GdUnitMock.RETURN_DEEP_STUB
-
 
 ## Creates a mock for given class name
 func mock(clazz: Variant, mock_mode := RETURN_DEFAULTS) -> Variant:
@@ -605,6 +605,7 @@ func tuple(...args: Array) -> GdUnitTuple:
 
 # === Asserts ==================================================================
 
+# gdlint: disable=max-returns
 ## The common assertion tool to verify values.
 ## It checks the given value by type to fit to the best assert
 func assert_that(current: Variant) -> GdUnitAssert:
@@ -629,6 +630,7 @@ func assert_that(current: Variant) -> GdUnitAssert:
 			return assert_object(current)
 		_:
 			return __gdunit_assert().new(current)
+# gdlint: enable=max-returns
 
 
 ## An assertion tool to verify boolean values.

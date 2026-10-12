@@ -1,7 +1,8 @@
 class_name GdUnit4Version
 extends RefCounted
 
-const VERSION_PATTERN = "[center][color=#9887c4]gd[/color][color=#7a57d6]Unit[/color][color=#9887c4]4[/color] [color=#9887c4]${version}[/color][/center]"
+const VERSION_PATTERN = ("[center][color=#9887c4]gd[/color][color=#7a57d6]Unit[/color][color=#9887c4]4[/color] "
+	+ "[color=#9887c4]${version}[/color][/center]")
 
 var _major :int
 var _minor :int

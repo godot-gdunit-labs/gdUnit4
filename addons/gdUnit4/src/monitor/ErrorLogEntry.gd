@@ -1,5 +1,5 @@
-extends RefCounted
 class_name ErrorLogEntry
+extends RefCounted
 
 
 enum TYPE {

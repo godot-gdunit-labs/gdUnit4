@@ -1,6 +1,30 @@
 class_name GdFunctionDescriptor
 extends RefCounted
 
+# temporary exclude GlobalScope enums
+const enum_fix := [
+	"Side",
+	"Corner",
+	"Orientation",
+	"ClockDirection",
+	"HorizontalAlignment",
+	"VerticalAlignment",
+	"InlineAlignment",
+	"EulerOrder",
+	"Error",
+	"Key",
+	"MIDIMessage",
+	"MouseButton",
+	"MouseButtonMask",
+	"JoyButton",
+	"JoyAxis",
+	"PropertyHint",
+	"PropertyUsageFlags",
+	"MethodFlags",
+	"Variant.Type",
+	"Control.LayoutMode"]
+
+
 var _is_virtual: bool
 var _is_static: bool
 var _is_engine: bool
@@ -177,29 +201,6 @@ static func extract_from(descriptor: Dictionary, is_engine_ := true) -> GdFuncti
 		_extract_args(descriptor),
 		_build_varargs(is_vararg_)
 	)
-
-# temporary exclude GlobalScope enums
-const enum_fix := [
-	"Side",
-	"Corner",
-	"Orientation",
-	"ClockDirection",
-	"HorizontalAlignment",
-	"VerticalAlignment",
-	"InlineAlignment",
-	"EulerOrder",
-	"Error",
-	"Key",
-	"MIDIMessage",
-	"MouseButton",
-	"MouseButtonMask",
-	"JoyButton",
-	"JoyAxis",
-	"PropertyHint",
-	"PropertyUsageFlags",
-	"MethodFlags",
-	"Variant.Type",
-	"Control.LayoutMode"]
 
 
 static func _extract_return_type(return_info: Dictionary) -> int:

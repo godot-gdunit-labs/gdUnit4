@@ -24,14 +24,6 @@ extends RefCounted
 ## [/codeblock]
 
 
-## Text style flag for bold formatting
-const BOLD = 0x1
-## Text style flag for italic formatting
-const ITALIC = 0x2
-## Text style flag for underline formatting
-const UNDERLINE = 0x4
-
-
 ## Represents special text effects that can be applied to the output
 enum Effect {
 	## No special effect applied
@@ -48,6 +40,14 @@ enum Align {
 	## Aligns text to the right of the cursor position, accounting for text length
 	RIGHT
 }
+
+
+## Text style flag for bold formatting
+const BOLD = 0x1
+## Text style flag for italic formatting
+const ITALIC = 0x2
+## Text style flag for underline formatting
+const UNDERLINE = 0x4
 
 
 ## The current text color to be used for the next output operation
@@ -220,7 +220,14 @@ func print_stack_trace(stack_trace: GdUnitStackTrace) -> void:
 ## [param _effect] The effect to apply.[br]
 ## [param _align] The text alignment.[br]
 ## [param _flags] The style flags to apply.
-@abstract func _print_at(_message: String, _cursor_pos: int, _color: Color, _effect: GdUnitMessageWriter.Effect, _align: Align, _flags: int) -> void
+@abstract func _print_at(
+	_message: String,
+	_cursor_pos: int,
+	_color: Color,
+	_effect: GdUnitMessageWriter.Effect,
+	_align: Align,
+	_flags: int
+) -> void
 
 
 ## Clears all output content.[br]

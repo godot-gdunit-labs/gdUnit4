@@ -39,12 +39,6 @@ extends Object
 
 
 
-static func instance() -> GdUnitTestDiscoverGuard:
-	return GdUnitSingleton.instance("GdUnitTestDiscoverGuard", func() -> GdUnitTestDiscoverGuard:
-		return GdUnitTestDiscoverGuard.new()
-	)
-
-
 ## Maps source files to their discovered test cases.[br]
 ## [br]
 ## Key: Test suite source file path[br]
@@ -68,6 +62,12 @@ var _discovered_changes := {}
 var _is_debug := false
 
 
+static func instance() -> GdUnitTestDiscoverGuard:
+	return GdUnitSingleton.instance("GdUnitTestDiscoverGuard", func() -> GdUnitTestDiscoverGuard:
+		return GdUnitTestDiscoverGuard.new()
+	)
+
+
 ## Creates a new guard instance.[br]
 ## [br]
 ## [param is_debug] When true, enables change tracking for debugging.
@@ -85,7 +85,10 @@ func _init(is_debug := false) -> void:
 ## [br]
 ## [param test_case] The test case to add to the cache.
 func sync_test_added(test_case: GdUnitTestCase) -> void:
-	var test_cases: Array[GdUnitTestCase] = _discover_cache.get_or_add(test_case.source_file, Array([], TYPE_OBJECT, "RefCounted", GdUnitTestCase))
+	var test_cases: Array[GdUnitTestCase] = _discover_cache.get_or_add(
+		test_case.source_file,
+		Array([], TYPE_OBJECT, "RefCounted", GdUnitTestCase)
+	)
 	test_cases.append(test_case)
 
 
@@ -93,7 +96,10 @@ func sync_test_added(test_case: GdUnitTestCase) -> void:
 ## [br]
 ## [param test_case] The test case to remove from the cache.
 func sync_test_deleted(test_case: GdUnitTestCase) -> void:
-	var test_cases: Array[GdUnitTestCase] = _discover_cache.get_or_add(test_case.source_file, Array([], TYPE_OBJECT, "RefCounted", GdUnitTestCase))
+	var test_cases: Array[GdUnitTestCase] = _discover_cache.get_or_add(
+		test_case.source_file,
+		Array([], TYPE_OBJECT, "RefCounted", GdUnitTestCase)
+	)
 	test_cases.erase(test_case)
 
 
@@ -101,7 +107,10 @@ func sync_test_deleted(test_case: GdUnitTestCase) -> void:
 ## [br]
 ## [param test_case] The test case to update from the cache.
 func sync_test_modified(changed_test: GdUnitTestCase) -> void:
-	var test_cases: Array[GdUnitTestCase] = _discover_cache.get_or_add(changed_test.source_file, Array([], TYPE_OBJECT, "RefCounted", GdUnitTestCase))
+	var test_cases: Array[GdUnitTestCase] = _discover_cache.get_or_add(
+		changed_test.source_file,
+		Array([], TYPE_OBJECT, "RefCounted", GdUnitTestCase)
+	)
 	for test in test_cases:
 		if test.guid == changed_test.guid:
 			test.test_name = changed_test.test_name
@@ -310,10 +319,14 @@ func rebuild_project(script: Script) -> void:
 	var exit_code := OS.execute("dotnet", ["--version"], output)
 	if exit_code == -1:
 		print_rich("[color=CORNFLOWER_BLUE]GdUnitTestDiscoverGuard:[/color] [color=RED]Rebuild the project failed.[/color]")
-		print_rich("[color=CORNFLOWER_BLUE]GdUnitTestDiscoverGuard:[/color] [color=RED]Can't find installed `dotnet`! Please check your environment is setup correctly.[/color]")
+		print_rich("[color=CORNFLOWER_BLUE]GdUnitTestDiscoverGuard:[/color] [color=RED]Can't find installed `dotnet`! "
+			+ "Please check your environment is setup correctly.[/color]")
 		return
 
-	print_rich("[color=CORNFLOWER_BLUE]GdUnitTestDiscoverGuard:[/color] [color=DEEP_SKY_BLUE]Found dotnet v%s[/color]" % str(output[0]).strip_edges())
+	print_rich(
+		"[color=CORNFLOWER_BLUE]GdUnitTestDiscoverGuard:[/color] [color=DEEP_SKY_BLUE]Found dotnet v%s[/color]"
+		% str(output[0]).strip_edges()
+	)
 	output.clear()
 
 	exit_code = OS.execute("dotnet", ["build"], output)

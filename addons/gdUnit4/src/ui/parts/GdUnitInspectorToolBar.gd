@@ -4,6 +4,9 @@ extends Control
 
 const  GdUnitInspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/GdUnitInspectorTreeMainPanel.gd")
 
+var inspector: GdUnitInspectorTreeMainPanel
+var command_handler: GdUnitCommandHandler
+
 @onready var _version_label: Control = %version
 @onready var _button_wiki: Button = %help
 @onready var _tool_button: Button = %tool
@@ -11,10 +14,6 @@ const  GdUnitInspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/part
 @onready var _button_run: Button = %run
 @onready var _button_run_debug: Button = %debug
 @onready var _button_stop: Button = %stop
-
-
-var inspector: GdUnitInspectorTreeMainPanel
-var command_handler: GdUnitCommandHandler
 
 
 func _ready() -> void:

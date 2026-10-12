@@ -1,22 +1,10 @@
+# gdlint: disable=max-public-methods,max-file-lines
 @tool
 extends Control
 
 ## Will be emitted when the test index counter is changed
 signal test_counters_changed(index: int, total: int, state: GdUnitInspectorTreeConstants.STATE)
 signal tree_item_selected(item: TreeItem)
-
-
-@onready var _tree: Tree = %Tree
-@onready var _report_panel: GdUnitReportPanel = %report
-@onready var _context_menu: GdUnitInspectorContextMenu = %contextMenu
-@onready var _discover_hint: Control = %discover_hint
-@onready var _spinner: Button = %spinner
-
-# loading tree icons
-var ICON_SPINNER: Texture2D
-var ICON_GD_SCRIPT: Texture2D
-var ICON_CS_SCRIPT: Texture2D
-var ICON_FOLDER: Texture2D
 
 
 enum GdUnitType {
@@ -39,11 +27,22 @@ const META_GDUNIT_EXECUTION_TIME := "gdUnit_execution_time"
 const META_GDUNIT_ORIGINAL_INDEX = "gdunit_original_index"
 const STATE = GdUnitInspectorTreeConstants.STATE
 
+# loading tree icons
+var ICON_SPINNER: Texture2D
+var ICON_GD_SCRIPT: Texture2D
+var ICON_CS_SCRIPT: Texture2D
+var ICON_FOLDER: Texture2D
 
 var _tree_root: TreeItem
 var _current_selected_item: TreeItem = null
 var _current_tree_view_mode := GdUnitSettings.get_inspector_tree_view_mode()
 var _run_test_recovery := true
+
+@onready var _tree: Tree = %Tree
+@onready var _report_panel: GdUnitReportPanel = %report
+@onready var _context_menu: GdUnitInspectorContextMenu = %contextMenu
+@onready var _discover_hint: Control = %discover_hint
+@onready var _spinner: Button = %spinner
 
 
 ## Used for debugging purposes only
@@ -688,7 +687,10 @@ func _on_select_next_item_by_state(item_state: int) -> TreeItem:
 func _on_select_previous_item_by_state(item_state: int) -> TreeItem:
 	var current_selected := _tree.get_selected()
 	# If nothing is selected, the first error is selected or the next one in the vicinity of the current selection is found
-	current_selected = _find_last_item_by_state(_tree_root, item_state) if current_selected == null else _find_item_by_state(current_selected, item_state, true)
+	current_selected = (
+		_find_last_item_by_state(_tree_root, item_state) if current_selected == null
+		else _find_item_by_state(current_selected, item_state, true)
+	)
 	# If no next failure found, then we try to select first last
 	if current_selected == null:
 		current_selected = _find_last_item_by_state(_tree_root, item_state)
@@ -709,7 +711,8 @@ func select_first_orphan() -> void:
 func update_test_suite(event: GdUnitEvent) -> void:
 	var item := _find_tree_item_by_test_suite(_tree_root, event.resource_path(), event.suite_name())
 	if not item:
-		push_error("[InspectorTreeMainPanel#update_test_suite] Internal Error: Can't find test suite item '{_suite_name}' for {_resource_path} ".format(event))
+		push_error(("[InspectorTreeMainPanel#update_test_suite] Internal Error: "
+			+ "Can't find test suite item '{_suite_name}' for {_resource_path} ").format(event))
 		return
 
 	update_item_state_recursive(item)

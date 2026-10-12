@@ -5,16 +5,15 @@ const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 const GdUnitUpdateClient := preload("res://addons/gdUnit4/src/update/GdUnitUpdateClient.gd")
 const GDUNIT_TEMP := "user://tmp"
 
+var _debug_mode := false
+var _update_client :GdUnitUpdateClient
+var _download_url :String
+
 @onready var _progress_content: RichTextLabel = %message
 @onready var _progress_bar: TextureProgressBar = %progress
 @onready var _cancel_btn: Button = %cancel
 @onready var _update_btn: Button = %update
 @onready var _spinner_img := GdUnitUiTools.get_spinner()
-
-
-var _debug_mode := false
-var _update_client :GdUnitUpdateClient
-var _download_url :String
 
 
 func _ready() -> void:
@@ -229,9 +228,8 @@ func copy_directory(from_dir: String, to_dir: String) -> bool:
 				printerr("Error checked copy file '%s' to '%s'" % [source, dest])
 				return false
 		return true
-	else:
-		printerr("Directory not found: " + from_dir)
-		return false
+	printerr("Directory not found: " + from_dir)
+	return false
 
 
 func extract_zip(zip_package: String, dest_path: String) -> Variant:

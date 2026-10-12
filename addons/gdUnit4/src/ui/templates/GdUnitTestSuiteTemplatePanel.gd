@@ -1,17 +1,16 @@
 @tool
 extends MarginContainer
 
+var gd_key_words :PackedStringArray = ["extends", "class_name", "const", "var", "onready", "func", "void", "pass"]
+var gdunit_key_words :PackedStringArray = ["GdUnitTestSuite", "before", "after", "before_test", "after_test"]
+var _selected_template :int
+
 @onready var _template_editor :CodeEdit = $VBoxContainer/EdiorLayout/Editor
 @onready var _tags_editor :CodeEdit = $Tags/MarginContainer/TextEdit
 @onready var _title_bar :Panel = $VBoxContainer/sub_category
 @onready var _save_button :Button = $VBoxContainer/Panel/HBoxContainer/Save
 @onready var _selected_type :OptionButton = $VBoxContainer/EdiorLayout/Editor/MarginContainer/HBoxContainer/SelectType
 @onready var _show_tags  :PopupPanel = $Tags
-
-
-var gd_key_words :PackedStringArray = ["extends", "class_name", "const", "var", "onready", "func", "void", "pass"]
-var gdunit_key_words :PackedStringArray = ["GdUnitTestSuite", "before", "after", "before_test", "after_test"]
-var _selected_template :int
 
 
 func _ready() -> void:

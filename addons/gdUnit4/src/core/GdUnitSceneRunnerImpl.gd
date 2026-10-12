@@ -1,9 +1,7 @@
+# gdlint: disable=max-public-methods
 # This class provides a runner for scense to simulate interactions like keyboard or mouse
 class_name GdUnitSceneRunnerImpl
 extends GdUnitSceneRunner
-
-
-var GdUnitFuncAssertImpl: GDScript = ResourceLoader.load("res://addons/gdUnit4/src/asserts/GdUnitFuncAssertImpl.gd", "GDScript", ResourceLoader.CACHE_MODE_REUSE)
 
 
 # mapping of mouse buttons and his masks
@@ -17,6 +15,12 @@ const MAP_MOUSE_BUTTON_MASKS := {
 	MOUSE_BUTTON_XBUTTON1 : MOUSE_BUTTON_MASK_MB_XBUTTON1,
 	MOUSE_BUTTON_XBUTTON2 : MOUSE_BUTTON_MASK_MB_XBUTTON2,
 }
+
+var GdUnitFuncAssertImpl: GDScript = ResourceLoader.load(
+	"res://addons/gdUnit4/src/asserts/GdUnitFuncAssertImpl.gd",
+	"GDScript",
+	ResourceLoader.CACHE_MODE_REUSE
+)
 
 var _is_disposed := false
 var _current_scene: Node = null
@@ -215,7 +219,11 @@ func simulate_mouse_move(position: Vector2) -> GdUnitSceneRunner:
 
 
 @warning_ignore("return_value_discarded")
-func simulate_mouse_move_relative(relative: Vector2, time: float = 1.0, trans_type: Tween.TransitionType = Tween.TRANS_LINEAR) -> GdUnitSceneRunner:
+func simulate_mouse_move_relative(
+	relative: Vector2,
+	time: float = 1.0,
+	trans_type: Tween.TransitionType = Tween.TRANS_LINEAR
+) -> GdUnitSceneRunner:
 	var tween := _scene_tree().create_tween()
 	_curent_mouse_position = get_mouse_position()
 	var final_position := _curent_mouse_position + relative
@@ -229,7 +237,11 @@ func simulate_mouse_move_relative(relative: Vector2, time: float = 1.0, trans_ty
 
 
 @warning_ignore("return_value_discarded")
-func simulate_mouse_move_absolute(position: Vector2, time: float = 1.0, trans_type: Tween.TransitionType = Tween.TRANS_LINEAR) -> GdUnitSceneRunner:
+func simulate_mouse_move_absolute(
+	position: Vector2,
+	time: float = 1.0,
+	trans_type: Tween.TransitionType = Tween.TRANS_LINEAR
+) -> GdUnitSceneRunner:
 	var tween := _scene_tree().create_tween()
 	_curent_mouse_position = get_mouse_position()
 	tween.tween_property(self, "_curent_mouse_position", position, time).set_trans(trans_type)
@@ -313,17 +325,33 @@ func simulate_screen_touch_release(index: int, double_tap := false) -> GdUnitSce
 	return self
 
 
-func simulate_screen_touch_drag_relative(index: int, relative: Vector2, time: float = 1.0, trans_type: Tween.TransitionType = Tween.TRANS_LINEAR) -> GdUnitSceneRunner:
+func simulate_screen_touch_drag_relative(
+	index: int,
+	relative: Vector2,
+	time: float = 1.0,
+	trans_type: Tween.TransitionType = Tween.TRANS_LINEAR
+) -> GdUnitSceneRunner:
 	var current_position: Vector2 = _current_touch_position[index]
 	return await _do_touch_drag_at(index, current_position + relative, time, trans_type)
 
 
-func simulate_screen_touch_drag_absolute(index: int, position: Vector2, time: float = 1.0, trans_type: Tween.TransitionType = Tween.TRANS_LINEAR) -> GdUnitSceneRunner:
+func simulate_screen_touch_drag_absolute(
+	index: int,
+	position: Vector2,
+	time: float = 1.0,
+	trans_type: Tween.TransitionType = Tween.TRANS_LINEAR
+) -> GdUnitSceneRunner:
 	return await _do_touch_drag_at(index, position, time, trans_type)
 
 
 @warning_ignore("return_value_discarded")
-func simulate_screen_touch_drag_drop(index: int, position: Vector2, drop_position: Vector2, time: float = 1.0, trans_type: Tween.TransitionType = Tween.TRANS_LINEAR) -> GdUnitSceneRunner:
+func simulate_screen_touch_drag_drop(
+	index: int,
+	position: Vector2,
+	drop_position: Vector2,
+	time: float = 1.0,
+	trans_type: Tween.TransitionType = Tween.TRANS_LINEAR
+) -> GdUnitSceneRunner:
 	simulate_screen_touch_press(index, position)
 	return await _do_touch_drag_at(index, drop_position, time, trans_type)
 

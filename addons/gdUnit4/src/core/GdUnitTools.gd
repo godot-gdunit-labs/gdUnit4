@@ -54,36 +54,35 @@ static func free_instance(instance :Variant, use_call_deferred :bool = false, is
 			@warning_ignore("unsafe_cast")
 			await (instance as GdUnitSceneRunnerImpl).await_input_processed()
 		return true
-	else:
-		if instance is Timer:
-			var timer: Timer = instance
-			timer.stop()
-			if use_call_deferred:
-				timer.call_deferred("free")
-			else:
-				timer.free()
-				await (Engine.get_main_loop() as SceneTree).process_frame
-			return true
-
-		@warning_ignore("unsafe_cast")
-		if instance is Node and (instance as Node).get_parent() != null:
-			var node: Node = instance
-			if is_stdout_verbose:
-				print_verbose("GdUnit4:gc():remove node from parent ", node.get_parent(), node)
-			if use_call_deferred:
-				node.get_parent().remove_child.call_deferred(node)
-				#instance.call_deferred("set_owner", null)
-			else:
-				node.get_parent().remove_child(node)
-		if is_stdout_verbose:
-			print_verbose("GdUnit4:gc():freeing `free()` the instance ", instance)
+	if instance is Timer:
+		var timer: Timer = instance
+		timer.stop()
 		if use_call_deferred:
-			@warning_ignore("unsafe_cast")
-			(instance as Object).call_deferred("free")
+			timer.call_deferred("free")
 		else:
-			@warning_ignore("unsafe_cast")
-			(instance as Object).free()
-		return !is_instance_valid(instance)
+			timer.free()
+			await (Engine.get_main_loop() as SceneTree).process_frame
+		return true
+
+	@warning_ignore("unsafe_cast")
+	if instance is Node and (instance as Node).get_parent() != null:
+		var node: Node = instance
+		if is_stdout_verbose:
+			print_verbose("GdUnit4:gc():remove node from parent ", node.get_parent(), node)
+		if use_call_deferred:
+			node.get_parent().remove_child.call_deferred(node)
+			#instance.call_deferred("set_owner", null)
+		else:
+			node.get_parent().remove_child(node)
+	if is_stdout_verbose:
+		print_verbose("GdUnit4:gc():freeing `free()` the instance ", instance)
+	if use_call_deferred:
+		@warning_ignore("unsafe_cast")
+		(instance as Object).call_deferred("free")
+	else:
+		@warning_ignore("unsafe_cast")
+		(instance as Object).free()
+	return !is_instance_valid(instance)
 
 
 static func _release_connections(instance :Object) -> void:

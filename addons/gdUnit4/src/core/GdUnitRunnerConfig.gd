@@ -94,10 +94,12 @@ func load_config(path: String = CONFIG_FILE) -> GdUnitResult:
 		var test_json_conv := JSON.new()
 		var error := test_json_conv.parse(content)
 		if error != OK:
-			return GdUnitResult.error("The runner configuration '%s' is invalid! The format is changed please delete it manually and start a new test run." % path)
+			return GdUnitResult.error(("The runner configuration '%s' is invalid! "
+				+ "The format is changed please delete it manually and start a new test run.") % path)
 		var config: Dictionary = test_json_conv.get_data()
 		if not config.has(VERSION):
-			return GdUnitResult.error("The runner configuration '%s' is invalid! The format is changed please delete it manually and start a new test run." % path)
+			return GdUnitResult.error(("The runner configuration '%s' is invalid! "
+				+ "The format is changed please delete it manually and start a new test run.") % path)
 
 		var default: Array[Dictionary] =  Array([], TYPE_DICTIONARY, "", null)
 		var tests_as_json: Array = config.get(TESTS, default)

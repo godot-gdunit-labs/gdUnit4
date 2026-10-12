@@ -59,21 +59,6 @@ extends RefCounted
 signal test_event(event: GdUnitEvent)
 
 
-## [b][color=red]@readonly: Should not be modified directly during test execution![/color][/b][br]
-## Collection of test cases to be executed in this session.[br]
-## [br]
-## This array contains all the test cases that will be run during the session.
-## Test hooks can access this collection to:
-## - Get the total number of tests to be executed
-## - Access individual test case metadata
-## - Perform setup/teardown based on test case requirements
-## - Generate reports or statistics about the test suite
-##
-## The collection is typically populated before session startup and remains
-## constant during test execution.
-var _test_cases : Array[GdUnitTestCase] = []
-
-
 ## [b][color=red]@readonly: The report path should not be modified after session creation![/color][/b][br]
 ## The file system path where test reports for this session will be generated.[br]
 ## [br]
@@ -106,6 +91,21 @@ var _test_cases : Array[GdUnitTestCase] = []
 var report_path: String:
 	get:
 		return report_path
+
+
+## [b][color=red]@readonly: Should not be modified directly during test execution![/color][/b][br]
+## Collection of test cases to be executed in this session.[br]
+## [br]
+## This array contains all the test cases that will be run during the session.
+## Test hooks can access this collection to:
+## - Get the total number of tests to be executed
+## - Access individual test case metadata
+## - Perform setup/teardown based on test case requirements
+## - Generate reports or statistics about the test suite
+##
+## The collection is typically populated before session startup and remains
+## constant during test execution.
+var _test_cases : Array[GdUnitTestCase] = []
 
 
 ## Initializes the test session and sets up event forwarding.[br]

@@ -17,8 +17,16 @@ var TOKEN_TABULATOR := SkippableToken.new("\t")
 var TOKEN_NEW_LINE := SkippableToken.new("\n")
 var TOKEN_COMMENT := SkippableToken.new("#")
 var TOKEN_ANNOTATION := SkippableToken.new("@")
-var TOKEN_CLASS_NAME := RegExToken.new("class_name", GdUnitTools.to_regex("(class_name)\\s+([\\w\\p{L}\\p{N}_]+) (extends[a-zA-Z]+:)|(class_name)\\s+([\\w\\p{L}\\p{N}_]+)"), 5)
-var TOKEN_INNER_CLASS := TokenInnerClass.new("class", GdUnitTools.to_regex("(class)\\s+(\\w\\p{L}\\p{N}_]+) (extends[a-zA-Z]+:)|(class)\\s+([\\w\\p{L}\\p{N}_]+)"), 5)
+var TOKEN_CLASS_NAME := RegExToken.new(
+	"class_name",
+	GdUnitTools.to_regex("(class_name)\\s+([\\w\\p{L}\\p{N}_]+) (extends[a-zA-Z]+:)|(class_name)\\s+([\\w\\p{L}\\p{N}_]+)"),
+	5
+)
+var TOKEN_INNER_CLASS := TokenInnerClass.new(
+	"class",
+	GdUnitTools.to_regex("(class)\\s+(\\w\\p{L}\\p{N}_]+) (extends[a-zA-Z]+:)|(class)\\s+([\\w\\p{L}\\p{N}_]+)"),
+	5
+)
 var TOKEN_EXTENDS := RegExToken.new("extends", GdUnitTools.to_regex("extends\\s+"))
 var TOKEN_ENUM := RegExToken.new("enum", GdUnitTools.to_regex("enum\\s+"))
 var TOKEN_FUNCTION_STATIC_DECLARATION := RegExToken.new("static func", GdUnitTools.to_regex("^static\\s+func\\s+([\\w\\p{L}\\p{N}_]+)"), 1)
@@ -28,7 +36,9 @@ var TOKEN_FUNCTION_RETURN_TYPE := Token.new("->")
 var TOKEN_FUNCTION_END := Token.new("):")
 var TOKEN_ARGUMENT_ASIGNMENT := Token.new("=")
 var TOKEN_ARGUMENT_TYPE_ASIGNMENT := Token.new(":=")
-var TOKEN_ARGUMENT_FUZZER := FuzzerToken.new(GdUnitTools.to_regex("((?!(fuzzer_(seed|iterations)))fuzzer?\\w+)( ?+= ?+| ?+:= ?+| ?+:Fuzzer ?+= ?+|)"))
+var TOKEN_ARGUMENT_FUZZER := FuzzerToken.new(
+	GdUnitTools.to_regex("((?!(fuzzer_(seed|iterations)))fuzzer?\\w+)( ?+= ?+| ?+:= ?+| ?+:Fuzzer ?+= ?+|)")
+)
 var TOKEN_ARGUMENT_TYPE := Token.new(":")
 var TOKEN_ARGUMENT_VARIADIC := Token.new("...")
 var TOKEN_ARGUMENT_SEPARATOR := Token.new(",")
@@ -352,6 +362,7 @@ func tokenize_value(input: String, current: int, token: Token, ignore_dots := fa
 	return TOKEN_NOT_MATCH
 
 
+# gdlint: disable=max-returns
 # const ALLOWED_CHARACTERS := "0123456789_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\""
 func is_allowed_character(input: String) -> bool:
 	var code_point := input.unicode_at(0)
@@ -375,6 +386,7 @@ func is_allowed_character(input: String) -> bool:
 	if code_point == 34 or code_point == 39:
 		return true
 	return false
+# gdlint: enable=max-returns
 
 
 func parse_return_token(input: String) -> Variable:

@@ -17,7 +17,7 @@ static func build(clazz :Variant, mock_mode :String, debug_write := false) -> Va
 	if GdObjects.is_scene(clazz):
 		var packed_scene: PackedScene = clazz
 		return mock_on_scene(packed_scene, debug_write)
-	elif typeof(clazz) == TYPE_STRING and str(clazz).ends_with(".tscn"):
+	if typeof(clazz) == TYPE_STRING and str(clazz).ends_with(".tscn"):
 		var packed_scene: PackedScene = load(str(clazz))
 		return mock_on_scene(packed_scene, debug_write)
 	# mocking a script
@@ -43,7 +43,7 @@ static func create_instance(clazz: Variant) -> Object:
 				var script: GDScript = clazz
 				var args := GdObjects.build_function_default_arguments(script, "_init")
 				return script.callv("new", args)
-			elif obj.is_class("GDScriptNativeClass"):
+			if obj.is_class("GDScriptNativeClass"):
 				@warning_ignore("unsafe_method_access")
 				return obj.new()
 		TYPE_STRING:
@@ -52,7 +52,7 @@ static func create_instance(clazz: Variant) -> Object:
 				var script: GDScript = load(clazz_name)
 				var args := GdObjects.build_function_default_arguments(script, "_init")
 				return script.callv("new", args)
-			elif ClassDB.can_instantiate(clazz_name):
+			if ClassDB.can_instantiate(clazz_name):
 				return ClassDB.instantiate(clazz_name)
 
 	push_error("Can't create a mock validation instance from class: `%s`" % clazz)

@@ -218,8 +218,7 @@ func test_extract_from_inferred_void_pass() -> void:
 #endregion
 
 
-@warning_ignore("unused_parameter")
-func example_signature(info: String, expected: int, test_parameters := [
+func example_signature(_info: String, _expected: int, _test_parameters := [
 	["aaa", 10],
 	["bbb", 11],
 ]) -> void:

@@ -59,6 +59,7 @@ func test_is_not_null(_test: String, array: Variant, _test_parameters := [
 		.has_message("Expecting: not to be '<null>'")
 
 
+# gdlint: disable=mixed-tabs-and-spaces
 func test_is_equal(_test: String, array: Variant, _test_parameters := [
 	["Array", Array([1, 2, 3, 4, 5])],
 	["PackedByteArray", PackedByteArray([1, 2, 3, 4, 5])],
@@ -339,3 +340,4 @@ func test_append_failure_message() -> void:
 			 must not be empty
 			Additional info:
 			 custom failure data""".dedent().trim_prefix("\n"))
+# gdlint: enable=mixed-tabs-and-spaces

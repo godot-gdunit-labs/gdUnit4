@@ -4,12 +4,12 @@ const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 const GdMarkDownReader := preload("res://addons/gdUnit4/src/update/GdMarkDownReader.gd")
 const GdUnitUpdateClient := preload("res://addons/gdUnit4/src/update/GdUnitUpdateClient.gd")
 
+var _md_reader := GdMarkDownReader.new()
+
 @onready var _input: TextEdit = $HSplitContainer/TextEdit
 @onready var _text: RichTextLabel = $HSplitContainer/RichTextLabel
 
 @onready var _update_client :GdUnitUpdateClient = $GdUnitUpdateClient
-
-var _md_reader := GdMarkDownReader.new()
 
 
 func _ready() -> void:

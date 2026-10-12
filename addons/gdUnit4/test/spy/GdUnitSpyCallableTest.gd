@@ -40,8 +40,8 @@ func test_callable_functions() -> void:
 
 
 func test_exclude_functions() -> void:
+	# it should not exclude callable function
 	assert_array(CallableDoubler.excluded_functions())\
-		# it should not exclude callable function
 		.not_contains(CallableDoubler.callable_functions())
 
 

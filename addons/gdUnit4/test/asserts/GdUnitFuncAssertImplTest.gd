@@ -116,8 +116,7 @@ class TestIterativeValueProvider:
 		return _current_itteration
 
 
-@warning_ignore("unused_parameter")
-func test_is_null(timeout := 2000) -> void:
+func test_is_null(_timeout := 2000) -> void:
 	var value_provider := TestIterativeValueProvider.new(RefCounted.new(), 5, null)
 	# without default timeout od 2000ms
 	assert_func(value_provider, "obj_value").is_not_null()
@@ -137,8 +136,7 @@ func test_is_null(timeout := 2000) -> void:
 	).has_message("Expected: is null but timed out after 100ms")
 
 
-@warning_ignore("unused_parameter")
-func test_is_not_null(timeout := 2000) -> void:
+func test_is_not_null(_timeout := 2000) -> void:
 	var value_provider := TestIterativeValueProvider.new(null, 5, RefCounted.new())
 	# without default timeout od 2000ms
 	assert_func(value_provider, "obj_value").is_null()
@@ -158,8 +156,7 @@ func test_is_not_null(timeout := 2000) -> void:
 	).has_message("Expected: is not null but timed out after 100ms")
 
 
-@warning_ignore("unused_parameter")
-func test_is_true(timeout := 2000) -> void:
+func test_is_true(_timeout := 2000) -> void:
 	var value_provider := TestIterativeValueProvider.new(false, 5, true)
 	# without default timeout od 2000ms
 	assert_func(value_provider, "bool_value").is_false()
@@ -179,8 +176,7 @@ func test_is_true(timeout := 2000) -> void:
 	).has_message("Expected: is true but timed out after 100ms")
 
 
-@warning_ignore("unused_parameter")
-func test_is_false(timeout := 2000) -> void:
+func test_is_false(_timeout := 2000) -> void:
 	var value_provider := TestIterativeValueProvider.new(true, 5, false)
 	# without default timeout od 2000ms
 	assert_func(value_provider, "bool_value").is_true()
@@ -200,8 +196,7 @@ func test_is_false(timeout := 2000) -> void:
 	).has_message("Expected: is false but timed out after 100ms")
 
 
-@warning_ignore("unused_parameter")
-func test_is_equal(timeout := 2000) -> void:
+func test_is_equal(_timeout := 2000) -> void:
 	var value_provider := TestIterativeValueProvider.new(42, 5, 23)
 	# without default timeout od 2000ms
 	assert_func(value_provider, "int_value").is_equal(42)
@@ -221,8 +216,7 @@ func test_is_equal(timeout := 2000) -> void:
 	).has_message("Expected: is equal 25 but timed out after 100ms")
 
 
-@warning_ignore("unused_parameter")
-func test_is_not_equal(timeout := 2000) -> void:
+func test_is_not_equal(_timeout := 2000) -> void:
 	var value_provider := TestIterativeValueProvider.new(42, 5, 23)
 	# without default timeout od 2000ms
 	assert_func(value_provider, "int_value").is_equal(42)
@@ -242,8 +236,7 @@ func test_is_not_equal(timeout := 2000) -> void:
 	).has_message("Expected: is not equal 23 but timed out after 100ms")
 
 
-@warning_ignore("unused_parameter")
-func test_is_equal_wiht_func_arg(timeout := 1300) -> void:
+func test_is_equal_wiht_func_arg(_timeout := 1300) -> void:
 	var value_provider := TestIterativeValueProvider.new(42, 10, 23)
 	# without default timeout od 2000ms
 	assert_func(value_provider, "has_type", [1]).is_equal(42)
@@ -258,8 +251,7 @@ func test_is_equal_wiht_func_arg(timeout := 1300) -> void:
 
 
 # abort test after 500ms to fail
-@warning_ignore("unused_parameter")
-func test_timeout_and_assert_fails(timeout := 500) -> void:
+func test_timeout_and_assert_fails(_timeout := 500) -> void:
 	# disable temporary the timeout errors for this test
 	discard_error_interupted_by_timeout()
 	var value_provider := TestIterativeValueProvider.new(1, 10, 10)
@@ -335,6 +327,7 @@ func test_override_failure_message() -> void:
 	).has_message("Custom failure message")
 
 
+# gdlint: disable=mixed-tabs-and-spaces
 @warning_ignore("unsafe_method_access")
 func test_append_failure_message() -> void:
 	assert_object(assert_func(RefCounted.new(), "get_reference_count").append_failure_message("error")).is_instanceof(GdUnitFuncAssert)
@@ -348,10 +341,10 @@ func test_append_failure_message() -> void:
 		.contains_message("""
 			Additional info:
 			 custom failure data""".dedent().trim_prefix("\n"))
+# gdlint: enable=mixed-tabs-and-spaces
 
 
-@warning_ignore("unused_parameter")
-func test_invalid_function(timeout := 100) -> void:
+func test_invalid_function(_timeout := 100) -> void:
 	(
 		await assert_failure_await(func() -> void: await assert_func(self, "invalid_func_name", [])\
 		.wait_until(1000)\

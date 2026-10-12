@@ -86,8 +86,7 @@ func test_diff_unicode() -> void:
 	assert_array(_as_arrays(GdDiffTool.diff("ä€ü", "ä€x"))).is_equal([[2, 1, 2, 1]])
 
 
-@warning_ignore("unused_parameter")
-func test_diff_rebuilds_expected(fuzzer := Fuzzers.rand_str(1, 200), fuzzer_iterations := 200) -> void:
+func test_diff_rebuilds_expected(fuzzer := Fuzzers.rand_str(1, 200), _fuzzer_iterations := 200) -> void:
 	# the hunks applied to the current value must always result in the expected value
 	var current: String = fuzzer.next_value()
 	var expected: String = fuzzer.next_value()

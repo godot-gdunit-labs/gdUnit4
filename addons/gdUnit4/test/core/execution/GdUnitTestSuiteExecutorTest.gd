@@ -1,3 +1,4 @@
+# gdlint: disable=max-file-lines
 # GdUnit generated TestSuite
 class_name GdUnitTestSuiteExecutorTest
 extends GdUnitTestSuite
@@ -492,11 +493,11 @@ func test_execute_failure_and_orphans() -> void:
 			[],
 			# ends with warnings
 			["WARNING: Detected 2 possible orphan nodes.",
-			 "WARNING: Detected 3 orphan nodes."],
+			"WARNING: Detected 3 orphan nodes."],
 			[],
 			# ends with failure and warnings
 			["WARNING: Detected 2 possible orphan nodes.",
-			 "fail on test_case2()"],
+			"fail on test_case2()"],
 			# and one warning detected at stage 'after'
 			["WARNING: Detected 1 possible orphan nodes."]
 		])
@@ -806,6 +807,7 @@ func test_execute_parameterizied_tests() -> void:
 		])
 
 
+# gdlint: disable=mixed-tabs-and-spaces
 func test_execute_test_suite_is_skipped() -> void:
 	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteSkipped.resource")
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
@@ -885,6 +887,7 @@ func test_execute_test_case_is_skipped() -> void:
 			[],
 			[]
 		])
+# gdlint: enable=mixed-tabs-and-spaces
 
 
 func test_execute_test_case_is_flaky_and_failed() -> void:

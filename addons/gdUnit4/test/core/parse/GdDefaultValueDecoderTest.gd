@@ -91,7 +91,7 @@ func test_decode_Transforms(variant_type: int, value: Variant, expected: String,
 		"Transform3D(Vector3"+str(Vector3(1, 2, 3))+", Vector3"+str(Vector3(4, 5, 6))
 		+", Vector3"+str(Vector3(7, 8, 9))+", Vector3"+str(Vector3(1, 1, 1))+")"],
 	[TYPE_PROJECTION, Projection(), "Projection(Vector4%s, Vector4%s, Vector4%s, Vector4%s)"
-		 % [Vector4(1, 0, 0, 0), Vector4(0, 1, 0, 0), Vector4(0, 0, 1, 0), Vector4(0, 0, 0, 1)]],
+		% [Vector4(1, 0, 0, 0), Vector4(0, 1, 0, 0), Vector4(0, 0, 1, 0), Vector4(0, 0, 0, 1)]],
 	[TYPE_PROJECTION, Projection(Vector4.ONE, Vector4.ONE*2, Vector4.ONE*3, Vector4.ZERO),
 		"Projection(Vector4%s, Vector4%s, Vector4%s, Vector4%s)" %
 		[Vector4.ONE, Vector4.ONE*2, Vector4.ONE*3, Vector4.ZERO]]

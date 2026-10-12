@@ -1,6 +1,10 @@
 class_name GdUnitSpyTest  # gdlint: ignore=max-public-methods
 extends GdUnitTestSuite
 
+const Issue = preload("res://addons/gdUnit4/test/resources/issues/gd-166/issue.gd")
+const Type = preload("res://addons/gdUnit4/test/resources/issues/gd-166/types.gd")
+const TEST_SCENE := preload("res://addons/gdUnit4/test/mocker/resources/scenes/TestScene.tscn")
+
 
 func before() -> void:
 	# we disable the error reporting to do not spam the logs
@@ -139,7 +143,7 @@ func test_spy_class_with_custom_formattings() -> void:
 	verify_no_more_interactions(do_spy)
 	assert_failure(func() -> void: verify_no_interactions(do_spy))\
 		.is_failed() \
-		.has_line(140)
+		.has_line(144)
 
 
 func test_spy_copied_class_members() -> void:
@@ -253,7 +257,7 @@ func test_verify_fail() -> void:
 	@warning_ignore("unsafe_method_access")
 	assert_failure(func() -> void: verify(spy_node, 1).set_process(true)) \
 		.is_failed() \
-		.has_line(254) \
+		.has_line(258) \
 		.has_message(expected_error)
 
 
@@ -282,7 +286,7 @@ func test_verify_func_interaction_wiht_PackedStringArray_fail() -> void:
 	@warning_ignore("unsafe_method_access")
 	assert_failure(func() -> void: verify(spy_instance, 1).set_values([])) \
 		.is_failed() \
-		.has_line(283) \
+		.has_line(287) \
 		.has_message(expected_error)
 
 	reset(spy_instance)
@@ -301,7 +305,7 @@ func test_verify_func_interaction_wiht_PackedStringArray_fail() -> void:
 	@warning_ignore("unsafe_method_access")
 	assert_failure(func() -> void: verify(spy_instance, 1).set_values([])) \
 		.is_failed() \
-		.has_line(302) \
+		.has_line(306) \
 		.has_message(expected_error)
 
 
@@ -357,7 +361,7 @@ func test_verify_no_interactions_fails() -> void:
 	# it should fail because we have interactions
 	assert_failure(func() -> void: verify_no_interactions(spy_node)) \
 		.is_failed() \
-		.has_line(358) \
+		.has_line(362) \
 		.has_message(expected_error)
 
 
@@ -430,7 +434,7 @@ func test_verify_no_more_interactions_but_has() -> void:
 			.dedent().trim_prefix("\n")
 	assert_failure(func() -> void: verify_no_more_interactions(spy_node)) \
 		.is_failed() \
-		.has_line(431) \
+		.has_line(435) \
 		.has_message(expected_error)
 
 
@@ -498,10 +502,6 @@ func test_spy_snake_case_named_class_by_class() -> void:
 	verify_no_more_interactions(spy_tcp_server)
 
 
-const Issue = preload("res://addons/gdUnit4/test/resources/issues/gd-166/issue.gd")
-const Type = preload("res://addons/gdUnit4/test/resources/issues/gd-166/types.gd")
-
-
 func test_spy_preload_class_GD_166() -> void:
 	var instance :Object = auto_free(Issue.new())
 	var spy_instance :Variant = spy(instance)
@@ -555,8 +555,7 @@ class ClassWithSignal:
 			emit_signal(test_signal_b.get_name(), "bb", true)
 		return true
 
-	@warning_ignore("unused_parameter")
-	func do_call(name: String, ...varargs: Array) -> void:
+	func do_call(_name: String, ..._varargs: Array) -> void:
 		pass
 
 
@@ -642,7 +641,7 @@ func test_spy_scene_by_resource_path() -> void:
 
 
 func test_spy_on_PackedScene() -> void:
-	var resource := load("res://addons/gdUnit4/test/mocker/resources/scenes/TestScene.tscn")
+	var resource := TEST_SCENE
 	var original_script :Script = resource.get_script()
 	assert_object(resource).is_instanceof(PackedScene)
 
@@ -664,7 +663,7 @@ func test_spy_on_PackedScene() -> void:
 
 
 func test_spy_scene_by_instance() -> void:
-	var resource: PackedScene = load("res://addons/gdUnit4/test/mocker/resources/scenes/TestScene.tscn")
+	var resource: PackedScene = TEST_SCENE
 	var instance :Control = resource.instantiate()
 	var original_script :Script = instance.get_script()
 	var spy_scene :Variant = spy(instance)

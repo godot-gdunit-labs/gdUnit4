@@ -23,6 +23,7 @@ func test_is_not_null() -> void:
 		.has_message("Expecting: not to be '<null>'")
 
 
+# gdlint: disable=mixed-tabs-and-spaces
 func test_is_equal() -> void:
 	assert_str("This is a test message").is_equal("This is a test message")
 	assert_str("abc").is_equal("abc")
@@ -477,15 +478,16 @@ func test_日本語() -> void:
 
 
 func test_is_equal_on_rich_text() -> void:
+	# We expect for text containing bbcode tags is rendered with masked tags
 	assert_failure(func() -> void:
 		assert_str("[color=ff00ff]test[/color]").is_equal("[color=ffff00]test[/color]")
 	).is_failed() \
-		# We expect for text containing bbcode tags is rendered with masked tags
 		.has_message("""
 			Expecting:
 			 '[lb]color=ffff00]test[lb]/color]'
 			 but was
 			 '[lb]color=ff00ff]test[lb]/color]'""".dedent().trim_prefix("\n"))
+# gdlint: enable=mixed-tabs-and-spaces
 
 
 #region large values GD-1327

@@ -42,6 +42,7 @@ func test_is_not_null() -> void:
 		.has_message("Expecting: not to be '<null>'")
 
 
+# gdlint: disable=mixed-tabs-and-spaces
 func test_is_equal() -> void:
 	assert_dict({}).is_equal({})
 	assert_dict({1:1}).is_equal({1:1})
@@ -124,7 +125,7 @@ func test_is_not_equal() -> void:
 
 func test_is_same() -> void:
 	var dict_a := {}
-	var dict_b := {"key"="value", "key2"="value"}
+	var dict_b := {"key": "value", "key2": "value"}
 	var dict_c := {1:1, "key_a": "value_a"}
 	var dict_d := {"key_a": "value_a", 1:1}
 	assert_dict(dict_a).is_same(dict_a)
@@ -572,6 +573,7 @@ func test_append_failure_message() -> void:
 			  }'
 			Additional info:
 			 custom failure data""".dedent().trim_prefix("\n"))
+# gdlint: enable=mixed-tabs-and-spaces
 
 
 # tests if an assert fails the 'is_failure' reflects the failure status

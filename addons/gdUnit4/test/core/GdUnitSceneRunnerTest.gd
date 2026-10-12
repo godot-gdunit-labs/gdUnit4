@@ -57,8 +57,7 @@ func test_invoke_method() -> void:
 	assert_that(runner.invoke("sub", 10, 12)).is_equal("The method 'sub' not exist checked loaded scene.")
 
 
-@warning_ignore("unused_parameter")
-func test_simulate_frames(timeout := 5000) -> void:
+func test_simulate_frames(_timeout := 5000) -> void:
 	var runner := scene_runner(load_test_scene())
 	var box1 :ColorRect = runner.get_property("_box1")
 	# initial is white
@@ -78,8 +77,7 @@ func test_simulate_frames(timeout := 5000) -> void:
 	assert_object(box1.color).is_equal(Color.RED)
 
 
-@warning_ignore("unused_parameter")
-func test_simulate_frames_withdelay(timeout := 4000) -> void:
+func test_simulate_frames_withdelay(_timeout := 4000) -> void:
 	var runner := scene_runner(load_test_scene())
 	var box1 :ColorRect = runner.get_property("_box1")
 	# initial is white
@@ -94,8 +92,7 @@ func test_simulate_frames_withdelay(timeout := 4000) -> void:
 	assert_object(box1.color).is_equal(Color.RED)
 
 
-@warning_ignore("unused_parameter")
-func test_run_scene_colorcycle(timeout := 2000) -> void:
+func test_run_scene_colorcycle(_timeout := 2000) -> void:
 	var runner := scene_runner(load_test_scene())
 	var box1 :ColorRect = runner.get_property("_box1")
 	# verify inital color
@@ -218,7 +215,7 @@ func test_await_signal_without_time_factor() -> void:
 		# should be interrupted is will never change to Color.KHAKI
 		await assert_failure_await(func x() -> void: await runner.await_signal( "panel_color_change", [box1, Color.KHAKI], 300))
 	).has_message("await_signal_on(panel_color_change, [%s, %s]) timed out after 300ms" % [str(box1), str(Color.KHAKI)])\
-		.has_line(219)
+		.has_line(216)
 
 
 func test_await_signal_with_time_factor() -> void:
@@ -235,7 +232,7 @@ func test_await_signal_with_time_factor() -> void:
 		# should be interrupted is will never change to Color.KHAKI
 		await assert_failure_await(func x() -> void: await runner.await_signal("panel_color_change", [box1, Color.KHAKI], 30))
 	).has_message("await_signal_on(panel_color_change, [%s, %s]) timed out after 30ms" % [str(box1), str(Color.KHAKI)])\
-		.has_line(236)
+		.has_line(233)
 
 
 func test_manipulate_time_scale() -> void:
@@ -276,8 +273,7 @@ func test_simulate_until_signal() -> void:
 	await runner.simulate_until_signal("panel_color_change", box1, Color.GREEN)
 
 
-@warning_ignore("unused_parameter")
-func test_simulate_until_object_signal(timeout := 2000) -> void:
+func test_simulate_until_object_signal(_timeout := 2000) -> void:
 	var runner := scene_runner(load_test_scene())
 
 	# inital no spell is fired

@@ -9,6 +9,7 @@ const __source = "res://addons/gdUnit4/src/core/command/GdUnitCommandTestSession
 var _command: GdUnitCommandTestSession
 
 class TestGdUnitCommandTestSession extends GdUnitCommandTestSession:
+	# gdlint: ignore=unnecessary-pass
 	pass
 
 

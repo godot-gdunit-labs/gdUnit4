@@ -1,9 +1,14 @@
+# gdlint: disable=max-file-lines,max-public-methods
 @warning_ignore_start("unsafe_method_access")
 class_name GdUnitMockerTest
 extends GdUnitTestSuite
 
 
+const TEST_SCENE := preload("res://addons/gdUnit4/test/mocker/resources/scenes/TestScene.tscn")
+
+
 var resource_path := "res://addons/gdUnit4/test/mocker/resources/"
+var _test_signal_args := Array()
 
 func before() -> void:
 	# disable error pushing for testing
@@ -154,7 +159,6 @@ func test_mock_extends_godot_class() -> void:
 		.contains("extends World3D")
 
 
-var _test_signal_args := Array()
 func _emit_ready(...args: Array) -> void:
 	if args.is_empty():
 		return
@@ -1124,7 +1128,7 @@ func test_mock_scene_by_path() -> void:
 
 
 func test_mock_scene_by_resource() -> void:
-	var resource: Object = load("res://addons/gdUnit4/test/mocker/resources/scenes/TestScene.tscn")
+	var resource: Object = TEST_SCENE
 	var mocked_scene: Variant = mock(resource)
 	assert_object(mocked_scene).is_not_null()
 	assert_object(mocked_scene.get_script()).is_not_null()
@@ -1134,7 +1138,7 @@ func test_mock_scene_by_resource() -> void:
 
 
 func test_mock_scene_by_instance() -> void:
-	var resource := load("res://addons/gdUnit4/test/mocker/resources/scenes/TestScene.tscn")
+	var resource := TEST_SCENE
 	var instance :Control = auto_free(resource.instantiate())
 	var mocked_scene: Variant = mock(instance)
 	# must fail mock an instance is not allowed

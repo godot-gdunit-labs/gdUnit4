@@ -1,6 +1,8 @@
 extends GdUnitTestSuite
 @warning_ignore_start("redundant_await")
 
+var o2: C2
+
 # This test setup uses two monitors, which are created for each new test.
 # The monitors must be reinitialized for each run, otherwise signals from previous runs will be detected incorrectly.
 # See https://github.com/MikeSchulze/gdUnit4/issues/1002
@@ -48,8 +50,6 @@ class C2:
 	func _on_s1() -> void:
 		s2.emit()
 		x = 2
-
-var o2: C2
 
 
 func before() -> void:

@@ -76,10 +76,10 @@ func test_is_not_instanceof() -> void:
 
 func test_is_inheriting() -> void:
 	# test on native Godot class
+	# we need to specify CanvasItem by string name because is an abstract class
 	assert_object(auto_free(TabContainer.new()))\
 		.is_inheriting(Container)\
 		.is_inheriting(Control)\
-		# we need to specify by string name because is an abstract class
 		.is_inheriting("CanvasItem")\
 		.is_inheriting(Node)\
 		.is_inheriting(Object)
@@ -160,6 +160,7 @@ func test_is_same() -> void:
 		.is_failed()
 
 
+# gdlint: disable=mixed-tabs-and-spaces
 func test_is_not_same() -> void:
 	var obj1 :Variant = auto_free(Node.new())
 	var obj2 :Variant = obj1
@@ -229,6 +230,7 @@ func test_append_failure_message() -> void:
 			Expecting: '<null>' but was <Node>
 			Additional info:
 			 custom failure data""".dedent().trim_prefix("\n"))
+# gdlint: enable=mixed-tabs-and-spaces
 
 
 # tests if an assert fails the 'is_failure' reflects the failure status
@@ -257,7 +259,9 @@ func test_is_failure() -> void:
 
 
 class MyNode extends Node:
+	# gdlint: ignore=unnecessary-pass
 	pass
 
 class MyExtendedNode extends MyNode:
+	# gdlint: ignore=unnecessary-pass
 	pass

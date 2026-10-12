@@ -2,17 +2,17 @@ extends GdUnitTestSuite
 
 
 var test_retries := {
-	"test_flaky_success" = 0,
-	"test_flaky_fail" = 0,
-	"test_success" = 0,
-	"test_paramaterized_flaky:0" = 0,
-	"test_paramaterized_flaky:1" = 0,
-	"test_paramaterized_flaky:2" = 0,
-	"test_paramaterized_flaky:3" = 0,
-	"test_paramaterized_flaky:4" = 0,
-	"test_paramaterized_flaky:5" = 0,
-	"test_fuzzed_flaky_success" = 0,
-	"test_fuzzed_flaky_fail" = 0
+	"test_flaky_success": 0,
+	"test_flaky_fail": 0,
+	"test_success": 0,
+	"test_paramaterized_flaky:0": 0,
+	"test_paramaterized_flaky:1": 0,
+	"test_paramaterized_flaky:2": 0,
+	"test_paramaterized_flaky:3": 0,
+	"test_paramaterized_flaky:4": 0,
+	"test_paramaterized_flaky:5": 0,
+	"test_fuzzed_flaky_success": 0,
+	"test_fuzzed_flaky_fail": 0
 }
 
 var _run_with_reries := 5

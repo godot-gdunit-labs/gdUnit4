@@ -2,8 +2,6 @@
 class_name GodotClassNameFuzzer
 extends Fuzzer
 
-var class_names :Array[String] = []
-
 const EXCLUDED_CLASSES = [
 	"JavaClass",
 	"GDScript",
@@ -27,6 +25,8 @@ const EXCLUDED_CLASSES = [
 	"UPNPDevice",
 	"UPNP"
 ]
+
+var class_names :Array[String] = []
 
 
 func _init(no_singleton :bool = false, only_instancialbe :bool = false) -> void:

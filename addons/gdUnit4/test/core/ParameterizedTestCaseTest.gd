@@ -2,6 +2,9 @@
 class_name ParameterizedTestCaseTest
 extends GdUnitTestSuite
 
+const _data1 := ["aa"]
+const _data2 := ["bb"]
+
 var _collected_tests: Dictionary[String, Array] = {}
 var _expected_tests := {
 	"test_parameterized_bool_value" : [
@@ -71,6 +74,11 @@ var _expected_tests := {
 
 var _test_node_before: Node
 var _test_node_before_test: Node
+var _test_set := [
+	["test_a"],
+	["test_b"],
+	["test_c"]
+]
 
 
 func before() -> void:
@@ -281,12 +289,11 @@ func test_with_dynamic_parameter_resolving(name_: String, value: Variant, expect
 	collect_test_call("test_with_dynamic_paramater_resolving", [name_])
 
 
-@warning_ignore("unused_parameter")
 func test_with_dynamic_parameter_resolving2(
 	name_: String,
-	type: Variant,
-	log_level: Variant,
-	expected_logs: Dictionary,
+	_type: Variant,
+	_log_level: Variant,
+	_expected_logs: Dictionary,
 	_test_parameters := [
 		["test_a", null, "LOG", {}],
 		[
@@ -308,21 +315,10 @@ func test_with_dynamic_parameter_resolving2(
 	collect_test_call("test_with_dynamic_paramater_resolving2", [name_])
 
 
-var _test_set := [
-	["test_a"],
-	["test_b"],
-	["test_c"]
-]
-
-
 func test_with_extern_parameter_set(value: String, _test_parameters := _test_set) -> void:
 	assert_str(value).is_not_empty()
 	assert_array(_test_parameters).is_empty()
 	collect_test_call("test_with_extern_parameter_set", [value])
-
-
-const _data1 := ["aa"]
-const _data2 := ["bb"]
 
 
 func test_with_extern_const_parameter_set(value: String, _test_parameters := [_data1, _data2]) -> void:

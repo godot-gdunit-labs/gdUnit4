@@ -40,8 +40,7 @@ func test_timeout_after_test_completes() -> void:
 
 
 # set test timeout to 2s
-@warning_ignore("unused_parameter")
-func test_timeout_2s(timeout:=2000) -> void:
+func test_timeout_2s(_timeout:=2000) -> void:
 	assert_str(_before_arg).is_equal("---before---")
 	prints("B", "0s")
 	await await_millis(1000)
@@ -56,8 +55,7 @@ func test_timeout_2s(timeout:=2000) -> void:
 
 
 # set test timeout to 4s
-@warning_ignore("unused_parameter")
-func test_timeout_4s(timeout:=4000) -> void:
+func test_timeout_4s(_timeout:=4000) -> void:
 	assert_str(_before_arg).is_equal("---before---")
 	prints("C", "0s")
 	await await_millis(1000)
@@ -73,8 +71,7 @@ func test_timeout_4s(timeout:=4000) -> void:
 	prints("C", "end")
 
 
-@warning_ignore("unused_parameter")
-func test_timeout_single_yield_wait(timeout:=3000) -> void:
+func test_timeout_single_yield_wait(_timeout:=3000) -> void:
 	assert_str(_before_arg).is_equal("---before---")
 	prints("D", "0s")
 	await await_millis(6000)
@@ -84,8 +81,7 @@ func test_timeout_single_yield_wait(timeout:=3000) -> void:
 	prints("D", "end test test_timeout")
 
 
-@warning_ignore("unused_parameter")
-func test_timeout_long_running_test_abort(timeout:=4000) -> void:
+func test_timeout_long_running_test_abort(_timeout:=4000) -> void:
 	assert_str(_before_arg).is_equal("---before---")
 	prints("E", "0s")
 	var start_time := Time.get_ticks_msec()
@@ -112,8 +108,8 @@ func test_timeout_long_running_test_abort(timeout:=4000) -> void:
 	prints("F", "end test test_timeout")
 
 
-@warning_ignore("unused_parameter", "unused_variable")
-func test_timeout_fuzzer(fuzzer := Fuzzers.rangei(-23, 22), timeout:=2000) -> void:
+@warning_ignore("unused_variable")
+func test_timeout_fuzzer(fuzzer := Fuzzers.rangei(-23, 22), _timeout:=2000) -> void:
 	discard_error_interupted_by_timeout()
 	fuzzer.next_value()
 	# wait each iteration 200ms

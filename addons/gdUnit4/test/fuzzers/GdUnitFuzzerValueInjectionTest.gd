@@ -1,7 +1,11 @@
 extends GdUnitTestSuite
 
+var expected_value: Array[int] = [22, 3, -14, -16, 21, 20, 4, -23, -19, -5]
+var expected_value_a: Array[int] = [22, -14, 21, 4, -19, -11, 5, 21, -6, -9]
+var expected_value_b: Array[int] = [35, 38, 34, 39, 35, 41, 37, 35, 34, 39]
 var _current_iterations : Dictionary
 var _expected_iterations: Dictionary
+var _fuzzer_instance_before : Fuzzer = null
 
 # a simple test fuzzer where provided a hard coded value set
 class TestFuzzer extends Fuzzer:
@@ -52,8 +56,6 @@ func after() -> void:
 
 		assert_int(current).override_failure_message("Expecting %s itertions but is %s checked test case %s" % [expected, current, test_case]).is_equal(expected)
 
-var _fuzzer_instance_before : Fuzzer = null
-
 
 func test_fuzzer_has_same_instance_peer_iteration(fuzzer := TestFuzzer.new(), _fuzzer_iterations := 10) -> void:
 	_current_iterations["test_fuzzer_has_same_instance_peer_iteration"] += 1
@@ -88,8 +90,6 @@ func test_fuzzer_with_timeout(fuzzer := Fuzzers.rangei(-23, 22), _fuzzer_iterati
 	# we not expect more than 10 iterations it should be interuptead by a timeout
 	assert_int(fuzzer.iteration_index()).is_less_equal(10)
 
-var expected_value: Array[int] = [22, 3, -14, -16, 21, 20, 4, -23, -19, -5]
-
 
 func test_fuzzer_inject_value_with_seed(fuzzer := Fuzzers.rangei(-23, 22), _fuzzer_iterations := 10, _fuzzer_seed := 187772) -> void:
 	assert_object(fuzzer).is_not_null()
@@ -101,11 +101,13 @@ func test_fuzzer_inject_value_with_seed(fuzzer := Fuzzers.rangei(-23, 22), _fuzz
 		.override_failure_message("Expect value %s checked test iteration %s\n but was %s" % [expected, iteration_index, current])\
 		.is_equal(expected)
 
-var expected_value_a: Array[int] = [22, -14, 21, 4, -19, -11, 5, 21, -6, -9]
-var expected_value_b: Array[int] = [35, 38, 34, 39, 35, 41, 37, 35, 34, 39]
 
-
-func test_multiple_fuzzers_inject_value_with_seed(fuzzer_a := Fuzzers.rangei(-23, 22), fuzzer_b := Fuzzers.rangei(33, 44), _fuzzer_iterations := 10, _fuzzer_seed := 187772) -> void:
+func test_multiple_fuzzers_inject_value_with_seed(
+	fuzzer_a := Fuzzers.rangei(-23, 22),
+	fuzzer_b := Fuzzers.rangei(33, 44),
+	_fuzzer_iterations := 10,
+	_fuzzer_seed := 187772
+) -> void:
 	_current_iterations["test_multiple_fuzzers_inject_value_with_seed"] += 1
 	assert_object(fuzzer_a).is_not_null()
 	assert_object(fuzzer_b).is_not_null()

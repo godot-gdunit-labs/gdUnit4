@@ -1,3 +1,4 @@
+# gdlint: disable=max-file-lines,max-public-methods
 @warning_ignore_start("redundant_await", "unsafe_method_access")
 # GdUnit generated TestSuite
 extends GdUnitTestSuite

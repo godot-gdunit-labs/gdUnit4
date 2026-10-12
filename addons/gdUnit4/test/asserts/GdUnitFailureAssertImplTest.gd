@@ -38,8 +38,7 @@ func test_assert_failure_on_invalid_cb() -> void:
 		.has_message("Invalid Callable! It must be a callable of 'GdUnitAssert'")
 
 
-@warning_ignore("unused_parameter")
-func test_assert_failure_on_assert(test_name :String, assert_type :Object, value :Variant, test_parameters := [
+func test_assert_failure_on_assert(_test_name :String, assert_type :Object, value :Variant, _test_parameters := [
 	["GdUnitBoolAssert", GdUnitBoolAssert, true],
 	["GdUnitStringAssert", GdUnitStringAssert, "value"],
 	["GdUnitIntAssert", GdUnitIntAssert, 42],
@@ -98,8 +97,8 @@ func test_has_stack_trace_depth_1() -> void:
 		.is_failed() \
 		.has_message("Expecting: 'false' but is 'true'") \
 		.has_stack_trace([
-			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 85, "_stack_fail_1"),
-			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 97, "test_has_stack_trace_depth_1"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 84, "_stack_fail_1"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 96, "test_has_stack_trace_depth_1"),
 		])
 
 
@@ -108,10 +107,10 @@ func test_has_stack_trace_depth_3() -> void:
 		.is_failed() \
 		.has_message("Expecting: 'false' but is 'true'") \
 		.has_stack_trace([
-			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 85, "_stack_fail_1"),
-			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 89, "_stack_fail_2"),
-			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 93, "_stack_fail_3"),
-			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 107, "test_has_stack_trace_depth_3"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 84, "_stack_fail_1"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 88, "_stack_fail_2"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 92, "_stack_fail_3"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 106, "test_has_stack_trace_depth_3"),
 		])
 
 #endregion

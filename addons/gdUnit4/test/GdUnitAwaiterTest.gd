@@ -4,12 +4,12 @@
 class_name GdUnitAwaiterTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/GdUnitAwaiter.gd'
-
 signal test_signal_a()
 signal test_signal_b()
 signal test_signal_c(value :String)
+
+# TestSuite generated from
+const __source = 'res://addons/gdUnit4/src/GdUnitAwaiter.gd'
 
 
 func after_test() -> void:

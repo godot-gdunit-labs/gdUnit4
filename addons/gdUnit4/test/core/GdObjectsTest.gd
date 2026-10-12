@@ -1,5 +1,7 @@
 extends GdUnitTestSuite
 
+const TEST_SCENE := preload("res://addons/gdUnit4/test/mocker/resources/scenes/TestScene.tscn")
+
 
 func test_equals_string() -> void:
 	var a := ""
@@ -340,14 +342,12 @@ func test_extract_class_name_from_instance() -> void:
 
 
 # verify enigne class names are not converted by configured naming convention
-@warning_ignore("unused_parameter")
-func test_extract_class_name_from_class_path(fuzzer := GodotClassNameFuzzer.new(true, true), fuzzer_iterations := 100) -> void:
+func test_extract_class_name_from_class_path(fuzzer := GodotClassNameFuzzer.new(true, true), _fuzzer_iterations := 100) -> void:
 	var clazz_name :String = fuzzer.next_value()
 	assert_str(GdObjects.extract_class_name_from_class_path(PackedStringArray([clazz_name]))).is_equal(clazz_name)
 
 
-@warning_ignore("unused_parameter")
-func test_extract_class_name_godot_classes(fuzzer := GodotClassNameFuzzer.new(true, true), fuzzer_iterations := 100) -> void:
+func test_extract_class_name_godot_classes(fuzzer := GodotClassNameFuzzer.new(true, true), _fuzzer_iterations := 100) -> void:
 	var extract_class_name_ := fuzzer.next_value() as String
 	var instance :Variant = ClassDB.instantiate(extract_class_name_)
 	assert_result(extract_class_name(instance)).is_equal(extract_class_name_)
@@ -451,7 +451,7 @@ func test_is_instance_scene() -> void:
 	assert_bool(GdObjects.is_instance_scene(auto_free(Control.new()))).is_false()
 
 	# now check checked a loaded scene
-	var resource: PackedScene = load("res://addons/gdUnit4/test/mocker/resources/scenes/TestScene.tscn")
+	var resource: PackedScene = TEST_SCENE
 	assert_bool(GdObjects.is_instance_scene(resource)).is_false()
 	# checked a instance of a scene
 	assert_bool(GdObjects.is_instance_scene(auto_free(resource.instantiate()))).is_true()
@@ -463,7 +463,7 @@ func test_is_scene_resource_path() -> void:
 	assert_bool(GdObjects.is_scene_resource_path(auto_free(Control.new()))).is_false()
 
 	# check checked a loaded scene
-	var resource := load("res://addons/gdUnit4/test/mocker/resources/scenes/TestScene.tscn")
+	var resource := TEST_SCENE
 	assert_bool(GdObjects.is_scene_resource_path(resource)).is_false()
 	# checked resource path
 	assert_bool(GdObjects.is_scene_resource_path("res://addons/gdUnit4/test/mocker/resources/scenes/TestScene.tscn")).is_true()

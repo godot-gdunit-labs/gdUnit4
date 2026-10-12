@@ -1,12 +1,12 @@
 # this test suite simulates long running test cases
 extends GdUnitTestSuite
 
+const SECOND:int = 1000
+const MINUTE:int = SECOND*60
+
 var _iteration_timer_start := 0
 var _test_values_current :Dictionary
 var _test_values_expected :Dictionary
-
-const SECOND:int = 1000
-const MINUTE:int = SECOND*60
 
 class TestCaseStatistics:
 	var _test_before_calls :int

@@ -19,6 +19,15 @@ var example_parameters := [
 	'_test_set_a]'
 	]
 
+@warning_ignore_start("unused_private_class_variable")
+var _x := 42
+var _obj: Node2D
+var _color := Color.RED
+var _test_set_a := [Color(1,1,1), Color(.1,.1,.1)]
+var _test_param1 := 10
+var _test_param2 := 20
+@warning_ignore_restore("unused_private_class_variable")
+
 func parameters_as_array(index: int, arg1: String, arg2: String) -> Array[Variant]:
 	return [index, arg1, arg2]
 
@@ -37,15 +46,6 @@ class TestObjNamed extends RefCounted:
 	func _to_string() -> String:
 		return _value
 
-
-@warning_ignore_start("unused_private_class_variable")
-var _x := 42
-var _obj: Node2D
-var _color := Color.RED
-var _test_set_a := [Color(1,1,1), Color(.1,.1,.1)]
-var _test_param1 := 10
-var _test_param2 := 20
-@warning_ignore_restore("unused_private_class_variable")
 
 func before() -> void:
 	_obj = auto_free(Node2D.new())

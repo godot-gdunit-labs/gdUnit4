@@ -1,8 +1,10 @@
 extends GdUnitTestSuite
 
+const DISCOVER_EXAMPLE_TEST_SUITE := preload("res://addons/gdUnit4/test/core/discovery/resources/DiscoverExampleTestSuite.gd")
+
 
 func test_discover_many_test() -> void:
-	var script: GDScript = load("res://addons/gdUnit4/test/core/discovery/resources/DiscoverExampleTestSuite.gd")
+	var script: GDScript = DISCOVER_EXAMPLE_TEST_SUITE
 
 	var discovered_tests := []
 	GdUnitTestDiscoverer.discover_tests(script,
@@ -23,7 +25,7 @@ func test_discover_many_test() -> void:
 
 
 func test_discover_parameterized_test() -> void:
-	var script: GDScript = load("res://addons/gdUnit4/test/core/discovery/resources/DiscoverExampleTestSuite.gd")
+	var script: GDScript = DISCOVER_EXAMPLE_TEST_SUITE
 
 	var discovered_tests := []
 	GdUnitTestDiscoverer.discover_tests(script,
@@ -42,7 +44,7 @@ func test_discover_parameterized_test() -> void:
 
 
 func test_discover_tests() -> void:
-	var script: GDScript = load("res://addons/gdUnit4/test/core/discovery/resources/DiscoverExampleTestSuite.gd")
+	var script: GDScript = DISCOVER_EXAMPLE_TEST_SUITE
 
 	var discovered_tests := []
 	GdUnitTestDiscoverer.discover_tests(script,\

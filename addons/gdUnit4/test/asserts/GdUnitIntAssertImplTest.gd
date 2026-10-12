@@ -219,6 +219,7 @@ func test_override_failure_message() -> void:
 		.has_message("Custom failure message")
 
 
+# gdlint: disable=mixed-tabs-and-spaces
 func test_append_failure_message() -> void:
 	assert_object(assert_int(314).append_failure_message("error")).is_instanceof(GdUnitIntAssert)
 	@warning_ignore("unsafe_method_access")
@@ -231,6 +232,7 @@ func test_append_failure_message() -> void:
 			 equal to 0 but is 314
 			Additional info:
 			 custom failure data""".dedent().trim_prefix("\n"))
+# gdlint: enable=mixed-tabs-and-spaces
 
 
 # tests if an assert fails the 'is_failure' reflects the failure status

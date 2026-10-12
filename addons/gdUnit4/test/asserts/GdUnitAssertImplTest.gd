@@ -135,6 +135,7 @@ func test_assert_not_yet_implemented() -> void:
 		.has_message("Test not implemented!")
 
 
+# gdlint: disable=mixed-tabs-and-spaces
 func test_append_failure_message() -> void:
 	assert_object(assert_that(null).append_failure_message("error")).is_instanceof(GdUnitObjectAssert)
 	@warning_ignore("unsafe_method_access")
@@ -146,3 +147,4 @@ func test_append_failure_message() -> void:
 			Expecting: not to be '<null>'
 			Additional info:
 			 custom failure data""".dedent().trim_prefix("\n"))
+# gdlint: enable=mixed-tabs-and-spaces

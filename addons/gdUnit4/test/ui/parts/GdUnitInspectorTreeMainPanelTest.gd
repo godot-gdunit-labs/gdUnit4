@@ -1,3 +1,4 @@
+# gdlint: disable=max-public-methods
 # GdUnit generated TestSuite
 class_name GdUnitInspectorTreeMainPanelTest
 extends GdUnitTestSuite
@@ -570,10 +571,12 @@ func test_discover_tests() -> void:
 
 
 func test_on_test_case_discover_added() -> void:
+	var suite_a := "res://addons/gdUnit4/test/dir_a/dir_b/my_test_suite.gd"
+	var suite_b := "res://addons/gdUnit4/test/dir_a/dir_x/my_test_suite2.gd"
 	_inspector.init_tree()
-	_inspector.on_test_case_discover_added(GdUnitTestCase.from("res://addons/gdUnit4/test/dir_a/dir_b/my_test_suite.gd", "res://addons/gdUnit4/test/dir_a/dir_b/my_test_suite.gd", 0, "test_foo"))
-	_inspector.on_test_case_discover_added(GdUnitTestCase.from("res://addons/gdUnit4/test/dir_a/dir_b/my_test_suite.gd", "res://addons/gdUnit4/test/dir_a/dir_b/my_test_suite.gd", 0, "test_bar"))
-	_inspector.on_test_case_discover_added(GdUnitTestCase.from("res://addons/gdUnit4/test/dir_a/dir_x/my_test_suite2.gd", "res://addons/gdUnit4/test/dir_a/dir_x/my_test_suite2.gd", 0, "test_foo"))
+	_inspector.on_test_case_discover_added(GdUnitTestCase.from(suite_a, suite_a, 0, "test_foo"))
+	_inspector.on_test_case_discover_added(GdUnitTestCase.from(suite_a, suite_a, 0, "test_bar"))
+	_inspector.on_test_case_discover_added(GdUnitTestCase.from(suite_b, suite_b, 0, "test_foo"))
 	_inspector.on_test_case_discover_added(GdUnitTestCase.from("res://my_test_suite3.gd", "res://my_test_suite3.gd", 0, "test_foo"))
 
 	# create expected tree
@@ -596,9 +599,10 @@ func test_on_test_case_discover_added() -> void:
 
 
 func test_add_parameterized_test_case() -> void:
+	var suite_a := "res://addons/gdUnit4/test/dir_a/dir_b/my_test_suite.gd"
 	_inspector.init_tree()
-	_inspector.on_test_case_discover_added(GdUnitTestCase.from("res://addons/gdUnit4/test/dir_a/dir_b/my_test_suite.gd", "res://addons/gdUnit4/test/dir_a/dir_b/my_test_suite.gd", 0, "test_parameterized", 0, "1.2"))
-	_inspector.on_test_case_discover_added(GdUnitTestCase.from("res://addons/gdUnit4/test/dir_a/dir_b/my_test_suite.gd", "res://addons/gdUnit4/test/dir_a/dir_b/my_test_suite.gd", 0, "test_parameterized", 1, "2.2"))
+	_inspector.on_test_case_discover_added(GdUnitTestCase.from(suite_a, suite_a, 0, "test_parameterized", 0, "1.2"))
+	_inspector.on_test_case_discover_added(GdUnitTestCase.from(suite_a, suite_a, 0, "test_parameterized", 1, "2.2"))
 
 	# create expected tree
 	var tree: Tree = auto_free(Tree.new())

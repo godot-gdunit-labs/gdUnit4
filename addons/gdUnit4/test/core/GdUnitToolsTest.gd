@@ -9,9 +9,11 @@ const __source = 'res://addons/gdUnit4/src/core/GdUnitTools.gd'
 
 
 class InnerTestNodeClass extends Node:
+	# gdlint: ignore=unnecessary-pass
 	pass
 
 class InnerTestRefCountedClass extends RefCounted:
+	# gdlint: ignore=unnecessary-pass
 	pass
 
 

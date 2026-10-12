@@ -19,15 +19,13 @@ var _test_seta := [
 ]
 
 
-@warning_ignore("unused_parameter")
-func test_supported_types(value :Variant, test_parameters := _test_seta) -> void:
+func test_supported_types(value :Variant, _test_parameters := _test_seta) -> void:
 	assert_object(assert_vector(value))\
 		.is_not_null()\
 		.is_instanceof(GdUnitVectorAssert)
 
 
-@warning_ignore("unused_parameter")
-func test_unsupported_types(value :Variant, details :String, test_parameters :=[
+func test_unsupported_types(value :Variant, details :String, _test_parameters :=[
 	[true, 'bool'],
 	[42, 'int'],
 	[42.0, 'float'],
@@ -38,8 +36,7 @@ func test_unsupported_types(value :Variant, details :String, test_parameters :=[
 		.has_message("GdUnitVectorAssert error, the type <%s> is not supported." % details)
 
 
-@warning_ignore("unused_parameter")
-func test_is_null(value :Variant, test_parameters := _test_seta) -> void:
+func test_is_null(value :Variant, _test_parameters := _test_seta) -> void:
 	if value == null:
 		assert_vector(null).is_null()
 	else:
@@ -48,8 +45,7 @@ func test_is_null(value :Variant, test_parameters := _test_seta) -> void:
 			.starts_with_message("Expecting: '<null>' but was '%s'" % str(value))
 
 
-@warning_ignore("unused_parameter")
-func test_is_not_null(value :Variant, test_parameters := _test_seta) -> void:
+func test_is_not_null(value :Variant, _test_parameters := _test_seta) -> void:
 	if value == null:
 		assert_failure(func() -> void: assert_vector(null).is_not_null()) \
 			.is_failed() \
@@ -58,7 +54,6 @@ func test_is_not_null(value :Variant, test_parameters := _test_seta) -> void:
 		assert_vector(value).is_not_null()
 
 
-@warning_ignore("unused_parameter")
 func test_is_equal() -> void:
 	assert_vector(Vector2.ONE).is_equal(Vector2.ONE)
 	assert_vector(Vector2.LEFT).is_equal(Vector2.LEFT)
@@ -83,8 +78,7 @@ func test_is_equal() -> void:
 		.has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
 
 
-@warning_ignore("unused_parameter")
-func test_is_equal_over_all_types(value :Variant, test_parameters := _test_seta) -> void:
+func test_is_equal_over_all_types(value :Variant, _test_parameters := _test_seta) -> void:
 	assert_vector(value).is_equal(value)
 
 
@@ -102,12 +96,12 @@ func test_is_not_equal() -> void:
 		.has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
 
 
-@warning_ignore("unused_parameter")
-func test_is_not_equal_over_all_types(value :Variant, test_parameters := _test_seta) -> void:
+func test_is_not_equal_over_all_types(value :Variant, _test_parameters := _test_seta) -> void:
 	var expected :Variant = Vector2.LEFT if value == null else value * 2
 	assert_vector(value).is_not_equal(expected)
 
 
+# gdlint: disable=mixed-tabs-and-spaces
 func test_is_equal_approx() -> void:
 	assert_vector(Vector2.ONE).is_equal_approx(Vector2.ONE, Vector2(0.004, 0.004))
 	assert_vector(Vector2(0.996, 0.996)).is_equal_approx(Vector2.ONE, Vector2(0.004, 0.004))
@@ -166,8 +160,7 @@ func test_is_equal_approx() -> void:
 		)
 
 
-@warning_ignore("unused_parameter")
-func test_is_equal_approx_over_all_types(value :Variant, expected :Variant, approx :Variant, test_parameters := [
+func test_is_equal_approx_over_all_types(value :Variant, expected :Variant, approx :Variant, _test_parameters := [
 	[Vector2(0.996, 1.004), Vector2.ONE, Vector2(0.004, 0.004)],
 	[Vector2i(9, 11), Vector2i(10, 10), Vector2i(1, 1)],
 	[Vector3(0.996, 0.996, 1.004), Vector3.ONE, Vector3(0.004, 0.004, 0.004)],
@@ -199,8 +192,7 @@ func test_is_less() -> void:
 		.has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
 
 
-@warning_ignore("unused_parameter")
-func test_is_less_over_all_types(value :Variant, expected :Variant, test_parameters := [
+func test_is_less_over_all_types(value :Variant, expected :Variant, _test_parameters := [
 	[Vector2(1.0, 1.0), Vector2(1.0001, 1.0001)],
 	[Vector2i(1, 1), Vector2i(2, 1)],
 	[Vector3(1.0, 1.0, 1.0), Vector3(1.0001, 1.0001, 1.0)],
@@ -233,8 +225,7 @@ func test_is_less_equal() -> void:
 		.has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
 
 
-@warning_ignore("unused_parameter")
-func test_is_less_equal_over_all_types(value :Variant, expected :Variant, test_parameters := [
+func test_is_less_equal_over_all_types(value :Variant, expected :Variant, _test_parameters := [
 	[Vector2(1.0, 1.0), Vector2(1.0001, 1.0001)],
 	[Vector2(1.0, 1.0), Vector2(1.0, 1.0)],
 	[Vector2i(1, 1), Vector2i(2, 1)],
@@ -272,8 +263,7 @@ func test_is_greater() -> void:
 		.has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
 
 
-@warning_ignore("unused_parameter")
-func test_is_greater_over_all_types(value :Variant, expected :Variant, test_parameters := [
+func test_is_greater_over_all_types(value :Variant, expected :Variant, _test_parameters := [
 	[Vector2(1.0001, 1.0001), Vector2(1.0, 1.0)],
 	[Vector2i(2, 1), Vector2i(1, 1)],
 	[Vector3(1.0001, 1.0001, 1.0), Vector3(1.0, 1.0, 1.0)],
@@ -307,8 +297,7 @@ func test_is_greater_equal() -> void:
 		.has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
 
 
-@warning_ignore("unused_parameter")
-func test_is_greater_equal_over_all_types(value :Variant, expected :Variant, test_parameters := [
+func test_is_greater_equal_over_all_types(value :Variant, expected :Variant, _test_parameters := [
 	[Vector2(1.0001, 1.0001), Vector2(1.0, 1.0)],
 	[Vector2(1.0, 1.0), Vector2(1.0, 1.0)],
 	[Vector2i(2, 1), Vector2i(1, 1)],
@@ -325,8 +314,7 @@ func test_is_greater_equal_over_all_types(value :Variant, expected :Variant, tes
 	assert_vector(value).is_greater_equal(expected)
 
 
-@warning_ignore("unused_parameter")
-func test_is_between(fuzzer := Fuzzers.rangev2(Vector2.ZERO, Vector2.ONE), fuzzer_iterations := 200) -> void:
+func test_is_between(fuzzer := Fuzzers.rangev2(Vector2.ZERO, Vector2.ONE), _fuzzer_iterations := 200) -> void:
 	var value :Vector2 = fuzzer.next_value()
 	assert_vector(value).is_between(Vector2.ZERO, Vector2.ONE)
 
@@ -351,8 +339,7 @@ func test_is_between_failed() -> void:
 		.has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
 
 
-@warning_ignore("unused_parameter")
-func test_is_between_over_all_types(value :Variant, from :Variant, to :Variant, test_parameters := [
+func test_is_between_over_all_types(value :Variant, from :Variant, to :Variant, _test_parameters := [
 	[Vector2(1.2, 1.2), Vector2(1.0, 1.0), Vector2(1.2, 1.2)],
 	[Vector2i(1, 1), Vector2i(1, 1), Vector2i(2, 2)],
 	[Vector3(1.2, 1.2, 1.2), Vector3(1.0, 1.0, 1.0), Vector3(1.2, 1.2, 1.2)],
@@ -363,8 +350,7 @@ func test_is_between_over_all_types(value :Variant, from :Variant, to :Variant, 
 	assert_vector(value).is_between(from, to)
 
 
-@warning_ignore("unused_parameter")
-func test_is_not_between(fuzzer := Fuzzers.rangev2(Vector2.ONE, Vector2.ONE*2), fuzzer_iterations := 200) -> void:
+func test_is_not_between(fuzzer := Fuzzers.rangev2(Vector2.ONE, Vector2.ONE*2), _fuzzer_iterations := 200) -> void:
 	var value :Vector2 = fuzzer.next_value()
 	assert_vector(null).is_not_between(Vector2.ZERO, Vector2.ONE)
 	assert_vector(value).is_not_between(Vector2.ZERO, Vector2.ONE)
@@ -381,8 +367,7 @@ func test_is_not_between(fuzzer := Fuzzers.rangev2(Vector2.ONE, Vector2.ONE*2), 
 		.has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
 
 
-@warning_ignore("unused_parameter")
-func test_is_not_between_over_all_types(value :Variant, from :Variant, to :Variant, test_parameters := [
+func test_is_not_between_over_all_types(value :Variant, from :Variant, to :Variant, _test_parameters := [
 	[Vector2(3.2, 1.2), Vector2(1.0, 1.0), Vector2(1.2, 1.2)],
 	[Vector2i(3, 1), Vector2i(1, 1), Vector2i(2, 2)],
 	[Vector3(3.2, 1.2, 1.2), Vector3(1.0, 1.0, 1.0), Vector3(1.2, 1.2, 1.2)],
@@ -421,6 +406,7 @@ func test_append_failure_message() -> void:
 			.trim_prefix("\n")
 			.replace("$v0", str(Vector2.ZERO))
 			.replace("$v1", str(Vector2.ONE)))
+# gdlint: enable=mixed-tabs-and-spaces
 
 
 # tests if an assert fails the 'is_failure' reflects the failure status

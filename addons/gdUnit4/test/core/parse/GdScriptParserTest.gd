@@ -1,13 +1,14 @@
 extends GdUnitTestSuite
 
-var _parser: GdScriptParser
-
 const TYPE_VOID := GdObjects.TYPE_VOID
 const TYPE_VARIANT := GdObjects.TYPE_VARIANT
 const TYPE_VARARG := GdObjects.TYPE_VARARG
 const TYPE_FUNC := GdObjects.TYPE_FUNC
 const TYPE_FUZZER := GdObjects.TYPE_FUZZER
 const TYPE_ENUM := GdObjects.TYPE_ENUM
+const CLASS_WITH_ENUM_RETURN_TYPES := preload("res://addons/gdUnit4/test/mocker/resources/ClassWithEnumReturnTypes.gd")
+
+var _parser: GdScriptParser
 
 
 func before() -> void:
@@ -308,7 +309,8 @@ func test_parse_arguments_default_build_in_types() -> void:
 
 
 func test_parse_arguments_fuzzers() -> void:
-	assert_array(_parser._parse_function_arguments("func test_foo(fuzzer_a = fuzz_a(), fuzzer_b := fuzz_b(), fuzzer_c :Fuzzer = fuzz_c(), fuzzer_iterations = 234, fuzzer_seed = 100):")) \
+	assert_array(_parser._parse_function_arguments(
+		"func test_foo(fuzzer_a = fuzz_a(), fuzzer_b := fuzz_b(), fuzzer_c :Fuzzer = fuzz_c(), fuzzer_iterations = 234, fuzzer_seed = 100):")) \
 		.has_size(5)\
 		.contains([
 			{"name" : "fuzzer_a", "type" : TYPE_FUZZER, "value" : 'fuzz_a()'},
@@ -331,7 +333,7 @@ func test_parse_arguments_typed_dict() -> void:
 
 func test_parse_arguments_variant() -> void:
 	# remove this line and complete your test
-	var args := _parser._parse_function_arguments('func generate(
+	var args := _parser._parse_function_arguments("""func generate(
 		ucids: Array[int],
 		position: Vector2i,
 		size: Vector2i,
@@ -340,7 +342,7 @@ func test_parse_arguments_variant() -> void:
 		button_name := "",
 		type_in := 0,
 		caption := "",
-		show_everywhere := false')
+		show_everywhere := false""")
 
 	assert_array(args)\
 		.has_size(9)\
@@ -518,7 +520,7 @@ func test_parse_func_description() -> void:
 
 
 func test_get_function_descriptors_return_type_enum() -> void:
-	var script: GDScript = load("res://addons/gdUnit4/test/mocker/resources/ClassWithEnumReturnTypes.gd")
+	var script: GDScript = CLASS_WITH_ENUM_RETURN_TYPES
 	var fds := _parser.get_function_descriptors(script, ["get_enum"])
 
 	assert_that(fds[0])\
@@ -528,7 +530,7 @@ func test_get_function_descriptors_return_type_enum() -> void:
 
 
 func test_parse_func_description_return_type_internal_class_enum() -> void:
-	var script: GDScript = load("res://addons/gdUnit4/test/mocker/resources/ClassWithEnumReturnTypes.gd")
+	var script: GDScript = CLASS_WITH_ENUM_RETURN_TYPES
 	var fds := _parser.get_function_descriptors(script, ["get_inner_class_enum"])
 
 	assert_that(fds[0])\
@@ -538,7 +540,7 @@ func test_parse_func_description_return_type_internal_class_enum() -> void:
 
 
 func test_parse_func_description_return_type_external_class_enum() -> void:
-	var script: GDScript = load("res://addons/gdUnit4/test/mocker/resources/ClassWithEnumReturnTypes.gd")
+	var script: GDScript = CLASS_WITH_ENUM_RETURN_TYPES
 	var fds := _parser.get_function_descriptors(script, ["get_external_class_enum"])
 
 	assert_that(fds[0])\

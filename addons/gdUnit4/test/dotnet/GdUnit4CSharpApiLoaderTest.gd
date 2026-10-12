@@ -8,13 +8,11 @@ extends GdUnitTestSuite
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
 
-@warning_ignore("unused_parameter")
-func before(do_skip := not GdUnit4CSharpApiLoader.is_api_loaded(), skip_reason := "Do run only for Godot .Net version") -> void:
+func before(_do_skip := not GdUnit4CSharpApiLoader.is_api_loaded(), _skip_reason := "Do run only for Godot .Net version") -> void:
 	pass
 
 
-@warning_ignore("unused_parameter")
-func test_is_engine_version_supported(version :int, expected :bool, test_parameters := [
+func test_is_engine_version_supported(version :int, expected :bool, _test_parameters := [
 	[0x40100, false],
 	[0x40500, false],
 	[0x40603, false],
@@ -43,10 +41,6 @@ func test_create_test_suite() -> void:
 	var info: Dictionary = result.value()
 	assert_str(info.get("path")).is_equal("user://tmp/test/examples/TestPersonTest.cs")
 	assert_int(info.get("line")).is_equal(16)
-
-
-class TestRunListener extends Node:
-	pass
 
 
 func test_discover_tests() -> void:

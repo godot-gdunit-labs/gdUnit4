@@ -20,8 +20,8 @@ func test_bbcode_tags_to_csi_codes_color_and_bgcolor() -> void:
 	var csi_formatted := GdUnitCSIMessageWriter.new()._bbcode_tags_to_csi_codes(bbcode)
 	assert_str(csi_formatted)\
 		.is_equal("[38;2;30;144;255mThis is a[48;2;0;77;0m[38;2;255;255;255mn[0m[38;2;30;144;255m[48;2;0;77;0m[0m[38;2;30;144;255m test"\
-		 + " [48;2;77;0;0m[38;2;255;255;255mm[0m[38;2;30;144;255m[48;2;77;0;0m[0m[38;2;30;144;255m[48;2;0;77;0m[38;2;255;255;255mM"\
-		 + "[0m[38;2;30;144;255m[48;2;0;77;0m[0m[38;2;30;144;255message[0m")
+		+ " [48;2;77;0;0m[38;2;255;255;255mm[0m[38;2;30;144;255m[48;2;77;0;0m[0m[38;2;30;144;255m[48;2;0;77;0m[38;2;255;255;255mM"\
+		+ "[0m[38;2;30;144;255m[48;2;0;77;0m[0m[38;2;30;144;255message[0m")
 
 
 func test_bbcode_tags_to_csi_codes_text_styles() -> void:

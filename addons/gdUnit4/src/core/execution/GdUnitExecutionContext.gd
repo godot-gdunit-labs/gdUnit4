@@ -111,11 +111,7 @@ static func of_test_case(pe: GdUnitExecutionContext, p_test_case: _TestCase) -> 
 	return context
 
 
-static func of_parameterized_test(
-	pe: GdUnitExecutionContext,
-	test_case_name: String,
-	test_case_parameter_set: Array
-) -> GdUnitExecutionContext:
+static func of_parameterized_test(pe: GdUnitExecutionContext, test_case_name: String, test_case_parameter_set: Array) -> GdUnitExecutionContext:
 	var context := GdUnitExecutionContext.new(test_case_name, pe)
 	context._test_case_name = test_case_name
 	context._test_case_parameter_set = test_case_parameter_set

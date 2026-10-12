@@ -687,10 +687,7 @@ func _on_select_next_item_by_state(item_state: int) -> TreeItem:
 func _on_select_previous_item_by_state(item_state: int) -> TreeItem:
 	var current_selected := _tree.get_selected()
 	# If nothing is selected, the first error is selected or the next one in the vicinity of the current selection is found
-	current_selected = (
-		_find_last_item_by_state(_tree_root, item_state) if current_selected == null
-		else _find_item_by_state(current_selected, item_state, true)
-	)
+	current_selected = _find_last_item_by_state(_tree_root, item_state) if current_selected == null else _find_item_by_state(current_selected, item_state, true)
 	# If no next failure found, then we try to select first last
 	if current_selected == null:
 		current_selected = _find_last_item_by_state(_tree_root, item_state)
@@ -711,8 +708,7 @@ func select_first_orphan() -> void:
 func update_test_suite(event: GdUnitEvent) -> void:
 	var item := _find_tree_item_by_test_suite(_tree_root, event.resource_path(), event.suite_name())
 	if not item:
-		push_error(("[InspectorTreeMainPanel#update_test_suite] Internal Error: "
-			+ "Can't find test suite item '{_suite_name}' for {_resource_path} ").format(event))
+		push_error("[InspectorTreeMainPanel#update_test_suite] Internal Error: Can't find test suite item '{_suite_name}' for {_resource_path} ".format(event))
 		return
 
 	update_item_state_recursive(item)

@@ -47,8 +47,7 @@ static func load_template(template: String, class_info: Dictionary) -> PackedStr
 	var lines := GdScriptParser.to_unix_format(source_code).split("\n")
 	@warning_ignore("return_value_discarded")
 	lines.insert(1, extends_clazz(class_info))
-	lines.insert(0, "@warning_ignore_start('unsafe_call_argument', 'shadowed_variable', 'untyped_declaration', "
-		+ "'native_method_override', 'int_as_enum_without_cast')")
+	lines.insert(0, "@warning_ignore_start('unsafe_call_argument', 'shadowed_variable', 'untyped_declaration', 'native_method_override', 'int_as_enum_without_cast')")
 	return lines
 
 
@@ -64,13 +63,7 @@ static func extends_clazz(class_info: Dictionary) -> String:
 
 
 # double all functions of given instance
-static func double_functions(
-	instance: Object,
-	clazz_name: String,
-	clazz_path: PackedStringArray,
-	func_doubler: GdFunctionDoubler,
-	exclude_functions: Array
-) -> PackedStringArray:
+static func double_functions(instance: Object, clazz_name: String, clazz_path: PackedStringArray, func_doubler: GdFunctionDoubler, exclude_functions: Array) -> PackedStringArray:
 	var doubled_source := PackedStringArray()
 	var parser := GdScriptParser.new()
 	var exclude_override_functions := EXCLUDE_VIRTUAL_FUNCTIONS + EXCLUDE_FUNCTIONS + exclude_functions

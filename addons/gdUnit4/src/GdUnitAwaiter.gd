@@ -2,8 +2,7 @@ class_name GdUnitAwaiter
 extends RefCounted
 
 
-# Waits for a specified signal in an interval of 50ms sent from the <source>, and terminates with an error after the specified timeout has
-# elapsed.
+# Waits for a specified signal in an interval of 50ms sent from the <source>, and terminates with an error after the specified timeout has elapsed.
 # source: the object from which the signal is emitted
 # signal_name: signal name
 # args: the expected signal arguments as an array

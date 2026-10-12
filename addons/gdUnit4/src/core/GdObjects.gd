@@ -198,21 +198,11 @@ static func obj2dict(obj: Object, hashed_objects := Dictionary()) -> Dictionary:
 	return {"%s" % clazz_name : dict}
 
 
-static func equals(
-	obj_a: Variant,
-	obj_b: Variant,
-	case_sensitive: bool = true,
-	compare_mode: COMPARE_MODE = COMPARE_MODE.PARAMETER_DEEP_TEST
-) -> bool:
+static func equals(obj_a: Variant, obj_b: Variant, case_sensitive: bool = true, compare_mode: COMPARE_MODE = COMPARE_MODE.PARAMETER_DEEP_TEST) -> bool:
 	return _equals(obj_a, obj_b, case_sensitive, compare_mode, [], 0)
 
 
-static func equals_sorted(
-	obj_a: Array[Variant],
-	obj_b: Array[Variant],
-	case_sensitive: bool = true,
-	compare_mode: COMPARE_MODE = COMPARE_MODE.PARAMETER_DEEP_TEST
-) -> bool:
+static func equals_sorted(obj_a: Array[Variant], obj_b: Array[Variant], case_sensitive: bool = true, compare_mode: COMPARE_MODE = COMPARE_MODE.PARAMETER_DEEP_TEST) -> bool:
 	var a: Array[Variant] = obj_a.duplicate()
 	var b: Array[Variant] = obj_b.duplicate()
 	a.sort()
@@ -220,14 +210,7 @@ static func equals_sorted(
 	return equals(a, b, case_sensitive, compare_mode)
 
 
-static func _equals(
-	obj_a: Variant,
-	obj_b: Variant,
-	case_sensitive: bool,
-	compare_mode: COMPARE_MODE,
-	deep_stack: Array,
-	stack_depth: int
-) -> bool:
+static func _equals(obj_a: Variant, obj_b: Variant, case_sensitive: bool, compare_mode: COMPARE_MODE, deep_stack: Array, stack_depth: int ) -> bool:
 	var type_a := typeof(obj_a)
 	var type_b := typeof(obj_b)
 	if stack_depth > 32:

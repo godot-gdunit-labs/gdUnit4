@@ -137,10 +137,7 @@ func _notification(what: int) -> void:
 
 
 func list_replace(indent: int) -> String:
-	var replace_pattern := (
-		"[img=12x12]res://addons/gdUnit4/src/update/assets/dot2.png[/img]" if indent %2
-		else "[img=12x12]res://addons/gdUnit4/src/update/assets/dot1.png[/img]"
-	)
+	var replace_pattern := "[img=12x12]res://addons/gdUnit4/src/update/assets/dot2.png[/img]" if indent %2 else "[img=12x12]res://addons/gdUnit4/src/update/assets/dot1.png[/img]"
 	replace_pattern += " $1"
 
 	for index in indent:

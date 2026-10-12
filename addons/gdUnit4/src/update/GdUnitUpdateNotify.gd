@@ -165,10 +165,7 @@ func _on_update_pressed() -> void:
 	DirAccess.copy_absolute("res://addons/gdUnit4/src/update/GdUnitUpdate.tscn", "res://addons/.gdunit_update/GdUnitUpdate.tscn")
 	DirAccess.copy_absolute("res://addons/gdUnit4/src/update/GdUnitUpdate.gd", "res://addons/.gdunit_update/GdUnitUpdate.gd")
 	var source := FileAccess.open("res://addons/gdUnit4/src/update/GdUnitUpdate.tscn", FileAccess.READ)
-	var content := source.get_as_text().replace(
-		"res://addons/gdUnit4/src/update/GdUnitUpdate.gd",
-		"res://addons/.gdunit_update/GdUnitUpdate.gd"
-	)
+	var content := source.get_as_text().replace("res://addons/gdUnit4/src/update/GdUnitUpdate.gd", "res://addons/.gdunit_update/GdUnitUpdate.gd")
 	var dest := FileAccess.open("res://addons/.gdunit_update/GdUnitUpdate.tscn", FileAccess.WRITE)
 	dest.store_string(content)
 	_update_progress.set_visible(true)

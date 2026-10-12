@@ -68,8 +68,7 @@ extends GdUnitAssert
 
 
 ## Verifies that the current Array contains exactly only the given values and nothing else, in any order.[br]
-## The values are compared by deep parameter comparision, for object reference compare you have to use [method
-## contains_same_exactly_in_any_order]
+## The values are compared by deep parameter comparision, for object reference compare you have to use [method contains_same_exactly_in_any_order]
 @abstract func contains_exactly_in_any_order(...expected: Array) -> GdUnitArrayAssert
 
 

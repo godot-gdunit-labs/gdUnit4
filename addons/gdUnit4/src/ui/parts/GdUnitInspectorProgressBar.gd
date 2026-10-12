@@ -16,8 +16,7 @@ func _ready() -> void:
 	# register for progress changes
 	if Engine.is_editor_hint():
 		@warning_ignore("unsafe_property_access", "unsafe_method_access")
-		if (get_parent().get_parent().get_parent().find_child("MainPanel", true, false)
-				.test_counters_changed.connect(_on_test_counter_changed) != OK):
+		if get_parent().get_parent().get_parent().find_child("MainPanel", true, false).test_counters_changed.connect(_on_test_counter_changed) != OK:
 			push_error("ProgressBar: Can't connect to MainPanel")
 
 

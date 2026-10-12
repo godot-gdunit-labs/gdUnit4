@@ -55,8 +55,7 @@ extends GdUnitAssert
 
 
 ## Verifies that the current dictionary contains the given key and value.[br]
-## The key and value are compared by deep parameter comparision, for object reference compare you have to use [method
-## contains_same_key_value]
+## The key and value are compared by deep parameter comparision, for object reference compare you have to use [method contains_same_key_value]
 @abstract func contains_key_value(key: Variant, value: Variant) -> GdUnitDictionaryAssert
 
 

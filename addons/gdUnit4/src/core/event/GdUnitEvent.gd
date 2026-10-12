@@ -46,12 +46,7 @@ func suite_before(p_resource_path: String, p_suite_name: String, p_total_count: 
 	return self
 
 
-func suite_after(
-	p_resource_path: String,
-	p_suite_name: String,
-	p_statistics: Dictionary = {},
-	p_reports: Array[GdUnitReport] = []
-) -> GdUnitEvent:
+func suite_after(p_resource_path: String, p_suite_name: String, p_statistics: Dictionary = {}, p_reports: Array[GdUnitReport] = []) -> GdUnitEvent:
 	_guid = GdUnitGUID.new()
 	_event_type = TESTSUITE_AFTER
 	_resource_path = p_resource_path

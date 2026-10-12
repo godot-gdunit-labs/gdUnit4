@@ -128,8 +128,7 @@ static func setup() -> void:
 	create_property_if_need(SERVER_TIMEOUT, DEFAULT_SERVER_TIMEOUT, "Server connection timeout in minutes")
 	create_property_if_need(TEST_TIMEOUT, DEFAULT_TEST_TIMEOUT, "Test case runtime timeout in seconds")
 	create_property_if_need(TEST_LOOKUP_FOLDER, DEFAULT_TEST_LOOKUP_FOLDER, HELP_TEST_LOOKUP_FOLDER)
-	create_property_if_need(TEST_SUITE_NAMING_CONVENTION, NAMING_CONVENTIONS.AUTO_DETECT,
-		"Naming convention to use when generating testsuites", NAMING_CONVENTIONS.keys())
+	create_property_if_need(TEST_SUITE_NAMING_CONVENTION, NAMING_CONVENTIONS.AUTO_DETECT, "Naming convention to use when generating testsuites", NAMING_CONVENTIONS.keys())
 	create_property_if_need(TEST_DISCOVER_ENABLED, false, "Automatically detect new tests in test lookup folders at runtime")
 	create_property_if_need(TEST_FLAKY_CHECK, false, "Rerun tests on failure and mark them as FLAKY")
 	create_property_if_need(TEST_FLAKY_MAX_RETRIES, 3, "Sets the number of retries for rerunning a flaky test")
@@ -474,13 +473,7 @@ static func build_property(property_name: String, property: Dictionary) -> GdUni
 	return GdUnitProperty.new(property_name, value_type, value, default, help_text, value_set)
 
 
-static func migrate_property(
-	old_property :String,
-	new_property :String,
-	default_value :Variant,
-	help :String,
-	converter := Callable()
-) -> void:
+static func migrate_property(old_property :String, new_property :String, default_value :Variant, help :String, converter := Callable()) -> void:
 	var property := get_property(old_property)
 	if property == null:
 		prints("Migration not possible, property '%s' not found" % old_property)

@@ -16,10 +16,7 @@ func _ready() -> void:
 	@warning_ignore("return_value_discarded")
 	_tween.set_loops()
 	@warning_ignore("return_value_discarded")
-	_tween.tween_property(%Label, "self_modulate", Color(1, 1, 1, .8), 1.0)\
-		.from_current()\
-		.set_trans(Tween.TRANS_BACK)\
-		.set_ease(Tween.EASE_IN_OUT)
+	_tween.tween_property(%Label, "self_modulate", Color(1, 1, 1, .8), 1.0).from_current().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN_OUT)
 
 
 func reset() -> void:

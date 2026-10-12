@@ -220,14 +220,7 @@ func print_stack_trace(stack_trace: GdUnitStackTrace) -> void:
 ## [param _effect] The effect to apply.[br]
 ## [param _align] The text alignment.[br]
 ## [param _flags] The style flags to apply.
-@abstract func _print_at(
-	_message: String,
-	_cursor_pos: int,
-	_color: Color,
-	_effect: GdUnitMessageWriter.Effect,
-	_align: Align,
-	_flags: int
-) -> void
+@abstract func _print_at(_message: String, _cursor_pos: int, _color: Color, _effect: GdUnitMessageWriter.Effect, _align: Align, _flags: int) -> void
 
 
 ## Clears all output content.[br]

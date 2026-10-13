@@ -575,7 +575,7 @@ static func extract_class_name(clazz: Variant) -> GdUnitResult:
 		@warning_ignore("unsafe_cast")
 		if (clazz as Script).resource_path.is_empty():
 			var class_path := extract_class_name_from_class_path(extract_class_path(clazz))
-			return GdUnitResult.success(class_path);
+			return GdUnitResult.success(class_path)
 		return extract_class_name(clazz.resource_path)
 
 	# need to create an instance for a class typ the extract the class name

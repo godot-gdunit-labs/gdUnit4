@@ -7,7 +7,7 @@ var _args: Array
 
 
 func _init(instance: Object, func_name: String, args: Array = Array(), force_error := true) -> void:
-	_cb = Callable(instance, func_name);
+	_cb = Callable(instance, func_name)
 	_args = args
 	if force_error and not _cb.is_valid():
 		push_error("Can't find function '%s' checked instance %s" % [func_name, instance])

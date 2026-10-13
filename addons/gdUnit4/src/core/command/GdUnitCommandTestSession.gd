@@ -100,7 +100,7 @@ func execute(...parameters: Array) -> void:
 		arguments.append("--path")
 		arguments.append(ProjectSettings.globalize_path("res://"))
 		arguments.append("res://addons/gdUnit4/src/core/runners/GdUnitTestRunner.tscn")
-		_current_runner_process_id = OS.create_process(OS.get_executable_path(), arguments, false);
+		_current_runner_process_id = OS.create_process(OS.get_executable_path(), arguments, false)
 
 
 func _prepare_test_session(tests_to_execute: Array[GdUnitTestCase]) -> void:

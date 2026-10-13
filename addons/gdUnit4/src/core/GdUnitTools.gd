@@ -5,7 +5,7 @@ static var _richtext_normalize: RegEx
 
 
 static func normalize_text(text: String) -> String:
-	return text.replace("\r", "");
+	return text.replace("\r", "")
 
 
 static func richtext_normalize(input: String) -> String:

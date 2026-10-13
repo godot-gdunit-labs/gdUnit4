@@ -297,13 +297,13 @@ static func longest_common_subsequence(text1: String, text2: String) -> PackedSt
 	for i in range(text1_word_count - 1, 0, -1):
 		for j in range(text2_word_count - 1, 0, -1):
 			if text1_words[i] == text2_words[j]:
-				solution_matrix[i][j] = solution_matrix[i + 1][j + 1] + 1;
+				solution_matrix[i][j] = solution_matrix[i + 1][j + 1] + 1
 			else:
-				solution_matrix[i][j] = max(solution_matrix[i + 1][j], solution_matrix[i][j + 1]);
+				solution_matrix[i][j] = max(solution_matrix[i + 1][j], solution_matrix[i][j + 1])
 
 	var i := 0
 	var j := 0
-	var lcs_result_list := PackedStringArray();
+	var lcs_result_list := PackedStringArray()
 	while (i < text1_word_count && j < text2_word_count):
 		if text1_words[i] == text2_words[j]:
 			@warning_ignore("return_value_discarded")

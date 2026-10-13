@@ -1102,4 +1102,4 @@ func test_text_input_processing() -> void:
 	await _runner.simulate_frames(100)
 
 	# Verify text accumulation
-	assert_that(line_edit.text).is_equal("HI");
+	assert_that(line_edit.text).is_equal("HI")

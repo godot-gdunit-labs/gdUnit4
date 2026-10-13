@@ -224,7 +224,7 @@ func test_node_changed_emitting_signals() -> void:
 
 	await assert_signal(node).wait_until(200).is_emitted("draw")
 
-	node.visible = false;
+	node.visible = false
 	await assert_signal(node).wait_until(200).is_emitted("visibility_changed")
 
 	# expecting to fail, we not changed the visibility

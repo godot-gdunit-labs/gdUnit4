@@ -21,7 +21,7 @@ static func save_and_close_script(script_path: String, close := false) -> bool:
 	for open_script in editor.get_open_scripts():
 		if open_script.resource_path == script_path:
 			# select the script in the editor
-			EditorInterface.edit_script(open_script, 0);
+			EditorInterface.edit_script(open_script, 0)
 			run_file_command(FILE_SAVE)
 			if close:
 				run_file_command(FILE_CLOSE)

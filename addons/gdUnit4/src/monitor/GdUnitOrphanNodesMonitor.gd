@@ -214,7 +214,7 @@ func _find_line_for_property(script: Script, func_name: String, property_name: S
 		if not func_name.is_empty():
 			if line.begins_with("func") and line.contains(func_name):
 				func_start_index = index + 1
-				break;
+				break
 
 	for index in range(func_start_index, lines.size()):
 		var line := lines[index]

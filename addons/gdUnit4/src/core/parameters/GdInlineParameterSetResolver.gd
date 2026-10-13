@@ -268,6 +268,6 @@ static func copy_properties(source: Object, dest: Object) -> void:
 
 		# check for invalid name property
 		if property_name == "name" and property_value == "":
-			dest.set(property_name, "<empty>");
+			dest.set(property_name, "<empty>")
 			continue
 		dest.set(property_name, property_value)

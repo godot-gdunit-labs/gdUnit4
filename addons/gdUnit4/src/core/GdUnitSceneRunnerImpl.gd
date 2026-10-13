@@ -470,7 +470,7 @@ func get_property(name: String) -> Variant:
 func set_property(name: String, value: Variant) -> bool:
 	if not _property_exists(name):
 		push_error("The property named '%s' cannot be set, it does not exist!" % name)
-		return false;
+		return false
 	scene().set(name, value)
 	return true
 

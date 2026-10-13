@@ -48,7 +48,7 @@ func build_junit_report(report_path: String, report: GdUnitReportSummary) -> Str
 		.attribute(ATTR_SKIPPED, report.skipped_count())\
 		.attribute(ATTR_FLAKY, report.flaky_count())\
 		.attribute(ATTR_TIME, JUnitXmlReportWriter.to_time(report.duration()))\
-		. add_childs(build_test_suites(report))
+		.add_childs(build_test_suites(report))
 	var as_string := test_suites.to_xml()
 	test_suites.dispose()
 	return HEADER + as_string

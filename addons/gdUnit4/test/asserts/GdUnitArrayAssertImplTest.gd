@@ -291,9 +291,9 @@ func test_contains() -> void:
 	assert_array([1, 2, 3, 4, 5]).contains([])
 	assert_array([1, 2, 3, 4, 5]).contains([5, 2])
 	assert_array([1, 2, 3, 4, 5]).contains([5, 4, 3, 2, 1])
-	var valueA := TestObj.new("A", 0)
-	var valueB := TestObj.new("B", 0)
-	assert_array([valueA, valueB]).contains([TestObj.new("A", 0)])
+	var value_a := TestObj.new("A", 0)
+	var value_b := TestObj.new("B", 0)
+	assert_array([value_a, value_b]).contains([TestObj.new("A", 0)])
 
 	# should fail because the array not contains 7 and 6
 	assert_failure(func() -> void: assert_array([1, 2, 3, 4, 5]).contains([2, 7, 6])) \
@@ -318,7 +318,7 @@ func test_contains() -> void:
 			 '[2, 7, 6]'"""
 			.dedent().trim_prefix("\n"))
 
-	assert_failure(func() -> void: assert_array([valueA, valueB]).contains([TestObj.new("C", 0)])) \
+	assert_failure(func() -> void: assert_array([value_a, value_b]).contains([TestObj.new("C", 0)])) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains elements:
@@ -334,9 +334,9 @@ func test_contains_variadic_args() -> void:
 	assert_array([1, 2, 3, 4, 5]).contains()
 	assert_array([1, 2, 3, 4, 5]).contains(5, 2)
 	assert_array([1, 2, 3, 4, 5]).contains(5, 4, 3, 2, 1)
-	var valueA := TestObj.new("A", 0)
-	var valueB := TestObj.new("B", 0)
-	assert_array([valueA, valueB]).contains(TestObj.new("A", 0))
+	var value_a := TestObj.new("A", 0)
+	var value_b := TestObj.new("B", 0)
+	assert_array([value_a, value_b]).contains(TestObj.new("A", 0))
 
 	# should fail because the array not contains 7 and 6
 	assert_failure(func() -> void: assert_array([1, 2, 3, 4, 5]).contains(2, 7, 6)) \
@@ -361,7 +361,7 @@ func test_contains_variadic_args() -> void:
 			 '[2, 7, 6]'"""
 			.dedent().trim_prefix("\n"))
 
-	assert_failure(func() -> void: assert_array([valueA, valueB]).contains(TestObj.new("C", 0))) \
+	assert_failure(func() -> void: assert_array([value_a, value_b]).contains(TestObj.new("C", 0))) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains elements:
@@ -375,9 +375,9 @@ func test_contains_variadic_args() -> void:
 
 func test_contains_exactly() -> void:
 	assert_array([1, 2, 3, 4, 5]).contains_exactly([1, 2, 3, 4, 5])
-	var valueA := TestObj.new("A", 0)
-	var valueB := TestObj.new("B", 0)
-	assert_array([valueA, valueB]).contains_exactly([TestObj.new("A", 0), valueB])
+	var value_a := TestObj.new("A", 0)
+	var value_b := TestObj.new("B", 0)
+	assert_array([value_a, value_b]).contains_exactly([TestObj.new("A", 0), value_b])
 
 	# should fail because the array contains the same elements but in a different order
 	assert_failure(func() -> void: assert_array([1, 2, 3, 4, 5]).contains_exactly([1, 4, 3, 2, 5])) \
@@ -426,7 +426,7 @@ func test_contains_exactly() -> void:
 			 '[1, 4, 3]'"""
 			.dedent().trim_prefix("\n"))
 
-	assert_failure(func() -> void: assert_array([valueA, valueB]).contains_exactly([valueB, TestObj.new("A", 0)])) \
+	assert_failure(func() -> void: assert_array([value_a, value_b]).contains_exactly([value_b, TestObj.new("A", 0)])) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
@@ -440,9 +440,9 @@ func test_contains_exactly() -> void:
 
 func test_contains_exactly_variadic_args() -> void:
 	assert_array([1, 2, 3, 4, 5]).contains_exactly(1, 2, 3, 4, 5)
-	var valueA := TestObj.new("A", 0)
-	var valueB := TestObj.new("B", 0)
-	assert_array([valueA, valueB]).contains_exactly(TestObj.new("A", 0), valueB)
+	var value_a := TestObj.new("A", 0)
+	var value_b := TestObj.new("B", 0)
+	assert_array([value_a, value_b]).contains_exactly(TestObj.new("A", 0), value_b)
 
 	# should fail because the array contains the same elements but in a different order
 	assert_failure(func() -> void: assert_array([1, 2, 3, 4, 5]).contains_exactly(1, 4, 3, 2, 5)) \
@@ -491,7 +491,7 @@ func test_contains_exactly_variadic_args() -> void:
 			 '[1, 4, 3]'"""
 			.dedent().trim_prefix("\n"))
 
-	assert_failure(func() -> void: assert_array([valueA, valueB]).contains_exactly(valueB, TestObj.new("A", 0))) \
+	assert_failure(func() -> void: assert_array([value_a, value_b]).contains_exactly(value_b, TestObj.new("A", 0))) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
@@ -507,9 +507,9 @@ func test_contains_exactly_in_any_order() -> void:
 	assert_array([1, 2, 3, 4, 5]).contains_exactly_in_any_order([1, 2, 3, 4, 5])
 	assert_array([1, 2, 3, 4, 5]).contains_exactly_in_any_order([5, 3, 2, 4, 1])
 	assert_array([1, 2, 3, 4, 5]).contains_exactly_in_any_order([5, 1, 2, 4, 3])
-	var valueA := TestObj.new("A", 0)
-	var valueB := TestObj.new("B", 0)
-	assert_array([valueA, valueB]).contains_exactly_in_any_order([valueB, TestObj.new("A", 0)])
+	var value_a := TestObj.new("A", 0)
+	var value_b := TestObj.new("B", 0)
+	assert_array([value_a, value_b]).contains_exactly_in_any_order([value_b, TestObj.new("A", 0)])
 
 	# should fail because the array contains not exactly the same elements in any order
 	assert_failure(func() -> void: assert_array([1, 2, 6, 4, 5]).contains_exactly_in_any_order([5, 3, 2, 4, 1, 9, 10])) \
@@ -550,7 +550,7 @@ func test_contains_exactly_in_any_order() -> void:
 			 '[1, 4, 3]'"""
 			.dedent().trim_prefix("\n"))
 
-	assert_failure(func() -> void:  assert_array([valueA, valueB]).contains_exactly_in_any_order([valueB, TestObj.new("C", 0)])) \
+	assert_failure(func() -> void:  assert_array([value_a, value_b]).contains_exactly_in_any_order([value_b, TestObj.new("C", 0)])) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
@@ -568,9 +568,9 @@ func test_contains_exactly_in_any_order_variadic_args() -> void:
 	assert_array([1, 2, 3, 4, 5]).contains_exactly_in_any_order(1, 2, 3, 4, 5)
 	assert_array([1, 2, 3, 4, 5]).contains_exactly_in_any_order(5, 3, 2, 4, 1)
 	assert_array([1, 2, 3, 4, 5]).contains_exactly_in_any_order(5, 1, 2, 4, 3)
-	var valueA := TestObj.new("A", 0)
-	var valueB := TestObj.new("B", 0)
-	assert_array([valueA, valueB]).contains_exactly_in_any_order(valueB, TestObj.new("A", 0))
+	var value_a := TestObj.new("A", 0)
+	var value_b := TestObj.new("B", 0)
+	assert_array([value_a, value_b]).contains_exactly_in_any_order(value_b, TestObj.new("A", 0))
 
 	# should fail because the array contains not exactly the same elements in any order
 	assert_failure(func() -> void: assert_array([1, 2, 6, 4, 5]).contains_exactly_in_any_order(5, 3, 2, 4, 1, 9, 10)) \
@@ -611,7 +611,7 @@ func test_contains_exactly_in_any_order_variadic_args() -> void:
 			 '[1, 4, 3]'"""
 			.dedent().trim_prefix("\n"))
 
-	assert_failure(func() -> void:  assert_array([valueA, valueB]).contains_exactly_in_any_order(valueB, TestObj.new("C", 0))) \
+	assert_failure(func() -> void:  assert_array([value_a, value_b]).contains_exactly_in_any_order(value_b, TestObj.new("C", 0))) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
@@ -626,12 +626,12 @@ func test_contains_exactly_in_any_order_variadic_args() -> void:
 
 
 func test_contains_same() -> void:
-	var valueA := TestObj.new("A", 0)
-	var valueB := TestObj.new("B", 0)
+	var value_a := TestObj.new("A", 0)
+	var value_b := TestObj.new("B", 0)
 
-	assert_array([valueA, valueB]).contains_same([valueA])
+	assert_array([value_a, value_b]).contains_same([value_a])
 
-	assert_failure(func() -> void: assert_array([valueA, valueB]).contains_same([TestObj.new("A", 0)])) \
+	assert_failure(func() -> void: assert_array([value_a, value_b]).contains_same([TestObj.new("A", 0)])) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains SAME elements:
@@ -644,12 +644,12 @@ func test_contains_same() -> void:
 
 
 func test_contains_same_variadic_args() -> void:
-	var valueA := TestObj.new("A", 0)
-	var valueB := TestObj.new("B", 0)
+	var value_a := TestObj.new("A", 0)
+	var value_b := TestObj.new("B", 0)
 
-	assert_array([valueA, valueB]).contains_same(valueA)
+	assert_array([value_a, value_b]).contains_same(value_a)
 
-	assert_failure(func() -> void: assert_array([valueA, valueB]).contains_same(TestObj.new("A", 0))) \
+	assert_failure(func() -> void: assert_array([value_a, value_b]).contains_same(TestObj.new("A", 0))) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains SAME elements:
@@ -662,11 +662,11 @@ func test_contains_same_variadic_args() -> void:
 
 
 func test_contains_same_exactly() -> void:
-	var valueA := TestObj.new("A", 0)
-	var valueB := TestObj.new("B", 0)
-	assert_array([valueA, valueB]).contains_same_exactly([valueA, valueB])
+	var value_a := TestObj.new("A", 0)
+	var value_b := TestObj.new("B", 0)
+	assert_array([value_a, value_b]).contains_same_exactly([value_a, value_b])
 
-	assert_failure(func() -> void: assert_array([valueA, valueB]).contains_same_exactly([valueB, valueA])) \
+	assert_failure(func() -> void: assert_array([value_a, value_b]).contains_same_exactly([value_b, value_a])) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains SAME exactly elements:
@@ -677,7 +677,7 @@ func test_contains_same_exactly() -> void:
 			 'class:A' vs 'class:B'"""
 		.dedent().trim_prefix("\n"))
 
-	assert_failure(func() -> void: assert_array([valueA, valueB]).contains_same_exactly([TestObj.new("A", 0), valueB])) \
+	assert_failure(func() -> void: assert_array([value_a, value_b]).contains_same_exactly([TestObj.new("A", 0), value_b])) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains SAME exactly elements:
@@ -692,11 +692,11 @@ func test_contains_same_exactly() -> void:
 
 
 func test_contains_same_exactly_in_any_order() -> void:
-	var valueA := TestObj.new("A", 0)
-	var valueB := TestObj.new("B", 0)
-	assert_array([valueA, valueB]).contains_same_exactly_in_any_order([valueB, valueA])
+	var value_a := TestObj.new("A", 0)
+	var value_b := TestObj.new("B", 0)
+	assert_array([value_a, value_b]).contains_same_exactly_in_any_order([value_b, value_a])
 
-	assert_failure(func() -> void:  assert_array([valueA, valueB]).contains_same_exactly_in_any_order([valueB, TestObj.new("A", 0)])) \
+	assert_failure(func() -> void:  assert_array([value_a, value_b]).contains_same_exactly_in_any_order([value_b, TestObj.new("A", 0)])) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains SAME exactly elements:
@@ -711,11 +711,11 @@ func test_contains_same_exactly_in_any_order() -> void:
 
 
 func test_contains_same_exactly_in_any_order_variadic_args() -> void:
-	var valueA := TestObj.new("A", 0)
-	var valueB := TestObj.new("B", 0)
-	assert_array([valueA, valueB]).contains_same_exactly_in_any_order(valueB, valueA)
+	var value_a := TestObj.new("A", 0)
+	var value_b := TestObj.new("B", 0)
+	assert_array([value_a, value_b]).contains_same_exactly_in_any_order(value_b, value_a)
 
-	assert_failure(func() -> void:  assert_array([valueA, valueB]).contains_same_exactly_in_any_order(valueB, TestObj.new("A", 0))) \
+	assert_failure(func() -> void:  assert_array([value_a, value_b]).contains_same_exactly_in_any_order(value_b, TestObj.new("A", 0))) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains SAME exactly elements:
@@ -733,9 +733,9 @@ func test_not_contains() -> void:
 	assert_array([]).not_contains([0])
 	assert_array([1, 2, 3, 4, 5]).not_contains([0])
 	assert_array([1, 2, 3, 4, 5]).not_contains([0, 6])
-	var valueA := TestObj.new("A", 0)
-	var valueB := TestObj.new("B", 0)
-	assert_array([valueA, valueB]).not_contains([TestObj.new("C", 0)])
+	var value_a := TestObj.new("A", 0)
+	var value_b := TestObj.new("B", 0)
+	assert_array([value_a, value_b]).not_contains([TestObj.new("C", 0)])
 
 	assert_failure(func() -> void: assert_array([1, 2, 3, 4, 5]).not_contains([5]))\
 		.is_failed() \
@@ -773,7 +773,7 @@ func test_not_contains() -> void:
 			.dedent().trim_prefix("\n")
 		)
 
-	assert_failure(func() -> void: assert_array([valueA, valueB]).not_contains([TestObj.new("A", 0)])) \
+	assert_failure(func() -> void: assert_array([value_a, value_b]).not_contains([TestObj.new("A", 0)])) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
@@ -790,9 +790,9 @@ func test_not_contains_variadic_args() -> void:
 	assert_array([]).not_contains(0)
 	assert_array([1, 2, 3, 4, 5]).not_contains(0)
 	assert_array([1, 2, 3, 4, 5]).not_contains(0, 6)
-	var valueA := TestObj.new("A", 0)
-	var valueB := TestObj.new("B", 0)
-	assert_array([valueA, valueB]).not_contains(TestObj.new("C", 0))
+	var value_a := TestObj.new("A", 0)
+	var value_b := TestObj.new("B", 0)
+	assert_array([value_a, value_b]).not_contains(TestObj.new("C", 0))
 
 	assert_failure(func() -> void: assert_array([1, 2, 3, 4, 5]).not_contains(5))\
 		.is_failed() \
@@ -830,7 +830,7 @@ func test_not_contains_variadic_args() -> void:
 			.dedent().trim_prefix("\n")
 		)
 
-	assert_failure(func() -> void: assert_array([valueA, valueB]).not_contains(TestObj.new("A", 0))) \
+	assert_failure(func() -> void: assert_array([value_a, value_b]).not_contains(TestObj.new("A", 0))) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
@@ -844,12 +844,12 @@ func test_not_contains_variadic_args() -> void:
 
 
 func test_not_contains_same() -> void:
-	var valueA := TestObj.new("A", 0)
-	var valueB := TestObj.new("B", 0)
-	var valueC := TestObj.new("B", 0)
-	assert_array([valueA, valueB]).not_contains_same([valueC])
+	var value_a := TestObj.new("A", 0)
+	var value_b := TestObj.new("B", 0)
+	var value_c := TestObj.new("B", 0)
+	assert_array([value_a, value_b]).not_contains_same([value_c])
 
-	assert_failure(func() -> void: assert_array([valueA, valueB]).not_contains_same([valueB])) \
+	assert_failure(func() -> void: assert_array([value_a, value_b]).not_contains_same([value_b])) \
 		.is_failed() \
 		.has_message("""
 			Expecting SAME:
@@ -863,12 +863,12 @@ func test_not_contains_same() -> void:
 
 
 func test_not_contains_same_variadic_args() -> void:
-	var valueA := TestObj.new("A", 0)
-	var valueB := TestObj.new("B", 0)
-	var valueC := TestObj.new("B", 0)
-	assert_array([valueA, valueB]).not_contains_same(valueC)
+	var value_a := TestObj.new("A", 0)
+	var value_b := TestObj.new("B", 0)
+	var value_c := TestObj.new("B", 0)
+	assert_array([value_a, value_b]).not_contains_same(value_c)
 
-	assert_failure(func() -> void: assert_array([valueA, valueB]).not_contains_same(valueB)) \
+	assert_failure(func() -> void: assert_array([value_a, value_b]).not_contains_same(value_b)) \
 		.is_failed() \
 		.has_message("""
 			Expecting SAME:

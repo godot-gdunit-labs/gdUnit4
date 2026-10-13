@@ -70,7 +70,7 @@ func test_discover_tests() -> void:
 		])
 
 
-func test_discover_tests_on_GdUnitTestSuite() -> void:
+func test_discover_tests_on_gdunit_test_suite() -> void:
 	var script: GDScript = load("res://addons/gdUnit4/src/GdUnitTestSuite.gd")
 
 	var discovered_tests := []

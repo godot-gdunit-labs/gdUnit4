@@ -135,21 +135,21 @@ func test_property_enum_info() -> void:
 
 #region migrate_property
 func test_migrate_property_change_key() -> void:
-	var old_property_X := "/category_patch/migrate_key/old_name"
-	var new_property_X := "/category_patch/migrate_key/new_name"
-	GdUnitSettings.create_property_if_need(old_property_X, "foo")
-	assert_str(GdUnitSettings.get_setting(old_property_X, null)).is_equal("foo")
-	assert_str(GdUnitSettings.get_setting(new_property_X, null)).is_null()
-	var old_property := GdUnitSettings.get_property(old_property_X)
+	var old_property_x := "/category_patch/migrate_key/old_name"
+	var new_property_x := "/category_patch/migrate_key/new_name"
+	GdUnitSettings.create_property_if_need(old_property_x, "foo")
+	assert_str(GdUnitSettings.get_setting(old_property_x, null)).is_equal("foo")
+	assert_str(GdUnitSettings.get_setting(new_property_x, null)).is_null()
+	var old_property := GdUnitSettings.get_property(old_property_x)
 
 	GdUnitSettings.migrate_property(old_property.name(),\
-		new_property_X,\
+		new_property_x,\
 		old_property.default(),\
 		old_property.help())
 
-	var new_property := GdUnitSettings.get_property(new_property_X)
-	assert_str(GdUnitSettings.get_setting(old_property_X, null)).is_null()
-	assert_str(GdUnitSettings.get_setting(new_property_X, null)).is_equal("foo")
+	var new_property := GdUnitSettings.get_property(new_property_x)
+	assert_str(GdUnitSettings.get_setting(old_property_x, null)).is_null()
+	assert_str(GdUnitSettings.get_setting(new_property_x, null)).is_equal("foo")
 	assert_object(new_property).is_not_equal(old_property)
 	assert_str(new_property.value()).is_equal(old_property.value())
 	assert_array(new_property.value_set()).is_equal(old_property.value_set())
@@ -159,22 +159,22 @@ func test_migrate_property_change_key() -> void:
 
 
 func test_migrate_property_change_value() -> void:
-	var old_property_X := "/category_patch/migrate_value/old_name"
-	var new_property_X := "/category_patch/migrate_value/new_name"
-	GdUnitSettings.create_property_if_need(old_property_X, "foo", "help to foo")
-	assert_str(GdUnitSettings.get_setting(old_property_X, null)).is_equal("foo")
-	assert_str(GdUnitSettings.get_setting(new_property_X, null)).is_null()
-	var old_property := GdUnitSettings.get_property(old_property_X)
+	var old_property_x := "/category_patch/migrate_value/old_name"
+	var new_property_x := "/category_patch/migrate_value/new_name"
+	GdUnitSettings.create_property_if_need(old_property_x, "foo", "help to foo")
+	assert_str(GdUnitSettings.get_setting(old_property_x, null)).is_equal("foo")
+	assert_str(GdUnitSettings.get_setting(new_property_x, null)).is_null()
+	var old_property := GdUnitSettings.get_property(old_property_x)
 
 	GdUnitSettings.migrate_property(old_property.name(),\
-		new_property_X,\
+		new_property_x,\
 		old_property.default(),\
 		old_property.help(),\
 		func(_value :Variant) -> String: return "bar")
 
-	var new_property := GdUnitSettings.get_property(new_property_X)
-	assert_str(GdUnitSettings.get_setting(old_property_X, null)).is_null()
-	assert_str(GdUnitSettings.get_setting(new_property_X, null)).is_equal("bar")
+	var new_property := GdUnitSettings.get_property(new_property_x)
+	assert_str(GdUnitSettings.get_setting(old_property_x, null)).is_null()
+	assert_str(GdUnitSettings.get_setting(new_property_x, null)).is_equal("bar")
 	assert_object(new_property).is_not_equal(old_property)
 	assert_str(new_property.value()).is_equal("bar")
 	assert_array(new_property.value_set()).is_equal(old_property.value_set())

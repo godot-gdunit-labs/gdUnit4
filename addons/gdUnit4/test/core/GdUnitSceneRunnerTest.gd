@@ -133,17 +133,17 @@ func test_simulate_scene_inteaction_by_press_enter(timeout := 2000) -> void:
 
 # mock on a runner and spy on created spell
 func test_simulate_scene_inteaction_in_combination_with_spy() -> void:
-	var spy_: Object = spy(load_test_scene())
+	var scene_spy: Object = spy(load_test_scene())
 	# create a runner runner
-	var runner := scene_runner(spy_)
+	var runner := scene_runner(scene_spy)
 
 	# simulate a key event to fire a spell
 	await runner.simulate_key_pressed(KEY_ENTER)
-	verify(spy_).create_spell()
+	verify(scene_spy).create_spell()
 
 	var spell := runner.find_child("Spell")
 	assert_that(spell).is_not_null()
-	assert_that(spell.is_connected("spell_explode", Callable(spy_, "_destroy_spell"))).is_true()
+	assert_that(spell.is_connected("spell_explode", Callable(scene_spy, "_destroy_spell"))).is_true()
 
 
 func test_simulate_scene_interact_with_buttons() -> void:
@@ -477,7 +477,7 @@ func test_touch_drag_and_drop() -> void:
 	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_false()
 
 
-func test_runner_GD_356() -> void:
+func test_runner_gd_356() -> void:
 	# to avoid reporting the expected push_error as test failure we disable it
 	ProjectSettings.set_setting(GdUnitSettings.REPORT_PUSH_ERRORS, false)
 	var runner := scene_runner("res://addons/gdUnit4/test/core/resources/scenes/simple_scene.tscn")

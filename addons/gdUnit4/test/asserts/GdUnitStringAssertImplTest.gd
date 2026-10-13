@@ -463,6 +463,7 @@ func test_is_failure() -> void:
 	assert_bool(is_failure()).is_true()
 
 
+# gdlint: ignore=function-name
 func test_日本語() -> void:
 	assert_str("test_日本語").is_equal("test_日本語")
 	assert_failure(func() -> void: assert_str("test_日本語").is_equal("test_本語")) \

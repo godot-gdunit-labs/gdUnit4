@@ -180,7 +180,7 @@ func test_signal_is_not_emitted_use_variadic_argument_matcher() -> void:
 	).starts_with_message("Expecting do not emit signal: 'test_signal([any()])' but is emitted after")
 
 
-func test_signal_is_not_emitted_use_argument_matcher_GD_878() -> void:
+func test_signal_is_not_emitted_use_argument_matcher_gd_878() -> void:
 	await assert_signal(signal_emitter).wait_until(500).is_emitted("test_signal_a", ["foo"])
 	# verify the signal is not emitted again
 	await assert_signal(signal_emitter).wait_until(10).is_not_emitted("test_signal_a", ["foo"])

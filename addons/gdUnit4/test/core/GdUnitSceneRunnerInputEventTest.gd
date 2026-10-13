@@ -152,7 +152,7 @@ func test_simulate_key_press() -> void:
 
 # Simulates pressing shift+A
 # Verified with "res://addons/gdUnit4/test/core/InputEventTestScene.tscn"
-func test_simulate_key_press_SHIFT_and_A() -> void:
+func test_simulate_key_press_shift_and_a() -> void:
 	# press shift + A
 	_runner.simulate_key_press(KEY_SHIFT)
 	_runner.simulate_key_press(KEY_A)
@@ -194,7 +194,7 @@ func test_simulate_key_press_SHIFT_and_A() -> void:
 
 # Simulate pressing key A and shift
 # Verified with "res://addons/gdUnit4/test/core/InputEventTestScene.tscn"
-func test_simulate_key_press_A_and_SHIFT() -> void:
+func test_simulate_key_press_a_and_shift() -> void:
 	# press key A + shift
 	_runner.simulate_key_press(KEY_A)
 	_runner.simulate_key_press(KEY_SHIFT)
@@ -236,7 +236,7 @@ func test_simulate_key_press_A_and_SHIFT() -> void:
 
 # Simulate releasing key shift+A
 # Verified with "res://addons/gdUnit4/test/core/InputEventTestScene.tscn"
-func test_simulate_key_released_SHIFT_and_A() -> void:
+func test_simulate_key_released_shift_and_a() -> void:
 	# release shift + A
 	_runner.simulate_key_release(KEY_SHIFT)
 	_runner.simulate_key_release(KEY_A)
@@ -278,7 +278,7 @@ func test_simulate_key_released_SHIFT_and_A() -> void:
 
 # Simulate pressed key shift+A
 # Verified with "res://addons/gdUnit4/test/core/InputEventTestScene.tscn"
-func test_simulate_key_pressed_SHIFT_and_A() -> void:
+func test_simulate_key_pressed_shift_and_a() -> void:
 	# release shift + A
 	await _runner.simulate_key_pressed(KEY_SHIFT)
 	await _runner.simulate_key_pressed(KEY_A)
@@ -318,7 +318,7 @@ func test_simulate_key_pressed_SHIFT_and_A() -> void:
 
 # Simulate pressing key A + set shift modifier
 # @deprecated
-func test_simulate_key_press_A_with_shift_modifier() -> void:
+func test_simulate_key_press_a_with_shift_modifier() -> void:
 	# press key A + modifier shift
 	_runner.simulate_key_press(KEY_A, true)
 	await _runner.await_input_processed()
@@ -348,7 +348,7 @@ func test_simulate_key_press_A_with_shift_modifier() -> void:
 
 # Simulate releasing key A + set shift modifier
 # @deprecated
-func test_simulate_key_released_A_with_shift_modifier() -> void:
+func test_simulate_key_released_a_with_shift_modifier() -> void:
 	# release key A + modifiere shift
 	_runner.simulate_key_release(KEY_A, true)
 	await _runner.await_input_processed()
@@ -377,7 +377,7 @@ func test_simulate_key_released_A_with_shift_modifier() -> void:
 
 # Simulate pressed key A + set shift modifier
 # @deprecated
-func test_simulate_key_pressed_A_with_shift_modifier() -> void:
+func test_simulate_key_pressed_a_with_shift_modifier() -> void:
 	# release key A + modifier shift
 	await _runner.simulate_key_pressed(KEY_A, true)
 
@@ -1037,12 +1037,12 @@ func test_simulate_screen_touch_gesture_zoom_out() -> void:
 
 func test_text_input_processing() -> void:
 	_runner.move_window_to_foreground()
-	var lineEdit := _runner.find_child("TextInput") as LineEdit
+	var line_edit := _runner.find_child("TextInput") as LineEdit
 
 	# Focus the text input and clear any existing content
-	lineEdit.grab_focus()
-	assert_bool(lineEdit.has_focus()).is_true()
-	lineEdit.text = ""
+	line_edit.grab_focus()
+	assert_bool(line_edit.has_focus()).is_true()
+	line_edit.text = ""
 
 	# Type individual characters
 	_runner.simulate_key_pressed(KEY_H)
@@ -1051,4 +1051,4 @@ func test_text_input_processing() -> void:
 	await _runner.simulate_frames(100)
 
 	# Verify text accumulation
-	assert_that(lineEdit.text).is_equal("HI");
+	assert_that(line_edit.text).is_equal("HI");

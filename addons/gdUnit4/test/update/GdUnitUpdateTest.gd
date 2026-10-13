@@ -6,17 +6,17 @@ extends GdUnitTestSuite
 const GdUnitUpdate = preload('res://addons/gdUnit4/src/update/GdUnitUpdate.gd')
 
 # Store original content to restore after test execution
-const testResource := "res://addons/gdUnit4/test/update/resources/ExampleSceneWithUids.txt"
+const TEST_RESOURCE := "res://addons/gdUnit4/test/update/resources/ExampleSceneWithUids.txt"
 var original_content: String
 
 func before() -> void:
-	var file := FileAccess.open(testResource, FileAccess.READ)
+	var file := FileAccess.open(TEST_RESOURCE, FileAccess.READ)
 	original_content = file.get_as_text()
 	file.close()
 
 
 func after() -> void:
-	var file := FileAccess.open(testResource, FileAccess.WRITE)
+	var file := FileAccess.open(TEST_RESOURCE, FileAccess.WRITE)
 	file.store_string(original_content)
 	file.close()
 
@@ -28,10 +28,10 @@ func test_remove_uids_from_file() -> void:
 	var update_tool: GdUnitUpdate = auto_free(GdUnitUpdate.new())
 
 	# start uid patching
-	update_tool.remove_uids_from_file(testResource)
+	update_tool.remove_uids_from_file(TEST_RESOURCE)
 
 	# Verify
-	var patched_content := get_content(testResource)
+	var patched_content := get_content(TEST_RESOURCE)
 	var expected_content := get_content("res://addons/gdUnit4/test/update/resources/ExampleScenePached.txt")
 	assert_str(patched_content).is_equal(expected_content)
 

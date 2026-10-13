@@ -117,7 +117,7 @@ func test_find_item_by_id() -> void:
 
 
 # Tests a special case, the test is named equal to the test suite
-func test_find_item_by_id_GD809() -> void:
+func test_find_item_by_id_gd809() -> void:
 	var suite_script := GdUnitTestResourceLoader.load_gd_script("res://addons/gdUnit4/test/ui/parts/resources/gd_809/test_example.resource")
 	var discovered_tests := {}
 	GdUnitTestDiscoverer.discover_tests(suite_script, func(discover_test: GdUnitTestCase) -> void:
@@ -131,7 +131,7 @@ func test_find_item_by_id_GD809() -> void:
 
 
 # Tests a special case, the test is named equal to the test suite
-func test_find_item_by_path_GD809() -> void:
+func test_find_item_by_path_gd809() -> void:
 	var suite_script := GdUnitTestResourceLoader.load_gd_script("res://addons/gdUnit4/test/ui/parts/resources/gd_809/test_example.resource")
 	var discovered_tests := {}
 	GdUnitTestDiscoverer.discover_tests(suite_script, func(discover_test: GdUnitTestCase) -> void:
@@ -657,7 +657,7 @@ func test_collect_test_cases() -> void:
 		.contains_exactly_in_any_order(expected_tests)
 
 
-func test_collect_test_cases_GD_872(_do_skip := not GdUnit4CSharpApiLoader.is_api_loaded(), _skip_reason := "Do run only for Godot .Net version") -> void:
+func test_collect_test_cases_gd_872(_do_skip := not GdUnit4CSharpApiLoader.is_api_loaded(), _skip_reason := "Do run only for Godot .Net version") -> void:
 	var tests_by_id := {}
 	var resource_path := "res://addons/gdUnit4/test/ui/parts/resources/gd_872/"
 	for suite_path: String in ["ATests.cs", "AZTests.cs"]:

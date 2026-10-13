@@ -159,14 +159,14 @@ func test_extract_from_descriptor_is_virtual_func_full_check() -> void:
 		"_iter_get"
 	]
 
-	var _count := 0
+	var virtual_count := 0
 	for method_descriptor in methods:
 		var fd := GdFunctionDescriptor.extract_from(method_descriptor)
 
 		if fd.is_virtual():
-			_count += 1
+			virtual_count += 1
 			assert_array(expected_virtual_functions).contains([fd.name()])
-	assert_int(_count).is_equal(expected_virtual_functions.size())
+	assert_int(virtual_count).is_equal(expected_virtual_functions.size())
 
 
 func test_extract_from_func_with_return_type_variant() -> void:

@@ -282,7 +282,7 @@ func test_parse_arguments_default_build_in_type_vector() -> void:
 		])
 
 
-func test_parse_arguments_default_build_in_type_AABB() -> void:
+func test_parse_arguments_default_build_in_type_aabb() -> void:
 	assert_array(_parser._parse_function_arguments("func bar(arg1 :String, arg2 := AABB()):")) \
 		.has_size(2)\
 		.contains([
@@ -409,7 +409,7 @@ func test_parse_func_name() -> void:
 	assert_str(_parser.parse_func_name("var x")).is_empty()
 
 
-func test_load_source_code_inner_class_AtmosphereData() -> void:
+func test_load_source_code_inner_class_atmosphere_data() -> void:
 	var base_class := AdvancedTestClass.new()
 	@warning_ignore("unsafe_cast")
 	var rows := _parser._load_inner_class(base_class.get_script() as GDScript, "AtmosphereData")
@@ -417,7 +417,7 @@ func test_load_source_code_inner_class_AtmosphereData() -> void:
 	assert_that(rows).is_equal(file_content)
 
 
-func test_load_source_code_inner_class_SoundData() -> void:
+func test_load_source_code_inner_class_sound_data() -> void:
 	var base_class := AdvancedTestClass.new()
 	@warning_ignore("unsafe_cast")
 	var rows := _parser._load_inner_class(base_class.get_script() as GDScript, "SoundData")
@@ -425,7 +425,7 @@ func test_load_source_code_inner_class_SoundData() -> void:
 	assert_that(rows).is_equal(file_content)
 
 
-func test_load_source_code_inner_class_Area4D() -> void:
+func test_load_source_code_inner_class_area4d() -> void:
 	var base_class := AdvancedTestClass.new()
 	@warning_ignore("unsafe_cast")
 	var rows := _parser._load_inner_class(base_class.get_script() as GDScript, "Area4D")
@@ -525,7 +525,7 @@ func test_get_function_descriptors_return_type_enum() -> void:
 
 	assert_that(fds[0])\
 		.is_equal(create("get_enum", script.resource_path, 15, 16, GdObjects.TYPE_ENUM, [])
-			.with_return_class("ClassWithEnumReturnTypes.TEST_ENUM")
+			.with_return_class("ClassWithEnumReturnTypes.TestEnum")
 		)
 
 
@@ -535,7 +535,7 @@ func test_parse_func_description_return_type_internal_class_enum() -> void:
 
 	assert_that(fds[0])\
 		.is_equal(create("get_inner_class_enum", script.resource_path, 25, 26, GdObjects.TYPE_ENUM, [])
-			.with_return_class("ClassWithEnumReturnTypes.InnerClass.TEST_ENUM")
+			.with_return_class("ClassWithEnumReturnTypes.InnerClass.TestEnum")
 		)
 
 
@@ -545,7 +545,7 @@ func test_parse_func_description_return_type_external_class_enum() -> void:
 
 	assert_that(fds[0])\
 		.is_equal(create("get_external_class_enum", script.resource_path, 20, 21, GdObjects.TYPE_ENUM, [])
-			.with_return_class("CustomEnums.TEST_ENUM")
+			.with_return_class("CustomEnums.TestEnum")
 		)
 
 

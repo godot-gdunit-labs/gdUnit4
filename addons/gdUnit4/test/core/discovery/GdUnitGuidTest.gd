@@ -42,10 +42,10 @@ func test_performance() -> void:
 
 
 func test_uniqueness() -> void:
-	var _guids := []
+	var guids := []
 	for n in 5000:
 		var guid := GdUnitGUID.new()
-		assert_bool(_guids.has(guid))\
+		assert_bool(guids.has(guid))\
 			.override_failure_message("Expected GUID to be unique but found a duplicate!")\
 			.is_false()
-		_guids.append(guid)
+		guids.append(guid)

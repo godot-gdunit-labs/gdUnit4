@@ -2,8 +2,8 @@
 class_name ParameterizedTestCaseTest
 extends GdUnitTestSuite
 
-const _data1 := ["aa"]
-const _data2 := ["bb"]
+const _DATA1 := ["aa"]
+const _DATA2 := ["bb"]
 
 var _collected_tests: Dictionary[String, Array] = {}
 var _expected_tests := {
@@ -26,12 +26,12 @@ var _expected_tests := {
 		["foo", "bar", "foobar"],
 		["a", "b", "ab"]
 	],
-	"test_parameterized_Vector2_values" : [
+	"test_parameterized_vector2_values" : [
 		[Vector2.ONE, Vector2.ONE, Vector2(2, 2)],
 		[Vector2.LEFT, Vector2.RIGHT, Vector2.ZERO],
 		[Vector2.ZERO, Vector2.LEFT, Vector2.LEFT]
 	],
-	"test_parameterized_Vector3_values" : [
+	"test_parameterized_vector3_values" : [
 		[Vector3.ONE, Vector3.ONE, Vector3(2, 2, 2)],
 		[Vector3.LEFT, Vector3.RIGHT, Vector3.ZERO],
 		[Vector3.ZERO, Vector3.LEFT, Vector3.LEFT]
@@ -149,23 +149,23 @@ func test_parameterized_string_values(a: String, b: String, expected: String, _t
 	assert_array(_test_parameters).is_empty()
 
 
-func test_parameterized_Vector2_values(a: Vector2, b: Vector2, expected: Vector2, _test_parameters := [
+func test_parameterized_vector2_values(a: Vector2, b: Vector2, expected: Vector2, _test_parameters := [
 	[Vector2.ONE, Vector2.ONE, Vector2(2, 2)],
 	[Vector2.LEFT, Vector2.RIGHT, Vector2.ZERO],
 	[Vector2.ZERO, Vector2.LEFT, Vector2.LEFT] ]) -> void:
 
-	collect_test_call("test_parameterized_Vector2_values", [a, b, expected])
+	collect_test_call("test_parameterized_vector2_values", [a, b, expected])
 	assert_that(a+b).is_equal(expected)
 	# The test call should replace the defaults with an empty array
 	assert_array(_test_parameters).is_empty()
 
 
-func test_parameterized_Vector3_values(a: Vector3, b: Vector3, expected: Vector3, _test_parameters := [
+func test_parameterized_vector3_values(a: Vector3, b: Vector3, expected: Vector3, _test_parameters := [
 	[Vector3.ONE, Vector3.ONE, Vector3(2, 2, 2)],
 	[Vector3.LEFT, Vector3.RIGHT, Vector3.ZERO],
 	[Vector3.ZERO, Vector3.LEFT, Vector3.LEFT] ]) -> void:
 
-	collect_test_call("test_parameterized_Vector3_values", [a, b, expected])
+	collect_test_call("test_parameterized_vector3_values", [a, b, expected])
 	assert_that(a+b).is_equal(expected)
 
 
@@ -272,7 +272,7 @@ func test_with_string_contains_brackets(
 			""".dedent())
 
 
-func test_with_dynamic_parameter_resolving(name_: String, value: Variant, expected: Variant, _test_parameters := [
+func test_with_dynamic_parameter_resolving(case_name: String, value: Variant, expected: Variant, _test_parameters := [
 	["test_a", auto_free(Node2D.new()), Node2D],
 	["test_b", auto_free(Node3D.new()), Node3D],
 	["test_c", _test_node_before, SubViewport],
@@ -280,17 +280,17 @@ func test_with_dynamic_parameter_resolving(name_: String, value: Variant, expect
 ]) -> void:
 	# all values must be resolved
 	assert_object(value).is_not_null().is_instanceof(expected)
-	if name_ == "test_c":
+	if case_name == "test_c":
 		assert_object(value).is_same(_test_node_before)
-	if name_ == "test_d":
+	if case_name == "test_d":
 		assert_object(value).is_same(_test_node_before_test)
 	# the argument '_test_parameters' must be replaced by <null> set to avoid re-instantiate of test arguments
 	assert_array(_test_parameters).is_empty()
-	collect_test_call("test_with_dynamic_paramater_resolving", [name_])
+	collect_test_call("test_with_dynamic_paramater_resolving", [case_name])
 
 
 func test_with_dynamic_parameter_resolving2(
-	name_: String,
+	case_name: String,
 	_type: Variant,
 	_log_level: Variant,
 	_expected_logs: Dictionary,
@@ -312,7 +312,7 @@ func test_with_dynamic_parameter_resolving2(
 ) -> void:
 	# the argument '_test_parameters' must be replaced by <null> set to avoid re-instantiate of test arguments
 	assert_array(_test_parameters).is_empty()
-	collect_test_call("test_with_dynamic_paramater_resolving2", [name_])
+	collect_test_call("test_with_dynamic_paramater_resolving2", [case_name])
 
 
 func test_with_extern_parameter_set(value: String, _test_parameters := _test_set) -> void:
@@ -321,7 +321,7 @@ func test_with_extern_parameter_set(value: String, _test_parameters := _test_set
 	collect_test_call("test_with_extern_parameter_set", [value])
 
 
-func test_with_extern_const_parameter_set(value: String, _test_parameters := [_data1, _data2]) -> void:
+func test_with_extern_const_parameter_set(value: String, _test_parameters := [_DATA1, _DATA2]) -> void:
 	assert_str(value).is_not_empty()
 	assert_array(_test_parameters).is_empty()
 	collect_test_call("test_with_extern_const_parameter_set", [value])

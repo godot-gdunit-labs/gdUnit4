@@ -109,7 +109,7 @@ func test_filter_value(value: Variant, expected_type: int, _test_parameters := [
 	assert_that(typeof(result)).is_equal(expected_type)
 
 
-func test_filter_value_() -> void:
+func test_filter_value_mixed_values() -> void:
 	assert_array(GdArrayTools.filter_value([], null)).is_empty()
 	assert_array(GdArrayTools.filter_value([], "")).is_empty()
 

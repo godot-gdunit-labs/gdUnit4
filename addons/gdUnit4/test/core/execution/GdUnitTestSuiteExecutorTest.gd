@@ -87,24 +87,24 @@ func assert_event_list(events :Array[GdUnitEvent], suite_name :String, test_case
 
 
 func assert_test_counters(events :Array[GdUnitEvent]) -> GdUnitArrayAssert:
-	var _events := events.filter(func(event: GdUnitEvent) -> bool:
+	var filtered_events := events.filter(func(event: GdUnitEvent) -> bool:
 		return event.type() in [GdUnitEvent.TESTSUITE_BEFORE, GdUnitEvent.TESTSUITE_AFTER, GdUnitEvent.TESTCASE_BEFORE, GdUnitEvent.TESTCASE_AFTER]
 	)
-	return assert_array(_events).extractv(extr("guid"), extr("type"), extr("error_count"), extr("failed_count"), extr("orphan_nodes"))
+	return assert_array(filtered_events).extractv(extr("guid"), extr("type"), extr("error_count"), extr("failed_count"), extr("orphan_nodes"))
 
 
 func assert_event_states(events :Array[GdUnitEvent]) -> GdUnitArrayAssert:
-	var _events := events.filter(func(event: GdUnitEvent) -> bool:
+	var filtered_events := events.filter(func(event: GdUnitEvent) -> bool:
 		return event.type() in [GdUnitEvent.TESTSUITE_BEFORE, GdUnitEvent.TESTSUITE_AFTER, GdUnitEvent.TESTCASE_BEFORE, GdUnitEvent.TESTCASE_AFTER]
 	)
-	return assert_array(_events).extractv(extr("guid"), extr("is_success"), extr("is_skipped"), extr("is_warning"), extr("is_failed"), extr("is_error"))
+	return assert_array(filtered_events).extractv(extr("guid"), extr("is_success"), extr("is_skipped"), extr("is_warning"), extr("is_failed"), extr("is_error"))
 
 
 @warning_ignore("unsafe_method_access", "unsafe_cast")
 func assert_event_reports(events: Array[GdUnitEvent], expected_reports: Array) -> void:
-	var _events: Array[GdUnitEvent] = events
-	for event_index in _events.size():
-		var event := _events[event_index]
+	var event_list: Array[GdUnitEvent] = events
+	for event_index in event_list.size():
+		var event := event_list[event_index]
 		var current: Array[GdUnitReport] = event.reports()
 		var expected: Array = expected_reports[event_index] if expected_reports.size() > event_index else []
 		if expected.is_empty():
@@ -725,7 +725,7 @@ func test_execute_failure_fuzzer_iteration() -> void:
 		])
 
 
-func test_execute_add_child_on_before_GD_106() -> void:
+func test_execute_add_child_on_before_gd_106() -> void:
 	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteFailAddChildStageBefore.resource")
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	var test_case1: GdUnitTestCase = tests["test_case1"]

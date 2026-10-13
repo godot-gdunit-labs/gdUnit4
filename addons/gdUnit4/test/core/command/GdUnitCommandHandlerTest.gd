@@ -27,7 +27,7 @@ func test_command_shortcut() -> void:
 
 
 ## actually needs to comment out, it produces a lot of leaked instances
-func _test__check_test_run_stopped_manually() -> void:
+func _test_check_test_run_stopped_manually() -> void:
 	var inspector :GdUnitCommandHandler = mock(GdUnitCommandHandler, CALL_REAL_FUNC)
 
 	# simulate no test is running

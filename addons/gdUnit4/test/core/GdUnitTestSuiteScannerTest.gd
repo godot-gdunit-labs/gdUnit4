@@ -33,7 +33,7 @@ func test_resolve_test_suite_path_plugins() -> void:
 	assert_str(resolve_path("res://addons/plugin_a/src/foo.gd")).is_equal("res://addons/plugin_a/_test_/foo_test.gd")
 
 
-func test_resolve_test_suite_path__no_test_root() -> void:
+func test_resolve_test_suite_path_no_test_root() -> void:
 	# from a project path
 	assert_str(GdUnitTestSuiteScanner.resolve_test_suite_path("res://project/src/models/events/ModelChangedEvent.gd", ""))\
 		.is_equal("res://project/src/models/events/ModelChangedEventTest.gd")
@@ -45,7 +45,7 @@ func test_resolve_test_suite_path__no_test_root() -> void:
 		.is_equal("user://project/src/models/events/ModelChangedEventTest.gd")
 
 
-func test_resolve_test_suite_path__path_contains_src_folder() -> void:
+func test_resolve_test_suite_path_path_contains_src_folder() -> void:
 	# from a project path
 	assert_str(GdUnitTestSuiteScanner.resolve_test_suite_path("res://project/src/models/events/ModelChangedEvent.gd"))\
 		.is_equal("res://project/test/models/events/ModelChangedEventTest.gd")
@@ -63,7 +63,7 @@ func test_resolve_test_suite_path__path_contains_src_folder() -> void:
 		.is_equal("user://project/custom_test/models/events/ModelChangedEventTest.gd")
 
 
-func test_resolve_test_suite_path__path_not_contains_src_folder() -> void:
+func test_resolve_test_suite_path_path_not_contains_src_folder() -> void:
 	# from a project path
 	assert_str(GdUnitTestSuiteScanner.resolve_test_suite_path("res://project/models/events/ModelChangedEvent.gd"))\
 		.is_equal("res://test/project/models/events/ModelChangedEventTest.gd")

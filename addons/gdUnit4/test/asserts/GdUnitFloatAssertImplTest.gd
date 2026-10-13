@@ -57,7 +57,7 @@ func test_is_equal_approx() -> void:
 
 
 
-func test_is_less_() -> void:
+func test_is_less_fails_on_same_value() -> void:
 	assert_failure(func() -> void: assert_float(23.2).is_less(23.2)) \
 		.is_failed() \
 		.has_message("Expecting to be less than:\n 23.200000 but was 23.200000")

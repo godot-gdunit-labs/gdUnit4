@@ -14,7 +14,7 @@ func test_is_true() -> void:
 		.has_message("Expecting: 'true' but is '<null>'")
 
 
-func test_isFalse() -> void:
+func test_is_false() -> void:
 	assert_bool(false).is_false()
 
 	assert_failure(func() -> void: assert_bool(true).is_false()) \

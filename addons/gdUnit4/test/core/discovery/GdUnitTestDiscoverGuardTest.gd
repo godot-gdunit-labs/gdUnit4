@@ -30,7 +30,7 @@ func test_sync_cache() -> void:
 	assert_dict(discoverer._discover_cache).is_empty()
 
 
-func test_discover_new_suite_GDScript() -> void:
+func test_discover_new_suite_gdscript() -> void:
 	var script: GDScript = load("res://addons/gdUnit4/test/core/discovery/resources/DiscoverExampleTestSuite.gd")
 	assert_that(script).is_not_null()
 	if script == null:
@@ -71,7 +71,7 @@ func test_discover_new_suite_GDScript() -> void:
 		.contains_key_value(script.resource_path, discovered_tests)
 
 
-func test_discover_deleted_test_GDScript() -> void:
+func test_discover_deleted_test_gdscript() -> void:
 	var script := load_non_cached("res://addons/gdUnit4/test/core/discovery/resources/DiscoverExampleTestSuite.gd")
 	# using debug mode to true to collect the change set
 	var discoverer: GdUnitTestDiscoverGuard = auto_free(GdUnitTestDiscoverGuard.new(true))
@@ -127,7 +127,7 @@ func test_discover_deleted_test_GDScript() -> void:
 		])
 
 
-func test_discover_added_test_GDScript() -> void:
+func test_discover_added_test_gdscript() -> void:
 	var script := load_non_cached("res://addons/gdUnit4/test/core/discovery/resources/DiscoverExampleTestSuite.gd")
 	# using debug mode to true to collect the change set
 	var discoverer: GdUnitTestDiscoverGuard = auto_free(GdUnitTestDiscoverGuard.new(true))
@@ -191,7 +191,7 @@ func test_discover_added_test_GDScript() -> void:
 		])
 
 
-func test_discover_renamed_test_GDScript() -> void:
+func test_discover_renamed_test_gdscript() -> void:
 	var script := load_non_cached("res://addons/gdUnit4/test/core/discovery/resources/DiscoverExampleTestSuite.gd")
 	# using debug mode to true to collect the change set
 	var discoverer: GdUnitTestDiscoverGuard = auto_free(GdUnitTestDiscoverGuard.new(true))
@@ -248,7 +248,7 @@ func test_discover_renamed_test_GDScript() -> void:
 		])
 
 
-func test_discover_moved_test_GDScript() -> void:
+func test_discover_moved_test_gdscript() -> void:
 	var script := load_non_cached("res://addons/gdUnit4/test/core/discovery/resources/DiscoverExampleTestSuite.gd")
 	# using debug mode to true to collect the change set
 	var discoverer: GdUnitTestDiscoverGuard = auto_free(GdUnitTestDiscoverGuard.new(true))

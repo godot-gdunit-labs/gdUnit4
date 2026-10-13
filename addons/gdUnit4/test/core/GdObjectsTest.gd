@@ -348,9 +348,9 @@ func test_extract_class_name_from_class_path(fuzzer := GodotClassNameFuzzer.new(
 
 
 func test_extract_class_name_godot_classes(fuzzer := GodotClassNameFuzzer.new(true, true), _fuzzer_iterations := 100) -> void:
-	var extract_class_name_ := fuzzer.next_value() as String
-	var instance :Variant = ClassDB.instantiate(extract_class_name_)
-	assert_result(extract_class_name(instance)).is_equal(extract_class_name_)
+	var godot_class_name := fuzzer.next_value() as String
+	var instance :Variant = ClassDB.instantiate(godot_class_name)
+	assert_result(extract_class_name(instance)).is_equal(godot_class_name)
 
 
 func test_extract_class_path_by_clazz() -> void:

@@ -2,7 +2,7 @@
 ## It contains all the necessary information about the executed stage, such as memory observers, reports, orphan monitor
 class_name GdUnitExecutionContext
 
-enum GC_ORPHANS_CHECK {
+enum GcOrphansCheck {
 	NONE,
 	SUITE_HOOK_AFTER,
 	TEST_HOOK_AFTER,
@@ -273,7 +273,7 @@ func register_auto_free(obj: Variant) -> Variant:
 
 
 ## Runs the gdunit garbage collector to free registered object and handle orphan node reporting
-func gc(gc_orphan_check: GC_ORPHANS_CHECK = GC_ORPHANS_CHECK.NONE) -> void:
+func gc(gc_orphan_check: GcOrphansCheck = GcOrphansCheck.NONE) -> void:
 	# unreference last used assert form the test to prevent memory leaks
 	GdUnitThreadManager.get_current_context().clear_assert()
 	await _memory_observer.gc()
@@ -283,7 +283,7 @@ func gc(gc_orphan_check: GC_ORPHANS_CHECK = GC_ORPHANS_CHECK.NONE) -> void:
 		await test_suite.get_tree().process_frame
 
 	match(gc_orphan_check):
-		GC_ORPHANS_CHECK.SUITE_HOOK_AFTER:
+		GcOrphansCheck.SUITE_HOOK_AFTER:
 			report_ophans(-1, """
 		func before() -> void:
 			collect_orphan_node_details())
@@ -291,7 +291,7 @@ func gc(gc_orphan_check: GC_ORPHANS_CHECK = GC_ORPHANS_CHECK.NONE) -> void:
 		func after() -> void:
 			collect_orphan_node_details())""")
 
-		GC_ORPHANS_CHECK.TEST_HOOK_AFTER:
+		GcOrphansCheck.TEST_HOOK_AFTER:
 			report_ophans(-1, """
 		func before_test() -> void:
 			collect_orphan_node_details()
@@ -299,7 +299,7 @@ func gc(gc_orphan_check: GC_ORPHANS_CHECK = GC_ORPHANS_CHECK.NONE) -> void:
 		func after_test() -> void:
 			collect_orphan_node_details()""")
 
-		GC_ORPHANS_CHECK.TEST_CASE:
+		GcOrphansCheck.TEST_CASE:
 			report_ophans(test_case.line_number(),
 			"	collect_orphan_node_details()"
 			)

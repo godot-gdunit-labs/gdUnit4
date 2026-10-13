@@ -2,13 +2,13 @@ class_name GdUnitPatcher
 extends RefCounted
 
 
-const _base_dir := "res://addons/gdUnit4/src/update/patches/"
+const _BASE_DIR := "res://addons/gdUnit4/src/update/patches/"
 
 var _patches := Dictionary()
 
 
 func scan(current :GdUnit4Version) -> void:
-	_scan(_base_dir, current)
+	_scan(_BASE_DIR, current)
 
 
 func _scan(scan_path :String, current :GdUnit4Version) -> void:

@@ -14,7 +14,7 @@ enum GdScriptWarningDirectoryMode {
 	INCLUDE = 1,
 }
 
-enum NAMING_CONVENTIONS {
+enum NamingConventions {
 	AUTO_DETECT,
 	SNAKE_CASE,
 	PASCAL_CASE,
@@ -128,7 +128,7 @@ static func setup() -> void:
 	create_property_if_need(SERVER_TIMEOUT, DEFAULT_SERVER_TIMEOUT, "Server connection timeout in minutes")
 	create_property_if_need(TEST_TIMEOUT, DEFAULT_TEST_TIMEOUT, "Test case runtime timeout in seconds")
 	create_property_if_need(TEST_LOOKUP_FOLDER, DEFAULT_TEST_LOOKUP_FOLDER, HELP_TEST_LOOKUP_FOLDER)
-	create_property_if_need(TEST_SUITE_NAMING_CONVENTION, NAMING_CONVENTIONS.AUTO_DETECT, "Naming convention to use when generating testsuites", NAMING_CONVENTIONS.keys())
+	create_property_if_need(TEST_SUITE_NAMING_CONVENTION, NamingConventions.AUTO_DETECT, "Naming convention to use when generating testsuites", NamingConventions.keys())
 	create_property_if_need(TEST_DISCOVER_ENABLED, false, "Automatically detect new tests in test lookup folders at runtime")
 	create_property_if_need(TEST_FLAKY_CHECK, false, "Rerun tests on failure and mark them as FLAKY")
 	create_property_if_need(TEST_FLAKY_MAX_RETRIES, 3, "Sets the number of retries for rerunning a flaky test")
@@ -144,10 +144,10 @@ static func setup() -> void:
 	# inspector
 	create_property_if_need(INSPECTOR_NODE_COLLAPSE, true,
 		"Close testsuite node after a successful test run.")
-	create_property_if_need(INSPECTOR_TREE_VIEW_MODE, GdUnitInspectorTreeConstants.TREE_VIEW_MODE.TREE,
-		"Inspector panel presentation mode", GdUnitInspectorTreeConstants.TREE_VIEW_MODE.keys())
-	create_property_if_need(INSPECTOR_TREE_SORT_MODE, GdUnitInspectorTreeConstants.SORT_MODE.UNSORTED,
-		"Inspector panel sorting mode", GdUnitInspectorTreeConstants.SORT_MODE.keys())
+	create_property_if_need(INSPECTOR_TREE_VIEW_MODE, GdUnitInspectorTreeConstants.TreeViewMode.TREE,
+		"Inspector panel presentation mode", GdUnitInspectorTreeConstants.TreeViewMode.keys())
+	create_property_if_need(INSPECTOR_TREE_SORT_MODE, GdUnitInspectorTreeConstants.SortMode.UNSORTED,
+		"Inspector panel sorting mode", GdUnitInspectorTreeConstants.SortMode.keys())
 	create_property_if_need(INSPECTOR_TOOLBAR_BUTTON_RUN_OVERALL, false,
 		"Show 'Run overall Tests' button in the inspector toolbar")
 	create_property_if_need(TEMPLATE_TS_GD, GdUnitTestSuiteTemplate.default_GD_template(), "Test suite template to use")
@@ -264,26 +264,26 @@ static func set_session_hooks(hooks: Dictionary[String, bool]) -> void:
 	update_property(property)
 
 
-static func set_inspector_tree_sort_mode(sort_mode: GdUnitInspectorTreeConstants.SORT_MODE) -> void:
+static func set_inspector_tree_sort_mode(sort_mode: GdUnitInspectorTreeConstants.SortMode) -> void:
 	var property := get_property(INSPECTOR_TREE_SORT_MODE)
 	property.set_value(sort_mode)
 	update_property(property)
 
 
-static func get_inspector_tree_sort_mode() -> GdUnitInspectorTreeConstants.SORT_MODE:
+static func get_inspector_tree_sort_mode() -> GdUnitInspectorTreeConstants.SortMode:
 	var property := get_property(INSPECTOR_TREE_SORT_MODE)
-	return property.value() if property != null else GdUnitInspectorTreeConstants.SORT_MODE.UNSORTED
+	return property.value() if property != null else GdUnitInspectorTreeConstants.SortMode.UNSORTED
 
 
-static func set_inspector_tree_view_mode(tree_view_mode: GdUnitInspectorTreeConstants.TREE_VIEW_MODE) -> void:
+static func set_inspector_tree_view_mode(tree_view_mode: GdUnitInspectorTreeConstants.TreeViewMode) -> void:
 	var property := get_property(INSPECTOR_TREE_VIEW_MODE)
 	property.set_value(tree_view_mode)
 	update_property(property)
 
 
-static func get_inspector_tree_view_mode() -> GdUnitInspectorTreeConstants.TREE_VIEW_MODE:
+static func get_inspector_tree_view_mode() -> GdUnitInspectorTreeConstants.TreeViewMode:
 	var property := get_property(INSPECTOR_TREE_VIEW_MODE)
-	return property.value() if property != null else GdUnitInspectorTreeConstants.TREE_VIEW_MODE.TREE
+	return property.value() if property != null else GdUnitInspectorTreeConstants.TreeViewMode.TREE
 
 
 # the configured server connection timeout in ms

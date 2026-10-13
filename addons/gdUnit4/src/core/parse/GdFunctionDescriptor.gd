@@ -2,7 +2,7 @@ class_name GdFunctionDescriptor
 extends RefCounted
 
 # temporary exclude GlobalScope enums
-const enum_fix := [
+const ENUM_FIX := [
 	"Side",
 	"Corner",
 	"Orientation",

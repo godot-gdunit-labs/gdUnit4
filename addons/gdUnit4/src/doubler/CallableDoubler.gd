@@ -11,7 +11,7 @@
 class_name CallableDoubler
 
 
-const doubler_script :Script =  preload("res://addons/gdUnit4/src/doubler/CallableDoubler.gd")
+const DOUBLER_SCRIPT :Script =  preload("res://addons/gdUnit4/src/doubler/CallableDoubler.gd")
 
 var _cb: Callable
 
@@ -46,7 +46,7 @@ static func non_callable_functions(name: String) -> bool:
 
 ## Returns the list of supported Callable functions
 static func callable_functions() -> PackedStringArray:
-	var supported_functions :Array = doubler_script.get_script_method_list()\
+	var supported_functions :Array = DOUBLER_SCRIPT.get_script_method_list()\
 		.map(CallableDoubler.map_func_name)\
 		.filter(CallableDoubler.non_callable_functions)
 	# We manually add these functions that we cannot/may not overwrite in this class

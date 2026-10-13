@@ -5,7 +5,7 @@ extends RefCounted
 const TAG_OBSERVE_INSTANCE := "GdUnit4_observe_instance_"
 const TAG_AUTO_FREE = "GdUnit4_marked_auto_free"
 const GdUnitTools = preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
-const _show_debug := false
+const _SHOW_DEBUG := false
 
 
 var _store :Array[Variant] = []
@@ -43,7 +43,7 @@ static func _is_instance_guard_enabled() -> bool:
 
 
 static func debug_observe(name :String, obj :Object, indent :int = 0) -> void:
-	if not _show_debug:
+	if not _SHOW_DEBUG:
 		return
 	var script :GDScript= obj if obj is GDScript else obj.get_script()
 	if script:

@@ -263,7 +263,7 @@ func sort_tree_items(parent: TreeItem) -> void:
 	_tree.queue_redraw()
 
 
-static func _sort_tree_items(parent: TreeItem, sort_mode: GdUnitInspectorTreeConstants.SORT_MODE) -> void:
+static func _sort_tree_items(parent: TreeItem, sort_mode: GdUnitInspectorTreeConstants.SortMode) -> void:
 	parent.visible = false
 	var items := parent.get_children()
 	# first remove all childs before sorting
@@ -272,16 +272,16 @@ static func _sort_tree_items(parent: TreeItem, sort_mode: GdUnitInspectorTreeCon
 
 	# do sort by selected sort mode
 	match sort_mode:
-		GdUnitInspectorTreeConstants.SORT_MODE.UNSORTED:
+		GdUnitInspectorTreeConstants.SortMode.UNSORTED:
 			items.sort_custom(sort_items_by_original_index)
 
-		GdUnitInspectorTreeConstants.SORT_MODE.NAME_ASCENDING:
+		GdUnitInspectorTreeConstants.SortMode.NAME_ASCENDING:
 			items.sort_custom(sort_items_by_name.bind(true))
 
-		GdUnitInspectorTreeConstants.SORT_MODE.NAME_DESCENDING:
+		GdUnitInspectorTreeConstants.SortMode.NAME_DESCENDING:
 			items.sort_custom(sort_items_by_name.bind(false))
 
-		GdUnitInspectorTreeConstants.SORT_MODE.EXECUTION_TIME:
+		GdUnitInspectorTreeConstants.SortMode.EXECUTION_TIME:
 			items.sort_custom(sort_items_by_execution_time)
 
 	# readding sorted childs
@@ -347,13 +347,13 @@ static func sort_items_by_original_index(a: TreeItem, b: TreeItem) -> bool:
 	return index_a < index_b
 
 
-func restructure_tree(parent: TreeItem, tree_mode: GdUnitInspectorTreeConstants.TREE_VIEW_MODE) -> void:
+func restructure_tree(parent: TreeItem, tree_mode: GdUnitInspectorTreeConstants.TreeViewMode) -> void:
 	_current_tree_view_mode = tree_mode
 
 	match tree_mode:
-		GdUnitInspectorTreeConstants.TREE_VIEW_MODE.FLAT:
+		GdUnitInspectorTreeConstants.TreeViewMode.FLAT:
 			restructure_tree_to_flat(parent)
-		GdUnitInspectorTreeConstants.TREE_VIEW_MODE.TREE:
+		GdUnitInspectorTreeConstants.TreeViewMode.TREE:
 			restructure_tree_to_tree(parent)
 	recalculate_counters(_tree_root)
 	# finally apply actual sort mode
@@ -996,9 +996,9 @@ func on_test_case_discover_added(test_case: GdUnitTestCase) -> void:
 		parts = parts.slice(index+1)
 
 	match _current_tree_view_mode:
-		GdUnitInspectorTreeConstants.TREE_VIEW_MODE.FLAT:
+		GdUnitInspectorTreeConstants.TreeViewMode.FLAT:
 			create_items_tree_mode_flat(test_case, parts)
-		GdUnitInspectorTreeConstants.TREE_VIEW_MODE.TREE:
+		GdUnitInspectorTreeConstants.TreeViewMode.TREE:
 			create_items_tree_mode_tree(test_case, parts)
 
 
@@ -1231,7 +1231,7 @@ func _on_settings_changed(property :GdUnitProperty) -> void:
 	match property.name():
 		GdUnitSettings.INSPECTOR_TREE_SORT_MODE:
 			sort_tree_items(_tree_root)
-			#_dump_tree_as_json("tree_sorted_by_%s" % GdUnitInspectorTreeConstants.SORT_MODE.keys()[property.value()])
+			#_dump_tree_as_json("tree_sorted_by_%s" % GdUnitInspectorTreeConstants.SortMode.keys()[property.value()])
 
 		GdUnitSettings.INSPECTOR_TREE_VIEW_MODE:
 			restructure_tree(_tree_root, GdUnitSettings.get_inspector_tree_view_mode())

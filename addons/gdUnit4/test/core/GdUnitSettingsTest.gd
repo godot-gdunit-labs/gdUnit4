@@ -114,12 +114,12 @@ func test_property_string_info() -> void:
 
 func test_property_enum_info() -> void:
 	var property_name := "unit_test/property/naming_convention"
-	var value_set: PackedStringArray = GdUnitSettings.NAMING_CONVENTIONS.keys()
-	GdUnitSettings.create_property_if_need(property_name, GdUnitSettings.NAMING_CONVENTIONS.AUTO_DETECT, "Naming convention for test suite generation", value_set)
+	var value_set: PackedStringArray = GdUnitSettings.NamingConventions.keys()
+	GdUnitSettings.create_property_if_need(property_name, GdUnitSettings.NamingConventions.AUTO_DETECT, "Naming convention for test suite generation", value_set)
 
 	var property := GdUnitSettings.get_property(property_name)
-	assert_int(property.value()).is_equal(GdUnitSettings.NAMING_CONVENTIONS.AUTO_DETECT)
-	assert_int(property.default()).is_equal(GdUnitSettings.NAMING_CONVENTIONS.AUTO_DETECT)
+	assert_int(property.value()).is_equal(GdUnitSettings.NamingConventions.AUTO_DETECT)
+	assert_int(property.default()).is_equal(GdUnitSettings.NamingConventions.AUTO_DETECT)
 	assert_int(property.type()).is_equal(TYPE_INT)
 	assert_array(property.value_set()).is_equal(value_set)
 	assert_str(property.help()).is_equal("Naming convention for test suite generation")
@@ -129,7 +129,7 @@ func test_property_enum_info() -> void:
 		.contains_key_value("type", TYPE_INT)\
 		.contains_key_value("hint", PROPERTY_HINT_ENUM)\
 		.contains_key_value("hint_string", ",".join(value_set))
-	assert_that(ProjectSettings.property_get_revert(property_name)).is_equal(GdUnitSettings.NAMING_CONVENTIONS.AUTO_DETECT)
+	assert_that(ProjectSettings.property_get_revert(property_name)).is_equal(GdUnitSettings.NamingConventions.AUTO_DETECT)
 #endregion
 
 

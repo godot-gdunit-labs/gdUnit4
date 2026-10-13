@@ -26,13 +26,13 @@ var total_orphans := 0
 
 var icon_mappings := {
 	# tree sort modes
-	0x100 + GdUnitInspectorTreeConstants.SORT_MODE.UNSORTED : GdUnitUiTools.get_icon("TripleBar"),
-	0x100 + GdUnitInspectorTreeConstants.SORT_MODE.NAME_ASCENDING : GdUnitUiTools.get_icon("Sort"),
-	0x100 + GdUnitInspectorTreeConstants.SORT_MODE.NAME_DESCENDING : GdUnitUiTools.get_flipped_icon("Sort"),
-	0x100 + GdUnitInspectorTreeConstants.SORT_MODE.EXECUTION_TIME : GdUnitUiTools.get_icon("History"),
+	0x100 + GdUnitInspectorTreeConstants.SortMode.UNSORTED : GdUnitUiTools.get_icon("TripleBar"),
+	0x100 + GdUnitInspectorTreeConstants.SortMode.NAME_ASCENDING : GdUnitUiTools.get_icon("Sort"),
+	0x100 + GdUnitInspectorTreeConstants.SortMode.NAME_DESCENDING : GdUnitUiTools.get_flipped_icon("Sort"),
+	0x100 + GdUnitInspectorTreeConstants.SortMode.EXECUTION_TIME : GdUnitUiTools.get_icon("History"),
 	# tree view modes
-	0x200 + GdUnitInspectorTreeConstants.TREE_VIEW_MODE.TREE : GdUnitUiTools.get_icon("Tree", Color.GHOST_WHITE),
-	0x200 + GdUnitInspectorTreeConstants.TREE_VIEW_MODE.FLAT : GdUnitUiTools.get_icon("AnimationTrackGroup", Color.GHOST_WHITE)
+	0x200 + GdUnitInspectorTreeConstants.TreeViewMode.TREE : GdUnitUiTools.get_icon("Tree", Color.GHOST_WHITE),
+	0x200 + GdUnitInspectorTreeConstants.TreeViewMode.FLAT : GdUnitUiTools.get_icon("AnimationTrackGroup", Color.GHOST_WHITE)
 }
 
 var _timer: LocalTime
@@ -158,8 +158,8 @@ func _set_sort_mode_menu_options() -> void:
 		context_menu.index_pressed.connect(_on_sort_mode_changed)
 
 	var configured_sort_mode := GdUnitSettings.get_inspector_tree_sort_mode()
-	for sort_mode: String in GdUnitInspectorTreeConstants.SORT_MODE.keys():
-		var enum_value :int =  GdUnitInspectorTreeConstants.SORT_MODE.get(sort_mode)
+	for sort_mode: String in GdUnitInspectorTreeConstants.SortMode.keys():
+		var enum_value :int =  GdUnitInspectorTreeConstants.SortMode.get(sort_mode)
 		var icon :Texture2D = icon_mappings[0x100 + enum_value]
 		context_menu.add_icon_check_item(icon, normalise(sort_mode), enum_value)
 		context_menu.set_item_checked(enum_value, configured_sort_mode == enum_value)
@@ -176,8 +176,8 @@ func _set_view_mode_menu_options() -> void:
 		context_menu.index_pressed.connect(_on_tree_view_mode_changed)
 
 	var configured_tree_view_mode := GdUnitSettings.get_inspector_tree_view_mode()
-	for tree_view_mode: String in GdUnitInspectorTreeConstants.TREE_VIEW_MODE.keys():
-		var enum_value :int =  GdUnitInspectorTreeConstants.TREE_VIEW_MODE.get(tree_view_mode)
+	for tree_view_mode: String in GdUnitInspectorTreeConstants.TreeViewMode.keys():
+		var enum_value :int =  GdUnitInspectorTreeConstants.TreeViewMode.get(tree_view_mode)
 		var icon :Texture2D = icon_mappings[0x200 + enum_value]
 		context_menu.add_icon_check_item(icon, normalise(tree_view_mode), enum_value)
 		context_menu.set_item_checked(enum_value, configured_tree_view_mode == enum_value)
@@ -284,12 +284,12 @@ func _on_btn_tree_sync_pressed() -> void:
 
 
 func _on_sort_mode_changed(index: int) -> void:
-	var selected_sort_mode :GdUnitInspectorTreeConstants.SORT_MODE = GdUnitInspectorTreeConstants.SORT_MODE.values()[index]
+	var selected_sort_mode :GdUnitInspectorTreeConstants.SortMode = GdUnitInspectorTreeConstants.SortMode.values()[index]
 	GdUnitSettings.set_inspector_tree_sort_mode(selected_sort_mode)
 
 
 func _on_tree_view_mode_changed(index: int) ->void:
-	var selected_tree_mode :GdUnitInspectorTreeConstants.TREE_VIEW_MODE = GdUnitInspectorTreeConstants.TREE_VIEW_MODE.values()[index]
+	var selected_tree_mode :GdUnitInspectorTreeConstants.TreeViewMode = GdUnitInspectorTreeConstants.TreeViewMode.values()[index]
 	GdUnitSettings.set_inspector_tree_view_mode(selected_tree_mode)
 
 

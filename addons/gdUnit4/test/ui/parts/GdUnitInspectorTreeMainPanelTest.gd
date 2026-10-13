@@ -463,7 +463,7 @@ func test_custom_sort_by_original_index() -> void:
 		# suffle to have a random order
 		tree_root.get_children().shuffle()
 		# sort it by original index
-		GdUnitInspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SORT_MODE.UNSORTED)
+		GdUnitInspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SortMode.UNSORTED)
 		# verify
 		assert_array(tree_root.get_children()).extractv(ItemNameExtractor.new()).contains_exactly([
 			# folders should be always on top
@@ -487,7 +487,7 @@ func test_custom_sort_by_name_ascending() -> void:
 		# suffle to have a random order
 		tree_root.get_children().shuffle()
 		# sort it by name ascending
-		GdUnitInspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SORT_MODE.NAME_ASCENDING)
+		GdUnitInspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SortMode.NAME_ASCENDING)
 		# verify
 		assert_array(tree_root.get_children()).extractv(ItemNameExtractor.new()).contains_exactly([
 			# folders should be always on top
@@ -511,7 +511,7 @@ func test_custom_sort_by_name_descending() -> void:
 		# suffle to have a random order
 		tree_root.get_children().shuffle()
 		# sort it by name descending
-		GdUnitInspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SORT_MODE.NAME_DESCENDING)
+		GdUnitInspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SortMode.NAME_DESCENDING)
 		# verify
 		assert_array(tree_root.get_children()).extractv(ItemNameExtractor.new()).contains_exactly([
 			# folders should be always on top
@@ -534,7 +534,7 @@ func test_custom_sort_by_execution_time() -> void:
 		# suffle to have a random order
 		tree_root.get_children().shuffle()
 		# sort it by execution time
-		GdUnitInspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SORT_MODE.EXECUTION_TIME)
+		GdUnitInspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SortMode.EXECUTION_TIME)
 		# verify
 		assert_array(tree_root.get_children()).extractv(ItemNameExtractor.new()).contains_exactly([
 			# folders should be always on top

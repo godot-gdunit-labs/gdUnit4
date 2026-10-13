@@ -95,7 +95,7 @@ func _array_equals_div(current: Variant, expected: Variant, case_sensitive: bool
 	return [current_value, expected_value, index_report]
 
 
-func _array_div(compare_mode: GdObjects.COMPARE_MODE, left: Array[Variant], right: Array[Variant], _same_order := false) -> Array[Variant]:
+func _array_div(compare_mode: GdObjects.CompareMode, left: Array[Variant], right: Array[Variant], _same_order := false) -> Array[Variant]:
 	var not_expect := left.duplicate(true)
 	var not_found := right.duplicate(true)
 	for index_c in left.size():
@@ -109,8 +109,8 @@ func _array_div(compare_mode: GdObjects.COMPARE_MODE, left: Array[Variant], righ
 	return [not_expect, not_found]
 
 
-func _contains(expected: Array, compare_mode: GdObjects.COMPARE_MODE) -> GdUnitArrayAssert:
-	var by_reference := compare_mode == GdObjects.COMPARE_MODE.OBJECT_REFERENCE
+func _contains(expected: Array, compare_mode: GdObjects.CompareMode) -> GdUnitArrayAssert:
+	var by_reference := compare_mode == GdObjects.CompareMode.OBJECT_REFERENCE
 	var current_value: Variant = get_current_value()
 	var expected_value: Variant = _extract_variadic_value(expected)
 	if not _validate_value_type(expected_value):
@@ -127,7 +127,7 @@ func _contains(expected: Array, compare_mode: GdObjects.COMPARE_MODE) -> GdUnitA
 	return report_success()
 
 
-func _contains_exactly(expected: Array, compare_mode: GdObjects.COMPARE_MODE) -> GdUnitArrayAssert:
+func _contains_exactly(expected: Array, compare_mode: GdObjects.CompareMode) -> GdUnitArrayAssert:
 	var current_value: Variant = get_current_value()
 	var expected_value: Variant = _extract_variadic_value(expected)
 	if not _validate_value_type(expected_value):
@@ -146,13 +146,13 @@ func _contains_exactly(expected: Array, compare_mode: GdObjects.COMPARE_MODE) ->
 	var diffs := _array_div(compare_mode,
 		current_value as Array[Variant],
 		expected_value as Array[Variant],
-		GdObjects.COMPARE_MODE.PARAMETER_DEEP_TEST)
+		GdObjects.CompareMode.PARAMETER_DEEP_TEST)
 	var not_expect: Array[Variant] = diffs[0]
 	var not_found: Array[Variant] = diffs[1]
 	return report_error(GdAssertMessages.error_arr_contains_exactly(current_value, expected_value, not_expect, not_found, compare_mode))
 
 
-func _contains_exactly_in_any_order(expected: Array, compare_mode: GdObjects.COMPARE_MODE) -> GdUnitArrayAssert:
+func _contains_exactly_in_any_order(expected: Array, compare_mode: GdObjects.CompareMode) -> GdUnitArrayAssert:
 	var current_value: Variant = get_current_value()
 	var expected_value: Variant = _extract_variadic_value(expected)
 	if not _validate_value_type(expected_value):
@@ -172,7 +172,7 @@ func _contains_exactly_in_any_order(expected: Array, compare_mode: GdObjects.COM
 		not_found, compare_mode))
 
 
-func _not_contains(expected: Array, compare_mode: GdObjects.COMPARE_MODE) -> GdUnitArrayAssert:
+func _not_contains(expected: Array, compare_mode: GdObjects.CompareMode) -> GdUnitArrayAssert:
 	var current_value: Variant = get_current_value()
 	var expected_value: Variant = _extract_variadic_value(expected)
 	if not _validate_value_type(expected_value):
@@ -312,35 +312,35 @@ func has_size(expected: int) -> GdUnitArrayAssert:
 
 
 func contains(...expected: Array) -> GdUnitArrayAssert:
-	return _contains(expected, GdObjects.COMPARE_MODE.PARAMETER_DEEP_TEST)
+	return _contains(expected, GdObjects.CompareMode.PARAMETER_DEEP_TEST)
 
 
 func contains_exactly(...expected: Array) -> GdUnitArrayAssert:
-	return _contains_exactly(expected, GdObjects.COMPARE_MODE.PARAMETER_DEEP_TEST)
+	return _contains_exactly(expected, GdObjects.CompareMode.PARAMETER_DEEP_TEST)
 
 
 func contains_exactly_in_any_order(...expected: Array) -> GdUnitArrayAssert:
-	return _contains_exactly_in_any_order(expected, GdObjects.COMPARE_MODE.PARAMETER_DEEP_TEST)
+	return _contains_exactly_in_any_order(expected, GdObjects.CompareMode.PARAMETER_DEEP_TEST)
 
 
 func contains_same(...expected: Array) -> GdUnitArrayAssert:
-	return _contains(expected, GdObjects.COMPARE_MODE.OBJECT_REFERENCE)
+	return _contains(expected, GdObjects.CompareMode.OBJECT_REFERENCE)
 
 
 func contains_same_exactly(...expected: Array) -> GdUnitArrayAssert:
-	return _contains_exactly(expected, GdObjects.COMPARE_MODE.OBJECT_REFERENCE)
+	return _contains_exactly(expected, GdObjects.CompareMode.OBJECT_REFERENCE)
 
 
 func contains_same_exactly_in_any_order(...expected: Array) -> GdUnitArrayAssert:
-	return _contains_exactly_in_any_order(expected, GdObjects.COMPARE_MODE.OBJECT_REFERENCE)
+	return _contains_exactly_in_any_order(expected, GdObjects.CompareMode.OBJECT_REFERENCE)
 
 
 func not_contains(...expected: Array) -> GdUnitArrayAssert:
-	return _not_contains(expected, GdObjects.COMPARE_MODE.PARAMETER_DEEP_TEST)
+	return _not_contains(expected, GdObjects.CompareMode.PARAMETER_DEEP_TEST)
 
 
 func not_contains_same(...expected: Array) -> GdUnitArrayAssert:
-	return _not_contains(expected, GdObjects.COMPARE_MODE.OBJECT_REFERENCE)
+	return _not_contains(expected, GdObjects.CompareMode.OBJECT_REFERENCE)
 
 
 func is_instanceof(expected: Variant) -> GdUnitAssert:
@@ -395,7 +395,7 @@ func _is_equal(
 	left: Variant,
 	right: Variant,
 	case_sensitive := true,
-	compare_mode := GdObjects.COMPARE_MODE.PARAMETER_DEEP_TEST) -> bool:
+	compare_mode := GdObjects.CompareMode.PARAMETER_DEEP_TEST) -> bool:
 
 	@warning_ignore("unsafe_cast")
 	return GdObjects.equals(
@@ -410,7 +410,7 @@ func _is_equals_sorted(
 	left: Variant,
 	right: Variant,
 	case_sensitive := true,
-	compare_mode := GdObjects.COMPARE_MODE.PARAMETER_DEEP_TEST) -> bool:
+	compare_mode := GdObjects.CompareMode.PARAMETER_DEEP_TEST) -> bool:
 
 	@warning_ignore("unsafe_cast")
 	return GdObjects.equals_sorted(

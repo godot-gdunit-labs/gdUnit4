@@ -14,9 +14,9 @@ const HORIZONTAL_RULE := "[img=4000x2]res://addons/gdUnit4/src/update/assets/hor
 const HEADER_RULE := "[font_size=%d]$1[/font_size]"
 const HEADER_CENTERED_RULE := "[font_size=%d][center]$1[/center][/font_size]"
 
-const image_download_folder := "res://addons/gdUnit4/tmp-update/"
+const IMAGE_DOWNLOAD_FOLDER := "res://addons/gdUnit4/tmp-update/"
 
-const exclude_font_size := "\b(?!(?:(font_size))\b)"
+const EXCLUDE_FONT_SIZE := "\b(?!(?:(font_size))\b)"
 
 var md_replace_patterns := [
 	# comments
@@ -77,7 +77,7 @@ var md_replace_patterns := [
 	[regex("[\\*]{2}(.*?)[\\*]{2}"), "[b]$1[/b]"],
 	# italic font
 	[regex("<i>(.*?)<\\/i>"), "[i]$1[/i]"],
-	[regex(exclude_font_size+"_(.*?)_"), "[i]$1[/i]"],
+	[regex(EXCLUDE_FONT_SIZE+"_(.*?)_"), "[i]$1[/i]"],
 	[regex("\\*(.*?)\\*"), "[i]$1[/i]"],
 
 	# strikethrough font
@@ -377,7 +377,7 @@ func process_image(p_regex: RegEx, p_input: String) -> String:
 
 func _process_external_image_resources(input: String) -> String:
 	@warning_ignore("return_value_discarded")
-	DirAccess.make_dir_recursive_absolute(image_download_folder)
+	DirAccess.make_dir_recursive_absolute(IMAGE_DOWNLOAD_FOLDER)
 	# scan all img for external resources and download it
 	for value in _img_replace_regex.search_all(input):
 		if value.get_group_count() >= 1:
@@ -393,7 +393,7 @@ func _process_external_image_resources(input: String) -> String:
 					if error != OK:
 						prints("Error creating image from response", error)
 					# replace characters where format characters
-					var new_url := image_download_folder + image_url.get_file().replace("_", "-")
+					var new_url := IMAGE_DOWNLOAD_FOLDER + image_url.get_file().replace("_", "-")
 					if new_url.get_extension() != 'png':
 						new_url = new_url + '.png'
 					var err := image.save_png(new_url)

@@ -192,7 +192,7 @@ static func scan_test_directories(base_directory: String, test_directory: String
 		var current_directory := normalize_path(base_directory + "/" + directory)
 		if FileAccess.file_exists(current_directory + "/.gdignore"):
 			continue
-		if GdUnitTestSuiteScanner.exclude_scan_directories.has(current_directory):
+		if GdUnitTestSuiteScanner.EXCLUDE_SCAN_DIRECTORIES.has(current_directory):
 			continue
 		if match_test_directory(directory, test_directory):
 			@warning_ignore("return_value_discarded")

@@ -33,10 +33,10 @@ func test_collect_report_statistics_with_errors() -> void:
 			var test_err1 := ctx_test_call.add_report(GdUnitReport.new().create(GdUnitReport.FAILURE, 13, "test error_a"))
 			var test_err2 := ctx_test_call.add_report(GdUnitReport.new().create(GdUnitReport.FAILURE, 14, "test error_b"))
 			var test_err3 := ctx_test_call.add_report(GdUnitReport.new().create(GdUnitReport.FAILURE, 15, "test error_c"))
-			ctx_test_call.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_CASE)
+			ctx_test_call.gc(GdUnitExecutionContext.GcOrphansCheck.TEST_CASE)
 
 			var test_hook_err2 := ctx_test_hook.add_report(GdUnitReport.new().create(GdUnitReport.FAILURE, 4, "after_test error"))
-			ctx_test_hook.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_HOOK_AFTER)
+			ctx_test_hook.gc(GdUnitExecutionContext.GcOrphansCheck.TEST_HOOK_AFTER)
 
 			# verify
 			ctx_test.gc()
@@ -60,7 +60,7 @@ func test_collect_report_statistics_with_errors() -> void:
 		var suite_err2 := ctx_suite.add_report(GdUnitReport.new().create(GdUnitReport.FAILURE, 1, "suite after error"))
 
 		# verify
-		ctx_suite.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.SUITE_HOOK_AFTER)
+		ctx_suite.gc(GdUnitExecutionContext.GcOrphansCheck.SUITE_HOOK_AFTER)
 		var suite_reports := ctx_suite.collect_reports(false)
 		assert_array(suite_reports).contains_exactly([suite_err1, suite_err2])
 		var suite_statisitcs := ctx_suite.calculate_statistics(suite_reports)
@@ -100,9 +100,9 @@ func test_collect_report_statistics_with_errors_on_suite_hooks() -> void:
 			var ctx_test_hook := GdUnitExecutionContext.of(ctx_test)
 			# test execution
 			var ctx_test_call := GdUnitExecutionContext.of(ctx_test_hook)
-			ctx_test_call.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_CASE)
+			ctx_test_call.gc(GdUnitExecutionContext.GcOrphansCheck.TEST_CASE)
 
-			ctx_test_hook.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_HOOK_AFTER)
+			ctx_test_hook.gc(GdUnitExecutionContext.GcOrphansCheck.TEST_HOOK_AFTER)
 
 			# verify
 			ctx_test.gc()
@@ -126,7 +126,7 @@ func test_collect_report_statistics_with_errors_on_suite_hooks() -> void:
 		var suite_err2 := ctx_suite.add_report(GdUnitReport.new().create(GdUnitReport.FAILURE, 1, "suite after error"))
 
 		# verify
-		ctx_suite.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.SUITE_HOOK_AFTER)
+		ctx_suite.gc(GdUnitExecutionContext.GcOrphansCheck.SUITE_HOOK_AFTER)
 		var suite_reports := ctx_suite.collect_reports(false)
 		assert_array(suite_reports).contains_exactly([suite_err1, suite_err2])
 		var suite_statisitcs := ctx_suite.calculate_statistics(suite_reports)
@@ -166,9 +166,9 @@ func test_collect_report_statistics_only_errors_on_test_hooks() -> void:
 			var err1 := ctx_test_hook.add_report(GdUnitReport.new().create(GdUnitReport.FAILURE, 1, "error on before_test()"))
 			# test execution
 			var ctx_test_call := GdUnitExecutionContext.of(ctx_test_hook)
-			ctx_test_call.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_CASE)
+			ctx_test_call.gc(GdUnitExecutionContext.GcOrphansCheck.TEST_CASE)
 
-			ctx_test_hook.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_HOOK_AFTER)
+			ctx_test_hook.gc(GdUnitExecutionContext.GcOrphansCheck.TEST_HOOK_AFTER)
 
 			# verify
 			ctx_test.gc()
@@ -190,7 +190,7 @@ func test_collect_report_statistics_only_errors_on_test_hooks() -> void:
 			})
 
 		# verify
-		ctx_suite.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.SUITE_HOOK_AFTER)
+		ctx_suite.gc(GdUnitExecutionContext.GcOrphansCheck.SUITE_HOOK_AFTER)
 		var suite_reports := ctx_suite.collect_reports(false)
 		assert_array(suite_reports).is_empty()
 		var suite_statisitcs := ctx_suite.calculate_statistics(suite_reports)
@@ -229,10 +229,10 @@ func test_collect_report_statistics_all_tests_skipped() -> void:
 				var ctx_test_hook := GdUnitExecutionContext.of(ctx_test)
 				# test execution
 				var ctx_test_call := GdUnitExecutionContext.of(ctx_test_hook)
-				ctx_test_call.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_CASE)
+				ctx_test_call.gc(GdUnitExecutionContext.GcOrphansCheck.TEST_CASE)
 				var expected_report := ctx_test_call.add_report(GdUnitReport.new().create(GdUnitReport.SKIPPED, index*5, "skipped test %d" % index))
 
-				ctx_test_hook.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_HOOK_AFTER)
+				ctx_test_hook.gc(GdUnitExecutionContext.GcOrphansCheck.TEST_HOOK_AFTER)
 				# verify
 				ctx_test.gc()
 				var test_reports := ctx_test.collect_reports(true)
@@ -253,7 +253,7 @@ func test_collect_report_statistics_all_tests_skipped() -> void:
 				})
 
 		# verify
-		ctx_suite.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.SUITE_HOOK_AFTER)
+		ctx_suite.gc(GdUnitExecutionContext.GcOrphansCheck.SUITE_HOOK_AFTER)
 		var suite_reports := ctx_suite.collect_reports(false)
 		assert_array(suite_reports).is_empty()
 		var suite_statisitcs := ctx_suite.calculate_statistics(suite_reports)
@@ -300,7 +300,7 @@ func test_simmulate_flaky_test(retry_count: int, is_flaky: bool, is_failed: bool
 					expected_reports.append(ctx_test_call.add_report(GdUnitReport.new().create(GdUnitReport.FAILURE, 42, "error")))
 					expected_reports.append(ctx_test_call.add_report(GdUnitReport.new().create(GdUnitReport.FAILURE, 43, "error")))
 
-				ctx_test_hook.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_HOOK_AFTER)
+				ctx_test_hook.gc(GdUnitExecutionContext.GcOrphansCheck.TEST_HOOK_AFTER)
 
 			ctx_test.gc()
 			var reports := ctx_test.collect_reports(true)
@@ -325,7 +325,7 @@ func test_simmulate_flaky_test(retry_count: int, is_flaky: bool, is_failed: bool
 			assert_bool(statistics[GdUnitEvent.FLAKY]).override_failure_message("Shold be marked as %s" %  "flaky" if is_flaky else "").is_equal(is_flaky)
 			assert_bool(statistics[GdUnitEvent.FAILED]).override_failure_message("Expect be failing: %s" % is_failed).is_equal(is_failed)
 
-		ctx_suite.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.SUITE_HOOK_AFTER)
+		ctx_suite.gc(GdUnitExecutionContext.GcOrphansCheck.SUITE_HOOK_AFTER)
 		var suite_reports := ctx_suite.collect_reports(false)
 		assert_array(suite_reports).is_empty()
 		var suite_statisitcs := ctx_suite.calculate_statistics(suite_reports)

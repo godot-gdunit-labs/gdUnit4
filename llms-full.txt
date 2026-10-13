@@ -51,7 +51,10 @@ dotnet format gdUnit4.csproj --verify-no-changes --verbosity diagnostic
 
 ```bash
 gdlint addons/gdUnit4/
+bash .github/actions/gdformat_check/gdformat-check.sh --exclude '*/resources/*' --exclude '*/GdUnitScanTestSuiteTest.gd' addons/gdUnit4/
 ```
+
+The second command checks only the token spacing on a line against `gdformat`, line wrapping, blank lines and quote style are not enforced.
 
 ## Branch and PR Conventions
 

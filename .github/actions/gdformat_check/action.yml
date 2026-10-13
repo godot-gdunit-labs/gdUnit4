@@ -1,0 +1,48 @@
+name: 'GDFormat Check'
+description: 'Check the GDScript token spacing against gdformat'
+author: 'MikeSchulze'
+
+inputs:
+  paths:
+    description: 'Space separated paths to check'
+    required: false
+    default: 'addons/gdUnit4'
+
+  line-length:
+    description: 'The max line length used by gdformat'
+    required: false
+    default: '180'
+
+  exclude:
+    description: 'Newline separated `find -path` patterns of files to skip'
+    required: false
+    default: |
+      */resources/*
+      */GdUnitScanTestSuiteTest.gd
+
+  gdtoolkit-version:
+    description: 'The gdtoolkit version to install'
+    required: false
+    default: '4.5.0'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: 'Install gdtoolkit'
+      uses: Scony/godot-gdscript-toolkit@master
+      with:
+        version: ${{ inputs.gdtoolkit-version }}
+
+    - name: 'Check GDScript token spacing'
+      shell: bash
+      env:
+        CHECK_PATHS: ${{ inputs.paths }}
+        LINE_LENGTH: ${{ inputs.line-length }}
+        EXCLUDE: ${{ inputs.exclude }}
+      run: |
+        args=(--line-length "$LINE_LENGTH")
+        while IFS= read -r pattern; do
+          if [[ -n "$pattern" ]]; then args+=(--exclude "$pattern"); fi
+        done <<< "$EXCLUDE"
+        read -ra check_paths <<< "$CHECK_PATHS"
+        bash "$GITHUB_ACTION_PATH/gdformat-check.sh" "${args[@]}" "${check_paths[@]}"

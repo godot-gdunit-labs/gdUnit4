@@ -135,6 +135,12 @@ Linting is enforced by CI for all plugin sources and tests:
 gdlint addons/gdUnit4/
 ```
 
+CI also checks the spacing between tokens on a line against `gdformat`, line wrapping, blank lines and quote style are not enforced:
+
+```bash
+bash .github/actions/gdformat_check/gdformat-check.sh --exclude '*/resources/*' --exclude '*/GdUnitScanTestSuiteTest.gd' addons/gdUnit4/
+```
+
 ### Project Structure
 
 For a high-level overview of the repository, see:

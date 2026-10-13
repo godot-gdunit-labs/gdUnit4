@@ -28,6 +28,13 @@ jobs:
     name: '📝 GDLint'
     uses: ./.github/workflows/gdlint.yml
 
+  gdformat:
+    if: ${{ !cancelled() }}
+    name: '📝 GDFormat'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/gdformat_check
 
   unit-tests:
     runs-on: ubuntu-24.04
@@ -100,7 +107,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     name: 'Final Results'
-    needs: [format-checks, gdlint, unit-tests]
+    needs: [format-checks, gdlint, gdformat, unit-tests]
     steps:
       - run: exit 1
         if: >-

@@ -63,6 +63,15 @@ gdlint addons/gdUnit4/
 
 CI lints the whole plugin, sources and tests. Directories named `resources` are excluded by `.gdlintrc`.
 
+CI also checks the token spacing against `gdformat --line-length=180` (`.github/actions/gdformat_check`), it needs gdscript-toolkit installed:
+
+```bash
+bash .github/actions/gdformat_check/gdformat-check.sh --exclude '*/resources/*' --exclude '*/GdUnitScanTestSuiteTest.gd' addons/gdUnit4/
+```
+
+Only the spacing between tokens on a line is checked, for example `name: Type`, `a, b`, `x = a + b` and two spaces before an inline
+comment. Line wrapping, blank lines and quote style are not enforced, so do not apply a full `gdformat` to the files.
+
 ### Markdown Linting
 
 Run markdownlint-cli2 locally before pushing to catch formatting issues early:
@@ -234,8 +243,9 @@ When editing or creating `.tscn` files, do not manually remove uid attributes â€
 Run all linting locally before pushing to avoid CI failures:
 
 ```bash
-# GDScript lint (mirrors .github/workflows/gdlint.yml)
+# GDScript lint and token spacing (mirrors .github/workflows/gdlint.yml and .github/actions/gdformat_check)
 gdlint addons/gdUnit4/
+bash .github/actions/gdformat_check/gdformat-check.sh --exclude '*/resources/*' --exclude '*/GdUnitScanTestSuiteTest.gd' addons/gdUnit4/
 
 # Markdown lint
 markdownlint-cli2 --config .github/actions/formatting_checks/.markdownlint.jsonc "**/*.md"

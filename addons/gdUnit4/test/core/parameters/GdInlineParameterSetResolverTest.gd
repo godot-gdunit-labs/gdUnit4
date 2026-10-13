@@ -518,7 +518,7 @@ func test_resolve_parameters_with_array_functions(index: int, arg1: String, arg2
 	[0, "abc", "d,ef"],
 	[1, "xxx", "foo(y)"],
 	[2, 'y"yy', "d\"ef"],
-	[3, "z'zz", 'd\'ef'],
+	[3, "z'zz", "d\'ef"],
 	]) -> void:
 	if index == 0:
 		assert_str(arg1).is_equal("abc")
@@ -531,7 +531,7 @@ func test_resolve_parameters_with_array_functions(index: int, arg1: String, arg2
 		assert_str(arg2).is_equal("d\"ef")
 	elif index == 3:
 		assert_str(arg1).is_equal("z'zz")
-		assert_str(arg2).is_equal('d\'ef')
+		assert_str(arg2).is_equal("d\'ef")
 
 
 func _resolve_parameters(child_name: String) -> Array[Array]:

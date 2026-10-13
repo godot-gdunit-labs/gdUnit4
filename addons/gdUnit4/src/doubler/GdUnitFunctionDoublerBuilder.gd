@@ -56,30 +56,30 @@ const DEFAULT_TYPED_RETURN_VALUES := {
 # @GlobalScript enums
 # needs to manually map because of https://github.com/godotengine/godot/issues/73835
 const DEFAULT_ENUM_RETURN_VALUES = {
-	"Side" : "SIDE_LEFT",
-	"Corner" : "CORNER_TOP_LEFT",
-	"Orientation" : "HORIZONTAL",
-	"ClockDirection" : "CLOCKWISE",
-	"HorizontalAlignment" : "HORIZONTAL_ALIGNMENT_LEFT",
-	"VerticalAlignment" : "VERTICAL_ALIGNMENT_TOP",
-	"InlineAlignment" : "INLINE_ALIGNMENT_TOP_TO",
-	"EulerOrder" : "EULER_ORDER_XYZ",
-	"Key" : "KEY_NONE",
-	"KeyModifierMask" : "KEY_CODE_MASK",
-	"MouseButton" : "MOUSE_BUTTON_NONE",
-	"MouseButtonMask" : "MOUSE_BUTTON_MASK_LEFT",
-	"JoyButton" : "JOY_BUTTON_INVALID",
-	"JoyAxis" : "JOY_AXIS_INVALID",
-	"MIDIMessage" : "MIDI_MESSAGE_NONE",
-	"Error" : "OK",
-	"PropertyHint" : "PROPERTY_HINT_NONE",
-	"Variant.Type" : "TYPE_NIL",
-	"Vector2.Axis" : "Vector2.AXIS_X",
-	"Vector2i.Axis" : "Vector2i.AXIS_X",
-	"Vector3.Axis" : "Vector3.AXIS_X",
-	"Vector3i.Axis" : "Vector3i.AXIS_X",
-	"Vector4.Axis" : "Vector4.AXIS_X",
-	"Vector4i.Axis" : "Vector4i.AXIS_X",
+	"Side": "SIDE_LEFT",
+	"Corner": "CORNER_TOP_LEFT",
+	"Orientation": "HORIZONTAL",
+	"ClockDirection": "CLOCKWISE",
+	"HorizontalAlignment": "HORIZONTAL_ALIGNMENT_LEFT",
+	"VerticalAlignment": "VERTICAL_ALIGNMENT_TOP",
+	"InlineAlignment": "INLINE_ALIGNMENT_TOP_TO",
+	"EulerOrder": "EULER_ORDER_XYZ",
+	"Key": "KEY_NONE",
+	"KeyModifierMask": "KEY_CODE_MASK",
+	"MouseButton": "MOUSE_BUTTON_NONE",
+	"MouseButtonMask": "MOUSE_BUTTON_MASK_LEFT",
+	"JoyButton": "JOY_BUTTON_INVALID",
+	"JoyAxis": "JOY_AXIS_INVALID",
+	"MIDIMessage": "MIDI_MESSAGE_NONE",
+	"Error": "OK",
+	"PropertyHint": "PROPERTY_HINT_NONE",
+	"Variant.Type": "TYPE_NIL",
+	"Vector2.Axis": "Vector2.AXIS_X",
+	"Vector2i.Axis": "Vector2i.AXIS_X",
+	"Vector3.Axis": "Vector3.AXIS_X",
+	"Vector3i.Axis": "Vector3i.AXIS_X",
+	"Vector4.Axis": "Vector4.AXIS_X",
+	"Vector4i.Axis": "Vector4i.AXIS_X",
 }
 
 
@@ -186,7 +186,7 @@ func argument_names() -> PackedStringArray:
 	return fd.args().map(argument_name)
 
 
-func argument_default(arg :GdFunctionArgument) -> String:
+func argument_default(arg: GdFunctionArgument) -> String:
 	return (arg.value_as_string()
 		if arg.has_default()
 		else DEFAULT_TYPED_RETURN_VALUES.get(arg.type(), "null"))
@@ -329,8 +329,8 @@ func build() -> PackedStringArray:
 	func_body.append("")
 	var super_calls := build_super_calls()
 	if not is_void_func():
-		super_calls = super_calls.replace("super(", "return super(" )
+		super_calls = super_calls.replace("super(", "return super(")
 	if fd.is_coroutine():
-		super_calls = super_calls.replace("super(", "await super(" )
+		super_calls = super_calls.replace("super(", "await super(")
 	func_body.append(super_calls.indent("\t"))
 	return func_body

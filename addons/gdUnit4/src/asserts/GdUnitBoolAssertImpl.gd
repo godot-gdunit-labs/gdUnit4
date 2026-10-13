@@ -3,7 +3,7 @@ extends GdUnitBoolAssert
 var _base: GdUnitAssertImpl
 
 
-func _init(current :Variant) -> void:
+func _init(current: Variant) -> void:
 	_base = GdUnitAssertImpl.new(current)
 	# save the actual assert instance on the current thread context
 	GdUnitThreadManager.get_current_context().set_assert(self)
@@ -12,7 +12,7 @@ func _init(current :Variant) -> void:
 		report_error("GdUnitBoolAssert inital error, unexpected type <%s>" % GdObjects.typeof_as_string(current))
 
 
-func _notification(event :int) -> void:
+func _notification(event: int) -> void:
 	if event == NOTIFICATION_PREDELETE:
 		if _base != null:
 			_base.notification(event)
@@ -29,7 +29,7 @@ func report_success() -> GdUnitBoolAssert:
 	return self
 
 
-func report_error(error :String) -> GdUnitBoolAssert:
+func report_error(error: String) -> GdUnitBoolAssert:
 	@warning_ignore("return_value_discarded")
 	_base.report_error(error)
 	return self

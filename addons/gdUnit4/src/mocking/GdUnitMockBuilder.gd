@@ -2,14 +2,14 @@ class_name GdUnitMockBuilder
 extends GdUnitClassDoubler
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
-const MOCK_TEMPLATE :GDScript = preload("res://addons/gdUnit4/src/mocking/GdUnitMockImpl.gd")
+const MOCK_TEMPLATE: GDScript = preload("res://addons/gdUnit4/src/mocking/GdUnitMockImpl.gd")
 
 
 static func is_push_errors() -> bool:
 	return GdUnitSettings.is_report_push_errors()
 
 
-static func build(clazz :Variant, mock_mode :String, debug_write := false) -> Variant:
+static func build(clazz: Variant, mock_mode: String, debug_write := false) -> Variant:
 	var push_errors := is_push_errors()
 	if not is_mockable(clazz, push_errors):
 		return null
@@ -24,7 +24,7 @@ static func build(clazz :Variant, mock_mode :String, debug_write := false) -> Va
 	var instance := create_instance(clazz)
 	if instance == null:
 		push_error("Can't create instance of class %s" % clazz)
-	var mock := mock_on_script(instance, clazz, [ "get_script"], debug_write)
+	var mock := mock_on_script(instance, clazz, ["get_script"], debug_write)
 	if not instance is RefCounted:
 		instance.free()
 	if mock == null:
@@ -85,8 +85,8 @@ static func mock_on_scene(scene: PackedScene, debug_write: bool) -> Variant:
 	return register_auto_free(scene_instance)
 
 
-static func get_class_info(clazz :Variant) -> Dictionary:
-	var clazz_name :String = GdObjects.extract_class_name(clazz).value()
+static func get_class_info(clazz: Variant) -> Dictionary:
+	var clazz_name: String = GdObjects.extract_class_name(clazz).value()
 	var clazz_path := GdObjects.extract_class_path(clazz)
 	return {
 		"class_name" : clazz_name,
@@ -94,11 +94,11 @@ static func get_class_info(clazz :Variant) -> Dictionary:
 	}
 
 
-static func mock_on_script(instance :Object, clazz :Variant, function_excludes :PackedStringArray, debug_write :bool) -> GDScript:
+static func mock_on_script(instance: Object, clazz: Variant, function_excludes: PackedStringArray, debug_write: bool) -> GDScript:
 	var function_doubler := GdUnitMockFunctionDoubler.new()
 	var class_info := get_class_info(clazz)
-	var clazz_name :String = class_info.get("class_name")
-	var clazz_path :PackedStringArray = class_info.get("class_path", [clazz_name])
+	var clazz_name: String = class_info.get("class_name")
+	var clazz_path: PackedStringArray = class_info.get("class_path", [clazz_name])
 	var mock_template := MOCK_TEMPLATE.source_code.format({
 		"instance_id" : abs(instance.get_instance_id()),
 		"gdunit_source_class": clazz_name if clazz_path.is_empty() else clazz_path[0]
@@ -111,8 +111,8 @@ static func mock_on_script(instance :Object, clazz :Variant, function_excludes :
 
 	var mock := GDScript.new()
 	mock.source_code = "\n".join(lines)
-	mock.resource_name =  "Mock%s_%d.gd" % [clazz_name, Time.get_ticks_msec()]
-	mock.resource_path = "%s/%s"  % [GdUnitFileAccess.create_temp_dir("mock"), mock.resource_name]
+	mock.resource_name = "Mock%s_%d.gd" % [clazz_name, Time.get_ticks_msec()]
+	mock.resource_path = "%s/%s" % [GdUnitFileAccess.create_temp_dir("mock"), mock.resource_name]
 
 	if debug_write:
 		@warning_ignore("return_value_discarded")
@@ -126,7 +126,7 @@ static func mock_on_script(instance :Object, clazz :Variant, function_excludes :
 	return mock
 
 
-static func is_mockable(clazz :Variant, push_errors :bool=false) -> bool:
+static func is_mockable(clazz: Variant, push_errors: bool = false) -> bool:
 	var clazz_type := typeof(clazz)
 	if clazz_type != TYPE_OBJECT and clazz_type != TYPE_STRING:
 		push_error("Invalid clazz type is used")
@@ -181,5 +181,5 @@ static func is_mockable(clazz :Variant, push_errors :bool=false) -> bool:
 	return GdObjects.is_script(resource) or GdObjects.is_scene(resource)
 
 
-static func register_auto_free(obj :Variant) -> Variant:
+static func register_auto_free(obj: Variant) -> Variant:
 	return GdUnitThreadManager.get_current_context().get_execution_context().register_auto_free(obj)

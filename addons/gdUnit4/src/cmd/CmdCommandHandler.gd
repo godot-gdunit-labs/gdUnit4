@@ -5,10 +5,10 @@ const CB_SINGLE_ARG = 0
 const CB_MULTI_ARGS = 1
 const NO_CB := Callable()
 
-var _cmd_options :CmdOptions
+var _cmd_options: CmdOptions
 # holds the command callbacks by key:<cmd_name>:String and value: [<cb single arg>, <cb multible args>]:Array
 # Dictionary[String, Array[Callback]
-var _command_cbs :Dictionary
+var _command_cbs: Dictionary
 
 
 
@@ -76,7 +76,7 @@ func _validate() -> GdUnitResult:
 		if cb != NO_CB:
 			var cb_method := cb.get_method()
 			if registered_cbs.has(cb_method):
-				var already_registered_cmd :String = registered_cbs[cb_method]
+				var already_registered_cmd: String = registered_cbs[cb_method]
 				@warning_ignore("return_value_discarded")
 				errors.append("The function reference '%s' already registerd for command '%s'!" % [cb_method, already_registered_cmd])
 			else:

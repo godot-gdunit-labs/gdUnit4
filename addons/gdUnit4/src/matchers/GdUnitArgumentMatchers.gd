@@ -17,7 +17,7 @@ static func to_matcher(arguments: Array[Variant], auto_deep_check_mode := false)
 
 
 static func any() -> GdUnitArgumentMatcher:
-	return  AnyArgumentMatcher.new()
+	return AnyArgumentMatcher.new()
 
 
 static func by_type(type: int) -> GdUnitArgumentMatcher:

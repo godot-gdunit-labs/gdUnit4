@@ -48,7 +48,7 @@ func build_junit_report(report_path: String, report: GdUnitReportSummary) -> Str
 		.attribute(ATTR_SKIPPED, report.skipped_count())\
 		.attribute(ATTR_FLAKY, report.flaky_count())\
 		.attribute(ATTR_TIME, JUnitXmlReportWriter.to_time(report.duration()))\
-		.add_childs(build_test_suites(report))
+		. add_childs(build_test_suites(report))
 	var as_string := test_suites.to_xml()
 	test_suites.dispose()
 	return HEADER + as_string
@@ -57,7 +57,7 @@ func build_junit_report(report_path: String, report: GdUnitReportSummary) -> Str
 func build_test_suites(summary: GdUnitReportSummary) -> Array:
 	var test_suites: Array[XmlElement] = []
 	for index in summary.get_reports().size():
-		var suite_report :GdUnitTestSuiteReport = summary.get_reports()[index]
+		var suite_report: GdUnitTestSuiteReport = summary.get_reports()[index]
 		var iso8601_datetime := Time.get_datetime_string_from_unix_time(suite_report.time_stamp())
 		test_suites.append(XmlElement.new("testsuite")\
 			.attribute(ATTR_ID, index)\
@@ -78,7 +78,7 @@ func build_test_suites(summary: GdUnitReportSummary) -> Array:
 func build_test_cases(suite_report: GdUnitTestSuiteReport) -> Array:
 	var test_cases: Array[XmlElement] = []
 	for index in suite_report.get_reports().size():
-		var report :GdUnitTestCaseReport = suite_report.get_reports()[index]
+		var report: GdUnitTestCaseReport = suite_report.get_reports()[index]
 		test_cases.append( XmlElement.new("testcase")\
 			.attribute(ATTR_NAME, JUnitXmlReportWriter.encode_xml(report.name()))\
 			.attribute(ATTR_CLASSNAME, report.suite_name())\

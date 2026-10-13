@@ -2,8 +2,8 @@
 extends Window
 
 const EAXAMPLE_URL := "https://github.com/MikeSchulze/gdUnit4-examples/archive/refs/heads/master.zip"
-const GdUnitTools := preload ("res://addons/gdUnit4/src/core/GdUnitTools.gd")
-const GdUnitUpdateClient = preload ("res://addons/gdUnit4/src/update/GdUnitUpdateClient.gd")
+const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
+const GdUnitUpdateClient = preload("res://addons/gdUnit4/src/update/GdUnitUpdateClient.gd")
 
 var _font_size: float
 
@@ -13,12 +13,12 @@ var _font_size: float
 @onready var _progress_bar: ProgressBar = %ProgressBar
 @onready var _progress_text: Label = %progress_lbl
 @onready var _properties_template: Control = $property_template
-@onready var _properties_common: Control = % "common-content"
-@onready var _properties_ui: Control = % "ui-content"
-@onready var _properties_shortcuts: Control = % "shortcut-content"
-@onready var _properties_report: Control = % "report-content"
+@onready var _properties_common: Control = %"common-content"
+@onready var _properties_ui: Control = %"ui-content"
+@onready var _properties_shortcuts: Control = %"shortcut-content"
+@onready var _properties_report: Control = %"report-content"
 @onready var _input_capture: GdUnitInputCapture = %GdUnitInputCapture
-@onready var _property_error: Window = % "propertyError"
+@onready var _property_error: Window = %"propertyError"
 @onready var _tab_container: TabContainer = %Properties
 @onready var _update_tab: Control = %Update
 
@@ -131,7 +131,7 @@ func _create_input_element(property: GdUnitProperty, reset_btn: Button) -> Node:
 		return input
 	if property.type() == TYPE_PACKED_INT32_ARRAY:
 		var key_input_button := Button.new()
-		var value:PackedInt32Array = property.value()
+		var value: PackedInt32Array = property.value()
 		key_input_button.text = to_shortcut(value)
 		key_input_button.pressed.connect(_on_shortcut_change.bind(key_input_button, property, reset_btn))
 		return key_input_button
@@ -219,14 +219,14 @@ func reimport(path: String) -> void:
 	await get_tree().process_frame
 	var files := DirAccess.get_files_at(path)
 	EditorInterface.get_resource_filesystem().reimport_files(files)
-	for directory in  DirAccess.get_directories_at(path):
+	for directory in DirAccess.get_directories_at(path):
 		reimport(directory)
 
 
 func check_for_update() -> void:
 	if not GdUnitSettings.is_update_notification_enabled():
 		return
-	var response :GdUnitUpdateClient.HttpResponse = await _update_client.request_latest_version()
+	var response: GdUnitUpdateClient.HttpResponse = await _update_client.request_latest_version()
 	if response.status() != 200:
 		printerr("Latest version information cannot be retrieved from GitHub!")
 		printerr("Error:  %s" % response.response())

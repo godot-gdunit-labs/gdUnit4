@@ -110,7 +110,7 @@ func add_reports(
 	p_test_name: String,
 	p_reports: Array[GdUnitReport]) -> void:
 
-	for report:GdUnitTestSuiteReport in _reports:
+	for report: GdUnitTestSuiteReport in _reports:
 		if report.get_resource_path() == p_resource_path:
 			report.add_testcase_reports(p_test_name, p_reports)
 
@@ -123,7 +123,7 @@ func add_testsuite_reports(
 	p_resource_path: String,
 	p_reports: Array = []) -> void:
 
-	for report:GdUnitTestSuiteReport in _reports:
+	for report: GdUnitTestSuiteReport in _reports:
 		if report.get_resource_path() == p_resource_path:
 			report.set_reports(p_reports)
 
@@ -153,7 +153,7 @@ func update_testsuite_counters(
 	p_flaky_count: int,
 	p_duration: int) -> void:
 
-	for report:GdUnitTestSuiteReport in _reports:
+	for report: GdUnitTestSuiteReport in _reports:
 		if report.get_resource_path() == p_resource_path:
 			report._update_testsuite_counters(p_error_count, p_failure_count, p_orphan_count, p_skipped_count, p_flaky_count, p_duration)
 	_update_summary_counters(p_error_count, p_failure_count, p_orphan_count, p_skipped_count, p_flaky_count, 0)
@@ -175,7 +175,7 @@ func _update_summary_counters(
 	_duration += p_duration
 
 
-func calculate_state(p_error_count :int, p_failure_count :int, p_orphan_count :int, p_flaky_count: int, p_skipped_count: int) -> String:
+func calculate_state(p_error_count: int, p_failure_count: int, p_orphan_count: int, p_flaky_count: int, p_skipped_count: int) -> String:
 	if p_error_count > 0:
 		return "ERROR"
 	if p_failure_count > 0:
@@ -189,14 +189,14 @@ func calculate_state(p_error_count :int, p_failure_count :int, p_orphan_count :i
 	return "PASSED"
 
 
-func calculate_succes_rate(p_test_count :int, p_error_count :int, p_failure_count :int) -> String:
+func calculate_succes_rate(p_test_count: int, p_error_count: int, p_failure_count: int) -> String:
 	if p_failure_count == 0:
 		return "100%"
-	var count := p_test_count-p_failure_count-p_error_count
+	var count := p_test_count - p_failure_count - p_error_count
 	if count < 0:
 		return "0%"
-	return "%d" % (( 0 if count < 0 else count) * 100.0 / p_test_count) + "%"
+	return "%d" % ((0 if count < 0 else count) * 100.0 / p_test_count) + "%"
 
 
-func create_summary(_report_dir :String) -> String:
+func create_summary(_report_dir: String) -> String:
 	return ""

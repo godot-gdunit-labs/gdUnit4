@@ -140,7 +140,7 @@ static func build(template: String, report: GdUnitReportSummary, report_link: St
 		.replace(QUICK_STATE_FAILED, calculate_percentage(report.test_count(), report.failure_count()))\
 		.replace(QUICK_STATE_WARNING, calculate_percentage(report.test_count(), 0))\
 		.replace(REPORT_LINK, report_link)\
-		.replace(BUILD_DATE, current_date())
+		. replace(BUILD_DATE, current_date())
 
 
 static func load_template(template_name: String) -> String:
@@ -181,7 +181,7 @@ static func get_report_path(report: GdUnitReportSummary) -> String:
 static func calculate_percentage(p_test_count: int, count: int) -> String:
 	if count <= 0:
 		return "0%"
-	return "%d" % (( 0 if count < 0 else count) * 100.0 / p_test_count) + "%"
+	return "%d" % ((0 if count < 0 else count) * 100.0 / p_test_count) + "%"
 
 
 
@@ -197,7 +197,7 @@ static func create_test_failure_report(_report_dir: String, report: GdUnitTestCa
 		.replace(GdUnitHtmlPatterns.SKIPPED_COUNT, str(report.skipped_count()))\
 		.replace(GdUnitHtmlPatterns.ORPHAN_COUNT, str(report.orphan_count()))\
 		.replace(GdUnitHtmlPatterns.DURATION, LocalTime.elapsed(report._duration))\
-		.replace(GdUnitHtmlPatterns.FAILURE_REPORT, GdUnitHtmlEncoder.encode(report.failure_report()))
+		. replace(GdUnitHtmlPatterns.FAILURE_REPORT, GdUnitHtmlEncoder.encode(report.failure_report()))
 
 
 static func create_suite_failure_report(report: GdUnitTestSuiteReport) -> String:
@@ -206,4 +206,4 @@ static func create_suite_failure_report(report: GdUnitTestSuiteReport) -> String
 		.replace(GdUnitHtmlPatterns.REPORT_STATE_LABEL, report.report_state())\
 		.replace(GdUnitHtmlPatterns.ORPHAN_COUNT, str(report.orphan_count()))\
 		.replace(GdUnitHtmlPatterns.DURATION, LocalTime.elapsed(report._duration))\
-		.replace(GdUnitHtmlPatterns.FAILURE_REPORT, GdUnitHtmlEncoder.encode(report.failure_report()))
+		. replace(GdUnitHtmlPatterns.FAILURE_REPORT, GdUnitHtmlEncoder.encode(report.failure_report()))

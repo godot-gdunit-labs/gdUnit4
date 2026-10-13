@@ -3,7 +3,7 @@ extends GdUnitMonitor
 
 
 var _child_monitors: Array[GdUnitOrphanNodesMonitor] = []
-var _orphan_detection_enabled :bool
+var _orphan_detection_enabled: bool
 var _initial_orphans: Array[int] = []
 var _orphan_ids_at_start: Array[int] = []
 var _orphan_ids_at_stop: Array[int] = []
@@ -89,7 +89,7 @@ func _collect_orphan_info(orphan_node: Object, script_backtraces: Array[ScriptBa
 		return
 
 	if Engine.has_meta("GdUnitSceneRunner"):
-		var current_scene_runner:GdUnitSceneRunner = Engine.get_meta("GdUnitSceneRunner")
+		var current_scene_runner: GdUnitSceneRunner = Engine.get_meta("GdUnitSceneRunner")
 		if is_instance_valid(current_scene_runner):
 			orphan_info = _find_orphan_at_node(orphan_node, current_scene_runner.scene())
 			if orphan_info:
@@ -210,7 +210,7 @@ func _find_line_for_property(script: Script, func_name: String, property_name: S
 	var lines := script.get_source_code().split("\n")
 	var func_start_index := 0
 	for index in range(0, lines.size()):
-		var line :=  lines[index]
+		var line := lines[index]
 		if not func_name.is_empty():
 			if line.begins_with("func") and line.contains(func_name):
 				func_start_index = index + 1

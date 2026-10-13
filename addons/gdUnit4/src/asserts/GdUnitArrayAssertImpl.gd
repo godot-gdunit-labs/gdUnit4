@@ -205,7 +205,7 @@ func is_not_null() -> GdUnitArrayAssert:
 
 func is_equal(...expected: Array) -> GdUnitArrayAssert:
 	var current_value: Variant = get_current_value()
-	var expected_value: Variant= _extract_variadic_value(expected)
+	var expected_value: Variant = _extract_variadic_value(expected)
 	if not _validate_value_type(expected_value):
 		return report_error("ERROR: expected value: <%s>\n is not a Array Type!" % GdObjects.typeof_as_string(expected_value))
 	if current_value == null and expected_value != null:

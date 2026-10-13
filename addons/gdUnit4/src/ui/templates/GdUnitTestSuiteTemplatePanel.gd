@@ -1,16 +1,16 @@
 @tool
 extends MarginContainer
 
-var gd_key_words :PackedStringArray = ["extends", "class_name", "const", "var", "onready", "func", "void", "pass"]
-var gdunit_key_words :PackedStringArray = ["GdUnitTestSuite", "before", "after", "before_test", "after_test"]
-var _selected_template :int
+var gd_key_words: PackedStringArray = ["extends", "class_name", "const", "var", "onready", "func", "void", "pass"]
+var gdunit_key_words: PackedStringArray = ["GdUnitTestSuite", "before", "after", "before_test", "after_test"]
+var _selected_template: int
 
-@onready var _template_editor :CodeEdit = $VBoxContainer/EdiorLayout/Editor
-@onready var _tags_editor :CodeEdit = $Tags/MarginContainer/TextEdit
-@onready var _title_bar :Panel = $VBoxContainer/sub_category
-@onready var _save_button :Button = $VBoxContainer/Panel/HBoxContainer/Save
-@onready var _selected_type :OptionButton = $VBoxContainer/EdiorLayout/Editor/MarginContainer/HBoxContainer/SelectType
-@onready var _show_tags  :PopupPanel = $Tags
+@onready var _template_editor: CodeEdit = $VBoxContainer/EdiorLayout/Editor
+@onready var _tags_editor: CodeEdit = $Tags/MarginContainer/TextEdit
+@onready var _title_bar: Panel = $VBoxContainer/sub_category
+@onready var _save_button: Button = $VBoxContainer/Panel/HBoxContainer/Save
+@onready var _selected_type: OptionButton = $VBoxContainer/EdiorLayout/Editor/MarginContainer/HBoxContainer/SelectType
+@onready var _show_tags: PopupPanel = $Tags
 
 
 func _ready() -> void:
@@ -21,7 +21,7 @@ func _ready() -> void:
 	setup_tags_help()
 
 
-func _notification(what :int) -> void:
+func _notification(what: int) -> void:
 	if what == EditorSettings.NOTIFICATION_EDITOR_SETTINGS_CHANGED:
 		setup_fonts()
 
@@ -34,8 +34,8 @@ func setup_editor_colors() -> void:
 	var text_color := get_editor_color("text_editor/theme/highlighting/text_color", Color(0.8025, 0.81, 0.8225, 1))
 	var selection_color := get_editor_color("text_editor/theme/highlighting/selection_color", Color(0.44, 0.73, 0.98, 0.4))
 
-	for e :CodeEdit in [_template_editor, _tags_editor]:
-		var editor :CodeEdit = e
+	for e: CodeEdit in [_template_editor, _tags_editor]:
+		var editor: CodeEdit = e
 		editor.add_theme_color_override("background_color", background_color)
 		editor.add_theme_color_override("font_color", text_color)
 		editor.add_theme_color_override("font_readonly_color", text_color)
@@ -43,7 +43,7 @@ func setup_editor_colors() -> void:
 		setup_highlighter(editor)
 
 
-func setup_highlighter(editor :CodeEdit) -> void:
+func setup_highlighter(editor: CodeEdit) -> void:
 	var highlighter := CodeHighlighter.new()
 	editor.set_syntax_highlighter(highlighter)
 	var number_color := get_editor_color("text_editor/theme/highlighting/number_color", Color(0.63, 1, 0.88, 1))
@@ -99,7 +99,7 @@ func setup_tags_help() -> void:
 	_tags_editor.set_text(GdUnitTestSuiteTemplate.load_tags(_selected_template))
 
 
-func load_template(template_id :int) -> void:
+func load_template(template_id: int) -> void:
 	_selected_template = template_id
 	_template_editor.set_text(GdUnitTestSuiteTemplate.load_template(template_id))
 
@@ -123,6 +123,6 @@ func _on_Editor_text_changed() -> void:
 	_save_button.disabled = false
 
 
-func _on_SelectType_item_selected(index :int) -> void:
+func _on_SelectType_item_selected(index: int) -> void:
 	load_template(_selected_type.get_item_id(index))
 	setup_tags_help()

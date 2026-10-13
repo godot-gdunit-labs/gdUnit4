@@ -6,8 +6,8 @@ const GdUnitUpdateClient := preload("res://addons/gdUnit4/src/update/GdUnitUpdat
 const GDUNIT_TEMP := "user://tmp"
 
 var _debug_mode := false
-var _update_client :GdUnitUpdateClient
-var _download_url :String
+var _update_client: GdUnitUpdateClient
+var _download_url: String
 
 @onready var _progress_content: RichTextLabel = %message
 @onready var _progress_bar: TextureProgressBar = %progress
@@ -20,7 +20,7 @@ func _ready() -> void:
 	init_progress(6)
 
 
-func _process(_delta :float) -> void:
+func _process(_delta: float) -> void:
 	if _progress_content != null and _progress_content.is_visible_in_tree():
 		_progress_content.queue_redraw()
 
@@ -69,7 +69,7 @@ func run_update() -> void:
 	await update_progress("Extracting")
 	var zip_file := temp_dir() + "/update.zip"
 	var tmp_path := create_temp_dir("update")
-	var result :Variant = extract_zip(zip_file, tmp_path)
+	var result: Variant = extract_zip(zip_file, tmp_path)
 	if result == null:
 		await update_progress("Update failed! .. Rollback.", Color.INDIAN_RED)
 		await get_tree().create_timer(3).timeout
@@ -186,7 +186,7 @@ func temp_dir() -> String:
 	return GDUNIT_TEMP
 
 
-func create_temp_dir(folder_name :String) -> String:
+func create_temp_dir(folder_name: String) -> String:
 	var new_folder := temp_dir() + "/" + folder_name
 	GdUnitFileAccess.delete_directory(new_folder)
 	if not DirAccess.dir_exists_absolute(new_folder):
@@ -258,7 +258,7 @@ func extract_zip(zip_package: String, dest_path: String) -> Variant:
 
 func download_release() -> void:
 	var zip_file := GdUnitFileAccess.temp_dir() + "/update.zip"
-	var response :GdUnitUpdateClient.HttpResponse
+	var response: GdUnitUpdateClient.HttpResponse
 	if _debug_mode:
 		response = GdUnitUpdateClient.HttpResponse.new(200, PackedByteArray())
 		zip_file = "res://update.zip"

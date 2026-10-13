@@ -77,7 +77,7 @@ var md_replace_patterns := [
 	[regex("[\\*]{2}(.*?)[\\*]{2}"), "[b]$1[/b]"],
 	# italic font
 	[regex("<i>(.*?)<\\/i>"), "[i]$1[/i]"],
-	[regex(EXCLUDE_FONT_SIZE+"_(.*?)_"), "[i]$1[/i]"],
+	[regex(EXCLUDE_FONT_SIZE + "_(.*?)_"), "[i]$1[/i]"],
 	[regex("\\*(.*?)\\*"), "[i]$1[/i]"],
 
 	# strikethrough font
@@ -137,7 +137,7 @@ func _notification(what: int) -> void:
 
 
 func list_replace(indent: int) -> String:
-	var replace_pattern := "[img=12x12]res://addons/gdUnit4/src/update/assets/dot2.png[/img]" if indent %2 else "[img=12x12]res://addons/gdUnit4/src/update/assets/dot1.png[/img]"
+	var replace_pattern := "[img=12x12]res://addons/gdUnit4/src/update/assets/dot2.png[/img]" if indent % 2 else "[img=12x12]res://addons/gdUnit4/src/update/assets/dot1.png[/img]"
 	replace_pattern += " $1"
 
 	for index in indent:
@@ -254,7 +254,7 @@ class GdUnitMDReaderTable:
 		_columns = columns
 
 
-	func parse_row(line :String) -> bool:
+	func parse_row(line: String) -> bool:
 		# is line containing cells?
 		if line.find("|") == -1:
 			return false
@@ -285,7 +285,7 @@ class GdUnitMDReaderTable:
 
 		bb_code.append("[table=%d]" % _columns)
 		for row_index in _rows.size():
-			bb_code.append(_rows[row_index].to_bbcode(cell_sizes, row_index==0))
+			bb_code.append(_rows[row_index].to_bbcode(cell_sizes, row_index == 0))
 		bb_code.append("[/table]\n")
 		return bb_code
 
@@ -335,7 +335,7 @@ func process_image_references(p_regex: RegEx, p_input: String) -> String:
 	var link_regex := regex("\\[(\\S+)\\]:(\\S+)([ ]\"(.*)\")?")
 	# create copy of original source to replace checked it
 	var input := p_input.replace("\r", "")
-	var extracted_references :=  p_input.replace("\r", "")
+	var extracted_references := p_input.replace("\r", "")
 	for reg_match in link_regex.search_all(input):
 		var line := reg_match.get_string(0) + "\n"
 		var ref := reg_match.get_string(1)
@@ -358,7 +358,7 @@ func process_image_references(p_regex: RegEx, p_input: String) -> String:
 func process_image(p_regex: RegEx, p_input: String) -> String:
 	#return p_input
 	var to_replace := PackedStringArray()
-	var tool_tips :=  PackedStringArray()
+	var tool_tips := PackedStringArray()
 	# find all matches
 	var matches := p_regex.search_all(p_input)
 	if matches.is_empty():

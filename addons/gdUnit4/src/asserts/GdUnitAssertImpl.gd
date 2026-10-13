@@ -2,12 +2,12 @@ class_name GdUnitAssertImpl
 extends GdUnitAssert
 
 
-var _current :Variant
-var _custom_failure_message :String = ""
+var _current: Variant
+var _custom_failure_message: String = ""
 var _additional_failure_message: String = ""
 
 
-func _init(current :Variant) -> void:
+func _init(current: Variant) -> void:
 	_current = current
 	# save the actual assert instance on the current thread context
 	GdUnitThreadManager.get_current_context().set_assert(self)
@@ -23,7 +23,7 @@ func report_success() -> GdUnitAssert:
 	return self
 
 
-func report_error(failure :String, failure_line_number: int = -1) -> GdUnitAssert:
+func report_error(failure: String, failure_line_number: int = -1) -> GdUnitAssert:
 	var stack_trace := GdUnitStackTrace.new()
 	var line_number := failure_line_number if failure_line_number != -1 else stack_trace.get_line_number()
 	GdAssertReports.set_last_error_line_number(line_number)
@@ -51,14 +51,14 @@ func append_failure_message(message: String) -> GdUnitAssert:
 
 
 func is_null() -> GdUnitAssert:
-	var current :Variant = current_value()
+	var current: Variant = current_value()
 	if current != null:
 		return report_error(GdAssertMessages.error_is_null(current))
 	return report_success()
 
 
 func is_not_null() -> GdUnitAssert:
-	var current :Variant = current_value()
+	var current: Variant = current_value()
 	if current == null:
 		return report_error(GdAssertMessages.error_is_not_null())
 	return report_success()

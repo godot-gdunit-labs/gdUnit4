@@ -1,14 +1,14 @@
 class_name ChainedArgumentMatcher
 extends GdUnitArgumentMatcher
 
-var _matchers :Array
+var _matchers: Array
 
 
-func _init(matchers :Array) -> void:
+func _init(matchers: Array) -> void:
 	_matchers = matchers
 
 
-func is_match(arguments :Variant) -> bool:
+func is_match(arguments: Variant) -> bool:
 	var arg_array: Array = arguments
 	if arg_array == null or arg_array.size() != _matchers.size():
 		return false

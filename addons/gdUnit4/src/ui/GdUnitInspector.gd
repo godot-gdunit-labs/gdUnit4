@@ -12,7 +12,7 @@ func _ready() -> void:
 		var control: Control = get_parent_control()
 		# if the tab is floating we dont need to set as current
 		if control is TabContainer:
-			var tab_container :TabContainer = control
+			var tab_container: TabContainer = control
 			for tab_index in tab_container.get_tab_count():
 				if tab_container.get_tab_title(tab_index) == "GdUnit":
 					tab_container.set_current_tab(tab_index)

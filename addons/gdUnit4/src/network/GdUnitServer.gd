@@ -12,7 +12,7 @@ func _ready() -> void:
 	if result.is_error():
 		push_error(result.error_message())
 		return
-	var server_port :int = result.value()
+	var server_port: int = result.value()
 	Engine.set_meta("gdunit_server_port", server_port)
 	_server.client_connected.connect(_on_client_connected)
 	_server.client_disconnected.connect(_on_client_disconnected)

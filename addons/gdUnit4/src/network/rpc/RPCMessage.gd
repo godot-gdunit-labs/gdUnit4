@@ -4,7 +4,7 @@ extends RPC
 var _message: String
 
 
-static func of(msg :String) -> RPCMessage:
+static func of(msg: String) -> RPCMessage:
 	var rpc := RPCMessage.new()
 	rpc._message = msg
 	return rpc

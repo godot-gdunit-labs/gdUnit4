@@ -5,7 +5,7 @@ const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 var _base: GdUnitAssertImpl
 
 
-func _init(current :Variant) -> void:
+func _init(current: Variant) -> void:
 	_base = GdUnitAssertImpl.new(current)
 	# save the actual assert instance on the current thread context
 	GdUnitThreadManager.get_current_context().set_assert(self)
@@ -14,7 +14,7 @@ func _init(current :Variant) -> void:
 		report_error("GdUnitFileAssert inital error, unexpected type <%s>" % GdObjects.typeof_as_string(current))
 
 
-func _notification(event :int) -> void:
+func _notification(event: int) -> void:
 	if event == NOTIFICATION_PREDELETE:
 		if _base != null:
 			_base.notification(event)
@@ -31,7 +31,7 @@ func report_success() -> GdUnitFileAssert:
 	return self
 
 
-func report_error(error :String) -> GdUnitFileAssert:
+func report_error(error: String) -> GdUnitFileAssert:
 	@warning_ignore("return_value_discarded")
 	_base.report_error(error)
 	return self
@@ -83,7 +83,7 @@ func is_file() -> GdUnitFileAssert:
 func exists() -> GdUnitFileAssert:
 	var current := current_value()
 	if not FileAccess.file_exists(current):
-		return report_error("The file '%s' not exists" %current)
+		return report_error("The file '%s' not exists" % current)
 	return report_success()
 
 

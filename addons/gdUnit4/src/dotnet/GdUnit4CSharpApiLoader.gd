@@ -101,12 +101,12 @@ static func execute(tests: Array[GdUnitTestCase]) -> void:
 
 static func create_test_suite(source_path: String, line_number: int, test_suite_path: String) -> GdUnitResult:
 	if not GdUnit4CSharpApiLoader.is_api_loaded():
-		return  GdUnitResult.error("Can't create test suite. No .NET support found.")
+		return GdUnitResult.error("Can't create test suite. No .NET support found.")
 	@warning_ignore("unsafe_method_access")
 	var result: Dictionary = instance().CreateTestSuite(source_path, line_number, test_suite_path)
 	if result.has("error"):
 		return GdUnitResult.error(str(result.get("error")))
-	return  GdUnitResult.success(result)
+	return GdUnitResult.success(result)
 
 
 static func is_csharp_file(resource_path: String) -> bool:

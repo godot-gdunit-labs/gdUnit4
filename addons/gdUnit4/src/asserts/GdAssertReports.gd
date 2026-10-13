@@ -11,7 +11,7 @@ static func report_success() -> void:
 	Engine.remove_meta(LAST_ERROR)
 
 
-static func report_warning(message :String, line_number :int) -> void:
+static func report_warning(message: String, line_number: int) -> void:
 	GdUnitSignals.instance().gdunit_set_test_failed.emit(false)
 	send_report(GdUnitReport.new().create(GdUnitReport.WARN, line_number, message))
 
@@ -33,7 +33,7 @@ static func reset_last_error_line_number() -> void:
 	Engine.remove_meta(LAST_ERROR_LINE)
 
 
-static func set_last_error_line_number(line_number :int) -> void:
+static func set_last_error_line_number(line_number: int) -> void:
 	Engine.set_meta(LAST_ERROR_LINE, line_number)
 
 
@@ -53,5 +53,5 @@ static func current_failure() -> String:
 	return Engine.get_meta(LAST_ERROR)
 
 
-static func send_report(report :GdUnitReport) -> void:
+static func send_report(report: GdUnitReport) -> void:
 	GdUnitThreadManager.get_current_context().get_execution_context().add_report(report)

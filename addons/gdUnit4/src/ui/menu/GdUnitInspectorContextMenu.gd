@@ -21,7 +21,7 @@ func _ready() -> void:
 	_setup_item(CONTEXT_MENU_RUN_ID, "Run Tests", GdUnitCommandInspectorRunTests.ID)
 	_setup_item(CONTEXT_MENU_DEBUG_ID, "Debug Tests", GdUnitCommandInspectorDebugTests.ID)
 	_setup_item(CONTEXT_MENU_RERUN_UNTIL_ID, "Run Tests Until Fail", GdUnitCommandInspectorRerunTestsUntilFailure.ID)
-	_setup_item(CONTEXT_MENU_EXPAND_ALL, "Expand All",  GdUnitCommandInspectorTreeExpand.ID)
+	_setup_item(CONTEXT_MENU_EXPAND_ALL, "Expand All", GdUnitCommandInspectorTreeExpand.ID)
 	_setup_item(CONTEXT_MENU_COLLAPSE_ALL, "Collapse All", GdUnitCommandInspectorTreeCollapse.ID)
 
 

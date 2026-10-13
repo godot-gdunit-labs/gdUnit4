@@ -17,13 +17,13 @@ class TestEmitter extends Node:
 	@warning_ignore("unused_signal")
 	signal test_signal_unused()
 
-	var _trigger_count :int
+	var _trigger_count: int
 	var _count := 0
 
 	func _init(trigger_count := 10) -> void:
 		_trigger_count = trigger_count
 
-	func _process(_delta :float) -> void:
+	func _process(_delta: float) -> void:
 		if _count >= _trigger_count:
 			test_signal_counted.emit(_count)
 
@@ -219,7 +219,7 @@ func test_append_failure_message() -> void:
 
 
 func test_node_changed_emitting_signals() -> void:
-	var node :Node2D = auto_free(Node2D.new())
+	var node: Node2D = auto_free(Node2D.new())
 	add_child(node)
 
 	await assert_signal(node).wait_until(200).is_emitted("draw")
@@ -245,7 +245,7 @@ func test_is_signal_exists() -> void:
 		.is_signal_exists("visibility_changed")\
 		.is_signal_exists("tree_entered")\
 		.is_signal_exists(node.tree_exiting)\
-		.is_signal_exists(node.tree_exited)
+		. is_signal_exists(node.tree_exited)
 
 	(
 		await assert_failure_await(func() -> void: assert_signal(node).is_signal_exists("not_existing_signal"))
@@ -255,7 +255,7 @@ func test_is_signal_exists() -> void:
 class MyEmitter extends Node:
 
 	signal my_signal_a
-	signal my_signal_b(value :String)
+	signal my_signal_b(value: String)
 
 
 	func do_emit_a() -> void:

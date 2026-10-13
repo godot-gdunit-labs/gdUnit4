@@ -38,7 +38,7 @@ func test_equals_string_case_insensitive() -> void:
 
 
 func test_equals_stringname() -> void:
-	assert_bool(GdObjects.equals("",  &"")).is_true()
+	assert_bool(GdObjects.equals("", &"")).is_true()
 	assert_bool(GdObjects.equals("abc", &"abc")).is_true()
 	assert_bool(GdObjects.equals("abc", &"abC")).is_false()
 
@@ -47,9 +47,9 @@ func test_equals_array() -> void:
 	var a := []
 	var b := []
 	var c := Array()
-	var d := [1,2,3,4,5]
-	var e := [1,2,3,4,5]
-	var x := [1,2,3,6,4,5]
+	var d := [1, 2, 3, 4, 5]
+	var e := [1, 2, 3, 4, 5]
+	var x := [1, 2, 3, 6, 4, 5]
 
 	assert_bool(GdObjects.equals(a, a)).is_true()
 	assert_bool(GdObjects.equals(a, b)).is_true()
@@ -76,10 +76,10 @@ func test_equals_array() -> void:
 func test_equals_dictionary() -> void:
 	var a := {}
 	var b := {}
-	var c := {"a":"foo"}
-	var d := {"a":"foo"}
-	var e1 := {"a":"foo", "b":"bar"}
-	var e2 := {"b":"bar", "a":"foo"}
+	var c := {"a": "foo"}
+	var d := {"a": "foo"}
+	var e1 := {"a": "foo", "b": "bar"}
+	var e2 := {"b": "bar", "a": "foo"}
 
 	assert_bool(GdObjects.equals(a, a)).is_true()
 	assert_bool(GdObjects.equals(a, b)).is_true()
@@ -106,11 +106,11 @@ class TestClass extends Resource:
 		B
 	}
 
-	var _a:int
-	var _b:String
-	var _c:Array
+	var _a: int
+	var _b: String
+	var _c: Array
 
-	func _init(a:int = 0, b:String = "", c:Array = []) -> void:
+	func _init(a: int = 0, b: String = "", c: Array = []) -> void:
 		_a = a
 		_b = b
 		_c = c
@@ -145,8 +145,8 @@ func test_equals_with_stack_deep() -> void:
 
 
 func test_equals_node_with_deep_check() -> void:
-	var node_a :Node = auto_free(Node.new())
-	var node_b :Node = auto_free(Node.new())
+	var node_a: Node = auto_free(Node.new())
+	var node_b: Node = auto_free(Node.new())
 
 	# compares by default with deep parameter ckeck
 	assert_bool(GdObjects.equals(node_a, node_a)).is_true()
@@ -170,7 +170,7 @@ func test_is_primitive_type() -> void:
 
 
 class TestClassForIsType:
-	var x :int
+	var x: int
 
 
 func test_is_type() -> void:
@@ -210,7 +210,7 @@ func test_is_singleton() -> void:
 		var singleton := Engine.get_singleton(singleton_name)
 		assert_bool(GdObjects.is_singleton(singleton)) \
 			.override_failure_message("Expect to a singleton: '%s' Instance: %s, Class: %s" % [singleton_name, singleton, singleton.get_class()]) \
-			.is_true()
+			. is_true()
 	# false tests
 	assert_bool(GdObjects.is_singleton(10)).is_false()
 	assert_bool(GdObjects.is_singleton(true)).is_false()
@@ -218,7 +218,7 @@ func test_is_singleton() -> void:
 	assert_bool(GdObjects.is_singleton(auto_free(Node.new()))).is_false()
 
 
-func _is_instance(value :Variant) -> bool:
+func _is_instance(value: Variant) -> bool:
 	return GdObjects.is_instance(auto_free(value))
 
 
@@ -251,7 +251,7 @@ func test_is_instance_false() -> void:
 
 
 # shorter helper func to extract class name and using auto_free
-func extract_class_name(value :Variant) -> GdUnitResult:
+func extract_class_name(value: Variant) -> GdUnitResult:
 	return GdObjects.extract_class_name(auto_free(value))
 
 
@@ -343,13 +343,13 @@ func test_extract_class_name_from_instance() -> void:
 
 # verify enigne class names are not converted by configured naming convention
 func test_extract_class_name_from_class_path(fuzzer := GodotClassNameFuzzer.new(true, true), _fuzzer_iterations := 100) -> void:
-	var clazz_name :String = fuzzer.next_value()
+	var clazz_name: String = fuzzer.next_value()
 	assert_str(GdObjects.extract_class_name_from_class_path(PackedStringArray([clazz_name]))).is_equal(clazz_name)
 
 
 func test_extract_class_name_godot_classes(fuzzer := GodotClassNameFuzzer.new(true, true), _fuzzer_iterations := 100) -> void:
 	var godot_class_name := fuzzer.next_value() as String
-	var instance :Variant = ClassDB.instantiate(godot_class_name)
+	var instance: Variant = ClassDB.instantiate(godot_class_name)
 	assert_result(extract_class_name(instance)).is_equal(godot_class_name)
 
 
@@ -403,7 +403,7 @@ func test_extract_class_path_by_clazz() -> void:
 #
 # creates a test instance by given class name or resource path
 # instances created with auto free
-func create_instance(clazz :Variant) -> Object:
+func create_instance(clazz: Variant) -> Object:
 	var result := GdObjects.create_instance(clazz)
 	if result.is_success():
 		return auto_free(result.value())
@@ -471,18 +471,18 @@ func test_is_scene_resource_path() -> void:
 
 func test_extract_class_functions() -> void:
 	var functions := GdObjects.extract_class_functions("Resource", [""])
-	for f :Dictionary in functions:
+	for f: Dictionary in functions:
 		if f["name"] == "get_path":
 			assert_str(GdFunctionDescriptor.extract_from(f)._to_string()).is_equal("[Line:(-1,-1)] func get_path() -> String:")
 
 	functions = GdObjects.extract_class_functions("CustomResourceTestClass", ["res://addons/gdUnit4/test/mocker/resources/CustomResourceTestClass.gd"])
-	for f :Dictionary in functions:
+	for f: Dictionary in functions:
 		if f["name"] == "get_path":
 			assert_str(GdFunctionDescriptor.extract_from(f)._to_string()).is_equal("[Line:(-1,-1)] func get_path() -> String:")
 
 
 func test_all_types() -> void:
-	var expected_types :Array[int] = []
+	var expected_types: Array[int] = []
 	for type_index in TYPE_MAX:
 		expected_types.append(type_index)
 

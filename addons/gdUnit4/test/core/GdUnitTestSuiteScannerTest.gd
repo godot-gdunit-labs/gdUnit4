@@ -14,7 +14,7 @@ func after() -> void:
 	clean_temp_dir()
 
 
-func resolve_path(source_file :String) -> String:
+func resolve_path(source_file: String) -> String:
 	return GdUnitTestSuiteScanner.resolve_test_suite_path(source_file, "_test_")
 
 
@@ -129,7 +129,7 @@ func test_create_test_suite_pascal_case_path() -> void:
 func test_create_test_suite_snake_case_path() -> void:
 	var temp_dir := create_temp_dir("TestSuiteScannerTest")
 	# checked source with class_name is set
-	var source_path :="res://addons/gdUnit4/test/core/resources/naming_conventions/snake_case_with_class_name.gd"
+	var source_path := "res://addons/gdUnit4/test/core/resources/naming_conventions/snake_case_with_class_name.gd"
 	var suite_path := temp_dir + "/test/my_class_test1.gd"
 	var result := GdUnitTestSuiteScanner.create_test_suite(suite_path, source_path)
 	assert_bool(result.is_success()).is_true()
@@ -143,7 +143,7 @@ func test_create_test_suite_snake_case_path() -> void:
 			"extends GdUnitTestSuite",
 			""])
 	# checked source with class_name is NOT set
-	source_path ="res://addons/gdUnit4/test/core/resources/naming_conventions/snake_case_without_class_name.gd"
+	source_path = "res://addons/gdUnit4/test/core/resources/naming_conventions/snake_case_without_class_name.gd"
 	suite_path = temp_dir + "/test/my_class_test2.gd"
 	result = GdUnitTestSuiteScanner.create_test_suite(suite_path, source_path)
 	assert_bool(result.is_success()).is_true()
@@ -166,7 +166,7 @@ func test_create_test_case() -> void:
 	var test_suite_path := tmp_path + "/test/PersonTest.gd"
 	var result := GdUnitTestSuiteScanner.create_test_case(test_suite_path, "last_name", source_path)
 	assert_bool(result.is_success()).is_true()
-	var info :Dictionary = result.value()
+	var info: Dictionary = result.value()
 	assert_int(info.get("line")).is_equal(6)
 	assert_file(info.get("path")).exists()\
 		.is_file()\
@@ -184,7 +184,7 @@ func test_create_test_case() -> void:
 	# try to add again
 	result = GdUnitTestSuiteScanner.create_test_case(test_suite_path, "last_name", source_path)
 	assert_bool(result.is_success()).is_true()
-	assert_that(result.value()).is_equal({"line" : 11, "path": test_suite_path})
+	assert_that(result.value()).is_equal({"line": 11, "path": test_suite_path})
 
 
 # https://github.com/MikeSchulze/gdUnit4/issues/25
@@ -213,7 +213,7 @@ func test_build_test_suite_path() -> void:
 
 
 func test_scan_by_inheritance_class_name() -> void:
-	var scanner :GdUnitTestSuiteScanner = GdUnitTestSuiteScanner.new()
+	var scanner: GdUnitTestSuiteScanner = GdUnitTestSuiteScanner.new()
 	var test_suites := scanner.scan("res://addons/gdUnit4/test/core/resources/scan_testsuite_inheritance/by_class_name/")
 
 	assert_array(test_suites).has_size(3)
@@ -289,7 +289,7 @@ func test_build_test_attribute_rejects_fuzzer_after_config_argument() -> void:
 
 
 func test_scan_test_suite_exclude_non_test_suites() -> void:
-	var scanner :GdUnitTestSuiteScanner = GdUnitTestSuiteScanner.new()
+	var scanner: GdUnitTestSuiteScanner = GdUnitTestSuiteScanner.new()
 	var test_suites := scanner.scan("res://addons/gdUnit4/test/core/resources/scan_testsuite_inheritance/plugin/")
 
 	# we expect the scanner do not break on scanning plugin classes

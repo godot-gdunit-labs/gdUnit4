@@ -138,7 +138,7 @@ func test_is_equal_ignoring_case() -> void:
 	assert_array(["this", "is", "a", "message"]).is_equal_ignoring_case(["This", "is", "a", "Message"])
 	# should fail because the array not contains same elements
 	assert_failure(func() -> void: assert_array(["this", "is", "a", "message"]).is_equal_ignoring_case(["This", "is", "an", "Message"])) \
-		.is_failed()
+		. is_failed()
 	assert_failure(func() -> void: assert_array(null).is_equal_ignoring_case(["This", "is"])) \
 		.is_failed() \
 		.has_message("""
@@ -153,7 +153,7 @@ func test_is_equal_ignoring_case_variadic_args() -> void:
 	assert_array(["this", "is", "a", "message"]).is_equal_ignoring_case("This", "is", "a", "Message")
 	# should fail because the array not contains same elements
 	assert_failure(func() -> void: assert_array(["this", "is", "a", "message"]).is_equal_ignoring_case("This", "is", "an", "Message")) \
-		.is_failed()
+		. is_failed()
 	assert_failure(func() -> void: assert_array(null).is_equal_ignoring_case(["This", "is"])) \
 		.is_failed() \
 		.has_message("""
@@ -939,11 +939,11 @@ func test_extract() -> void:
 
 
 class TestObj:
-	var _name :String
-	var _value :Variant
-	var _x :Variant
+	var _name: String
+	var _value: Variant
+	var _x: Variant
 
-	func _init(name :String, value :Variant, x :Variant = null) -> void:
+	func _init(name: String, value: Variant, x: Variant = null) -> void:
 		_name = name
 		_value = value
 		_x = x
@@ -1048,7 +1048,7 @@ func test_extract_chained_func() -> void:
 
 	assert_array([obj_a, obj_b, obj_c, obj_x, obj_y])\
 		.extract("get_value.get_name")\
-		.contains_exactly(
+		. contains_exactly(
 			"root_a",
 			"root_a",
 			"root_a",
@@ -1070,7 +1070,7 @@ func test_extractv_max_args() -> void:
 			extr("get_x7"),
 			extr("get_x8"),
 			extr("get_x9"))\
-		.contains_exactly(
+		. contains_exactly(
 			tuple("A", "x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9"),
 			tuple("B", "x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9"),
 			tuple("C", "x1", "x2", "x3", "x4", "x5", "x6", "x7", "x8", "x9"))
@@ -1126,10 +1126,10 @@ func test_is_failure() -> void:
 
 class ExampleTestClass extends RefCounted:
 	var _childs := Array()
-	var _parent :RefCounted = null
+	var _parent: RefCounted = null
 
 
-	func add_child(child :ExampleTestClass) -> ExampleTestClass:
+	func add_child(child: ExampleTestClass) -> ExampleTestClass:
 		_childs.append(child)
 		child._parent = self
 		return self

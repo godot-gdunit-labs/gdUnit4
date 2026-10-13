@@ -4,8 +4,8 @@
 extends GdUnitTestSuite
 
 
-var _runner :GdUnitSceneRunner
-var _scene_spy :Node
+var _runner: GdUnitSceneRunner
+var _scene_spy: Node
 
 
 func before_test() -> void:
@@ -41,7 +41,7 @@ func assert_inital_key_state() -> void:
 
 #asserts to Mouse ButtonList Enums
 func assert_inital_mouse_state() -> void:
-	for button :int in [
+	for button: int in [
 		MOUSE_BUTTON_LEFT,
 		MOUSE_BUTTON_MIDDLE,
 		MOUSE_BUTTON_RIGHT,
@@ -89,7 +89,7 @@ func test_reset_to_inital_state_on_release() -> void:
 
 func test_simulate_action_press() -> void:
 	# iterate over some example actions
-	var actions_to_simmulate :Array[String] = ["ui_up", "ui_down", "ui_left", "ui_right"]
+	var actions_to_simmulate: Array[String] = ["ui_up", "ui_down", "ui_left", "ui_right"]
 	for action in actions_to_simmulate:
 		assert_bool(InputMap.has_action(action)).is_true()
 		_runner.simulate_action_press(action)
@@ -103,14 +103,14 @@ func test_simulate_action_press() -> void:
 			.is_equal_approx(1.0, 0.1)
 
 	# other actions are not pressed
-	for action :String in ["ui_accept", "ui_select", "ui_cancel"]:
+	for action: String in ["ui_accept", "ui_select", "ui_cancel"]:
 		assert_bool(Input.is_action_pressed(action))\
 			.override_failure_message("Expect the action '%s' is NOT pressed" % action).is_false()
 
 
 func test_simulate_action_release() -> void:
 	# iterate over some example actions
-	var actions_to_simmulate :Array[String] = ["ui_up", "ui_down", "ui_left", "ui_right"]
+	var actions_to_simmulate: Array[String] = ["ui_up", "ui_down", "ui_left", "ui_right"]
 	for action in actions_to_simmulate:
 		assert_bool(InputMap.has_action(action)).is_true()
 		_runner.simulate_action_press(action)
@@ -120,14 +120,14 @@ func test_simulate_action_release() -> void:
 		assert_bool(Input.is_action_just_released(action))\
 			.override_failure_message("Expect the action '%s' is released" % action).is_true()
 	# other actions are not pressed
-	for action :String in ["ui_accept", "ui_select", "ui_cancel"]:
+	for action: String in ["ui_accept", "ui_select", "ui_cancel"]:
 		assert_bool(Input.is_action_pressed(action))\
 			.override_failure_message("Expect the action '%s' is NOT pressed" % action).is_false()
 
 
 func test_simulate_key_press() -> void:
 	# iterate over some example keys
-	for key :int in [KEY_A, KEY_D, KEY_X, KEY_0]:
+	for key: int in [KEY_A, KEY_D, KEY_X, KEY_0]:
 		_runner.simulate_key_press(key)
 		await _runner.await_input_processed()
 
@@ -562,12 +562,12 @@ func test_simulate_set_mouse_pos_with_modifiers() -> void:
 	var is_control := false
 	var is_shift := false
 
-	for modifier :int in [KEY_SHIFT, KEY_CTRL, KEY_ALT]:
+	for modifier: int in [KEY_SHIFT, KEY_CTRL, KEY_ALT]:
 		is_alt = is_alt or KEY_ALT == modifier
 		is_control = is_control or KEY_CTRL == modifier
 		is_shift = is_shift or KEY_SHIFT == modifier
 
-		for mouse_button :int in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
+		for mouse_button: int in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
 			# simulate press shift, set mouse pos and final press mouse button
 			var gmp := _runner.get_global_mouse_position()
 			_runner.simulate_key_press(modifier)
@@ -716,11 +716,11 @@ func test_simulate_mouse_button_press_left_and_right() -> void:
 	event.global_position = gmp
 	event.pressed = true
 	event.button_index = MOUSE_BUTTON_RIGHT
-	event.button_mask = MOUSE_BUTTON_MASK_LEFT|MOUSE_BUTTON_MASK_RIGHT
+	event.button_mask = MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT
 	verify(_scene_spy, 1)._input(event)
 	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_true()
 	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)).is_true()
-	assert_that(Input.get_mouse_button_mask()).is_equal(MOUSE_BUTTON_MASK_LEFT|MOUSE_BUTTON_MASK_RIGHT)
+	assert_that(Input.get_mouse_button_mask()).is_equal(MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT)
 
 
 func test_simulate_mouse_button_press_left_and_right_and_release() -> void:
@@ -746,11 +746,11 @@ func test_simulate_mouse_button_press_left_and_right_and_release() -> void:
 	event.global_position = gmp
 	event.pressed = true
 	event.button_index = MOUSE_BUTTON_RIGHT
-	event.button_mask = MOUSE_BUTTON_MASK_LEFT|MOUSE_BUTTON_MASK_RIGHT
+	event.button_mask = MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT
 	verify(_scene_spy, 1)._input(event)
 	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_true()
 	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)).is_true()
-	assert_that(Input.get_mouse_button_mask()).is_equal(MOUSE_BUTTON_MASK_LEFT|MOUSE_BUTTON_MASK_RIGHT)
+	assert_that(Input.get_mouse_button_mask()).is_equal(MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT)
 
 	# now release the right button
 	gmp = _runner.get_global_mouse_position()
@@ -786,7 +786,7 @@ func test_simulate_mouse_button_press_left_and_right_and_release() -> void:
 
 
 func test_simulate_mouse_button_pressed() -> void:
-	for mouse_button :int in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
+	for mouse_button: int in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
 		# simulate mouse button press and release
 		var gmp := _runner.get_global_mouse_position()
 		_runner.simulate_mouse_button_pressed(mouse_button)
@@ -814,7 +814,7 @@ func test_simulate_mouse_button_pressed() -> void:
 
 
 func test_simulate_mouse_button_pressed_doubleclick() -> void:
-	for mouse_button :int in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
+	for mouse_button: int in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
 		# simulate mouse button press and release by double_click
 		var gmp := _runner.get_global_mouse_position()
 		_runner.simulate_mouse_button_pressed(mouse_button, true)
@@ -844,7 +844,7 @@ func test_simulate_mouse_button_pressed_doubleclick() -> void:
 
 
 func test_simulate_mouse_button_press_and_release() -> void:
-	for mouse_button :int in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
+	for mouse_button: int in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
 		var gmp := _runner.get_global_mouse_position()
 		# simulate mouse button press and release
 		_runner.simulate_mouse_button_press(mouse_button)

@@ -8,7 +8,7 @@ func test_bbcode_tags_to_csi_codes_empty() -> void:
 
 
 func test_bbcode_tags_to_csi_codes_color() -> void:
-	var bbcode:= "[color=green]line [/color][color=aqua]9:[/color] [color=#CD5C5C]Expecting:[/color]\n"
+	var bbcode := "[color=green]line [/color][color=aqua]9:[/color] [color=#CD5C5C]Expecting:[/color]\n"
 	var csi_formatted := GdUnitCSIMessageWriter.new()._bbcode_tags_to_csi_codes(bbcode)
 	assert_str(csi_formatted)\
 		.is_equal("[38;2;0;255;0mline [0m[38;2;0;255;255m9:[0m [38;2;205;92;92mExpecting:[0m\n")

@@ -5,7 +5,7 @@ extends GdUnitTestSuite
 var _x := 42
 var _obj: Node2D
 var _color := Color.RED
-var _test_set_a := ["test_8", Color(1,1,1), Color(.1,.1,.1)]
+var _test_set_a := ["test_8", Color(1, 1, 1), Color(.1, .1, .1)]
 
 
 class TestObj:
@@ -17,7 +17,7 @@ class TestObj:
 func _dynamic_parameterset(count: int) -> Array[Array]:
 	var iterations: Array[Array] = []
 	for i in range(count):
-		iterations.append(["test_%s"%i, i])
+		iterations.append(["test_%s" % i, i])
 	return iterations
 
 
@@ -47,8 +47,8 @@ func _parameters_with_references_typed() -> Array[Array]:
 		["test_3", _x, "Integer"],
 		["test_4", _obj, Node2D],
 		["test_5", TestObj.new(), TestObj],
-		["test_6", Vector3(1,1,1), Vector2(2,2)],
-		["test_7", Color(1,1,1), _color],
+		["test_6", Vector3(1, 1, 1), Vector2(2, 2)],
+		["test_7", Color(1, 1, 1), _color],
 		_test_set_a
 	]
 
@@ -57,7 +57,7 @@ func _parameters_string_arg(arg1: String, arg2: String) -> Array[Array]:
 	return [[arg1, arg2]]
 
 
-func _parameters_string_args(arg1: String, arg2: String) ->  Array[Array]:
+func _parameters_string_args(arg1: String, arg2: String) -> Array[Array]:
 	return [[arg1, arg2]]
 
 
@@ -276,7 +276,7 @@ func test_performance_single() -> void:
 	@warning_ignore_start("integer_division")
 	prints("--- GdCallableParameterSetResolver:single performance (%d iterations) ---" % ITERATIONS)
 	prints("	%8d µs  (%d µs/iteration)" % [elapsed_time, elapsed_time / ITERATIONS])
-	assert_int(elapsed_time/ITERATIONS).is_less(5)
+	assert_int(elapsed_time / ITERATIONS).is_less(5)
 	@warning_ignore_restore("integer_division")
 
 
@@ -293,7 +293,7 @@ func test_performance_get_parameters_overall() -> void:
 	@warning_ignore_start("integer_division")
 	prints("--- GdCallableParameterSetResolver:overall performance (%d iterations) ---" % ITERATIONS)
 	prints("	%8d µs  (%d µs/iteration)" % [elapsed_time, elapsed_time / ITERATIONS])
-	assert_int(elapsed_time/ITERATIONS).is_less(10)
+	assert_int(elapsed_time / ITERATIONS).is_less(10)
 	@warning_ignore_restore("integer_division")
 
 #endregion

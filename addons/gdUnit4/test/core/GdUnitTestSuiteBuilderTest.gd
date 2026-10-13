@@ -7,7 +7,7 @@ extends GdUnitTestSuite
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
 
-var _example_source_gd :String
+var _example_source_gd: String
 
 
 func before() -> void:
@@ -25,7 +25,7 @@ func after_test() -> void:
 	clean_temp_dir()
 
 
-func assert_tests(test_suite :Script) -> GdUnitArrayAssert:
+func assert_tests(test_suite: Script) -> GdUnitArrayAssert:
 	# needs to be reload to get fresh method list
 	test_suite.reload()
 	var methods := test_suite.get_script_method_list()

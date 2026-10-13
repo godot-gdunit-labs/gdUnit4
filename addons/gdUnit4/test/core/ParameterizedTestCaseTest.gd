@@ -96,7 +96,7 @@ func after() -> void:
 			var expected_values: Variant = _expected_tests[test_name]
 			assert_that(current_values)\
 				.override_failure_message("Expecting '%s' called with parameters:\n %s\n but was\n %s" % [test_name, expected_values, current_values])\
-				.is_equal(expected_values)
+				. is_equal(expected_values)
 		else:
 			fail("Missing test '%s' executed!" % test_name)
 
@@ -122,7 +122,7 @@ func test_parameterized_int_values(a: int, b: int, c: int, expected: int, _test_
 	[6, 7, 8, 21] ]) -> void:
 
 	collect_test_call("test_parameterized_int_values", [a, b, c, expected])
-	assert_that(a+b+c).is_equal(expected)
+	assert_that(a + b + c).is_equal(expected)
 	# The test call should replace the defaults with an empty array
 	assert_array(_test_parameters).is_empty()
 
@@ -133,7 +133,7 @@ func test_parameterized_float_values(a: float, b: float, expected: float, _test_
 	[3.3, 2.2, 5.5] ]) -> void:
 
 	collect_test_call("test_parameterized_float_values", [a, b, expected])
-	assert_float(a+b).is_equal(expected)
+	assert_float(a + b).is_equal(expected)
 	# The test call should replace the defaults with an empty array
 	assert_array(_test_parameters).is_empty()
 
@@ -144,7 +144,7 @@ func test_parameterized_string_values(a: String, b: String, expected: String, _t
 	["a", "b", "ab"] ]) -> void:
 
 	collect_test_call("test_parameterized_string_values", [a, b, expected])
-	assert_that(a+b).is_equal(expected)
+	assert_that(a + b).is_equal(expected)
 	# The test call should replace the defaults with an empty array
 	assert_array(_test_parameters).is_empty()
 
@@ -155,7 +155,7 @@ func test_parameterized_vector2_values(a: Vector2, b: Vector2, expected: Vector2
 	[Vector2.ZERO, Vector2.LEFT, Vector2.LEFT] ]) -> void:
 
 	collect_test_call("test_parameterized_vector2_values", [a, b, expected])
-	assert_that(a+b).is_equal(expected)
+	assert_that(a + b).is_equal(expected)
 	# The test call should replace the defaults with an empty array
 	assert_array(_test_parameters).is_empty()
 
@@ -166,7 +166,7 @@ func test_parameterized_vector3_values(a: Vector3, b: Vector3, expected: Vector3
 	[Vector3.ZERO, Vector3.LEFT, Vector3.LEFT] ]) -> void:
 
 	collect_test_call("test_parameterized_vector3_values", [a, b, expected])
-	assert_that(a+b).is_equal(expected)
+	assert_that(a + b).is_equal(expected)
 
 
 class TestObj extends RefCounted:
@@ -183,7 +183,7 @@ func test_parameterized_obj_values(a: Object, b: Object, expected: String, _test
 	[TestObj.new("abc"), TestObj.new("def"), "abcdef"]]) -> void:
 
 	collect_test_call("test_parameterized_obj_values", [a, b, expected])
-	assert_that(a.to_string()+b.to_string()).is_equal(expected)
+	assert_that(a.to_string() + b.to_string()).is_equal(expected)
 
 
 func test_parameterized_dict_values(data: Dictionary, expected: String, _test_parameters := [
@@ -198,10 +198,10 @@ func test_dictionary_div_number_types(
 	value: Dictionary,
 	expected: Dictionary,
 	_test_parameters: Array = [
-		[{ "top" : 50.0,	"bottom" : 50.0,	"left" : 50.0,	"right" : 50.0},	{ "top" : 50, 	"bottom" : 50,	"left" : 50,  	"right" : 50}],
-		[{ "top" : 50.0,	"bottom" : 50.0,	"left" : 50.0,	"right" : 50.0},	{ "top" : 50.0,	"bottom" : 50.0,	"left" : 50.0,	"right" : 50.0}],
-		[{ "top" : 50,	"bottom" : 50,	"left" : 50,  	"right" : 50},	{ "top" : 50.0,	"bottom" : 50.0,	"left" : 50.0,	"right" : 50.0}],
-		[{ "top" : 50,	"bottom" : 50,	"left" : 50,  	"right" : 50},	{ "top" : 50, 	"bottom" : 50,	"left" : 50,  	"right" : 50}],
+		[{"top": 50.0, "bottom": 50.0, "left": 50.0, "right": 50.0}, {"top": 50, "bottom": 50, "left": 50, "right": 50}],
+		[{"top": 50.0, "bottom": 50.0, "left": 50.0, "right": 50.0}, {"top": 50.0, "bottom": 50.0, "left": 50.0, "right": 50.0}],
+		[{"top": 50, "bottom": 50, "left": 50, "right": 50}, {"top": 50.0, "bottom": 50.0, "left": 50.0, "right": 50.0}],
+		[{"top": 50, "bottom": 50, "left": 50, "right": 50}, {"top": 50, "bottom": 50, "left": 50, "right": 50}],
 	]
 ) -> void:
 	# allow to compare type unsave
@@ -229,9 +229,9 @@ func test_parameterized_typed_array(items: Array[int], _test_parameters := [
 func test_with_string_paramset(
 	values: Array,
 	expected: String,
-	_test_parameters : Array = [
-		[ ["a"], "a" ],
-		[ ["a", "very", "long", "argument"], "a very long argument" ],
+	_test_parameters: Array = [
+		[["a"], "a"],
+		[["a", "very", "long", "argument"], "a very long argument"],
 	]
 ) -> void:
 	var current := " ".join(values)

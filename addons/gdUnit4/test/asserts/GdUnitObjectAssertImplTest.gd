@@ -135,10 +135,10 @@ func test_is_not_null() -> void:
 
 
 func test_is_same() -> void:
-	var obj1 :Variant = auto_free(Node.new())
-	var obj2 :Variant = obj1
+	var obj1: Variant = auto_free(Node.new())
+	var obj2: Variant = obj1
 	@warning_ignore("unsafe_method_access")
-	var obj3 :Variant = auto_free(obj1.duplicate())
+	var obj3: Variant = auto_free(obj1.duplicate())
 	assert_object(obj1).is_same(obj1)
 	assert_object(obj1).is_same(obj2)
 	assert_object(obj2).is_same(obj1)
@@ -159,10 +159,10 @@ func test_is_same() -> void:
 
 # gdlint: disable=mixed-tabs-and-spaces
 func test_is_not_same() -> void:
-	var obj1 :Variant = auto_free(Node.new())
-	var obj2 :Variant = obj1
+	var obj1: Variant = auto_free(Node.new())
+	var obj2: Variant = obj1
 	@warning_ignore("unsafe_method_access")
-	var obj3 :Variant = auto_free(obj1.duplicate())
+	var obj3: Variant = auto_free(obj1.duplicate())
 	assert_object(null).is_not_same(obj1)
 	assert_object(obj1).is_not_same(obj3)
 	assert_object(obj3).is_not_same(obj1)
@@ -213,7 +213,7 @@ func test_override_failure_message() -> void:
 			.override_failure_message("Custom failure message") \
 			.is_null()) \
 		.is_failed() \
-		.has_message("Custom failure message")
+		. has_message("Custom failure message")
 
 
 func test_append_failure_message() -> void:

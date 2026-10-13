@@ -8,7 +8,7 @@ const GdUnitTools = preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
 
 class TestValueProvider:
-	var _max_iterations :int
+	var _max_iterations: int
 	var _current_itteration := 0
 
 	func _init(iterations := 0) -> void:
@@ -53,23 +53,23 @@ class TestValueProvider:
 
 class ValueProvidersWithArguments:
 
-	func is_type(_type :int) -> bool:
+	func is_type(_type: int) -> bool:
 		return true
 
-	func get_index(_instance :Object, _name :String) -> int:
+	func get_index(_instance: Object, _name: String) -> int:
 		return 1
 
-	func get_index2(_instance :Object, _name :String, _recursive := false) -> int:
+	func get_index2(_instance: Object, _name: String, _recursive := false) -> int:
 		return 1
 
 
 class TestIterativeValueProvider:
-	var _max_iterations :int
+	var _max_iterations: int
 	var _current_itteration := 0
-	var _inital_value :Variant
-	var _final_value :Variant
+	var _inital_value: Variant
+	var _final_value: Variant
 
-	func _init(inital_value :Variant, iterations :int, final_value :Variant) -> void:
+	func _init(inital_value: Variant, iterations: int, final_value: Variant) -> void:
 		_max_iterations = iterations
 		_inital_value = inital_value
 		_final_value = final_value
@@ -92,7 +92,7 @@ class TestIterativeValueProvider:
 			return _final_value
 		return _inital_value
 
-	func has_type(type :int, _recursive :bool = true) -> int:
+	func has_type(type: int, _recursive: bool = true) -> int:
 		_current_itteration += 1
 		#await (Engine.get_main_loop() as SceneTree).idle_frame
 		if type == _current_itteration:

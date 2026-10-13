@@ -5,7 +5,7 @@ extends GdUnitTestSuite
 var _x := 42
 var _obj: Node2D
 var _color := Color.RED
-var _test_set_a := ["test_8", Color(1,1,1), Color(.1,.1,.1)]
+var _test_set_a := ["test_8", Color(1, 1, 1), Color(.1, .1, .1)]
 
 
 class TestObj:
@@ -27,8 +27,8 @@ func before() -> void:
 		["test_3", _x, "Integer"],
 		["test_4", _obj, Node2D],
 		["test_5", TestObj.new(), TestObj],
-		["test_6", Vector3(1,1,1), Vector2(2,2)],
-		["test_7", Color(1,1,1), _color],
+		["test_6", Vector3(1, 1, 1), Vector2(2, 2)],
+		["test_7", Color(1, 1, 1), _color],
 		_test_set_a
 	]
 
@@ -90,14 +90,14 @@ func test_get_parameters() -> void:
 	parameters = resolver.get_parameters(self, 6)
 	assert_array(parameters).has_size(4)
 	assert_str(parameters[0]).is_equal("test_6")
-	assert_object(parameters[1]).is_equal(Vector3(1,1,1))
-	assert_object(parameters[2]).is_equal(Vector2(2,2))
+	assert_object(parameters[1]).is_equal(Vector3(1, 1, 1))
+	assert_object(parameters[2]).is_equal(Vector2(2, 2))
 	assert_object(parameters[3]).is_equal([])
 
 	parameters = resolver.get_parameters(self, 7)
 	assert_array(parameters).has_size(4)
 	assert_str(parameters[0]).is_equal("test_7")
-	assert_object(parameters[1]).is_equal(Color(1,1,1))
+	assert_object(parameters[1]).is_equal(Color(1, 1, 1))
 	assert_object(parameters[2]).is_equal(_color)
 	assert_object(parameters[3]).is_equal([])
 
@@ -123,7 +123,7 @@ func test_performance_single() -> void:
 	@warning_ignore_start("integer_division")
 	prints("--- GdPropertyParameterSetResolver:single performance (%d iterations) ---" % ITERATIONS)
 	prints("	%8d µs  (%d µs/iteration)" % [elapsed_time, elapsed_time / ITERATIONS])
-	assert_int(elapsed_time/ITERATIONS).is_less(10)
+	assert_int(elapsed_time / ITERATIONS).is_less(10)
 	@warning_ignore_restore("integer_division")
 
 
@@ -140,7 +140,7 @@ func test_performance_get_parameters_overall() -> void:
 	@warning_ignore_start("integer_division")
 	prints("--- GdPropertyParameterSetResolver:overall performance (%d iterations) ---" % ITERATIONS)
 	prints("	%8d µs  (%d µs/iteration)" % [elapsed_time, elapsed_time / ITERATIONS])
-	assert_int(elapsed_time/ITERATIONS).is_less(70)
+	assert_int(elapsed_time / ITERATIONS).is_less(70)
 	@warning_ignore_restore("integer_division")
 
 #endregion

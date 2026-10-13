@@ -70,7 +70,7 @@ func test_is_equal(_test: String, array: Variant, _test_parameters := [
 	["PackedColorArray", PackedColorArray([Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.BLACK])] ]
 	) -> void:
 
-	var other :Variant = array.duplicate()
+	var other: Variant = array.duplicate()
 	assert_array(array).is_equal(other)
 	# should fail because the array not contains same elements and has diff size
 	other.append(array[2])
@@ -102,7 +102,7 @@ func test_is_not_equal(_test: String, array: Variant, _test_parameters := [
 	["PackedColorArray", PackedColorArray([Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.BLACK])] ]
 	) -> void:
 
-	var other :Variant = array.duplicate()
+	var other: Variant = array.duplicate()
 	other.append(array[2])
 	assert_array(array).is_not_equal(other)
 	# should fail because the array  contains same elements
@@ -130,7 +130,7 @@ func test_is_empty(_test: String, array: Variant, _test_parameters := [
 	["PackedColorArray", PackedColorArray([Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.BLACK])] ]
 	) -> void:
 
-	var empty :Variant = array.duplicate()
+	var empty: Variant = array.duplicate()
 	empty.clear()
 	assert_array(empty).is_empty()
 	# should fail because the array is not empty
@@ -159,7 +159,7 @@ func test_is_not_empty(_test: String, array: Variant, _test_parameters := [
 
 	assert_array(array).is_not_empty()
 	# should fail because the array is empty
-	var empty :Variant = array.duplicate()
+	var empty: Variant = array.duplicate()
 	empty.clear()
 	assert_failure(func() -> void: assert_array(empty).is_not_empty()) \
 		.is_failed() \
@@ -284,7 +284,7 @@ func test_contains_exactly(_test: String, array: Variant, _test_parameters := [
 
 	assert_array(array).contains_exactly(array.duplicate())
 	# should fail because the array not contains same elements but in different order
-	var shuffled :Variant = array.duplicate()
+	var shuffled: Variant = array.duplicate()
 	shuffled[1] = array[3]
 	shuffled[3] = array[1]
 	assert_failure(func() -> void: assert_array(array).contains_exactly(shuffled)) \

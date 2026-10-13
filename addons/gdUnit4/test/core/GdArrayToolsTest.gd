@@ -82,7 +82,7 @@ func test_is_array_type(_test: String, value: Variant, expected: bool, _test_par
 
 
 func test_is_type_array() -> void:
-	for type :int in [TYPE_NIL, TYPE_MAX]:
+	for type: int in [TYPE_NIL, TYPE_MAX]:
 		if type in [TYPE_ARRAY, TYPE_PACKED_COLOR_ARRAY]:
 			assert_bool(GdArrayTools.is_type_array(type)).is_true()
 		else:
@@ -103,8 +103,8 @@ func test_filter_value(value: Variant, expected_type: int, _test_parameters := [
 	[PackedColorArray([Color.RED, Color.GREEN, Color.BLUE, Color.RED]), TYPE_PACKED_COLOR_ARRAY]
 	]) -> void:
 
-	var value_to_remove :Variant = value[0]
-	var result :Variant = GdArrayTools.filter_value(value, value_to_remove)
+	var value_to_remove: Variant = value[0]
+	var result: Variant = GdArrayTools.filter_value(value, value_to_remove)
 	assert_array(result).not_contains([value_to_remove]).has_size(2)
 	assert_that(typeof(result)).is_equal(expected_type)
 
@@ -113,8 +113,8 @@ func test_filter_value_mixed_values() -> void:
 	assert_array(GdArrayTools.filter_value([], null)).is_empty()
 	assert_array(GdArrayTools.filter_value([], "")).is_empty()
 
-	var current :Array = [null, "a", "b", null, "c", null]
-	var filtered :Variant= GdArrayTools.filter_value(current, null)
+	var current: Array = [null, "a", "b", null, "c", null]
+	var filtered: Variant = GdArrayTools.filter_value(current, null)
 	assert_array(filtered).contains_exactly(["a", "b", "c"])
 	# verify the source is not affected
 	assert_array(current).contains_exactly([null, "a", "b", null, "c", null])

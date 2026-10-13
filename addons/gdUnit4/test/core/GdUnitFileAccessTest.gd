@@ -4,7 +4,7 @@ extends GdUnitTestSuite
 @warning_ignore('return_value_discarded')
 
 
-var file_to_save :String
+var file_to_save: String
 var _test_paths: PackedStringArray = []
 
 
@@ -19,7 +19,7 @@ func after_test() -> void:
 	_test_paths.clear()
 
 
-func _create_file(p_path :String, p_name :String) -> void:
+func _create_file(p_path: String, p_name: String) -> void:
 	var file := create_temp_file(p_path, p_name)
 	file.store_string("some content")
 

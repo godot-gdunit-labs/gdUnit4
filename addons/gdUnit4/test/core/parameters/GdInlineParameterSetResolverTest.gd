@@ -23,7 +23,7 @@ var example_parameters := [
 var _x := 42
 var _obj: Node2D
 var _color := Color.RED
-var _test_set_a := [Color(1,1,1), Color(.1,.1,.1)]
+var _test_set_a := [Color(1, 1, 1), Color(.1, .1, .1)]
 var _test_param1 := 10
 var _test_param2 := 20
 @warning_ignore_restore("unused_private_class_variable")
@@ -157,9 +157,9 @@ func using_array_types_paramater(_value: Variant, _test_parameters := [
 
 
 func using_untyped_dictionary_parameter(
-		_value : Dictionary,
-		_expected : Dictionary,
-		_test_parameters : Array = [
+		_value: Dictionary,
+		_expected: Dictionary,
+		_test_parameters: Array = [
 			[{ "top" : 10.0},	{ "down" : 20.0}],
 		]
 	) -> void:
@@ -233,13 +233,13 @@ func test_get_parameters() -> void:
 
 	parameters = resolver.get_parameters(self, 6)
 	assert_array(parameters).has_size(3)
-	assert_object(parameters[0]).is_equal(Vector3(1,1,1))
-	assert_object(parameters[1]).is_equal(Vector2(2,2))
+	assert_object(parameters[0]).is_equal(Vector3(1, 1, 1))
+	assert_object(parameters[1]).is_equal(Vector2(2, 2))
 	assert_object(parameters[2]).is_equal([])
 
 	parameters = resolver.get_parameters(self, 7)
 	assert_array(parameters).has_size(3)
-	assert_object(parameters[0]).is_equal(Color(1,1,1))
+	assert_object(parameters[0]).is_equal(Color(1, 1, 1))
 	assert_object(parameters[1]).is_equal(_color)
 	assert_object(parameters[2]).is_equal([])
 
@@ -449,7 +449,7 @@ func test_resolve_parameters_with_untyped_dictionary() -> void:
 
 
 # TODO needs to be enabled when typed dictionary support is implemented
-func test_resolve_parameters_with_typed_key_dictionary(_do_skip := true, _skip_reason  := "typed dictionary not support") -> void:
+func test_resolve_parameters_with_typed_key_dictionary(_do_skip := true, _skip_reason := "typed dictionary not support") -> void:
 	var params := _resolve_parameters("using_typed_key_dictionary_parameter")
 
 	assert_dict(params).is_equal(
@@ -471,7 +471,7 @@ func test_resolve_parameters_with_typed_key_dictionary(_do_skip := true, _skip_r
 
 
 # TODO needs to be enabled when typed dictionary support is implemented
-func test_resolve_parameters_with_typed_dictionary(_do_skip := true, _skip_reason  := "typed dictionary not support") -> void:
+func test_resolve_parameters_with_typed_dictionary(_do_skip := true, _skip_reason := "typed dictionary not support") -> void:
 	var params := _resolve_parameters("using_typed_dictionary_parameter")
 
 	assert_dict(params).is_equal(
@@ -565,7 +565,7 @@ func test_performance_single() -> void:
 	@warning_ignore_start("integer_division")
 	prints("--- GdInlineParameterSetResolver:single performance (%d iterations) ---" % ITERATIONS)
 	prints("	%8d µs  (%d µs/iteration)" % [elapsed_time, elapsed_time / ITERATIONS])
-	assert_int(elapsed_time/ITERATIONS).is_less(20)
+	assert_int(elapsed_time / ITERATIONS).is_less(20)
 	@warning_ignore_restore("integer_division")
 
 
@@ -582,7 +582,7 @@ func test_performance_get_parameters_overall() -> void:
 	@warning_ignore_start("integer_division")
 	prints("--- GdInlineParameterSetResolver:overall performance (%d iterations) ---" % ITERATIONS)
 	prints("	%8d µs  (%d µs/iteration)" % [elapsed_time, elapsed_time / ITERATIONS])
-	assert_int(elapsed_time/ITERATIONS).is_less(60)
+	assert_int(elapsed_time / ITERATIONS).is_less(60)
 	@warning_ignore_restore("integer_division")
 
 #endregion

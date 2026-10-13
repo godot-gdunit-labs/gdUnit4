@@ -30,7 +30,7 @@ func _build_params() -> Array[Array]:
 	return [[1, 2], [3, 4]]
 
 
-func _parameters_string_args(arg1: String, arg2: String) ->  Array[Array]:
+func _parameters_string_args(arg1: String, arg2: String) -> Array[Array]:
 	return [[arg1, arg2]]
 
 

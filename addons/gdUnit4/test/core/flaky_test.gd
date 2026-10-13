@@ -19,7 +19,7 @@ var _run_with_reries := 5
 
 
 class ValueSetFuzzer extends Fuzzer:
-	var _values := [0,1,2,3,4]
+	var _values := [0, 1, 2, 3, 4]
 
 	func next_value() -> Variant:
 		return _values.pop_front()
@@ -124,7 +124,7 @@ func test_fuzzed_flaky_success(fuzzer := ValueSetFuzzer.new(), _fuzzer_iteration
 	var fuzzer_value: int = fuzzer.next_value()
 	if fuzzer_value == 0:
 		test_retries["test_fuzzed_flaky_success"] += 1
-	var retry_count :int = test_retries["test_fuzzed_flaky_success"]
+	var retry_count: int = test_retries["test_fuzzed_flaky_success"]
 	# do retry between 1 and 3
 	assert_int(retry_count).is_less_equal(3)
 
@@ -137,7 +137,7 @@ func test_fuzzed_flaky_fail(fuzzer := ValueSetFuzzer.new(), _fuzzer_iterations :
 	var fuzzer_value: int = fuzzer.next_value()
 	if fuzzer_value == 0:
 		test_retries["test_fuzzed_flaky_fail"] += 1
-	var retry_count :int = test_retries["test_fuzzed_flaky_fail"]
+	var retry_count: int = test_retries["test_fuzzed_flaky_fail"]
 	# do retry between 1 and 3
 	assert_int(retry_count).is_less_equal(6)
 

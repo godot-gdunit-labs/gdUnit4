@@ -434,7 +434,7 @@ func test_load_source_code_inner_class_area4d() -> void:
 
 
 func test_extract_function_signature() -> void:
-	var script :GDScript = load("res://addons/gdUnit4/test/mocker/resources/ClassWithCustomFormattings.gd")
+	var script: GDScript = load("res://addons/gdUnit4/test/mocker/resources/ClassWithCustomFormattings.gd")
 	var rows := script.source_code.split("\n")
 
 	assert_that(_parser.extract_func_signature(rows, 12))\
@@ -556,7 +556,7 @@ func test_parse_class_inherits() -> void:
 	assert_result(result).is_success()
 
 	# verify class extraction
-	var clazz_desccriptor :GdClassDescriptor = result.value()
+	var clazz_desccriptor: GdClassDescriptor = result.value()
 	assert_object(clazz_desccriptor).is_not_null()
 	assert_str(clazz_desccriptor.name()).is_equal("CustomClassExtendsCustomClass")
 	assert_bool(clazz_desccriptor.is_inner_class()).is_false()

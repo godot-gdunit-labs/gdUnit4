@@ -85,7 +85,7 @@ func test_complex_example() -> void:
 	var testsuite1 := XmlElement.new("testsuite")\
 		.attribute(JUnitXmlReportWriter.ATTR_ID, "1")\
 		.attribute(JUnitXmlReportWriter.ATTR_NAME, "bar")
-	for test_case :int in [1,2,3,4,5]:
+	for test_case: int in [1, 2, 3, 4, 5]:
 		var test := XmlElement.new("testcase")\
 			.attribute(JUnitXmlReportWriter.ATTR_ID, str(test_case))\
 			.attribute(JUnitXmlReportWriter.ATTR_NAME, "test_case_%d" % test_case)
@@ -93,7 +93,7 @@ func test_complex_example() -> void:
 	var testsuite2 := XmlElement.new("testsuite")\
 		.attribute(JUnitXmlReportWriter.ATTR_ID, "2")\
 		.attribute(JUnitXmlReportWriter.ATTR_NAME, "bar2")
-	for test_case :int in [1,2,3]:
+	for test_case: int in [1, 2, 3]:
 		var test := XmlElement.new("testcase")\
 			.attribute(JUnitXmlReportWriter.ATTR_ID, str(test_case))\
 			.attribute(JUnitXmlReportWriter.ATTR_NAME, "test_case_%d" % test_case)
@@ -150,7 +150,7 @@ func test_dispose() -> void:
 		.attribute(JUnitXmlReportWriter.ATTR_ID, "1")\
 		.attribute(JUnitXmlReportWriter.ATTR_NAME, "bar")
 	var testsuite1_expected_tests := Array()
-	for test_case :int in [1,2,3,4,5]:
+	for test_case: int in [1, 2, 3, 4, 5]:
 		var test := XmlElement.new("testcase")\
 			.attribute(JUnitXmlReportWriter.ATTR_ID, str(test_case))\
 			.attribute(JUnitXmlReportWriter.ATTR_NAME, "test_case_%d" % test_case)
@@ -160,7 +160,7 @@ func test_dispose() -> void:
 		.attribute(JUnitXmlReportWriter.ATTR_ID, "2")\
 		.attribute(JUnitXmlReportWriter.ATTR_NAME, "bar2")
 	var testsuite2_expected_tests := Array()
-	for test_case :int in [1,2,3]:
+	for test_case: int in [1, 2, 3]:
 		var test := XmlElement.new("testcase")\
 			.attribute(JUnitXmlReportWriter.ATTR_ID, str(test_case))\
 			.attribute(JUnitXmlReportWriter.ATTR_NAME, "test_case_%d" % test_case)

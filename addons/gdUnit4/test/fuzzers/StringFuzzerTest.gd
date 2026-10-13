@@ -51,7 +51,7 @@ func test_next_value_min_max_same_boundaries() -> void:
 	var boundaries := {}
 	var fuzzer := StringFuzzer.new(2, 2, "A")
 	for i in 200:
-		var value :String = fuzzer.next_value()
+		var value: String = fuzzer.next_value()
 		boundaries[value.length()] = boundaries.get_or_add(value.length(), 0)
 
 	# verify it contains only values with length 2 or 3

@@ -19,7 +19,7 @@ func do_a_fail() -> void:
 	assert(3 == 1, 'test')
 
 
-func catch_test_events(event :GdUnitEvent) -> void:
+func catch_test_events(event: GdUnitEvent) -> void:
 	_catched_events.append(event)
 
 

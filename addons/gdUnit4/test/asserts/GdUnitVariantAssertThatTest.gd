@@ -7,8 +7,8 @@ func test_is_equal_success() -> void:
 	assert_that("3" as Variant).is_equal("3")
 	assert_that(true as Variant).is_equal(true)
 	assert_that(Vector2.ONE as Variant).is_equal(Vector2.ONE)
-	assert_that({a=1, b=2} as Variant).is_equal({a=1, b=2})
-	assert_that([1,2,3] as Variant).is_equal([1,2,3])
+	assert_that({a = 1, b = 2} as Variant).is_equal({a = 1, b = 2})
+	assert_that([1, 2, 3] as Variant).is_equal([1, 2, 3])
 	assert_that(RefCounted.new() as Variant).is_equal(RefCounted.new())
 
 
@@ -70,8 +70,8 @@ func test_is_not_equal_success() -> void:
 	assert_that("3" as Variant).is_not_equal("33")
 	assert_that(true as Variant).is_not_equal(false)
 	assert_that(Vector2.ONE as Variant).is_not_equal(Vector2.UP)
-	assert_that({a=1, b=2} as Variant).is_not_equal({a=1, b=3})
-	assert_that([1,2,3] as Variant).is_not_equal([1,2,4])
+	assert_that({a = 1, b = 2} as Variant).is_not_equal({a = 1, b = 3})
+	assert_that([1, 2, 3] as Variant).is_not_equal([1, 2, 4])
 	assert_that(RefCounted.new() as Variant).is_not_equal(null)
 
 

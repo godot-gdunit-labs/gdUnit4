@@ -56,7 +56,7 @@ func test_invoke_method() -> void:
 
 func test_simulate_frames(_timeout := 5000) -> void:
 	var runner := scene_runner(load_test_scene())
-	var box1 :ColorRect = runner.get_property("_box1")
+	var box1: ColorRect = runner.get_property("_box1")
 	# initial is white
 	assert_object(box1.color).is_equal(Color.WHITE)
 
@@ -76,7 +76,7 @@ func test_simulate_frames(_timeout := 5000) -> void:
 
 func test_simulate_frames_withdelay(_timeout := 4000) -> void:
 	var runner := scene_runner(load_test_scene())
-	var box1 :ColorRect = runner.get_property("_box1")
+	var box1: ColorRect = runner.get_property("_box1")
 	# initial is white
 	assert_object(box1.color).is_equal(Color.WHITE)
 
@@ -91,7 +91,7 @@ func test_simulate_frames_withdelay(_timeout := 4000) -> void:
 
 func test_run_scene_colorcycle(_timeout := 2000) -> void:
 	var runner := scene_runner(load_test_scene())
-	var box1 :ColorRect = runner.get_property("_box1")
+	var box1: ColorRect = runner.get_property("_box1")
 	# verify inital color
 	assert_object(box1.color).is_equal(Color.WHITE)
 
@@ -147,7 +147,7 @@ func test_simulate_scene_inteaction_in_combination_with_spy() -> void:
 
 
 func test_simulate_scene_interact_with_buttons() -> void:
-	var spyed_scene :Variant = spy("res://addons/gdUnit4/test/mocker/resources/scenes/TestScene.tscn")
+	var spyed_scene: Variant = spy("res://addons/gdUnit4/test/mocker/resources/scenes/TestScene.tscn")
 	var runner := scene_runner(spyed_scene)
 	# test button 1 interaction
 	await await_millis(1000)
@@ -202,7 +202,7 @@ func test_await_func_with_time_factor() -> void:
 
 func test_await_signal_without_time_factor() -> void:
 	var runner := scene_runner(load_test_scene())
-	var box1 :ColorRect = runner.get_property("_box1")
+	var box1: ColorRect = runner.get_property("_box1")
 
 	runner.invoke("start_color_cycle")
 	await runner.await_signal("panel_color_change", [box1, Color.RED])
@@ -217,7 +217,7 @@ func test_await_signal_without_time_factor() -> void:
 
 func test_await_signal_with_time_factor() -> void:
 	var runner := scene_runner(load_test_scene())
-	var box1 :ColorRect = runner.get_property("_box1")
+	var box1: ColorRect = runner.get_property("_box1")
 	# set max time factor to minimize waiting time checked `runner.wait_func`
 	runner.set_time_factor(10)
 	runner.invoke("start_color_cycle")
@@ -260,7 +260,7 @@ func test_manipulate_time_scale_using_multiple_scene_runners() -> void:
 
 func test_simulate_until_signal() -> void:
 	var runner := scene_runner(load_test_scene())
-	var box1 :ColorRect = runner.get_property("_box1")
+	var box1: ColorRect = runner.get_property("_box1")
 
 	# set max time factor to minimize waiting time checked `runner.wait_func`
 	runner.invoke("start_color_cycle")
@@ -290,7 +290,7 @@ func test_simulate_until_object_signal(_timeout := 2000) -> void:
 
 
 func test_runner_by_null_instance() -> void:
-	var runner :GdUnitSceneRunnerImpl = scene_runner(null)
+	var runner: GdUnitSceneRunnerImpl = scene_runner(null)
 	assert_object(runner._current_scene).is_null()
 
 
@@ -362,7 +362,7 @@ func test_runner_by_invalid_scene_instance() -> void:
 
 
 func test_runner_by_scene_instance() -> void:
-	var scene :Node = load("res://addons/gdUnit4/test/core/resources/scenes/simple_scene.tscn").instantiate()
+	var scene: Node = load("res://addons/gdUnit4/test/core/resources/scenes/simple_scene.tscn").instantiate()
 	var runner := scene_runner(scene)
 	assert_object(runner.scene()).is_instanceof(Node2D)
 
@@ -377,11 +377,11 @@ func test_runner_by_scene_instance() -> void:
 
 
 func test_mouse_drag_and_drop() -> void:
-	var spy_scene :Variant = spy("res://addons/gdUnit4/test/core/resources/scenes/drag_and_drop/DragAndDropTestScene.tscn")
+	var spy_scene: Variant = spy("res://addons/gdUnit4/test/core/resources/scenes/drag_and_drop/DragAndDropTestScene.tscn")
 	var runner := scene_runner(spy_scene)
 
-	var slot_left :TextureRect = $"/root/DragAndDropScene/left/TextureRect"
-	var slot_right :TextureRect = $"/root/DragAndDropScene/right/TextureRect"
+	var slot_left: TextureRect = $"/root/DragAndDropScene/left/TextureRect"
+	var slot_right: TextureRect = $"/root/DragAndDropScene/right/TextureRect"
 
 	var save_mouse_pos := get_tree().root.get_mouse_position()
 	# set inital mouse pos over the left slot
@@ -401,7 +401,7 @@ func test_mouse_drag_and_drop() -> void:
 
 	# start drag&drop to left pannel
 	for i in 20:
-		runner.simulate_mouse_move(mouse_pos + Vector2(i*.4*i, 0))
+		runner.simulate_mouse_move(mouse_pos + Vector2(i * .4 * i, 0))
 		await await_millis(40)
 
 	runner.simulate_mouse_button_release(MOUSE_BUTTON_LEFT)
@@ -410,11 +410,11 @@ func test_mouse_drag_and_drop() -> void:
 
 
 func test_touch_drag_and_drop_relative() -> void:
-	var spy_scene :Variant = spy("res://addons/gdUnit4/test/core/resources/scenes/drag_and_drop/DragAndDropTestScene.tscn")
+	var spy_scene: Variant = spy("res://addons/gdUnit4/test/core/resources/scenes/drag_and_drop/DragAndDropTestScene.tscn")
 	var runner := scene_runner(spy_scene)
 
-	var slot_left :TextureRect = $"/root/DragAndDropScene/left/TextureRect"
-	var slot_right :TextureRect = $"/root/DragAndDropScene/right/TextureRect"
+	var slot_left: TextureRect = $"/root/DragAndDropScene/left/TextureRect"
+	var slot_right: TextureRect = $"/root/DragAndDropScene/right/TextureRect"
 	var drag_start := slot_left.global_position + Vector2(50, 50)
 
 	# set inital mouse pos over the left touch button
@@ -436,11 +436,11 @@ func test_touch_drag_and_drop_relative() -> void:
 
 
 func test_touch_drag_and_drop_absolute() -> void:
-	var spy_scene :Variant = spy("res://addons/gdUnit4/test/core/resources/scenes/drag_and_drop/DragAndDropTestScene.tscn")
+	var spy_scene: Variant = spy("res://addons/gdUnit4/test/core/resources/scenes/drag_and_drop/DragAndDropTestScene.tscn")
 	var runner := scene_runner(spy_scene)
 
-	var slot_left :TextureRect = $"/root/DragAndDropScene/left/TextureRect"
-	var slot_right :TextureRect = $"/root/DragAndDropScene/right/TextureRect"
+	var slot_left: TextureRect = $"/root/DragAndDropScene/left/TextureRect"
+	var slot_right: TextureRect = $"/root/DragAndDropScene/right/TextureRect"
 	var drag_start := slot_left.global_position + Vector2(50, 50)
 
 	# set inital mouse pos over the left touch button
@@ -453,7 +453,7 @@ func test_touch_drag_and_drop_absolute() -> void:
 	#await await_millis(1000)
 
 	# start drag&drop to right touch button
-	var drag_end := Vector2(drag_start.x+140, drag_start.y)
+	var drag_end := Vector2(drag_start.x + 140, drag_start.y)
 	await runner.simulate_screen_touch_drag_absolute(0, drag_end)
 	# verify
 	assert_that(slot_right.texture).is_equal(slot_left.texture)
@@ -462,14 +462,14 @@ func test_touch_drag_and_drop_absolute() -> void:
 
 
 func test_touch_drag_and_drop() -> void:
-	var spy_scene :Variant = spy("res://addons/gdUnit4/test/core/resources/scenes/drag_and_drop/DragAndDropTestScene.tscn")
+	var spy_scene: Variant = spy("res://addons/gdUnit4/test/core/resources/scenes/drag_and_drop/DragAndDropTestScene.tscn")
 	var runner := scene_runner(spy_scene)
-	var slot_left :TextureRect = $"/root/DragAndDropScene/left/TextureRect"
-	var slot_right :TextureRect = $"/root/DragAndDropScene/right/TextureRect"
+	var slot_left: TextureRect = $"/root/DragAndDropScene/left/TextureRect"
+	var slot_right: TextureRect = $"/root/DragAndDropScene/right/TextureRect"
 	var drag_start := slot_left.global_position + Vector2(50, 50)
 
 	# start drag&drop to right touch button
-	var drag_end := Vector2(drag_start.x+140, drag_start.y)
+	var drag_end := Vector2(drag_start.x + 140, drag_start.y)
 	await runner.simulate_screen_touch_drag_drop(0, drag_start, drag_end)
 	# verify
 	assert_that(slot_right.texture).is_equal(slot_left.texture)
@@ -516,7 +516,7 @@ func test_load_scene_with_audio_player() -> void:
 
 
 # we override the scene runner function for test purposes to hide push_error notifications
-func scene_runner(scene :Variant, verbose := false) -> GdUnitSceneRunner:
+func scene_runner(scene: Variant, verbose := false) -> GdUnitSceneRunner:
 	return auto_free(GdUnitSceneRunnerImpl.new(scene, verbose, true))
 
 

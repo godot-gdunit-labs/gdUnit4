@@ -9,7 +9,7 @@ var _md_reader := GdMarkDownReader.new()
 @onready var _input: TextEdit = $HSplitContainer/TextEdit
 @onready var _text: RichTextLabel = $HSplitContainer/RichTextLabel
 
-@onready var _update_client :GdUnitUpdateClient = $GdUnitUpdateClient
+@onready var _update_client: GdUnitUpdateClient = $GdUnitUpdateClient
 
 
 func _ready() -> void:
@@ -21,7 +21,7 @@ func _ready() -> void:
 	await set_bbcode(source)
 
 
-func set_bbcode(text :String) -> void:
+func set_bbcode(text: String) -> void:
 	var bbcode := await _md_reader.to_bbcode(text)
 	_text.clear()
 	_text.append_text(bbcode)
@@ -32,17 +32,17 @@ func _on_TextEdit_text_changed() -> void:
 	await set_bbcode(_input.get_text())
 
 
-func _on_RichTextLabel_meta_clicked(meta :String) -> void:
+func _on_RichTextLabel_meta_clicked(meta: String) -> void:
 	var properties: Dictionary = str_to_var(meta)
 	if properties.has("url"):
 		OS.shell_open(str(properties.get("url")))
 
 
-func _on_RichTextLabel_meta_hover_started(meta :String) -> void:
+func _on_RichTextLabel_meta_hover_started(meta: String) -> void:
 	var properties: Dictionary = str_to_var(meta)
 	if properties.has("tool_tip"):
 		_text.set_tooltip_text(str(properties.get("tool_tip")))
 
 
-func _on_RichTextLabel_meta_hover_ended(_meta :String) -> void:
+func _on_RichTextLabel_meta_hover_ended(_meta: String) -> void:
 	_text.set_tooltip_text("")

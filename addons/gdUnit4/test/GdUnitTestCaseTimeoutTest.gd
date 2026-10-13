@@ -1,11 +1,11 @@
 # this test suite simulates long running test cases
 extends GdUnitTestSuite
 
-const SECOND :int = 1000
-const MINUTE :int = SECOND*60
+const SECOND: int = 1000
+const MINUTE: int = SECOND * 60
 
-var _before_arg :String
-var _test_arg :String
+var _before_arg: String
+var _test_arg: String
 
 
 func before() -> void:
@@ -24,23 +24,23 @@ func test_timeout_after_test_completes() -> void:
 	assert_str(_before_arg).is_equal("---before---")
 	var counter := 0
 	await await_millis(1000)
-	prints("A","1s")
+	prints("A", "1s")
 	counter += 1
 	await await_millis(1000)
-	prints("A","2s")
+	prints("A", "2s")
 	counter += 1
 	await await_millis(1000)
-	prints("A","3s")
+	prints("A", "3s")
 	counter += 1
 	await await_millis(1000)
-	prints("A","5s")
+	prints("A", "5s")
 	counter += 2
-	prints("A","end test test_timeout_after_test_completes")
+	prints("A", "end test test_timeout_after_test_completes")
 	assert_int(counter).is_equal(5)
 
 
 # set test timeout to 2s
-func test_timeout_2s(_timeout:=2000) -> void:
+func test_timeout_2s(_timeout := 2000) -> void:
 	assert_str(_before_arg).is_equal("---before---")
 	prints("B", "0s")
 	await await_millis(1000)
@@ -55,7 +55,7 @@ func test_timeout_2s(_timeout:=2000) -> void:
 
 
 # set test timeout to 4s
-func test_timeout_4s(_timeout:=4000) -> void:
+func test_timeout_4s(_timeout := 4000) -> void:
 	assert_str(_before_arg).is_equal("---before---")
 	prints("C", "0s")
 	await await_millis(1000)
@@ -71,7 +71,7 @@ func test_timeout_4s(_timeout:=4000) -> void:
 	prints("C", "end")
 
 
-func test_timeout_single_yield_wait(_timeout:=3000) -> void:
+func test_timeout_single_yield_wait(_timeout := 3000) -> void:
 	assert_str(_before_arg).is_equal("---before---")
 	prints("D", "0s")
 	await await_millis(6000)
@@ -81,7 +81,7 @@ func test_timeout_single_yield_wait(_timeout:=3000) -> void:
 	prints("D", "end test test_timeout")
 
 
-func test_timeout_long_running_test_abort(_timeout:=4000) -> void:
+func test_timeout_long_running_test_abort(_timeout := 4000) -> void:
 	assert_str(_before_arg).is_equal("---before---")
 	prints("E", "0s")
 	var start_time := Time.get_ticks_msec()
@@ -109,7 +109,7 @@ func test_timeout_long_running_test_abort(_timeout:=4000) -> void:
 
 
 @warning_ignore("unused_variable")
-func test_timeout_fuzzer(fuzzer := Fuzzers.rangei(-23, 22), _timeout:=2000) -> void:
+func test_timeout_fuzzer(fuzzer := Fuzzers.rangei(-23, 22), _timeout := 2000) -> void:
 	discard_error_interupted_by_timeout()
 	fuzzer.next_value()
 	# wait each iteration 200ms

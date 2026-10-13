@@ -3,7 +3,7 @@
 extends GdUnitTestSuite
 
 
-var _handler :GdUnitCommandHandler
+var _handler: GdUnitCommandHandler
 
 
 func before() -> void:
@@ -28,7 +28,7 @@ func test_command_shortcut() -> void:
 
 ## actually needs to comment out, it produces a lot of leaked instances
 func _test_check_test_run_stopped_manually() -> void:
-	var inspector :GdUnitCommandHandler = mock(GdUnitCommandHandler, CALL_REAL_FUNC)
+	var inspector: GdUnitCommandHandler = mock(GdUnitCommandHandler, CALL_REAL_FUNC)
 
 	# simulate no test is running
 	do_return(false).on(inspector).is_test_running_but_stop_pressed()

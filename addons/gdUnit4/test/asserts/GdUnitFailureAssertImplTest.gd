@@ -35,7 +35,7 @@ func test_assert_failure_on_invalid_cb() -> void:
 		.has_message("Invalid Callable! It must be a callable of 'GdUnitAssert'")
 
 
-func test_assert_failure_on_assert(_test_name :String, assert_type :Object, value :Variant, _test_parameters := [
+func test_assert_failure_on_assert(_test_name: String, assert_type: Object, value: Variant, _test_parameters := [
 	["GdUnitBoolAssert", GdUnitBoolAssert, true],
 	["GdUnitStringAssert", GdUnitStringAssert, "value"],
 	["GdUnitIntAssert", GdUnitIntAssert, 42],
@@ -46,31 +46,31 @@ func test_assert_failure_on_assert(_test_name :String, assert_type :Object, valu
 	["GdUnitArrayAssert", GdUnitArrayAssert, Array()],
 	["GdUnitDictionaryAssert", GdUnitDictionaryAssert, {}],
 ]) -> void:
-	var  instance := assert_failure(func() -> void: assert_that(value))
+	var instance := assert_failure(func() -> void: assert_that(value))
 	assert_object(last_assert()).is_instanceof(assert_type)
 	assert_object(instance).is_instanceof(GdUnitFailureAssert)
 
 
 func test_assert_failure_on_assert_file() -> void:
-	var  instance := assert_failure(func() -> void: assert_file("res://foo.gd"))
+	var instance := assert_failure(func() -> void: assert_file("res://foo.gd"))
 	assert_object(last_assert()).is_instanceof(GdUnitFileAssert)
 	assert_object(instance).is_instanceof(GdUnitFailureAssert)
 
 
 func test_assert_failure_on_assert_func() -> void:
-	var  instance := assert_failure(func() -> void: assert_func(RefCounted.new(), "_to_string"))
+	var instance := assert_failure(func() -> void: assert_func(RefCounted.new(), "_to_string"))
 	assert_object(last_assert()).is_instanceof(GdUnitFuncAssert)
 	assert_object(instance).is_instanceof(GdUnitFailureAssert)
 
 
 func test_assert_failure_on_assert_signal() -> void:
-	var  instance := assert_failure(func() -> void: assert_signal(null))
+	var instance := assert_failure(func() -> void: assert_signal(null))
 	assert_object(last_assert()).is_instanceof(GdUnitSignalAssert)
 	assert_object(instance).is_instanceof(GdUnitFailureAssert)
 
 
 func test_assert_failure_on_assert_result() -> void:
-	var  instance := assert_failure(func() -> void: assert_result(null))
+	var instance := assert_failure(func() -> void: assert_result(null))
 	assert_object(last_assert()).is_instanceof(GdUnitResultAssert)
 	assert_object(instance).is_instanceof(GdUnitFailureAssert)
 

@@ -41,7 +41,7 @@ func before() -> void:
 
 
 func test_register_cb() -> void:
-	var cmd_handler: = CmdCommandHandler.new(_cmd_options)
+	var cmd_handler := CmdCommandHandler.new(_cmd_options)
 
 	# register a single argumend cb
 	cmd_handler.register_cb("-a", _cmd_instance.cmd_arg)
@@ -49,7 +49,7 @@ func test_register_cb() -> void:
 
 
 func test_register_invalid_cb() -> void:
-	var cmd_handler: = CmdCommandHandler.new(_cmd_options)
+	var cmd_handler := CmdCommandHandler.new(_cmd_options)
 	# try to register a multi argumend cb
 	cmd_handler.register_cb("-a", _cmd_instance.cmd_args)
 	# verify the cb is not registered
@@ -57,7 +57,7 @@ func test_register_invalid_cb() -> void:
 
 
 func test_register_cbv() -> void:
-	var cmd_handler: = CmdCommandHandler.new(_cmd_options)
+	var cmd_handler := CmdCommandHandler.new(_cmd_options)
 
 	# register a single argumend cb
 	cmd_handler.register_cbv("-a", _cmd_instance.cmd_args)
@@ -65,7 +65,7 @@ func test_register_cbv() -> void:
 
 
 func test_register_invalid_cbv() -> void:
-	var cmd_handler: = CmdCommandHandler.new(_cmd_options)
+	var cmd_handler := CmdCommandHandler.new(_cmd_options)
 	# try to register a single argumend cb
 	cmd_handler.register_cbv("-a", _cmd_instance.cmd_arg)
 	# verify the cb is not registered
@@ -73,7 +73,7 @@ func test_register_invalid_cbv() -> void:
 
 
 func test_register_cb_and_cbv() -> void:
-	var cmd_handler: = CmdCommandHandler.new(_cmd_options)
+	var cmd_handler := CmdCommandHandler.new(_cmd_options)
 
 	cmd_handler.register_cb("-a", _cmd_instance.cmd_arg)
 	cmd_handler.register_cbv("-a", _cmd_instance.cmd_args)
@@ -87,7 +87,7 @@ func test_validate_no_registerd_commands() -> void:
 
 
 func test_validate_registerd_commands() -> void:
-	var cmd_handler: = CmdCommandHandler.new(_cmd_options)
+	var cmd_handler := CmdCommandHandler.new(_cmd_options)
 	cmd_handler.register_cb("-a", _cmd_instance.cmd_no_arg)
 	cmd_handler.register_cb("-f", _cmd_instance.cmd_foo)
 	cmd_handler.register_cb("-arg", _cmd_instance.cmd_arg)
@@ -96,7 +96,7 @@ func test_validate_registerd_commands() -> void:
 
 
 func test_validate_registerd_unknown_commands() -> void:
-	var cmd_handler: = CmdCommandHandler.new(_cmd_options)
+	var cmd_handler := CmdCommandHandler.new(_cmd_options)
 	cmd_handler.register_cb("-a", _cmd_instance.cmd_no_arg)
 	cmd_handler.register_cb("-d", _cmd_instance.cmd_foo)
 	cmd_handler.register_cb("-arg", _cmd_instance.cmd_arg)
@@ -118,7 +118,7 @@ func test_validate_registerd_invalid_callbacks() -> void:
 
 
 func test_validate_registerd_register_same_callback_twice() -> void:
-	var cmd_handler: = CmdCommandHandler.new(_cmd_options)
+	var cmd_handler := CmdCommandHandler.new(_cmd_options)
 	cmd_handler.register_cb("-a", _cmd_instance.cmd_no_arg)
 	cmd_handler.register_cb("-arg", _cmd_instance.cmd_no_arg)
 	assert_result(cmd_handler._validate())\
@@ -127,17 +127,17 @@ func test_validate_registerd_register_same_callback_twice() -> void:
 
 
 func test_execute_no_commands() -> void:
-	var cmd_handler: = CmdCommandHandler.new(_cmd_options)
+	var cmd_handler := CmdCommandHandler.new(_cmd_options)
 	assert_result(cmd_handler.execute([])).is_success()
 
 
 func test_execute_commands_no_cb_registered() -> void:
-	var cmd_handler: = CmdCommandHandler.new(_cmd_options)
+	var cmd_handler := CmdCommandHandler.new(_cmd_options)
 	assert_result(cmd_handler.execute([CmdCommand.new("-a")])).is_success()
 
 
 func test_execute_commands_with_cb_registered() -> void:
-	var cmd_handler: = CmdCommandHandler.new(_cmd_options)
+	var cmd_handler := CmdCommandHandler.new(_cmd_options)
 	var cmd_spy: TestCommands = spy(_cmd_instance)
 
 	cmd_handler.register_cb("-arg", cmd_spy.cmd_arg)

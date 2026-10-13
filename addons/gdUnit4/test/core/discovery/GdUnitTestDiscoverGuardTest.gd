@@ -278,7 +278,7 @@ func test_discover_moved_test_gdscript() -> void:
 
 	# we insert two new lines before test test_parameterized_static_external (test source_line is now changed)
 	var source_code_index := script.source_code.find("func test_parameterized_static_external")
-	script.source_code = script.source_code.insert(source_code_index-1, "\n\n")
+	script.source_code = script.source_code.insert(source_code_index - 1, "\n\n")
 	assert_int(script.reload(true)).is_equal(OK)
 
 	# calling the discover like when a script change is emited by a save action
@@ -325,7 +325,7 @@ func test_discover_moved_test_gdscript() -> void:
 
 #if GDUNIT4NET_API_V5
 func test_discover_on_csharp_script(_do_skip := !GdUnit4CSharpApiLoader.is_api_loaded()) -> void:
-	var discoverer :GdUnitTestDiscoverGuard = auto_free(GdUnitTestDiscoverGuard.new())
+	var discoverer: GdUnitTestDiscoverGuard = auto_free(GdUnitTestDiscoverGuard.new())
 	var discovered_tests: Array[GdUnitTestCase] = []
 	var script := load_non_cached("res://addons/gdUnit4/test/core/discovery/resources/DiscoverExampleTestSuite.cs")
 	# simulate initial discovery of a new test suite

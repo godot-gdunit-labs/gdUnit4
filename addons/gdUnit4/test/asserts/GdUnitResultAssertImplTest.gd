@@ -95,7 +95,7 @@ func test_contains_message() -> void:
 
 func test_is_value() -> void:
 	assert_result(GdUnitResult.success("")).is_value("")
-	var result_value :Node = auto_free(Node.new())
+	var result_value: Node = auto_free(Node.new())
 	assert_result(GdUnitResult.success(result_value)).is_value(result_value)
 
 	assert_failure(func() -> void: assert_result(GdUnitResult.success("")).is_value("abc")) \

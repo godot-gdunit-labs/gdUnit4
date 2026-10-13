@@ -6,7 +6,7 @@ extends GdUnitTestSuite
 
 signal test_signal_a()
 signal test_signal_b()
-signal test_signal_c(value :String)
+signal test_signal_c(value: String)
 
 
 func after_test() -> void:

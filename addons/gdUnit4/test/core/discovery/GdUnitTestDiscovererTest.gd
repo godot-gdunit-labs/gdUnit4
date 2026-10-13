@@ -103,7 +103,7 @@ func test_discover_tests_inherited() -> void:
 
 #if GDUNIT4NET_API_V5
 func test_discover_csharp_tests(_do_skip := !GdUnit4CSharpApiLoader.is_api_loaded()) -> void:
-	var script :Script = load("res://addons/gdUnit4/test/core/discovery/resources/DiscoverExampleTestSuite.cs")
+	var script: Script = load("res://addons/gdUnit4/test/core/discovery/resources/DiscoverExampleTestSuite.cs")
 	var discovered_tests := []
 	GdUnitTestDiscoverer.discover_tests(script,\
 		func discover(test_case: GdUnitTestCase) -> void:

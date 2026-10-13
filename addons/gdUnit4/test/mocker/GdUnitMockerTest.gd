@@ -29,7 +29,7 @@ func test_is_mockable_godot_classes() -> void:
 		# singleton classes
 		# unregistered classes in ClassDB
 		# protected classes (name starts with underscore)
-		var is_mockable :bool = not Engine.has_singleton(clazz_name) and ClassDB.can_instantiate(clazz_name) and clazz_name.find("_") != 0
+		var is_mockable: bool = not Engine.has_singleton(clazz_name) and ClassDB.can_instantiate(clazz_name) and clazz_name.find("_") != 0
 		assert_bool(GdUnitMockBuilder.is_mockable(clazz_name)) \
 			.override_failure_message("Class '%s' expect mockable %s" % [clazz_name, is_mockable]) \
 			.is_equal(is_mockable)
@@ -136,7 +136,7 @@ func test_mock_class_with_field_initializer_calling_overridden_method() -> void:
 func test_mock_source_with_class_name_by_resource_path() -> void:
 	var world_script_path := 'res://addons/gdUnit4/test/mocker/resources/GD-256/world.gd'
 	var m: Variant = mock(world_script_path)
-	var head :String = m.get_script().source_code.substr(0, 500)
+	var head: String = m.get_script().source_code.substr(0, 500)
 	assert_str(head)\
 		.contains("class_name DoubledMockClassMunderwoodPathingWorld")\
 		.contains("extends '%s'" % world_script_path)
@@ -145,7 +145,7 @@ func test_mock_source_with_class_name_by_resource_path() -> void:
 func test_mock_source_with_class_name_by_class() -> void:
 	var world_script_path := 'res://addons/gdUnit4/test/mocker/resources/GD-256/world.gd'
 	var m: Variant = mock(Munderwood_Pathing_World)
-	var head :String = m.get_script().source_code.substr(0, 500)
+	var head: String = m.get_script().source_code.substr(0, 500)
 	assert_str(head)\
 		.contains("class_name DoubledMockClassMunderwoodPathingWorld")\
 		.contains("extends '%s'" % world_script_path)
@@ -153,7 +153,7 @@ func test_mock_source_with_class_name_by_class() -> void:
 
 func test_mock_extends_godot_class() -> void:
 	var m: Variant = mock(World3D)
-	var head :String = m.get_script().source_code.substr(0, 500)
+	var head: String = m.get_script().source_code.substr(0, 500)
 	assert_str(head)\
 		.contains("class_name DoubledMockClassWorld")\
 		.contains("extends World3D")
@@ -210,13 +210,13 @@ class ClassWithSignal:
 	signal test_signal_a
 	signal test_signal_b
 
-	func foo(arg :int) -> void:
+	func foo(arg: int) -> void:
 		if arg == 0:
 			emit_signal(test_signal_a.get_name(), "aa")
 		else:
 			emit_signal(test_signal_b.get_name(), "bb", true)
 
-	func bar(arg :int) -> bool:
+	func bar(arg: int) -> bool:
 		if arg == 0:
 			emit_signal(test_signal_a.get_name(), "aa")
 		else:
@@ -494,7 +494,7 @@ func test_mock_custom_class_extends_node() -> void:
 	assert_that(m.get_child_count()).is_equal(0)
 	assert_that(m.get_children()).contains_exactly([])
 	# test seters has no affect
-	var node :Node = auto_free(Node.new())
+	var node: Node = auto_free(Node.new())
 	m.add_child(node)
 	assert_that(m.get_child_count()).is_equal(0)
 	assert_that(m.get_children()).contains_exactly([])
@@ -510,9 +510,9 @@ func test_mock_custom_class_extends_node_real_func() -> void:
 	assert_that(m.get_child_count()).is_equal(0)
 	assert_that(m.get_children()).is_equal([])
 	# test real seters used
-	var node_a :Node = auto_free(Node.new())
-	var node_b :Node = auto_free(Node.new())
-	var node_c :Node = auto_free(Node.new())
+	var node_a: Node = auto_free(Node.new())
+	var node_b: Node = auto_free(Node.new())
+	var node_c: Node = auto_free(Node.new())
 	m.add_child(node_a)
 	m.add_child(node_b)
 	assert_that(m.get_child_count()).is_equal(2)
@@ -720,7 +720,7 @@ func test_mock_class_with_inner_class() -> void:
 
 
 func test_mock_class_with_property_getter_and_setter() -> void:
-	var c :Variant = mock(ClassWithParameterGetterSetter)
+	var c: Variant = mock(ClassWithParameterGetterSetter)
 
 	# inital value
 	assert_int(c._session_count).is_equal(42)
@@ -775,11 +775,11 @@ func test_matching_is_sorted() -> void:
 	do_return(null).on(mocked_node).get_child(3, true)
 
 	# get the sorted mocked args as array
-	var mocked_args :Array = mocked_node.__doubler_state().return_values.get("get_child").keys()
+	var mocked_args: Array = mocked_node.__doubler_state().return_values.get("get_child").keys()
 	assert_array(mocked_args).has_size(5)
 
 	# we expect all argument matchers are sorted to the end
-	var first_arguments := mocked_args.map(func (v :Array) -> Variant: return v[0])
+	var first_arguments := mocked_args.map(func(v: Array) -> Variant: return v[0])
 	assert_int(first_arguments[0]).is_equal(3)
 	assert_int(first_arguments[1]).is_equal(10)
 	assert_int(first_arguments[2]).is_equal(1)
@@ -789,9 +789,9 @@ func test_matching_is_sorted() -> void:
 
 func test_do_return_with_matchers() -> void:
 	var mocked_node: Variant = mock(Node)
-	var child_n :Node = auto_free(Node2D.new())
-	var child1 :Node = auto_free(Node2D.new())
-	var child10 :Node = auto_free(Node2D.new())
+	var child_n: Node = auto_free(Node2D.new())
+	var child1: Node = auto_free(Node2D.new())
+	var child10: Node = auto_free(Node2D.new())
 
 	# for any index return child_n by using any() matcher
 	do_return(child_n).on(mocked_node).get_child(any(), false)
@@ -825,13 +825,13 @@ func test_example_verify() -> void:
 	verify_no_interactions(mocked_node)
 
 	# call with different arguments
-	mocked_node.set_process(false) # 1 times
-	mocked_node.set_process(true) # 1 times
-	mocked_node.set_process(true) # 2 times
+	mocked_node.set_process(false)  # 1 times
+	mocked_node.set_process(true)  # 1 times
+	mocked_node.set_process(true)  # 2 times
 
 	# verify how often we called the function with different argument
-	verify(mocked_node, 2).set_process(true) # in sum two times with true
-	verify(mocked_node, 1).set_process(false)# in sum one time with false
+	verify(mocked_node, 2).set_process(true)  # in sum two times with true
+	verify(mocked_node, 1).set_process(false)  # in sum one time with false
 
 	# verify total sum by using an argument matcher
 	verify(mocked_node, 3).set_process(any_bool())
@@ -841,8 +841,8 @@ func test_verify_fail() -> void:
 	var mocked_node: Variant = mock(Node)
 
 	# interact two time
-	mocked_node.set_process(true) # 1 times
-	mocked_node.set_process(true) # 2 times
+	mocked_node.set_process(true)  # 1 times
+	mocked_node.set_process(true)  # 2 times
 
 	# verify we interacts two times
 	verify(mocked_node, 2).set_process(true)
@@ -928,9 +928,9 @@ func test_reset() -> void:
 	var mocked_node: Variant = mock(Node)
 
 	# call with different arguments
-	mocked_node.set_process(false) # 1 times
-	mocked_node.set_process(true) # 1 times
-	mocked_node.set_process(true) # 2 times
+	mocked_node.set_process(false)  # 1 times
+	mocked_node.set_process(true)  # 1 times
+	mocked_node.set_process(true)  # 2 times
 
 	verify(mocked_node, 2).set_process(true)
 	verify(mocked_node, 1).set_process(false)
@@ -952,9 +952,9 @@ func test_verify_no_interactions_fails() -> void:
 	var mocked_node: Variant = mock(Node)
 
 	# interact
-	mocked_node.set_process(false) # 1 times
-	mocked_node.set_process(true) # 1 times
-	mocked_node.set_process(true) # 2 times
+	mocked_node.set_process(false)  # 1 times
+	mocked_node.set_process(true)  # 1 times
+	mocked_node.set_process(true)  # 2 times
 
 	var expected_error :="""
 		Expecting no more interactions!
@@ -1139,7 +1139,7 @@ func test_mock_scene_by_resource() -> void:
 
 func test_mock_scene_by_instance() -> void:
 	var resource := TEST_SCENE
-	var instance :Control = auto_free(resource.instantiate())
+	var instance: Control = auto_free(resource.instantiate())
 	var mocked_scene: Variant = mock(instance)
 	# must fail mock an instance is not allowed
 	assert_object(mocked_scene).is_null()
@@ -1176,7 +1176,7 @@ func test_mock_scene_execute_func_yielded() -> void:
 	add_child(mocked_scene as Node)
 	# execute the 'color_cycle' func where emits three signals
 	# using yield to wait for function is completed
-	var result :String = await mocked_scene.color_cycle()
+	var result: String = await mocked_scene.color_cycle()
 	# verify the return value of 'color_cycle'
 	assert_str(result).is_equal("black")
 
@@ -1186,7 +1186,7 @@ func test_mock_scene_execute_func_yielded() -> void:
 
 
 class Base:
-	func _init(_value :String) -> void:
+	func _init(_value: String) -> void:
 		pass
 
 
@@ -1201,7 +1201,7 @@ func test_mock_with_inheritance_method() -> void:
 
 
 func test_mock_func_default_arg_dict() -> void:
-	var mock_obj :ClassWithDictionaryDefaultArguments = mock(ClassWithDictionaryDefaultArguments)
+	var mock_obj: ClassWithDictionaryDefaultArguments = mock(ClassWithDictionaryDefaultArguments)
 
 	do_return(["a", "b"]).on(mock_obj).on_dictionary_case1(any_dictionary())
 	verify_no_interactions(mock_obj)

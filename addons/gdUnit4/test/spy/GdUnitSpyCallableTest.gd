@@ -49,10 +49,10 @@ func test_exclude_functions() -> void:
 func test_call() -> void:
 	var cb := func(x: int) -> String:
 		return "is_called %s" % x
-	var cb_spy :Variant = spy(cb)
+	var cb_spy: Variant = spy(cb)
 
 	# do use the spy to call the callable
-	var result :Variant = cb_spy.call(42)
+	var result: Variant = cb_spy.call(42)
 	# verify is called by validate the result
 	assert_that(result).is_equal("is_called 42")
 	# verify should be successfull
@@ -64,10 +64,10 @@ func test_call() -> void:
 func test_call_with_binded_value() -> void:
 	var cb := func(x: int, y: int) -> String:
 		return "is_called %s.%s" % [x, y]
-	var cb_spy :Variant = spy(cb.bind(24))
+	var cb_spy: Variant = spy(cb.bind(24))
 
 	# do use the spy to call the callable
-	var result :Variant = cb_spy.call(42)
+	var result: Variant = cb_spy.call(42)
 	# verify is called by validate the result
 	assert_that(result).is_equal("is_called 42.24")
 	# verify should be successfull
@@ -82,10 +82,10 @@ func test_call_with_binded_value() -> void:
 func _test_callv() -> void:
 	var cb := func(x: int, y: int) -> String:
 		return "is_called %s.%s" % [x, y]
-	var cb_spy :Variant = spy(cb.bind(24))
+	var cb_spy: Variant = spy(cb.bind(24))
 
 	# do use the spy to call the callable
-	var result :Variant = cb_spy.callv([42])
+	var result: Variant = cb_spy.callv([42])
 	# verify is called by validate the result
 	assert_that(result).is_equal("is_called 42.24")
 	# verify should be successfull
@@ -95,7 +95,7 @@ func _test_callv() -> void:
 func test_bind_vararg() -> void:
 	var cb := func(x: int, y: int) -> String:
 		return "is_called %s.%s" % [x, y]
-	var cb_spy :Variant = spy(cb)
+	var cb_spy: Variant = spy(cb)
 	cb_spy.bind(24, 25, 26)
 	assert_array(cb_spy.get_bound_arguments()).contains_exactly([24, 25, 26])
 
@@ -103,7 +103,7 @@ func test_bind_vararg() -> void:
 func test_bind() -> void:
 	var cb := func(x: int, y: int) -> String:
 		return "is_called %s.%s" % [x, y]
-	var cb_spy :Variant = spy(cb)
+	var cb_spy: Variant = spy(cb)
 	cb_spy.bind(24)
 	assert_array(cb_spy.get_bound_arguments()).contains_exactly([24])
 
@@ -113,7 +113,7 @@ func test_bind() -> void:
 	assert_failure(func() -> void: verify(cb_spy).bind(23)).is_failed()
 
 	# do use the spy to call the callable
-	var result :Variant = cb_spy.call(42)
+	var result: Variant = cb_spy.call(42)
 	# verify is called by validate the result
 	assert_that(result).is_equal("is_called 42.24")
 	# verify should be successfull
@@ -123,13 +123,13 @@ func test_bind() -> void:
 func test_bindv() -> void:
 	var cb := func(a1: int, a2: int, a3: int, a4: int) -> String:
 		return "is_called %s %s %s %s" % [a1, a2, a3, a4]
-	var cb_spy :Variant = spy(cb)
-	cb_spy.bindv([21,22,23])
+	var cb_spy: Variant = spy(cb)
+	cb_spy.bindv([21, 22, 23])
 
 	# verify bindv is called
-	verify(cb_spy).bindv([21,22,23])
+	verify(cb_spy).bindv([21, 22, 23])
 	# verify bindv is not called with [21,22,27]
-	assert_failure(func() -> void: verify(cb_spy).bindv([21,22,27])).is_failed()
+	assert_failure(func() -> void: verify(cb_spy).bindv([21, 22, 27])).is_failed()
 	# finally check via call it resolves all values
 	assert_str(cb_spy.call(42)).is_equal("is_called 42 21 22 23")
 
@@ -137,7 +137,7 @@ func test_bindv() -> void:
 func test_unbind() -> void:
 	var cb := func(a1: int, a2: int, a3: int) -> String:
 		return "is_called %s %s %s" % [a1, a2, a3]
-	var cb_spy :Variant = spy(cb.bindv([21,22,23]))
+	var cb_spy: Variant = spy(cb.bindv([21, 22, 23]))
 	cb_spy.unbind(1)
 
 	# verify unbind is called
@@ -150,7 +150,7 @@ func test_unbind() -> void:
 
 func test_rpc() -> void:
 	_rpc_called = ""
-	var cb_spy :Variant = spy(do_rpc)
+	var cb_spy: Variant = spy(do_rpc)
 	cb_spy.rpc("abc", 23)
 	# verify the callable @rpc is called
 	assert_that(_rpc_called).is_equal("abc23")
@@ -163,7 +163,7 @@ func test_rpc() -> void:
 
 func test_rpc_id() -> void:
 	_rpc_called = ""
-	var cb_spy :Variant = spy(do_rpc_on_peer)
+	var cb_spy: Variant = spy(do_rpc_on_peer)
 	cb_spy.rpc_id(1, "foo", "23")
 	# verify the callable @rpc is called
 	assert_that(_rpc_called).is_equal("foo23")
@@ -175,27 +175,27 @@ func test_rpc_id() -> void:
 
 
 func test_get_bound_arguments() -> void:
-	var cb := func() -> void: return
-	var cb_syp :Variant = spy(cb)
+	var cb := func() -> void: pass
+	var cb_syp: Variant = spy(cb)
 
 	verify(cb_syp, 0).get_bound_arguments()
-	cb_syp.bind(1,2,3)
-	assert_array(cb_syp.get_bound_arguments()).contains_exactly([1,2,3])
+	cb_syp.bind(1, 2, 3)
+	assert_array(cb_syp.get_bound_arguments()).contains_exactly([1, 2, 3])
 	verify(cb_syp, 1).get_bound_arguments()
 
 
 func test_get_bound_arguments_count() -> void:
-	var cb := func() -> void: return
-	var cb_syp :Variant = spy(cb)
+	var cb := func() -> void: pass
+	var cb_syp: Variant = spy(cb)
 
 	verify(cb_syp, 0).get_bound_arguments_count()
-	cb_syp.bind(1,2,3)
+	cb_syp.bind(1, 2, 3)
 	assert_that(cb_syp.get_bound_arguments_count()).is_equal(3)
 	verify(cb_syp, 1).get_bound_arguments_count()
 
 
 func test_get_method() -> void:
-	var cb_syp :Variant = spy(do_rpc)
+	var cb_syp: Variant = spy(do_rpc)
 
 	verify(cb_syp, 0).get_method()
 	assert_that(cb_syp.get_method()).is_equal("do_rpc")
@@ -203,7 +203,7 @@ func test_get_method() -> void:
 
 
 func test_get_object() -> void:
-	var cb_syp :Variant = spy(do_rpc)
+	var cb_syp: Variant = spy(do_rpc)
 
 	verify(cb_syp, 0).get_object()
 	assert_that(cb_syp.get_object()).is_same(self)
@@ -211,7 +211,7 @@ func test_get_object() -> void:
 
 
 func test_get_object_id() -> void:
-	var cb_syp :Variant = spy(do_rpc)
+	var cb_syp: Variant = spy(do_rpc)
 
 	verify(cb_syp, 0).get_object_id()
 	assert_that(cb_syp.get_object_id()).is_equal(get_instance_id())
@@ -219,7 +219,7 @@ func test_get_object_id() -> void:
 
 
 func test_hash() -> void:
-	var cb_syp :Variant = spy(do_rpc)
+	var cb_syp: Variant = spy(do_rpc)
 
 	verify(cb_syp, 0).hash()
 	assert_that(cb_syp.hash()).is_equal(do_rpc.hash())
@@ -228,7 +228,7 @@ func test_hash() -> void:
 
 func test_is_custom_is_true() -> void:
 	var is_custom := do_rpc.is_custom()
-	var cb_syp :Variant = spy(do_rpc)
+	var cb_syp: Variant = spy(do_rpc)
 
 	verify(cb_syp, 0).is_custom()
 	assert_that(cb_syp.is_custom()).is_equal(is_custom)
@@ -239,14 +239,14 @@ func test_is_custom_is_false() -> void:
 	var cb := Callable(self, "do_rpc")
 	assert_that(cb.is_custom()).is_false()
 
-	var cb_syp :Variant = spy(cb)
+	var cb_syp: Variant = spy(cb)
 	verify(cb_syp, 0).is_custom()
 	assert_that(cb_syp.is_custom()).is_false()
 	verify(cb_syp, 1).is_custom()
 
 
 func test_is_null() -> void:
-	var cb_syp :Variant = spy(do_rpc)
+	var cb_syp: Variant = spy(do_rpc)
 
 	verify(cb_syp, 0).is_null()
 	assert_that(cb_syp.is_null()).is_false()
@@ -258,7 +258,7 @@ func test_is_null() -> void:
 
 func test_is_standard_is_false() -> void:
 	var is_standard := do_rpc.is_standard()
-	var cb_syp :Variant = spy(do_rpc)
+	var cb_syp: Variant = spy(do_rpc)
 
 	verify(cb_syp, 0).is_standard()
 	assert_that(cb_syp.is_standard()).is_equal(is_standard)
@@ -269,14 +269,14 @@ func test_is_standard_is_true() -> void:
 	var cb := Callable(self, "do_rpc")
 	assert_that(cb.is_standard()).is_true()
 
-	var cb_syp :Variant = spy(cb)
+	var cb_syp: Variant = spy(cb)
 	verify(cb_syp, 0).is_standard()
 	assert_that(cb_syp.is_standard()).is_true()
 	verify(cb_syp, 1).is_standard()
 
 
 func test_is_valid() -> void:
-	var cb_syp :Variant = spy(do_rpc)
+	var cb_syp: Variant = spy(do_rpc)
 
 	verify(cb_syp, 0).is_valid()
 	assert_that(cb_syp.is_valid()).is_true()

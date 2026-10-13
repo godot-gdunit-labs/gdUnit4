@@ -149,11 +149,11 @@ func test_assert_error_releases_logger() -> void:
 
 func produce_assert_success() -> void:
 	@warning_ignore("assert_always_true")
-	assert(true, "no error" )
+	assert(true, "no error")
 
 
 func produce_assert_error() -> void:
-	assert(false, "this is an assert error" )
+	assert(false, "this is an assert error")
 
 
 func produce_push_warning() -> void:
@@ -168,4 +168,4 @@ func produce_runtime_error() -> void:
 	var a := 0
 	@warning_ignore("integer_division")
 	@warning_ignore("unused_variable")
-	var x := 1/a
+	var x := 1 / a

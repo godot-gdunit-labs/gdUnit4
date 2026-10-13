@@ -56,11 +56,11 @@ func test_is_mockable_overriden_func_get_class() -> void:
 	# test with class type
 	assert_bool(GdUnitMockBuilder.is_mockable(OverridenGetClassTestClass))\
 		.override_failure_message("The class 'CustomResourceTestClass' should be mockable when 'func get_class()' is overriden")\
-		. is_true()
+		.is_true()
 	# test with resource path
 	assert_bool(GdUnitMockBuilder.is_mockable(resource_path + "OverridenGetClassTestClass.gd"))\
 		.override_failure_message("The class 'CustomResourceTestClass' should be mockable when 'func get_class()' is overriden")\
-		. is_true()
+		.is_true()
 
 
 func test_mock_godot_class_fullcheck(fuzzer := GodotClassNameFuzzer.new(), _fuzzer_iterations := 200) -> void:

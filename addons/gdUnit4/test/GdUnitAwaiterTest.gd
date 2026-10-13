@@ -77,7 +77,7 @@ func test_await_signal_on_invalid_source_timedout() -> void:
 		# we  wait for a signal on a already freed instance
 		await assert_failure_await(func x() -> void: await await_signal_on(invalid_node(), "tree_entered", [], 300))
 	).has_line(78)\
-		. has_message(GdAssertMessages.error_await_signal_on_invalid_instance(null, "tree_entered", []))
+		.has_message(GdAssertMessages.error_await_signal_on_invalid_instance(null, "tree_entered", []))
 
 
 func invalid_node() -> Node:

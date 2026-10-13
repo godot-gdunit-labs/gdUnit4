@@ -18,7 +18,7 @@ func test_b2() -> void:
 
 
 # test scanning success with invalid formatting
-func test_b21() -> void:
+func  	 test_b21 		 ( 	 ) 	 	  -> void:
 	pass
 
 

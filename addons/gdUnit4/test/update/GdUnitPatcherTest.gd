@@ -50,7 +50,7 @@ func test_scan_patches() -> void:
 	_patcher._scan(_PATCHES, GdUnit4Version.new(0, 9, 6))
 	assert_dict(_patcher._patches)\
 		.contains_key_value("res://addons/gdUnit4/test/update/resources/patches/v0.9.9", PackedStringArray(["patch_a.gd", "patch_b.gd"]))\
-		. contains_key_value("res://addons/gdUnit4/test/update/resources/patches/v1.1.4", PackedStringArray(["patch_a.gd"]))
+		.contains_key_value("res://addons/gdUnit4/test/update/resources/patches/v1.1.4", PackedStringArray(["patch_a.gd"]))
 	assert_int(_patcher.patch_count()).is_equal(3)
 
 	_patcher._patches.clear()
@@ -58,7 +58,7 @@ func test_scan_patches() -> void:
 	assert_dict(_patcher._patches)\
 		.contains_key_value("res://addons/gdUnit4/test/update/resources/patches/v0.9.6", PackedStringArray(["patch_x.gd"]))\
 		.contains_key_value("res://addons/gdUnit4/test/update/resources/patches/v0.9.9", PackedStringArray(["patch_a.gd", "patch_b.gd"]))\
-		. contains_key_value("res://addons/gdUnit4/test/update/resources/patches/v1.1.4", PackedStringArray(["patch_a.gd"]))
+		.contains_key_value("res://addons/gdUnit4/test/update/resources/patches/v1.1.4", PackedStringArray(["patch_a.gd"]))
 	assert_int(_patcher.patch_count()).is_equal(4)
 
 

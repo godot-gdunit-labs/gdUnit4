@@ -37,10 +37,10 @@ func after() -> void:
 		var expected: TestCaseStatistics = _test_values_expected[test_case]
 		assert_int(current._test_before_calls)\
 			.override_failure_message("Expect before_test called %s times but is %s for test case %s" % [expected._test_before_calls, current._test_before_calls, test_case])\
-			. is_equal(expected._test_before_calls)
+			.is_equal(expected._test_before_calls)
 		assert_int(current._test_after_calls)\
 			.override_failure_message("Expect after_test called %s times but is %s for test case %s" % [expected._test_before_calls, current._test_before_calls, test_case])\
-			. is_equal(expected._test_after_calls)
+			.is_equal(expected._test_after_calls)
 
 
 func before_test() -> void:

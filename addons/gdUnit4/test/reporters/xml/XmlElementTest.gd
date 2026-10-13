@@ -110,7 +110,7 @@ func test_complex_example() -> void:
 		.attribute(JUnitXmlReportWriter.ATTR_TESTS, 42)\
 		.attribute(JUnitXmlReportWriter.ATTR_FAILURES, 1)\
 		.attribute(JUnitXmlReportWriter.ATTR_TIME, "1.22")\
-		. add_childs([testsuite1, testsuite2])
+		.add_childs([testsuite1, testsuite2])
 	var expected := """
 		<testsuites id="ID-XXX" name="report_foo" tests="42" failures="1" time="1.22">
 			<testsuite id="1" name="bar">
@@ -178,7 +178,7 @@ func test_dispose() -> void:
 		.attribute(JUnitXmlReportWriter.ATTR_TESTS, 42)\
 		.attribute(JUnitXmlReportWriter.ATTR_FAILURES, 1)\
 		.attribute(JUnitXmlReportWriter.ATTR_TIME, "1.22")\
-		. add_childs([testsuite1, testsuite2])
+		.add_childs([testsuite1, testsuite2])
 
 	assert_that(root._parent).is_null()
 	assert_array(root._childs).contains_exactly([testsuite1, testsuite2])

@@ -567,7 +567,7 @@ func test_discover_tests() -> void:
 	# verify the InspectorProgressBar is connected to gdunit_test_discovered signal
 	assert_bool(GdUnitSignals.instance().gdunit_test_discover_added.is_connected(_inspector.on_test_case_discover_added))\
 		.override_failure_message("The 'InspectorProgressBar' must be connected to signal 'gdunit_test_discovered'")\
-		. is_true()
+		.is_true()
 
 
 func test_on_test_case_discover_added() -> void:
@@ -673,7 +673,7 @@ func test_collect_test_cases_gd_872(_do_skip := not GdUnit4CSharpApiLoader.is_ap
 			"Minimal.Tests.ATests.TestExample2",
 			"Minimal.Tests.AZTests.TestExample",
 			"Minimal.Tests.AZTests.TestExample2"])\
-		. has_size(4)
+		.has_size(4)
 	# Validate suite `Minimal.Tests.ATests`
 	var test_case1: GdUnitTestCase = tests_by_id["Minimal.Tests.ATests.TestExample"]
 	var test_case2: GdUnitTestCase = tests_by_id["Minimal.Tests.ATests.TestExample2"]
@@ -715,7 +715,7 @@ func assert_tree_equals(tree_left: TreeItem, tree_right: TreeItem) -> bool:
 
 	assert_that(left_childs.size())\
 		.override_failure_message("Expecting same child count %d vs %d on item %s" % [left_childs.size(), right_childs.size(), tree_left.get_meta("gdUnit_name")])\
-		. is_equal(right_childs.size())
+		.is_equal(right_childs.size())
 
 	if is_failure():
 		return false

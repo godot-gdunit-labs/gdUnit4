@@ -52,13 +52,13 @@ func _process(delta: float) -> void:
 	_wait_time = 0
 
 	# Do stop test execution when the user has stoped the test runner manually by hit the Godot editor stop button
-	if isDebugCommandRunning() and not EditorInterface.is_playing_scene():
+	if is_debug_command_running() and not EditorInterface.is_playing_scene():
 		if GdUnitSettings.is_verbose_assert_warnings():
 			print_debug("Test Runner scene was stopped manually, force stopping the current test run!")
 		command_execute(GdUnitCommandStopTestSession.ID)
 
 
-func isDebugCommandRunning() -> bool:
+func is_debug_command_running() -> bool:
 	if (_running_command != null
 		and _running_command.is_running
 		and _running_command.id in [GdUnitCommandScriptEditorDebugTests.ID, GdUnitCommandInspectorDebugTests.ID, GdUnitCommandInspectorRerunTestsUntilFailure.ID]):

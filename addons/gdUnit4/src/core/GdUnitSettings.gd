@@ -150,7 +150,7 @@ static func setup() -> void:
 		"Inspector panel sorting mode", GdUnitInspectorTreeConstants.SortMode.keys())
 	create_property_if_need(INSPECTOR_TOOLBAR_BUTTON_RUN_OVERALL, false,
 		"Show 'Run overall Tests' button in the inspector toolbar")
-	create_property_if_need(TEMPLATE_TS_GD, GdUnitTestSuiteTemplate.default_GD_template(), "Test suite template to use")
+	create_property_if_need(TEMPLATE_TS_GD, GdUnitTestSuiteTemplate.default_gd_template(), "Test suite template to use")
 	create_shortcut_properties_if_need()
 	create_property_if_need(SESSION_HOOKS, {} as Dictionary[String,bool])
 

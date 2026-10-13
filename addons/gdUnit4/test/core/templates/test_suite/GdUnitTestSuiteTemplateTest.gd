@@ -23,7 +23,7 @@ func after() -> void:
 
 
 func test_default_template() -> void:
-	assert_str(GdUnitTestSuiteTemplate.default_template(GdUnitTestSuiteTemplate.TEMPLATE_ID_GD)).is_equal(GdUnitTestSuiteTemplate.default_GD_template())
+	assert_str(GdUnitTestSuiteTemplate.default_template(GdUnitTestSuiteTemplate.TEMPLATE_ID_GD)).is_equal(GdUnitTestSuiteTemplate.default_gd_template())
 
 
 func test_build_template_default() -> void:

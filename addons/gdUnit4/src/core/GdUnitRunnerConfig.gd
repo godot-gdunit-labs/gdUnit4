@@ -129,7 +129,7 @@ func fix_value_types() -> void:
 	_config[SERVER_PORT] = server_port_
 
 
-func convert_Array_to_PackedStringArray(data: Dictionary) -> void:
+func convert_array_to_packed_string_array(data: Dictionary) -> void:
 	for key in data.keys() as Array[String]:
 		var values :Array = data[key]
 		data[key] = PackedStringArray(values)

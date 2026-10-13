@@ -14,7 +14,7 @@ class_name GdUnit4CSharpApiLoader
 extends RefCounted
 
 ## Cached reference to the loaded C# wrapper script
-static var _gdUnit4NetWrapper: Script
+static var _gdunit4_net_wrapper: Script
 
 ## Cached instance of the API (singleton pattern)
 static var _api_instance: RefCounted
@@ -35,7 +35,7 @@ static func instance() -> Script:
 	if not GdUnit4CSharpApiLoader.is_api_loaded():
 		return null
 
-	return _gdUnit4NetWrapper
+	return _gdunit4_net_wrapper
 
 
 ## Returns or creates a single instance of the API [br]
@@ -55,7 +55,7 @@ static func is_engine_version_supported(engine_version: int = Engine.get_version
 ## @return bool: True if .NET is fully supported and the assembly is found
 static func is_api_loaded() -> bool:
 	# If the wrapper is already loaded we don't need to check again
-	if _gdUnit4NetWrapper != null:
+	if _gdunit4_net_wrapper != null:
 		return true
 
 	# First we check if this is a Godot .NET runtime instance
@@ -67,9 +67,9 @@ static func is_api_loaded() -> bool:
 		return false
 
 	# Finally load the wrapper and check if the GdUnit4 assembly can be found
-	_gdUnit4NetWrapper = load("res://addons/gdUnit4/src/dotnet/GdUnit4CSharpApi.cs")
+	_gdunit4_net_wrapper = load("res://addons/gdUnit4/src/dotnet/GdUnit4CSharpApi.cs")
 	@warning_ignore("unsafe_method_access")
-	return _gdUnit4NetWrapper.call("IsApiLoaded")
+	return _gdunit4_net_wrapper.call("IsApiLoaded")
 
 
 ## Returns the version of the GdUnit4 .NET assembly.[br]
@@ -82,7 +82,7 @@ static func version() -> String:
 
 
 static func discover_tests(source_script: Script) -> Array[GdUnitTestCase]:
-	var tests: Array = _gdUnit4NetWrapper.call("DiscoverTests", source_script)
+	var tests: Array = _gdunit4_net_wrapper.call("DiscoverTests", source_script)
 
 	return Array(tests.map(GdUnitTestCase.from_dict), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 

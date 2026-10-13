@@ -21,7 +21,7 @@ func test_load_template_gd() -> void:
 	runner.invoke("load_template", GdUnitTestSuiteTemplate.TEMPLATE_ID_GD)
 
 	assert_int(runner.get_property("_selected_template")).is_equal(GdUnitTestSuiteTemplate.TEMPLATE_ID_GD)
-	assert_str(runner.get_property("_template_editor").text).is_equal(GdUnitTestSuiteTemplate.default_GD_template().replace("\r", ""))
+	assert_str(runner.get_property("_template_editor").text).is_equal(GdUnitTestSuiteTemplate.default_gd_template().replace("\r", ""))
 
 
 func test_load_template_cs() -> void:
@@ -29,4 +29,4 @@ func test_load_template_cs() -> void:
 	runner.invoke("load_template", GdUnitTestSuiteTemplate.TEMPLATE_ID_CS)
 
 	assert_int(runner.get_property("_selected_template")).is_equal(GdUnitTestSuiteTemplate.TEMPLATE_ID_CS)
-	assert_str(runner.get_property("_template_editor").text).is_equal(GdUnitTestSuiteTemplate.default_CS_template().replace("\r", ""))
+	assert_str(runner.get_property("_template_editor").text).is_equal(GdUnitTestSuiteTemplate.default_cs_template().replace("\r", ""))

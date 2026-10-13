@@ -140,13 +140,13 @@ func rescan() -> void:
 		fs.scan()
 		while fs.is_scanning():
 			if OS.is_stdout_verbose():
-				progressBar(fs.get_scanning_progress() * 100 as int)
+				progress_bar(fs.get_scanning_progress() * 100 as int)
 			await get_tree().process_frame
 		await get_tree().process_frame
 	await get_tree().create_timer(1).timeout
 
 
-func progressBar(p_progress: int) -> void:
+func progress_bar(p_progress: int) -> void:
 	if p_progress < 0:
 		p_progress = 0
 	if p_progress > 100:

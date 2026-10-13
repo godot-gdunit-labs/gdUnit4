@@ -53,13 +53,13 @@ func _on_connection_failed(message: String) -> void:
 func init_runner() -> void:
 	# wait until client is connected to the GdUnitServer
 	if _client.is_client_connected():
-		await gdUnitInit()
+		await gdunit_init()
 		_state = RUN
 
 
 ## Initializes the GdUnit framework.[br]
 ## Sends initial message about number of test suites.
-func gdUnitInit() -> void:
+func gdunit_init() -> void:
 	#enable_manuall_polling()
 	_test_cases = _runner_config.test_cases()
 	await get_tree().process_frame

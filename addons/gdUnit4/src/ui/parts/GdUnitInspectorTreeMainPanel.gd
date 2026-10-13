@@ -28,10 +28,10 @@ const META_GDUNIT_ORIGINAL_INDEX = "gdunit_original_index"
 const STATE = GdUnitInspectorTreeConstants.STATE
 
 # loading tree icons
-var ICON_SPINNER: Texture2D
-var ICON_GD_SCRIPT: Texture2D
-var ICON_CS_SCRIPT: Texture2D
-var ICON_FOLDER: Texture2D
+var _icon_spinner: Texture2D
+var _icon_gd_script: Texture2D
+var _icon_cs_script: Texture2D
+var _icon_folder: Texture2D
 
 var _tree_root: TreeItem
 var _current_selected_item: TreeItem = null
@@ -206,9 +206,9 @@ func _notification(what: int) -> void:
 
 func _init_icons() -> void:
 	_spinner.icon = GdUnitUiTools.get_spinner()
-	ICON_GD_SCRIPT = GdUnitUiTools.get_icon("GDScript", GdUnitEditorColorTheme.state_initial)
-	ICON_CS_SCRIPT = GdUnitUiTools.get_icon("CSharpScript", GdUnitEditorColorTheme.state_initial)
-	ICON_FOLDER = GdUnitUiTools.get_icon("Folder", GdUnitEditorColorTheme.folder_color)
+	_icon_gd_script = GdUnitUiTools.get_icon("GDScript", GdUnitEditorColorTheme.state_initial)
+	_icon_cs_script = GdUnitUiTools.get_icon("CSharpScript", GdUnitEditorColorTheme.state_initial)
+	_icon_folder = GdUnitUiTools.get_icon("Folder", GdUnitEditorColorTheme.folder_color)
 
 
 # we need current to manually redraw bacause of the animation bug
@@ -979,10 +979,10 @@ func _find_highest_state(item: TreeItem) -> STATE:
 
 func get_icon_by_file_type(path: String) -> Texture2D:
 	if path.get_extension() == "gd":
-		return ICON_GD_SCRIPT
+		return _icon_gd_script
 	if path.get_extension() == "cs":
-		return ICON_CS_SCRIPT
-	return ICON_FOLDER
+		return _icon_cs_script
+	return _icon_folder
 
 
 func on_test_case_discover_added(test_case: GdUnitTestCase) -> void:

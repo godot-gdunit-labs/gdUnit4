@@ -24,7 +24,7 @@ func test_cant_spy_is_not_a_instance() -> void:
 	assert_object(spy_node).is_null()
 
 
-func test_spy_on_Node() -> void:
+func test_spy_on_node() -> void:
 	var instance :Node = auto_free(Node.new())
 	var spy_node :Variant = spy(instance)
 
@@ -202,8 +202,8 @@ func test_spy_on_inner_class() -> void:
 
 func test_spy_on_singleton() -> void:
 	assert_error(func () -> void:
-		var spy_node_ :Variant = spy(Input)
-		assert_object(spy_node_).is_null()
+		var input_spy :Variant = spy(Input)
+		assert_object(input_spy).is_null()
 	).is_push_error("Spy on a Singleton is not allowed! 'Input'")
 
 
@@ -261,7 +261,7 @@ func test_verify_fail() -> void:
 		.has_message(expected_error)
 
 
-func test_verify_func_interaction_wiht_PoolStringArray() -> void:
+func test_verify_func_interaction_wiht_pool_string_array() -> void:
 	var spy_instance :ClassWithPoolStringArrayFunc = spy(ClassWithPoolStringArrayFunc.new())
 
 	spy_instance.set_values(PackedStringArray())
@@ -271,7 +271,7 @@ func test_verify_func_interaction_wiht_PoolStringArray() -> void:
 	verify_no_more_interactions(spy_instance)
 
 
-func test_verify_func_interaction_wiht_PackedStringArray_fail() -> void:
+func test_verify_func_interaction_wiht_packed_string_array_fail() -> void:
 	var spy_instance :ClassWithPoolStringArrayFunc = spy(ClassWithPoolStringArrayFunc.new())
 
 	spy_instance.set_values(PackedStringArray())
@@ -502,7 +502,7 @@ func test_spy_snake_case_named_class_by_class() -> void:
 	verify_no_more_interactions(spy_tcp_server)
 
 
-func test_spy_preload_class_GD_166() -> void:
+func test_spy_preload_class_gd_166() -> void:
 	var instance :Object = auto_free(Issue.new())
 	var spy_instance :Variant = spy(instance)
 
@@ -514,7 +514,7 @@ func test_spy_preload_class_GD_166() -> void:
 
 
 # https://github.com/MikeSchulze/gdUnit4/issues/38
-func test_spy_Node_use_real_func_vararg() -> void:
+func test_spy_node_use_real_func_vararg() -> void:
 	# setup
 	var instance :Variant = auto_free(Node.new())
 
@@ -640,7 +640,7 @@ func test_spy_scene_by_resource_path() -> void:
 	assert_bool(GdUnitMemoryObserver.is_marked_auto_free(spy_scene)).is_true()
 
 
-func test_spy_on_PackedScene() -> void:
+func test_spy_on_packed_scene() -> void:
 	var resource := TEST_SCENE
 	var original_script :Script = resource.get_script()
 	assert_object(resource).is_instanceof(PackedScene)

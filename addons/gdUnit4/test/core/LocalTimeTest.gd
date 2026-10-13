@@ -2,9 +2,6 @@
 class_name LocalTimeTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/core/LocalTime.gd'
-
 
 func test_time_constants() -> void:
 	assert_int(LocalTime.MILLIS_PER_HOUR).is_equal(1000*60*60)

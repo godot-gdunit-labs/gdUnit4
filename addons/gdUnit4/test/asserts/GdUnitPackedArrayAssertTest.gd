@@ -2,9 +2,6 @@
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/asserts/GdUnitArrayAssertImpl.gd'
-
 
 func test_is_array_assert(_test: String, array: Variant, _test_parameters := [
 	["Array", Array()],
@@ -18,8 +15,8 @@ func test_is_array_assert(_test: String, array: Variant, _test_parameters := [
 	["PackedVector3Array", PackedVector3Array()],
 	["PackedColorArray", PackedColorArray()] ]
 	) -> void:
-	var assert_ := assert_that(array)
-	assert_object(assert_).is_instanceof(GdUnitArrayAssert)
+	var array_assert := assert_that(array)
+	assert_object(array_assert).is_instanceof(GdUnitArrayAssert)
 
 
 func test_is_null(_test: String, value: Variant, _test_parameters := [

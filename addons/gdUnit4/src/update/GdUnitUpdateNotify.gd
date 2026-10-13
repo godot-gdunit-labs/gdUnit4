@@ -56,19 +56,19 @@ func request_releases() -> bool:
 	return false
 
 
-func _colored(message_: String, color: Color) -> String:
-	return "[color=#%s]%s[/color]" % [color.to_html(), message_]
+func _colored(p_message: String, color: Color) -> String:
+	return "[color=#%s]%s[/color]" % [color.to_html(), p_message]
 
 
-func message_h4(message_: String, color: Color, clear := true) -> void:
+func message_h4(p_message: String, color: Color, clear := true) -> void:
 	if clear:
 		_content.clear()
-	_content.append_text("[font_size=16]%s[/font_size]" % _colored(message_, color))
+	_content.append_text("[font_size=16]%s[/font_size]" % _colored(p_message, color))
 
 
-func message(message_: String, color: Color) -> void:
+func message(p_message: String, color: Color) -> void:
 	_content.clear()
-	_content.append_text(_colored(message_, color))
+	_content.append_text(_colored(p_message, color))
 
 
 func _process(_delta: float) -> void:
@@ -140,13 +140,13 @@ func rescan() -> void:
 		fs.scan()
 		while fs.is_scanning():
 			if OS.is_stdout_verbose():
-				progressBar(fs.get_scanning_progress() * 100 as int)
+				progress_bar(fs.get_scanning_progress() * 100 as int)
 			await get_tree().process_frame
 		await get_tree().process_frame
 	await get_tree().create_timer(1).timeout
 
 
-func progressBar(p_progress: int) -> void:
+func progress_bar(p_progress: int) -> void:
 	if p_progress < 0:
 		p_progress = 0
 	if p_progress > 100:

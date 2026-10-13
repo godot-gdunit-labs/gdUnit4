@@ -2,9 +2,6 @@
 class_name GdUnitArgumentMatchersTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/matchers/GdUnitArgumentMatchers.gd'
-
 
 func test_arguments_to_chained_matcher() -> void:
 	var matcher := GdUnitArgumentMatchers.to_matcher(["foo", false, 1])

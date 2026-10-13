@@ -4,9 +4,6 @@ extends GdUnitTestSuite
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/core/GdUnitTools.gd'
-
 
 class InnerTestNodeClass extends Node:
 	# gdlint: ignore=unnecessary-pass

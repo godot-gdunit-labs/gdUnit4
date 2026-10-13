@@ -3,7 +3,7 @@ class_name GdArrayTools
 extends RefCounted
 
 
-const max_elements := 32
+const MAX_ELEMENTS := 32
 const ARRAY_TYPES := [
 	TYPE_ARRAY,
 	TYPE_PACKED_BYTE_ARRAY,
@@ -102,7 +102,7 @@ static func as_string(elements: Variant, encode_value := true) -> String:
 	var formatted := ""
 	var index := 0
 	for element :Variant in elements:
-		if max_elements != -1 and index > max_elements:
+		if MAX_ELEMENTS != -1 and index > MAX_ELEMENTS:
 			return prefix + "[" + formatted + delemiter + "...]"
 		if formatted.length() > 0 :
 			formatted += delemiter

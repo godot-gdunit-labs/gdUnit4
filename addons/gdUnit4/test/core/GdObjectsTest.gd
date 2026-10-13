@@ -144,20 +144,20 @@ func test_equals_with_stack_deep() -> void:
 	assert_bool(GdObjects.equals(x2, x3)).is_false()
 
 
-func test_equals_Node_with_deep_check() -> void:
-	var nodeA :Node = auto_free(Node.new())
-	var nodeB :Node = auto_free(Node.new())
+func test_equals_node_with_deep_check() -> void:
+	var node_a :Node = auto_free(Node.new())
+	var node_b :Node = auto_free(Node.new())
 
 	# compares by default with deep parameter ckeck
-	assert_bool(GdObjects.equals(nodeA, nodeA)).is_true()
-	assert_bool(GdObjects.equals(nodeB, nodeB)).is_true()
-	assert_bool(GdObjects.equals(nodeA, nodeB)).is_true()
-	assert_bool(GdObjects.equals(nodeB, nodeA)).is_true()
+	assert_bool(GdObjects.equals(node_a, node_a)).is_true()
+	assert_bool(GdObjects.equals(node_b, node_b)).is_true()
+	assert_bool(GdObjects.equals(node_a, node_b)).is_true()
+	assert_bool(GdObjects.equals(node_b, node_a)).is_true()
 	# compares by object reference
-	assert_bool(GdObjects.equals(nodeA, nodeA, false, GdObjects.COMPARE_MODE.OBJECT_REFERENCE)).is_true()
-	assert_bool(GdObjects.equals(nodeB, nodeB, false, GdObjects.COMPARE_MODE.OBJECT_REFERENCE)).is_true()
-	assert_bool(GdObjects.equals(nodeA, nodeB, false, GdObjects.COMPARE_MODE.OBJECT_REFERENCE)).is_false()
-	assert_bool(GdObjects.equals(nodeB, nodeA, false, GdObjects.COMPARE_MODE.OBJECT_REFERENCE)).is_false()
+	assert_bool(GdObjects.equals(node_a, node_a, false, GdObjects.CompareMode.OBJECT_REFERENCE)).is_true()
+	assert_bool(GdObjects.equals(node_b, node_b, false, GdObjects.CompareMode.OBJECT_REFERENCE)).is_true()
+	assert_bool(GdObjects.equals(node_a, node_b, false, GdObjects.CompareMode.OBJECT_REFERENCE)).is_false()
+	assert_bool(GdObjects.equals(node_b, node_a, false, GdObjects.CompareMode.OBJECT_REFERENCE)).is_false()
 
 
 func test_is_primitive_type() -> void:
@@ -348,9 +348,9 @@ func test_extract_class_name_from_class_path(fuzzer := GodotClassNameFuzzer.new(
 
 
 func test_extract_class_name_godot_classes(fuzzer := GodotClassNameFuzzer.new(true, true), _fuzzer_iterations := 100) -> void:
-	var extract_class_name_ := fuzzer.next_value() as String
-	var instance :Variant = ClassDB.instantiate(extract_class_name_)
-	assert_result(extract_class_name(instance)).is_equal(extract_class_name_)
+	var godot_class_name := fuzzer.next_value() as String
+	var instance :Variant = ClassDB.instantiate(godot_class_name)
+	assert_result(extract_class_name(instance)).is_equal(godot_class_name)
 
 
 func test_extract_class_path_by_clazz() -> void:

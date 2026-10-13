@@ -20,7 +20,7 @@ func _execute(context: GdUnitExecutionContext) -> void:
 
 	var test_case_context := context.last_sub_context()
 	if test_case_context != null:
-		await test_case_context.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_CASE)
+		await test_case_context.gc(GdUnitExecutionContext.GcOrphansCheck.TEST_CASE)
 
-	await context.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_HOOK_AFTER)
+	await context.gc(GdUnitExecutionContext.GcOrphansCheck.TEST_HOOK_AFTER)
 	context.error_monitor_stop()

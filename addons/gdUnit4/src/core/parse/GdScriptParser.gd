@@ -11,74 +11,74 @@ const TYPE_FUZZER := GdObjects.TYPE_FUZZER
 const TYPE_ENUM := GdObjects.TYPE_ENUM
 
 
-var TOKEN_NOT_MATCH := Token.new("")
-var TOKEN_SPACE := SkippableToken.new(" ")
-var TOKEN_TABULATOR := SkippableToken.new("\t")
-var TOKEN_NEW_LINE := SkippableToken.new("\n")
-var TOKEN_COMMENT := SkippableToken.new("#")
-var TOKEN_ANNOTATION := SkippableToken.new("@")
-var TOKEN_CLASS_NAME := RegExToken.new("class_name", GdUnitTools.to_regex("(class_name)\\s+([\\w\\p{L}\\p{N}_]+) (extends[a-zA-Z]+:)|(class_name)\\s+([\\w\\p{L}\\p{N}_]+)"), 5)
-var TOKEN_INNER_CLASS := TokenInnerClass.new("class", GdUnitTools.to_regex("(class)\\s+(\\w\\p{L}\\p{N}_]+) (extends[a-zA-Z]+:)|(class)\\s+([\\w\\p{L}\\p{N}_]+)"), 5)
-var TOKEN_EXTENDS := RegExToken.new("extends", GdUnitTools.to_regex("extends\\s+"))
-var TOKEN_ENUM := RegExToken.new("enum", GdUnitTools.to_regex("enum\\s+"))
-var TOKEN_FUNCTION_STATIC_DECLARATION := RegExToken.new("static func", GdUnitTools.to_regex("^static\\s+func\\s+([\\w\\p{L}\\p{N}_]+)"), 1)
-var TOKEN_FUNCTION_DECLARATION := RegExToken.new("func", GdUnitTools.to_regex("^func\\s+([\\w\\p{L}\\p{N}_]+)"), 1)
-var TOKEN_FUNCTION := Token.new(".")
-var TOKEN_FUNCTION_RETURN_TYPE := Token.new("->")
-var TOKEN_FUNCTION_END := Token.new("):")
-var TOKEN_ARGUMENT_ASIGNMENT := Token.new("=")
-var TOKEN_ARGUMENT_TYPE_ASIGNMENT := Token.new(":=")
-var TOKEN_ARGUMENT_FUZZER := FuzzerToken.new(GdUnitTools.to_regex("((?!(fuzzer_(seed|iterations)))fuzzer?\\w+)( ?+= ?+| ?+:= ?+| ?+:Fuzzer ?+= ?+|)"))
-var TOKEN_ARGUMENT_TYPE := Token.new(":")
-var TOKEN_ARGUMENT_VARIADIC := Token.new("...")
-var TOKEN_ARGUMENT_SEPARATOR := Token.new(",")
-var TOKEN_BRACKET_ROUND_OPEN := Token.new("(")
-var TOKEN_BRACKET_ROUND_CLOSE := Token.new(")")
-var TOKEN_BRACKET_SQUARE_OPEN := Token.new("[")
-var TOKEN_BRACKET_SQUARE_CLOSE := Token.new("]")
-var TOKEN_BRACKET_CURLY_OPEN := Token.new("{")
-var TOKEN_BRACKET_CURLY_CLOSE := Token.new("}")
-var TOKEN_BACKSLASH := Token.new("\\")
+var _token_not_match := Token.new("")
+var _token_space := SkippableToken.new(" ")
+var _token_tabulator := SkippableToken.new("\t")
+var _token_new_line := SkippableToken.new("\n")
+var _token_comment := SkippableToken.new("#")
+var _token_annotation := SkippableToken.new("@")
+var _token_class_name := RegExToken.new("class_name", GdUnitTools.to_regex("(class_name)\\s+([\\w\\p{L}\\p{N}_]+) (extends[a-zA-Z]+:)|(class_name)\\s+([\\w\\p{L}\\p{N}_]+)"), 5)
+var _token_inner_class := TokenInnerClass.new("class", GdUnitTools.to_regex("(class)\\s+(\\w\\p{L}\\p{N}_]+) (extends[a-zA-Z]+:)|(class)\\s+([\\w\\p{L}\\p{N}_]+)"), 5)
+var _token_extends := RegExToken.new("extends", GdUnitTools.to_regex("extends\\s+"))
+var _token_enum := RegExToken.new("enum", GdUnitTools.to_regex("enum\\s+"))
+var _token_function_static_declaration := RegExToken.new("static func", GdUnitTools.to_regex("^static\\s+func\\s+([\\w\\p{L}\\p{N}_]+)"), 1)
+var _token_function_declaration := RegExToken.new("func", GdUnitTools.to_regex("^func\\s+([\\w\\p{L}\\p{N}_]+)"), 1)
+var _token_function := Token.new(".")
+var _token_function_return_type := Token.new("->")
+var _token_function_end := Token.new("):")
+var _token_argument_asignment := Token.new("=")
+var _token_argument_type_asignment := Token.new(":=")
+var _token_argument_fuzzer := FuzzerToken.new(GdUnitTools.to_regex("((?!(fuzzer_(seed|iterations)))fuzzer?\\w+)( ?+= ?+| ?+:= ?+| ?+:Fuzzer ?+= ?+|)"))
+var _token_argument_type := Token.new(":")
+var _token_argument_variadic := Token.new("...")
+var _token_argument_separator := Token.new(",")
+var _token_bracket_round_open := Token.new("(")
+var _token_bracket_round_close := Token.new(")")
+var _token_bracket_square_open := Token.new("[")
+var _token_bracket_square_close := Token.new("]")
+var _token_bracket_curly_open := Token.new("{")
+var _token_bracket_curly_close := Token.new("}")
+var _token_backslash := Token.new("\\")
 
 
-var OPERATOR_ADD := Operator.new("+")
-var OPERATOR_SUB := Operator.new("-")
-var OPERATOR_MUL := Operator.new("*")
-var OPERATOR_DIV := Operator.new("/")
-var OPERATOR_REMAINDER := Operator.new("%")
+var _operator_add := Operator.new("+")
+var _operator_sub := Operator.new("-")
+var _operator_mul := Operator.new("*")
+var _operator_div := Operator.new("/")
+var _operator_remainder := Operator.new("%")
 
-var TOKENS :Array[Token] = [
-	TOKEN_SPACE,
-	TOKEN_TABULATOR,
-	TOKEN_NEW_LINE,
-	TOKEN_BACKSLASH,
-	TOKEN_COMMENT,
-	TOKEN_ANNOTATION,
-	TOKEN_BRACKET_ROUND_OPEN,
-	TOKEN_BRACKET_ROUND_CLOSE,
-	TOKEN_BRACKET_SQUARE_OPEN,
-	TOKEN_BRACKET_SQUARE_CLOSE,
-	TOKEN_BRACKET_CURLY_OPEN,
-	TOKEN_BRACKET_CURLY_CLOSE,
-	TOKEN_CLASS_NAME,
-	TOKEN_INNER_CLASS,
-	TOKEN_EXTENDS,
-	TOKEN_ENUM,
-	TOKEN_FUNCTION_STATIC_DECLARATION,
-	TOKEN_FUNCTION_DECLARATION,
-	TOKEN_ARGUMENT_FUZZER,
-	TOKEN_ARGUMENT_TYPE_ASIGNMENT,
-	TOKEN_ARGUMENT_ASIGNMENT,
-	TOKEN_ARGUMENT_TYPE,
-	TOKEN_ARGUMENT_VARIADIC,
-	TOKEN_FUNCTION,
-	TOKEN_ARGUMENT_SEPARATOR,
-	TOKEN_FUNCTION_RETURN_TYPE,
-	OPERATOR_ADD,
-	OPERATOR_SUB,
-	OPERATOR_MUL,
-	OPERATOR_DIV,
-	OPERATOR_REMAINDER,
+var _tokens :Array[Token] = [
+	_token_space,
+	_token_tabulator,
+	_token_new_line,
+	_token_backslash,
+	_token_comment,
+	_token_annotation,
+	_token_bracket_round_open,
+	_token_bracket_round_close,
+	_token_bracket_square_open,
+	_token_bracket_square_close,
+	_token_bracket_curly_open,
+	_token_bracket_curly_close,
+	_token_class_name,
+	_token_inner_class,
+	_token_extends,
+	_token_enum,
+	_token_function_static_declaration,
+	_token_function_declaration,
+	_token_argument_fuzzer,
+	_token_argument_type_asignment,
+	_token_argument_asignment,
+	_token_argument_type,
+	_token_argument_variadic,
+	_token_function,
+	_token_argument_separator,
+	_token_function_return_type,
+	_operator_add,
+	_operator_sub,
+	_operator_mul,
+	_operator_div,
+	_operator_remainder,
 ]
 
 var _regex_strip_comments := GdUnitTools.to_regex("^([^#\"']|'[^']*'|\"[^\"]*\")*\\K#.*")
@@ -161,9 +161,9 @@ class Variable extends Token:
 	func _scan_type(p_value: String) -> int:
 		if p_value.begins_with("\"") and p_value.ends_with("\""):
 			return TYPE_STRING
-		var type_ := GdObjects.string_to_type(p_value)
-		if type_ != TYPE_NIL:
-			return type_
+		var value_type := GdObjects.string_to_type(p_value)
+		if value_type != TYPE_NIL:
+			return value_type
 		if p_value.is_valid_int():
 			return TYPE_INT
 		if p_value.is_valid_float():
@@ -310,23 +310,23 @@ class TokenInnerClass extends RegExToken:
 
 
 func get_token(input: String, current_index: int) -> Token:
-	for t in TOKENS:
+	for t in _tokens:
 		if t.match(input, current_index):
 			return t
-	return TOKEN_NOT_MATCH
+	return _token_not_match
 
 
 func next_token(input: String, current_index: int, ignore_tokens :Array[Token] = []) -> Token:
-	var token := TOKEN_NOT_MATCH
-	for t :Token in TOKENS.filter(func(t :Token) -> bool: return not ignore_tokens.has(t)):
+	var token := _token_not_match
+	for t :Token in _tokens.filter(func(t :Token) -> bool: return not ignore_tokens.has(t)):
 
 		if t.match(input, current_index):
 			token = t
 			break
-	if token == OPERATOR_SUB:
+	if token == _operator_sub:
 		token = tokenize_value(input, current_index, token)
-	if token == TOKEN_NOT_MATCH:
-		return tokenize_value(input, current_index, token, ignore_tokens.has(TOKEN_FUNCTION))
+	if token == _token_not_match:
+		return tokenize_value(input, current_index, token, ignore_tokens.has(_token_function))
 	return token
 
 
@@ -349,7 +349,7 @@ func tokenize_value(input: String, current: int, token: Token, ignore_dots := fa
 		break
 	if current_token != "":
 		return Variable.new(current_token)
-	return TOKEN_NOT_MATCH
+	return _token_not_match
 
 
 # gdlint: disable=max-returns
@@ -380,16 +380,16 @@ func is_allowed_character(input: String) -> bool:
 
 
 func parse_return_token(input: String) -> Variable:
-	var index := input.rfind(TOKEN_FUNCTION_RETURN_TYPE._token)
+	var index := input.rfind(_token_function_return_type._token)
 	if index == -1:
-		return TOKEN_NOT_MATCH
-	index += TOKEN_FUNCTION_RETURN_TYPE._consumed
+		return _token_not_match
+	index += _token_function_return_type._consumed
 	# We scan for the return value exclusive '.' token because it could be referenced to a
 	# external or internal class e.g.  'func foo() -> InnerClass.Bar:'
-	var token := next_token(input, index, [TOKEN_FUNCTION])
-	while !token.is_variable() and token != TOKEN_NOT_MATCH:
+	var token := next_token(input, index, [_token_function])
+	while !token.is_variable() and token != _token_not_match:
 		index += token._consumed
-		token = next_token(input, index, [TOKEN_FUNCTION])
+		token = next_token(input, index, [_token_function])
 	return token
 
 
@@ -426,7 +426,7 @@ func _parse_function_arguments(input: String) -> Array[Dictionary]:
 	while current_index < len(input):
 		token = next_token(input, current_index)
 		# fallback to not end in a endless loop
-		if token == TOKEN_NOT_MATCH:
+		if token == _token_not_match:
 			var error : = """
 				Parsing Error: Invalid token at pos %d found.
 				Please report this error!
@@ -441,16 +441,16 @@ func _parse_function_arguments(input: String) -> Array[Dictionary]:
 		current_index += token._consumed
 		if token.is_skippable():
 			continue
-		if token == TOKEN_BRACKET_ROUND_OPEN :
+		if token == _token_bracket_round_open :
 			in_function = true
 			bracket += 1
-		if token == TOKEN_BRACKET_ROUND_CLOSE:
+		if token == _token_bracket_round_close:
 			bracket -= 1
 		# if function end?
 		if in_function and bracket == 0:
 			return arguments
 		# is function
-		if token == TOKEN_FUNCTION_DECLARATION:
+		if token == _token_function_declaration:
 			continue
 
 		# is value argument
@@ -476,7 +476,7 @@ func _parse_function_arguments(input: String) -> Array[Dictionary]:
 
 				match token:
 							# is fuzzer argument
-					TOKEN_ARGUMENT_FUZZER:
+					_token_argument_fuzzer:
 						arg_value = _parse_end_function(input.substr(current_index), true)
 						current_index += arg_value.length()
 						current_argument["name"] = (token as FuzzerToken).name()
@@ -485,52 +485,52 @@ func _parse_function_arguments(input: String) -> Array[Dictionary]:
 						arguments.append(current_argument)
 						continue
 
-					TOKEN_ARGUMENT_VARIADIC:
+					_token_argument_variadic:
 						current_argument["type"] = TYPE_VARARG
 
-					TOKEN_ARGUMENT_TYPE:
+					_token_argument_type:
 						token = next_token(input, current_index)
-						if token == TOKEN_SPACE:
+						if token == _token_space:
 							current_index += token._consumed
 							token = next_token(input, current_index)
 							current_index += token._consumed
 						if current_argument["type"] != TYPE_VARARG:
 							current_argument["type"] = GdObjects.string_to_type((token as Variable).plain_value())
 
-					TOKEN_ARGUMENT_TYPE_ASIGNMENT:
+					_token_argument_type_asignment:
 						arg_value = _parse_end_function(input.substr(current_index), true)
 						current_index += arg_value.length()
 						current_argument["value"] = arg_value.lstrip(" ")
-					TOKEN_ARGUMENT_ASIGNMENT:
+					_token_argument_asignment:
 						token = next_token(input, current_index)
 						arg_value = _parse_end_function(input.substr(current_index), true)
 						current_index += arg_value.length()
 						current_argument["value"] = arg_value.lstrip(" ")
 
-					TOKEN_BRACKET_SQUARE_OPEN:
+					_token_bracket_square_open:
 						bracket += 1
-					TOKEN_BRACKET_CURLY_OPEN:
+					_token_bracket_curly_open:
 						bracket += 1
-					TOKEN_BRACKET_ROUND_OPEN :
+					_token_bracket_round_open :
 						bracket += 1
 						# if value a function?
 						if bracket > 1:
 							# complete the argument value
-							var func_begin := input.substr(current_index-TOKEN_BRACKET_ROUND_OPEN ._consumed)
+							var func_begin := input.substr(current_index-_token_bracket_round_open ._consumed)
 							var func_body := _parse_end_function(func_begin)
 							arg_value += func_body
 							# fix parse index to end of value
-							current_index += func_body.length() - TOKEN_BRACKET_ROUND_OPEN ._consumed - TOKEN_BRACKET_ROUND_CLOSE._consumed
-					TOKEN_BRACKET_SQUARE_CLOSE:
+							current_index += func_body.length() - _token_bracket_round_open ._consumed - _token_bracket_round_close._consumed
+					_token_bracket_square_close:
 						bracket -= 1
-					TOKEN_BRACKET_CURLY_CLOSE:
+					_token_bracket_curly_close:
 						bracket -= 1
-					TOKEN_BRACKET_ROUND_CLOSE:
+					_token_bracket_round_close:
 						bracket -= 1
 						# end of function
 						if bracket == 0:
 							break
-					TOKEN_ARGUMENT_SEPARATOR:
+					_token_argument_separator:
 						if bracket <= 1:
 							# next argument
 							current_argument = {
@@ -629,8 +629,8 @@ func extract_inner_class(source_rows: PackedStringArray, clazz_name :String) -> 
 func extract_func_signature(rows: PackedStringArray, index: int) -> String:
 	var signature := ""
 
-	for rowIndex in range(index, rows.size()):
-		var row := rows[rowIndex]
+	for row_idx in range(index, rows.size()):
+		var row := rows[row_idx]
 		row = _regex_strip_comments.sub(row, "").strip_edges(false)
 		if row.is_empty():
 			continue
@@ -648,17 +648,17 @@ func get_class_name(script :GDScript) -> String:
 	for index :int in min(10, source_rows.size()):
 		var input := source_rows[index]
 		var token := next_token(input, 0)
-		if token == TOKEN_CLASS_NAME:
+		if token == _token_class_name:
 			return token.value()
 	# if no class_name found extract from file name
 	return GdObjects.to_pascal_case(script.resource_path.get_basename().get_file())
 
 
 func parse_func_name(input: String) -> String:
-	if TOKEN_FUNCTION_DECLARATION.match(input, 0):
-		return TOKEN_FUNCTION_DECLARATION.value()
-	if TOKEN_FUNCTION_STATIC_DECLARATION.match(input, 0):
-		return TOKEN_FUNCTION_STATIC_DECLARATION.value()
+	if _token_function_declaration.match(input, 0):
+		return _token_function_declaration.value()
+	if _token_function_static_declaration.match(input, 0):
+		return _token_function_static_declaration.value()
 	push_error("Can't extract function name from '%s'" % input)
 	return ""
 
@@ -674,8 +674,8 @@ func _enrich_function_descriptor(script: GDScript, fds: Array[GdFunctionDescript
 			break
 
 		var rows := script_to_scan.source_code.split("\n")
-		for rowIndex in rows.size():
-			var input := rows[rowIndex]
+		for row_idx in rows.size():
+			var input := rows[row_idx]
 			# step over inner class functions
 			if input.begins_with("\t"):
 				continue
@@ -683,7 +683,7 @@ func _enrich_function_descriptor(script: GDScript, fds: Array[GdFunctionDescript
 			if input.begins_with("#") or input.length() == 0:
 				continue
 			var token := next_token(input, 0)
-			if token != TOKEN_FUNCTION_STATIC_DECLARATION and token != TOKEN_FUNCTION_DECLARATION:
+			if token != _token_function_static_declaration and token != _token_function_declaration:
 				continue
 
 			var function_name: String = token.value()
@@ -701,18 +701,18 @@ func _enrich_function_descriptor(script: GDScript, fds: Array[GdFunctionDescript
 				continue
 			# Mark as enriched
 			enriched_functions[function_name] = true
-			var func_signature := extract_func_signature(rows, rowIndex)
+			var func_signature := extract_func_signature(rows, row_idx)
 			var func_arguments := _parse_function_arguments(func_signature)
-			var func_begin_line := rowIndex + 1
+			var func_begin_line := row_idx + 1
 			var func_end_line := _parse_func_end_line(rows, func_begin_line)
 			# enrich missing default values
 			fd.enrich_arguments(func_arguments)
 			fd.enrich_file_info(script_to_scan.resource_path, func_begin_line, func_end_line)
-			fd._is_coroutine = is_func_coroutine(rows, rowIndex)
+			fd._is_coroutine = is_func_coroutine(rows, row_idx)
 			# enrich return class name if not set
 			if fd.return_type() == TYPE_OBJECT and fd._return_class in ["", "Resource", "RefCounted"]:
 				var var_token := parse_return_token(func_signature)
-				if var_token != TOKEN_NOT_MATCH and var_token.type() == TYPE_OBJECT:
+				if var_token != _token_not_match and var_token.type() == TYPE_OBJECT:
 					fd._return_class = _patch_inner_class_names(var_token.plain_value(), "")
 		# if the script ihnerits we need to scan this also
 		script_to_scan = script_to_scan.get_base_script()
@@ -726,7 +726,7 @@ func _parse_func_end_line(rows: PackedStringArray, func_row_index: int) -> int:
 			continue
 		var token := next_token(row, 0)
 		# scan until next function or annotation
-		if token in [TOKEN_ANNOTATION, TOKEN_FUNCTION_STATIC_DECLARATION, TOKEN_FUNCTION_DECLARATION]:
+		if token in [_token_annotation, _token_function_static_declaration, _token_function_declaration]:
 			break
 		last_non_empty = row_index
 	return last_non_empty + 1
@@ -734,13 +734,13 @@ func _parse_func_end_line(rows: PackedStringArray, func_row_index: int) -> int:
 
 func is_func_coroutine(rows :PackedStringArray, index :int) -> bool:
 	var is_coroutine := false
-	for rowIndex in range(index+1, rows.size()):
-		var input := rows[rowIndex].strip_edges()
+	for row_idx in range(index+1, rows.size()):
+		var input := rows[row_idx].strip_edges()
 		if input.begins_with("#") or input.is_empty():
 			continue
 		var token := next_token(input, 0)
 		# scan until next function
-		if token == TOKEN_FUNCTION_STATIC_DECLARATION or token == TOKEN_FUNCTION_DECLARATION:
+		if token == _token_function_static_declaration or token == _token_function_declaration:
 			break
 
 		if _is_awaiting.search(input):
@@ -779,11 +779,11 @@ func _prescan_script(script: GDScript) -> void:
 func parse(clazz_name :String, clazz_path :PackedStringArray) -> GdUnitResult:
 	if clazz_path.is_empty():
 		return GdUnitResult.error("Invalid script path '%s'" % clazz_path)
-	var is_inner_class_ := is_inner_class(clazz_path)
+	var is_inner := is_inner_class(clazz_path)
 	var script :GDScript = load(clazz_path[0])
 	_prescan_script(script)
 
-	if is_inner_class_:
+	if is_inner:
 		var inner_class_name := clazz_path[1]
 		if _scanned_inner_classes.has(inner_class_name):
 			# do load only on inner class source code and enrich the stored script instance
@@ -791,7 +791,7 @@ func parse(clazz_name :String, clazz_path :PackedStringArray) -> GdUnitResult:
 			script = _script_constants.get(inner_class_name)
 			script.source_code = source_code
 	var function_descriptors := get_function_descriptors(script)
-	var gd_class := GdClassDescriptor.new(clazz_name, is_inner_class_, function_descriptors)
+	var gd_class := GdClassDescriptor.new(clazz_name, is_inner, function_descriptors)
 	return GdUnitResult.success(gd_class)
 
 

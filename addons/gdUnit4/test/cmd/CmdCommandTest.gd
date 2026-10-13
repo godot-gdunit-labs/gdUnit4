@@ -2,9 +2,6 @@
 class_name CmdCommandTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/cmd/CmdCommand.gd'
-
 
 func test_create() -> void:
 	var cmd_a := CmdCommand.new("cmd_a")

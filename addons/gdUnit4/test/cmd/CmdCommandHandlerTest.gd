@@ -3,8 +3,6 @@
 class_name CmdCommandHandlerTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/cmd/CmdCommandHandler.gd'
 
 var _cmd_options: CmdOptions
 var _cmd_instance: TestCommands
@@ -82,13 +80,13 @@ func test_register_cb_and_cbv() -> void:
 	assert_dict(cmd_handler._command_cbs).contains_key_value("-a", [_cmd_instance.cmd_arg, _cmd_instance.cmd_args])
 
 
-func test__validate_no_registerd_commands() -> void:
+func test_validate_no_registerd_commands() -> void:
 	var cmd_handler := CmdCommandHandler.new(_cmd_options)
 
 	assert_result(cmd_handler._validate()).is_success()
 
 
-func test__validate_registerd_commands() -> void:
+func test_validate_registerd_commands() -> void:
 	var cmd_handler: = CmdCommandHandler.new(_cmd_options)
 	cmd_handler.register_cb("-a", _cmd_instance.cmd_no_arg)
 	cmd_handler.register_cb("-f", _cmd_instance.cmd_foo)
@@ -97,7 +95,7 @@ func test__validate_registerd_commands() -> void:
 	assert_result(cmd_handler._validate()).is_success()
 
 
-func test__validate_registerd_unknown_commands() -> void:
+func test_validate_registerd_unknown_commands() -> void:
 	var cmd_handler: = CmdCommandHandler.new(_cmd_options)
 	cmd_handler.register_cb("-a", _cmd_instance.cmd_no_arg)
 	cmd_handler.register_cb("-d", _cmd_instance.cmd_foo)
@@ -109,7 +107,7 @@ func test__validate_registerd_unknown_commands() -> void:
 		.contains_message("The command '-d' is unknown, verify your CmdOptions!\nThe command '-y' is unknown, verify your CmdOptions!")
 
 
-func test__validate_registerd_invalid_callbacks() -> void:
+func test_validate_registerd_invalid_callbacks() -> void:
 	var cmd_handler := CmdCommandHandler.new(_cmd_options)
 	cmd_handler.register_cb("-a", _cmd_instance.cmd_no_arg)
 	cmd_handler.register_cb("-arg", Callable(_cmd_instance, "cmd_not_exists"))
@@ -119,7 +117,7 @@ func test__validate_registerd_invalid_callbacks() -> void:
 		.contains_message("Invalid function reference for command '-arg', Check the function reference!")
 
 
-func test__validate_registerd_register_same_callback_twice() -> void:
+func test_validate_registerd_register_same_callback_twice() -> void:
 	var cmd_handler: = CmdCommandHandler.new(_cmd_options)
 	cmd_handler.register_cb("-a", _cmd_instance.cmd_no_arg)
 	cmd_handler.register_cb("-arg", _cmd_instance.cmd_no_arg)

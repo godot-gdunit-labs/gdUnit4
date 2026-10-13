@@ -125,11 +125,11 @@ func convert_test_json_to_test_cases(jsons: Array) -> Array[GdUnitTestCase]:
 
 func fix_value_types() -> void:
 	# fix float value to int json stores all numbers as float
-	var server_port_: int = _config.get(SERVER_PORT, -1)
-	_config[SERVER_PORT] = server_port_
+	var configured_port: int = _config.get(SERVER_PORT, -1)
+	_config[SERVER_PORT] = configured_port
 
 
-func convert_Array_to_PackedStringArray(data: Dictionary) -> void:
+func convert_array_to_packed_string_array(data: Dictionary) -> void:
 	for key in data.keys() as Array[String]:
 		var values :Array = data[key]
 		data[key] = PackedStringArray(values)

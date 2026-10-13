@@ -80,7 +80,7 @@ func run_update() -> void:
 		return
 
 	await update_progress("Uninstall GdUnit4.")
-	disable_gdUnit()
+	disable_gdunit()
 	if not _debug_mode:
 		GdUnitFileAccess.delete_directory("res://addons/gdUnit4/")
 	# give editor time to react on deleted files
@@ -99,7 +99,7 @@ func run_update() -> void:
 
 	await update_progress("New GdUnit version successfully installed, Restarting Godot please wait.")
 	await get_tree().create_timer(3).timeout
-	enable_gdUnit()
+	enable_gdunit()
 	hide()
 	GdUnitFileAccess.delete_directory("res://addons/.gdunit_update")
 	restart_godot()
@@ -165,7 +165,7 @@ func restart_godot() -> void:
 
 
 @warning_ignore("return_value_discarded")
-func enable_gdUnit() -> void:
+func enable_gdunit() -> void:
 	var enabled_plugins := PackedStringArray()
 	if ProjectSettings.has_setting("editor_plugins/enabled"):
 		enabled_plugins = ProjectSettings.get_setting("editor_plugins/enabled")
@@ -175,7 +175,7 @@ func enable_gdUnit() -> void:
 	ProjectSettings.save()
 
 
-func disable_gdUnit() -> void:
+func disable_gdunit() -> void:
 	EditorInterface.set_plugin_enabled("gdUnit4", false)
 
 

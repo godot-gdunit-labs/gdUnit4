@@ -443,7 +443,7 @@ func test_default_args_basic_type_transform2d() -> void:
 		)
 
 
-func test_parse_fuzz_do_skip_param_GD_1157() -> void:
+func test_parse_fuzz_do_skip_param_gd_1157() -> void:
 	var script: GDScript = load("res://addons/gdUnit4/test/core/parse/resources/TestSuiteWithFuzzers.gd")
 
 	var fds := _parser.get_function_descriptors(script, [])

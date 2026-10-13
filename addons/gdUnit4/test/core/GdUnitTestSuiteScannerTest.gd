@@ -4,11 +4,9 @@
 class_name TestSuiteScannerTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/core/GdUnitTestSuiteScanner.gd'
 
 func before_test() -> void:
-	ProjectSettings.set_setting(GdUnitSettings.TEST_SUITE_NAMING_CONVENTION, GdUnitSettings.NAMING_CONVENTIONS.AUTO_DETECT)
+	ProjectSettings.set_setting(GdUnitSettings.TEST_SUITE_NAMING_CONVENTION, GdUnitSettings.NamingConventions.AUTO_DETECT)
 	clean_temp_dir()
 
 
@@ -35,7 +33,7 @@ func test_resolve_test_suite_path_plugins() -> void:
 	assert_str(resolve_path("res://addons/plugin_a/src/foo.gd")).is_equal("res://addons/plugin_a/_test_/foo_test.gd")
 
 
-func test_resolve_test_suite_path__no_test_root() -> void:
+func test_resolve_test_suite_path_no_test_root() -> void:
 	# from a project path
 	assert_str(GdUnitTestSuiteScanner.resolve_test_suite_path("res://project/src/models/events/ModelChangedEvent.gd", ""))\
 		.is_equal("res://project/src/models/events/ModelChangedEventTest.gd")
@@ -47,7 +45,7 @@ func test_resolve_test_suite_path__no_test_root() -> void:
 		.is_equal("user://project/src/models/events/ModelChangedEventTest.gd")
 
 
-func test_resolve_test_suite_path__path_contains_src_folder() -> void:
+func test_resolve_test_suite_path_path_contains_src_folder() -> void:
 	# from a project path
 	assert_str(GdUnitTestSuiteScanner.resolve_test_suite_path("res://project/src/models/events/ModelChangedEvent.gd"))\
 		.is_equal("res://project/test/models/events/ModelChangedEventTest.gd")
@@ -65,7 +63,7 @@ func test_resolve_test_suite_path__path_contains_src_folder() -> void:
 		.is_equal("user://project/custom_test/models/events/ModelChangedEventTest.gd")
 
 
-func test_resolve_test_suite_path__path_not_contains_src_folder() -> void:
+func test_resolve_test_suite_path_path_not_contains_src_folder() -> void:
 	# from a project path
 	assert_str(GdUnitTestSuiteScanner.resolve_test_suite_path("res://project/models/events/ModelChangedEvent.gd"))\
 		.is_equal("res://test/project/models/events/ModelChangedEventTest.gd")
@@ -111,11 +109,6 @@ func test_create_test_suite_pascal_case_path() -> void:
 			"# GdUnit generated TestSuite",
 			"class_name PascalCaseWithClassNameTest",
 			"extends GdUnitTestSuite",
-			"@warning_ignore('unused_parameter')",
-			"@warning_ignore('return_value_discarded')",
-			"",
-			"# TestSuite generated from",
-			"const __source: String = '%s'" % source_path,
 			""])
 	# checked source with class_name is NOT set
 	source_path = "res://addons/gdUnit4/test/core/resources/naming_conventions/PascalCaseWithoutClassName.gd"
@@ -130,11 +123,6 @@ func test_create_test_suite_pascal_case_path() -> void:
 			"# GdUnit generated TestSuite",
 			"class_name PascalCaseWithoutClassNameTest",
 			"extends GdUnitTestSuite",
-			"@warning_ignore('unused_parameter')",
-			"@warning_ignore('return_value_discarded')",
-			"",
-			"# TestSuite generated from",
-			"const __source: String = '%s'" % source_path,
 			""])
 
 
@@ -153,11 +141,6 @@ func test_create_test_suite_snake_case_path() -> void:
 			"# GdUnit generated TestSuite",
 			"class_name SnakeCaseWithClassNameTest",
 			"extends GdUnitTestSuite",
-			"@warning_ignore('unused_parameter')",
-			"@warning_ignore('return_value_discarded')",
-			"",
-			"# TestSuite generated from",
-			"const __source: String = '%s'" % source_path,
 			""])
 	# checked source with class_name is NOT set
 	source_path ="res://addons/gdUnit4/test/core/resources/naming_conventions/snake_case_without_class_name.gd"
@@ -172,11 +155,6 @@ func test_create_test_suite_snake_case_path() -> void:
 			"# GdUnit generated TestSuite",
 			"class_name SnakeCaseWithoutClassNameTest",
 			"extends GdUnitTestSuite",
-			"@warning_ignore('unused_parameter')",
-			"@warning_ignore('return_value_discarded')",
-			"",
-			"# TestSuite generated from",
-			"const __source: String = '%s'" % source_path,
 			""])
 
 
@@ -189,7 +167,7 @@ func test_create_test_case() -> void:
 	var result := GdUnitTestSuiteScanner.create_test_case(test_suite_path, "last_name", source_path)
 	assert_bool(result.is_success()).is_true()
 	var info :Dictionary = result.value()
-	assert_int(info.get("line")).is_equal(11)
+	assert_int(info.get("line")).is_equal(6)
 	assert_file(info.get("path")).exists()\
 		.is_file()\
 		.is_script()\
@@ -197,11 +175,6 @@ func test_create_test_case() -> void:
 			"# GdUnit generated TestSuite",
 			"class_name PersonTest",
 			"extends GdUnitTestSuite",
-			"@warning_ignore('unused_parameter')",
-			"@warning_ignore('return_value_discarded')",
-			"",
-			"# TestSuite generated from",
-			"const __source: String = '%s'" % source_path,
 			"",
 			"",
 			"func test_last_name() -> void:",
@@ -211,7 +184,7 @@ func test_create_test_case() -> void:
 	# try to add again
 	result = GdUnitTestSuiteScanner.create_test_case(test_suite_path, "last_name", source_path)
 	assert_bool(result.is_success()).is_true()
-	assert_that(result.value()).is_equal({"line" : 16, "path": test_suite_path})
+	assert_that(result.value()).is_equal({"line" : 11, "path": test_suite_path})
 
 
 # https://github.com/MikeSchulze/gdUnit4/issues/25
@@ -253,22 +226,22 @@ func test_scan_by_inheritance_class_name() -> void:
 
 
 func test_get_test_case_line_number() -> void:
-	assert_int(GdUnitTestSuiteScanner.get_test_case_line_number("res://addons/gdUnit4/test/core/GdUnitTestSuiteScannerTest.gd", "get_test_case_line_number")).is_equal(255)
+	assert_int(GdUnitTestSuiteScanner.get_test_case_line_number("res://addons/gdUnit4/test/core/GdUnitTestSuiteScannerTest.gd", "get_test_case_line_number")).is_equal(228)
 	assert_int(GdUnitTestSuiteScanner.get_test_case_line_number("res://addons/gdUnit4/test/core/GdUnitTestSuiteScannerTest.gd", "unknown")).is_equal(-1)
 
 
-func test__to_naming_convention() -> void:
-	ProjectSettings.set_setting(GdUnitSettings.TEST_SUITE_NAMING_CONVENTION, GdUnitSettings.NAMING_CONVENTIONS.AUTO_DETECT)
+func test_to_naming_convention() -> void:
+	ProjectSettings.set_setting(GdUnitSettings.TEST_SUITE_NAMING_CONVENTION, GdUnitSettings.NamingConventions.AUTO_DETECT)
 	assert_str(GdUnitTestSuiteScanner._to_naming_convention("MyClass")).is_equal("MyClassTest")
 	assert_str(GdUnitTestSuiteScanner._to_naming_convention("my_class")).is_equal("my_class_test")
 	assert_str(GdUnitTestSuiteScanner._to_naming_convention("myclass")).is_equal("myclass_test")
 
-	ProjectSettings.set_setting(GdUnitSettings.TEST_SUITE_NAMING_CONVENTION, GdUnitSettings.NAMING_CONVENTIONS.SNAKE_CASE)
+	ProjectSettings.set_setting(GdUnitSettings.TEST_SUITE_NAMING_CONVENTION, GdUnitSettings.NamingConventions.SNAKE_CASE)
 	assert_str(GdUnitTestSuiteScanner._to_naming_convention("MyClass")).is_equal("my_class_test")
 	assert_str(GdUnitTestSuiteScanner._to_naming_convention("my_class")).is_equal("my_class_test")
 	assert_str(GdUnitTestSuiteScanner._to_naming_convention("myclass")).is_equal("myclass_test")
 
-	ProjectSettings.set_setting(GdUnitSettings.TEST_SUITE_NAMING_CONVENTION, GdUnitSettings.NAMING_CONVENTIONS.PASCAL_CASE)
+	ProjectSettings.set_setting(GdUnitSettings.TEST_SUITE_NAMING_CONVENTION, GdUnitSettings.NamingConventions.PASCAL_CASE)
 	assert_str(GdUnitTestSuiteScanner._to_naming_convention("MyClass")).is_equal("MyClassTest")
 	assert_str(GdUnitTestSuiteScanner._to_naming_convention("my_class")).is_equal("MyClassTest")
 	assert_str(GdUnitTestSuiteScanner._to_naming_convention("myclass")).is_equal("MyclassTest")

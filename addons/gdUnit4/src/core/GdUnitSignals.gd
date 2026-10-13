@@ -96,9 +96,9 @@ const META_KEY := "GdUnitSignals"
 static func instance() -> GdUnitSignals:
 	if Engine.has_meta(META_KEY):
 		return Engine.get_meta(META_KEY)
-	var instance_ := GdUnitSignals.new()
-	Engine.set_meta(META_KEY, instance_)
-	return instance_
+	var new_instance := GdUnitSignals.new()
+	Engine.set_meta(META_KEY, new_instance)
+	return new_instance
 
 
 ## Cleans up the singleton instance and disconnects all signals.[br]
@@ -108,11 +108,11 @@ static func instance() -> GdUnitSignals:
 static func dispose() -> void:
 	var signals := instance()
 	# cleanup connected signals
-	for signal_ in signals.get_signal_list():
+	for signal_def in signals.get_signal_list():
 		@warning_ignore("unsafe_cast")
-		for connection in signals.get_signal_connection_list(signal_["name"] as StringName):
-			var _signal: Signal = connection["signal"]
-			var _callable: Callable = connection["callable"]
-			_signal.disconnect(_callable)
+		for connection in signals.get_signal_connection_list(signal_def["name"] as StringName):
+			var connected_signal: Signal = connection["signal"]
+			var connected_callable: Callable = connection["callable"]
+			connected_signal.disconnect(connected_callable)
 	signals = null
 	Engine.remove_meta(META_KEY)

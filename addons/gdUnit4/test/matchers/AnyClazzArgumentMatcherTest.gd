@@ -2,9 +2,6 @@
 class_name AnyClazzArgumentMatcherTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/matchers/AnyClazzArgumentMatcher.gd'
-
 
 func test_is_match_reference() -> void:
 	var matcher := AnyClazzArgumentMatcher.new(RefCounted)

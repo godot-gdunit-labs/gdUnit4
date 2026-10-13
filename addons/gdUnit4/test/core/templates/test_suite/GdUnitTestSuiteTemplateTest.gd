@@ -4,8 +4,6 @@
 class_name GdUnitTestSuiteTemplateTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/core/templates/test_suite/GdUnitTestSuiteTemplate.gd'
 
 const CUSTOM_TEMPLATE = """
 	# GdUnit generated TestSuite
@@ -25,7 +23,7 @@ func after() -> void:
 
 
 func test_default_template() -> void:
-	assert_str(GdUnitTestSuiteTemplate.default_template(GdUnitTestSuiteTemplate.TEMPLATE_ID_GD)).is_equal(GdUnitTestSuiteTemplate.default_GD_template())
+	assert_str(GdUnitTestSuiteTemplate.default_template(GdUnitTestSuiteTemplate.TEMPLATE_ID_GD)).is_equal(GdUnitTestSuiteTemplate.default_gd_template())
 
 
 func test_build_template_default() -> void:
@@ -34,11 +32,6 @@ func test_build_template_default() -> void:
 		# GdUnit generated TestSuite
 		class_name ScriptWithClassNameTest
 		extends GdUnitTestSuite
-		@warning_ignore('unused_parameter')
-		@warning_ignore('return_value_discarded')
-
-		# TestSuite generated from
-		const __source: String = 'res://addons/gdUnit4/test/core/resources/script_with_class_name.gd'
 		""".dedent().trim_prefix("\n")
 	assert_str(template).is_equal(expected)
 

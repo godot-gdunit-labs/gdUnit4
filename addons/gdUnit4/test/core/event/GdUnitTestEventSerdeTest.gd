@@ -44,7 +44,7 @@ func test_serde_test_after_with_report() -> void:
 	assert_array(deserialized.reports()).contains_exactly(reports)
 
 
-func test_serde_TestReport() -> void:
+func test_serde_test_report() -> void:
 	var report := GdUnitReport.new().create(GdUnitReport.FAILURE, 24, "this is a error")
 	var serialized := report.serialize()
 	var deserialized := GdUnitReport.new().deserialize(serialized)

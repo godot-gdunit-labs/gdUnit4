@@ -12,7 +12,7 @@ func _execute(context :GdUnitExecutionContext) -> void:
 
 	@warning_ignore("redundant_await")
 	await test_suite.after()
-	await context.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.SUITE_HOOK_AFTER)
+	await context.gc(GdUnitExecutionContext.GcOrphansCheck.SUITE_HOOK_AFTER)
 
 	var reports := context.collect_reports(false)
 	var statistics := context.calculate_statistics(reports)

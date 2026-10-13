@@ -4,9 +4,6 @@ extends GdUnitTestSuite
 @warning_ignore('unused_parameter')
 @warning_ignore('return_value_discarded')
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/asserts/GdUnitVectorAssertImpl.gd'
-
 
 var _test_seta := [
 	[null],
@@ -147,8 +144,8 @@ func test_is_equal_approx() -> void:
 			 '(0.87843, 0.105881)' <> '(0.878432, 0.105883)'"""
 			.dedent().trim_prefix("\n")
 		)
-	var currentV3 := Vector3(0.0, 0.878431, 0.505882)
-	assert_failure(func() -> void: assert_vector(currentV3).is_equal_approx(Vector3(0.0, 0.878431, 0.105882), Vector3(0.000001, 0.000001, 0.000001))) \
+	var current_v3 := Vector3(0.0, 0.878431, 0.505882)
+	assert_failure(func() -> void: assert_vector(current_v3).is_equal_approx(Vector3(0.0, 0.878431, 0.105882), Vector3(0.000001, 0.000001, 0.000001))) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
@@ -156,7 +153,7 @@ func test_is_equal_approx() -> void:
 			 in range between
 			 '(-0.000001, 0.87843, 0.105881)' <> '(0.000001, 0.878432, 0.105883)'"""
 			.dedent().trim_prefix("\n")
-			.replace("$v0", str(currentV3))
+			.replace("$v0", str(current_v3))
 		)
 
 

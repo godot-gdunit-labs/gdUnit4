@@ -3,10 +3,6 @@ class_name GdArrayToolsTest
 extends GdUnitTestSuite
 
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/core/GdArrayTools.gd'
-
-
 func test_as_string(_test: String, value: Variant, expected: String, _test_parameters := [
 	['Array', Array([1, 2]), '[1, 2]'],
 	['Array', Array([1.0, 2.212]), '[1.000000, 2.212000]'],
@@ -113,7 +109,7 @@ func test_filter_value(value: Variant, expected_type: int, _test_parameters := [
 	assert_that(typeof(result)).is_equal(expected_type)
 
 
-func test_filter_value_() -> void:
+func test_filter_value_mixed_values() -> void:
 	assert_array(GdArrayTools.filter_value([], null)).is_empty()
 	assert_array(GdArrayTools.filter_value([], "")).is_empty()
 

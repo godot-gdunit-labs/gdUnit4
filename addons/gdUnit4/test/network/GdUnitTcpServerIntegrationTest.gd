@@ -1,8 +1,6 @@
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/network/GdUnitTcpServer.gd'
 
 var tcp_server: GdUnitTcpServer
 var tcp_client: GdUnitTcpClient
@@ -88,7 +86,7 @@ func test_receive_message_split_across_polls(_timeout := 1000) -> void:
 	var encoded := StreamPeerBuffer.new()
 	var encoder := PacketPeerStream.new()
 	encoder.stream_peer = encoded
-	var _put_error := encoder.put_packet(message.serialize().to_utf16_buffer())
+	encoder.put_packet(message.serialize().to_utf16_buffer())
 	var frame := encoded.data_array
 
 	# send those bytes 16 at a time, one idle frame apart, so the frame arrives split across
@@ -96,7 +94,7 @@ func test_receive_message_split_across_polls(_timeout := 1000) -> void:
 	var frame_size := frame.size()
 	var frame_offset := 0
 	while frame_size > 0:
-		var _e := raw.put_data(frame.slice(frame_offset, frame_offset + mini(16, frame_size)))
+		raw.put_data(frame.slice(frame_offset, frame_offset + mini(16, frame_size)))
 		await await_idle_frame()
 		frame_size -= 16
 		frame_offset += 16

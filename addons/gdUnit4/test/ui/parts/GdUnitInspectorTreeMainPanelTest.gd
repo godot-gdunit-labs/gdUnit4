@@ -117,7 +117,7 @@ func test_find_item_by_id() -> void:
 
 
 # Tests a special case, the test is named equal to the test suite
-func test_find_item_by_id_GD809() -> void:
+func test_find_item_by_id_gd809() -> void:
 	var suite_script := GdUnitTestResourceLoader.load_gd_script("res://addons/gdUnit4/test/ui/parts/resources/gd_809/test_example.resource")
 	var discovered_tests := {}
 	GdUnitTestDiscoverer.discover_tests(suite_script, func(discover_test: GdUnitTestCase) -> void:
@@ -131,7 +131,7 @@ func test_find_item_by_id_GD809() -> void:
 
 
 # Tests a special case, the test is named equal to the test suite
-func test_find_item_by_path_GD809() -> void:
+func test_find_item_by_path_gd809() -> void:
 	var suite_script := GdUnitTestResourceLoader.load_gd_script("res://addons/gdUnit4/test/ui/parts/resources/gd_809/test_example.resource")
 	var discovered_tests := {}
 	GdUnitTestDiscoverer.discover_tests(suite_script, func(discover_test: GdUnitTestCase) -> void:
@@ -463,7 +463,7 @@ func test_custom_sort_by_original_index() -> void:
 		# suffle to have a random order
 		tree_root.get_children().shuffle()
 		# sort it by original index
-		GdUnitInspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SORT_MODE.UNSORTED)
+		GdUnitInspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SortMode.UNSORTED)
 		# verify
 		assert_array(tree_root.get_children()).extractv(ItemNameExtractor.new()).contains_exactly([
 			# folders should be always on top
@@ -487,7 +487,7 @@ func test_custom_sort_by_name_ascending() -> void:
 		# suffle to have a random order
 		tree_root.get_children().shuffle()
 		# sort it by name ascending
-		GdUnitInspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SORT_MODE.NAME_ASCENDING)
+		GdUnitInspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SortMode.NAME_ASCENDING)
 		# verify
 		assert_array(tree_root.get_children()).extractv(ItemNameExtractor.new()).contains_exactly([
 			# folders should be always on top
@@ -511,7 +511,7 @@ func test_custom_sort_by_name_descending() -> void:
 		# suffle to have a random order
 		tree_root.get_children().shuffle()
 		# sort it by name descending
-		GdUnitInspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SORT_MODE.NAME_DESCENDING)
+		GdUnitInspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SortMode.NAME_DESCENDING)
 		# verify
 		assert_array(tree_root.get_children()).extractv(ItemNameExtractor.new()).contains_exactly([
 			# folders should be always on top
@@ -534,7 +534,7 @@ func test_custom_sort_by_execution_time() -> void:
 		# suffle to have a random order
 		tree_root.get_children().shuffle()
 		# sort it by execution time
-		GdUnitInspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SORT_MODE.EXECUTION_TIME)
+		GdUnitInspectorTreeMainPanel._sort_tree_items(tree_root, GdUnitInspectorTreeConstants.SortMode.EXECUTION_TIME)
 		# verify
 		assert_array(tree_root.get_children()).extractv(ItemNameExtractor.new()).contains_exactly([
 			# folders should be always on top
@@ -657,7 +657,7 @@ func test_collect_test_cases() -> void:
 		.contains_exactly_in_any_order(expected_tests)
 
 
-func test_collect_test_cases_GD_872(_do_skip := not GdUnit4CSharpApiLoader.is_api_loaded(), _skip_reason := "Do run only for Godot .Net version") -> void:
+func test_collect_test_cases_gd_872(_do_skip := not GdUnit4CSharpApiLoader.is_api_loaded(), _skip_reason := "Do run only for Godot .Net version") -> void:
 	var tests_by_id := {}
 	var resource_path := "res://addons/gdUnit4/test/ui/parts/resources/gd_872/"
 	for suite_path: String in ["ATests.cs", "AZTests.cs"]:

@@ -2,8 +2,6 @@
 class_name GdUnitOrphanNodesMonitorTest
 extends GdUnitTestSuite
 
-const __source = 'res://addons/gdUnit4/src/monitor/GdUnitOrphanNodesMonitor.gd'
-
 
 func before_test() -> void:
 	# the monitor only collects counts when orphan reporting is enabled

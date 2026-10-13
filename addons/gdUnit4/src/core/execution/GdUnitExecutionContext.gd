@@ -2,7 +2,7 @@
 ## It contains all the necessary information about the executed stage, such as memory observers, reports, orphan monitor
 class_name GdUnitExecutionContext
 
-enum GC_ORPHANS_CHECK {
+enum GcOrphansCheck {
 	NONE,
 	SUITE_HOOK_AFTER,
 	TEST_HOOK_AFTER,
@@ -26,7 +26,7 @@ var test_suite: GdUnitTestSuite = null:
 		return test_suite
 
 
-var test_case: _TestCase = null:
+var test_case: GdUnitTestCaseImpl = null:
 	get:
 		if test_case == null and _parent_context != null:
 			return _parent_context.test_case
@@ -104,7 +104,7 @@ static func of(pe: GdUnitExecutionContext) -> GdUnitExecutionContext:
 	return context
 
 
-static func of_test_case(pe: GdUnitExecutionContext, p_test_case: _TestCase) -> GdUnitExecutionContext:
+static func of_test_case(pe: GdUnitExecutionContext, p_test_case: GdUnitTestCaseImpl) -> GdUnitExecutionContext:
 	assert(p_test_case, "test_case is null")
 	var context := GdUnitExecutionContext.new(p_test_case.test_name(), pe)
 	context.test_case = p_test_case
@@ -204,12 +204,12 @@ func collect_reports(recursive: bool) -> Array[GdUnitReport]:
 	return current_reports
 
 
-func calculate_statistics(reports_: Array[GdUnitReport]) -> Dictionary:
-	var failed_count := GdUnitTestReportCollector.count_failures(reports_)
-	var error_count := GdUnitTestReportCollector.count_errors(reports_)
-	var warn_count := GdUnitTestReportCollector.count_warnings(reports_)
-	var skip_count := GdUnitTestReportCollector.count_skipped(reports_)
-	var orphan_count := GdUnitTestReportCollector.count_orphans(reports_)
+func calculate_statistics(test_reports: Array[GdUnitReport]) -> Dictionary:
+	var failed_count := GdUnitTestReportCollector.count_failures(test_reports)
+	var error_count := GdUnitTestReportCollector.count_errors(test_reports)
+	var warn_count := GdUnitTestReportCollector.count_warnings(test_reports)
+	var skip_count := GdUnitTestReportCollector.count_skipped(test_reports)
+	var orphan_count := GdUnitTestReportCollector.count_orphans(test_reports)
 	var is_failed := !is_success()
 	var elapsed_time := _timer.elapsed_since_ms()
 	var retries :=  1 if _parent_context == null else _sub_context.size()
@@ -273,7 +273,7 @@ func register_auto_free(obj: Variant) -> Variant:
 
 
 ## Runs the gdunit garbage collector to free registered object and handle orphan node reporting
-func gc(gc_orphan_check: GC_ORPHANS_CHECK = GC_ORPHANS_CHECK.NONE) -> void:
+func gc(gc_orphan_check: GcOrphansCheck = GcOrphansCheck.NONE) -> void:
 	# unreference last used assert form the test to prevent memory leaks
 	GdUnitThreadManager.get_current_context().clear_assert()
 	await _memory_observer.gc()
@@ -283,7 +283,7 @@ func gc(gc_orphan_check: GC_ORPHANS_CHECK = GC_ORPHANS_CHECK.NONE) -> void:
 		await test_suite.get_tree().process_frame
 
 	match(gc_orphan_check):
-		GC_ORPHANS_CHECK.SUITE_HOOK_AFTER:
+		GcOrphansCheck.SUITE_HOOK_AFTER:
 			report_ophans(-1, """
 		func before() -> void:
 			collect_orphan_node_details())
@@ -291,7 +291,7 @@ func gc(gc_orphan_check: GC_ORPHANS_CHECK = GC_ORPHANS_CHECK.NONE) -> void:
 		func after() -> void:
 			collect_orphan_node_details())""")
 
-		GC_ORPHANS_CHECK.TEST_HOOK_AFTER:
+		GcOrphansCheck.TEST_HOOK_AFTER:
 			report_ophans(-1, """
 		func before_test() -> void:
 			collect_orphan_node_details()
@@ -299,7 +299,7 @@ func gc(gc_orphan_check: GC_ORPHANS_CHECK = GC_ORPHANS_CHECK.NONE) -> void:
 		func after_test() -> void:
 			collect_orphan_node_details()""")
 
-		GC_ORPHANS_CHECK.TEST_CASE:
+		GcOrphansCheck.TEST_CASE:
 			report_ophans(test_case.line_number(),
 			"	collect_orphan_node_details()"
 			)

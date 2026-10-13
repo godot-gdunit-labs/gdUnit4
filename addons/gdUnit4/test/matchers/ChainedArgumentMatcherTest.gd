@@ -2,9 +2,6 @@
 class_name ChainedArgumentMatcherTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/matchers/ChainedArgumentMatcher.gd'
-
 
 func test_is_match_one_arg() -> void:
 	var matchers := [

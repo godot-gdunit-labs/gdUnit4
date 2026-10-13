@@ -4,9 +4,6 @@
 class_name GdDiffToolTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/core/GdDiffTool.gd'
-
 
 # Converts the hunks into [current_start, current_len, expected_start, expected_len] to keep the assertions compact
 func _as_arrays(hunks: Array[GdDiffTool.Hunk]) -> Array[Array]:

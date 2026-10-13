@@ -2,8 +2,6 @@
 class_name GdUnitSettingsTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/core/GdUnitSettings.gd'
 
 const IGNORE := GdUnitSettings.GdScriptWarningMode.IGNORE
 const WARN := GdUnitSettings.GdScriptWarningMode.WARN
@@ -116,12 +114,12 @@ func test_property_string_info() -> void:
 
 func test_property_enum_info() -> void:
 	var property_name := "unit_test/property/naming_convention"
-	var value_set: PackedStringArray = GdUnitSettings.NAMING_CONVENTIONS.keys()
-	GdUnitSettings.create_property_if_need(property_name, GdUnitSettings.NAMING_CONVENTIONS.AUTO_DETECT, "Naming convention for test suite generation", value_set)
+	var value_set: PackedStringArray = GdUnitSettings.NamingConventions.keys()
+	GdUnitSettings.create_property_if_need(property_name, GdUnitSettings.NamingConventions.AUTO_DETECT, "Naming convention for test suite generation", value_set)
 
 	var property := GdUnitSettings.get_property(property_name)
-	assert_int(property.value()).is_equal(GdUnitSettings.NAMING_CONVENTIONS.AUTO_DETECT)
-	assert_int(property.default()).is_equal(GdUnitSettings.NAMING_CONVENTIONS.AUTO_DETECT)
+	assert_int(property.value()).is_equal(GdUnitSettings.NamingConventions.AUTO_DETECT)
+	assert_int(property.default()).is_equal(GdUnitSettings.NamingConventions.AUTO_DETECT)
 	assert_int(property.type()).is_equal(TYPE_INT)
 	assert_array(property.value_set()).is_equal(value_set)
 	assert_str(property.help()).is_equal("Naming convention for test suite generation")
@@ -131,27 +129,27 @@ func test_property_enum_info() -> void:
 		.contains_key_value("type", TYPE_INT)\
 		.contains_key_value("hint", PROPERTY_HINT_ENUM)\
 		.contains_key_value("hint_string", ",".join(value_set))
-	assert_that(ProjectSettings.property_get_revert(property_name)).is_equal(GdUnitSettings.NAMING_CONVENTIONS.AUTO_DETECT)
+	assert_that(ProjectSettings.property_get_revert(property_name)).is_equal(GdUnitSettings.NamingConventions.AUTO_DETECT)
 #endregion
 
 
 #region migrate_property
 func test_migrate_property_change_key() -> void:
-	var old_property_X := "/category_patch/migrate_key/old_name"
-	var new_property_X := "/category_patch/migrate_key/new_name"
-	GdUnitSettings.create_property_if_need(old_property_X, "foo")
-	assert_str(GdUnitSettings.get_setting(old_property_X, null)).is_equal("foo")
-	assert_str(GdUnitSettings.get_setting(new_property_X, null)).is_null()
-	var old_property := GdUnitSettings.get_property(old_property_X)
+	var old_property_x := "/category_patch/migrate_key/old_name"
+	var new_property_x := "/category_patch/migrate_key/new_name"
+	GdUnitSettings.create_property_if_need(old_property_x, "foo")
+	assert_str(GdUnitSettings.get_setting(old_property_x, null)).is_equal("foo")
+	assert_str(GdUnitSettings.get_setting(new_property_x, null)).is_null()
+	var old_property := GdUnitSettings.get_property(old_property_x)
 
 	GdUnitSettings.migrate_property(old_property.name(),\
-		new_property_X,\
+		new_property_x,\
 		old_property.default(),\
 		old_property.help())
 
-	var new_property := GdUnitSettings.get_property(new_property_X)
-	assert_str(GdUnitSettings.get_setting(old_property_X, null)).is_null()
-	assert_str(GdUnitSettings.get_setting(new_property_X, null)).is_equal("foo")
+	var new_property := GdUnitSettings.get_property(new_property_x)
+	assert_str(GdUnitSettings.get_setting(old_property_x, null)).is_null()
+	assert_str(GdUnitSettings.get_setting(new_property_x, null)).is_equal("foo")
 	assert_object(new_property).is_not_equal(old_property)
 	assert_str(new_property.value()).is_equal(old_property.value())
 	assert_array(new_property.value_set()).is_equal(old_property.value_set())
@@ -161,22 +159,22 @@ func test_migrate_property_change_key() -> void:
 
 
 func test_migrate_property_change_value() -> void:
-	var old_property_X := "/category_patch/migrate_value/old_name"
-	var new_property_X := "/category_patch/migrate_value/new_name"
-	GdUnitSettings.create_property_if_need(old_property_X, "foo", "help to foo")
-	assert_str(GdUnitSettings.get_setting(old_property_X, null)).is_equal("foo")
-	assert_str(GdUnitSettings.get_setting(new_property_X, null)).is_null()
-	var old_property := GdUnitSettings.get_property(old_property_X)
+	var old_property_x := "/category_patch/migrate_value/old_name"
+	var new_property_x := "/category_patch/migrate_value/new_name"
+	GdUnitSettings.create_property_if_need(old_property_x, "foo", "help to foo")
+	assert_str(GdUnitSettings.get_setting(old_property_x, null)).is_equal("foo")
+	assert_str(GdUnitSettings.get_setting(new_property_x, null)).is_null()
+	var old_property := GdUnitSettings.get_property(old_property_x)
 
 	GdUnitSettings.migrate_property(old_property.name(),\
-		new_property_X,\
+		new_property_x,\
 		old_property.default(),\
 		old_property.help(),\
 		func(_value :Variant) -> String: return "bar")
 
-	var new_property := GdUnitSettings.get_property(new_property_X)
-	assert_str(GdUnitSettings.get_setting(old_property_X, null)).is_null()
-	assert_str(GdUnitSettings.get_setting(new_property_X, null)).is_equal("bar")
+	var new_property := GdUnitSettings.get_property(new_property_x)
+	assert_str(GdUnitSettings.get_setting(old_property_x, null)).is_null()
+	assert_str(GdUnitSettings.get_setting(new_property_x, null)).is_equal("bar")
 	assert_object(new_property).is_not_equal(old_property)
 	assert_str(new_property.value()).is_equal("bar")
 	assert_array(new_property.value_set()).is_equal(old_property.value_set())

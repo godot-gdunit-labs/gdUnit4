@@ -4,7 +4,7 @@ extends RefCounted
 
 
 enum ImageFlipMode {
-	HORIZONTAl,
+	HORIZONTAL,
 	VERITCAL
 }
 
@@ -64,7 +64,7 @@ static func get_icon(icon_name: String, color: = Color.BLACK) -> Texture2D:
 
 
 ## Returns the icon flipped
-static func get_flipped_icon(icon_name: String, mode: = ImageFlipMode.HORIZONTAl) -> Texture2D:
+static func get_flipped_icon(icon_name: String, mode: = ImageFlipMode.HORIZONTAL) -> Texture2D:
 	if not Engine.is_editor_hint():
 		return null
 	var icon := EditorInterface.get_base_control().get_theme_icon(icon_name, "EditorIcons")

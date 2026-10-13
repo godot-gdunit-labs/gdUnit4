@@ -5,12 +5,12 @@ class_name GdUnitTestSuiteExecutor
 # preload all asserts here
 @warning_ignore("unused_private_class_variable")
 var _assertions := GdUnitAssertions.new()
-var _executeStage := GdUnitTestSuiteExecutionStage.new()
+var _execute_stage := GdUnitTestSuiteExecutionStage.new()
 var _debug_mode : bool
 var _terminated := false
 
 func _init(debug_mode: bool = false) -> void:
-	_executeStage.set_debug_mode(debug_mode)
+	_execute_stage.set_debug_mode(debug_mode)
 	_debug_mode = debug_mode
 	GdUnitSignals.instance().gdunit_test_session_terminate.connect(_on_testsession_terminated)
 
@@ -45,7 +45,7 @@ func run_and_wait(tests: Array[GdUnitTestCase]) -> void:
 			var test_suite := scanner.load_suite(script as GDScript, suite_tests)
 			context.test_suite = test_suite
 			(Engine.get_main_loop() as SceneTree).root.add_child(test_suite)
-			await _executeStage.execute(context)
+			await _execute_stage.execute(context)
 			context.dispose()
 		else:
 			await GdUnit4CSharpApiLoader.execute(suite_tests)
@@ -54,4 +54,4 @@ func run_and_wait(tests: Array[GdUnitTestCase]) -> void:
 
 
 func fail_fast(enabled :bool) -> void:
-	_executeStage.fail_fast(enabled)
+	_execute_stage.fail_fast(enabled)

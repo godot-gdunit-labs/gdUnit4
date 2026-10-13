@@ -4,8 +4,6 @@ extends GdUnitTestSuite
 @warning_ignore_start("redundant_await")
 
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/asserts/GdUnitFuncAssertImpl.gd'
 const GdUnitTools = preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
 

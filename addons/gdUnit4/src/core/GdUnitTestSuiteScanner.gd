@@ -10,7 +10,7 @@ func test_${func_name}() -> void:
 
 
 # we exclude the gdunit source directorys by default
-const exclude_scan_directories = [
+const EXCLUDE_SCAN_DIRECTORIES = [
 	"res://addons/gdUnit4/bin",
 	"res://addons/gdUnit4/src",
 	"res://reports"]
@@ -75,7 +75,7 @@ func _scan_test_suites_scripts(dir: DirAccess, collected_suites: Array[Script]) 
 		prints("Exclude directory %s, containing .gdignore file" % dir.get_current_dir())
 		return []
 
-	if exclude_scan_directories.has(dir.get_current_dir()):
+	if EXCLUDE_SCAN_DIRECTORIES.has(dir.get_current_dir()):
 		return collected_suites
 
 	var err := dir.list_dir_begin()
@@ -161,7 +161,7 @@ func load_suite(script: GDScript, tests: Array[GdUnitTestCase]) -> GdUnitTestSui
 		for test: GdUnitTestCase in test_group:
 			# We need a copy, because of mutable state
 			var attribute: TestCaseAttribute = test_attribute.clone()
-			test_suite.add_child(_TestCase.new(test, attribute, parameter_resolver))
+			test_suite.add_child(GdUnitTestCaseImpl.new(test, attribute, parameter_resolver))
 	return test_suite
 
 
@@ -274,13 +274,13 @@ func _handle_test_suite_arguments(test_suite: GdUnitTestSuite, script: GDScript,
 static func _to_naming_convention(file_name: String) -> String:
 	var nc :int = GdUnitSettings.get_setting(GdUnitSettings.TEST_SUITE_NAMING_CONVENTION, 0)
 	match nc:
-		GdUnitSettings.NAMING_CONVENTIONS.AUTO_DETECT:
+		GdUnitSettings.NamingConventions.AUTO_DETECT:
 			if GdObjects.is_snake_case(file_name):
 				return GdObjects.to_snake_case(file_name + "Test")
 			return GdObjects.to_pascal_case(file_name + "Test")
-		GdUnitSettings.NAMING_CONVENTIONS.SNAKE_CASE:
+		GdUnitSettings.NamingConventions.SNAKE_CASE:
 			return GdObjects.to_snake_case(file_name + "Test")
-		GdUnitSettings.NAMING_CONVENTIONS.PASCAL_CASE:
+		GdUnitSettings.NamingConventions.PASCAL_CASE:
 			return GdObjects.to_pascal_case(file_name + "Test")
 	push_error("Unexpected case")
 	return "-<Unexpected>-"
@@ -323,9 +323,9 @@ static func normalize_path(path: String) -> String:
 static func create_test_suite(test_suite_path: String, source_path: String) -> GdUnitResult:
 	# create directory if not exists
 	if not DirAccess.dir_exists_absolute(test_suite_path.get_base_dir()):
-		var error_ := DirAccess.make_dir_recursive_absolute(test_suite_path.get_base_dir())
-		if error_ != OK:
-			return GdUnitResult.error("Can't create directoy  at: %s. Error code %s" % [test_suite_path.get_base_dir(), error_])
+		var dir_error := DirAccess.make_dir_recursive_absolute(test_suite_path.get_base_dir())
+		if dir_error != OK:
+			return GdUnitResult.error("Can't create directoy  at: %s. Error code %s" % [test_suite_path.get_base_dir(), dir_error])
 	var script := GDScript.new()
 	script.source_code = GdUnitTestSuiteTemplate.build_template(source_path)
 	var error := ResourceSaver.save(script, test_suite_path)

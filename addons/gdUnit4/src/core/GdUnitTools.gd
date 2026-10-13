@@ -89,14 +89,14 @@ static func _release_connections(instance :Object) -> void:
 	if is_instance_valid(instance):
 		# disconnect from all connected signals to force freeing, otherwise it ends up in orphans
 		for connection in instance.get_incoming_connections():
-			var signal_ :Signal = connection["signal"]
-			var callable_ :Callable = connection["callable"]
+			var connected_signal :Signal = connection["signal"]
+			var connected_callable :Callable = connection["callable"]
 			#prints(instance, connection)
-			#prints("signal", signal_.get_name(), signal_.get_object())
-			#prints("callable", callable_.get_object())
-			if instance.has_signal(signal_.get_name()) and instance.is_connected(signal_.get_name(), callable_):
-				#prints("disconnect signal", signal_.get_name(), callable_)
-				instance.disconnect(signal_.get_name(), callable_)
+			#prints("signal", connected_signal.get_name(), connected_signal.get_object())
+			#prints("callable", connected_callable.get_object())
+			if instance.has_signal(connected_signal.get_name()) and instance.is_connected(connected_signal.get_name(), connected_callable):
+				#prints("disconnect signal", connected_signal.get_name(), connected_callable)
+				instance.disconnect(connected_signal.get_name(), connected_callable)
 	release_timers()
 
 
@@ -128,8 +128,8 @@ static func release_double(instance :Object) -> void:
 
 
 
-static func find_test_case(test_suite: Node, test_case_name: String, index := -1) -> _TestCase:
-	for test_case: _TestCase in test_suite.get_children():
+static func find_test_case(test_suite: Node, test_case_name: String, index := -1) -> GdUnitTestCaseImpl:
+	for test_case: GdUnitTestCaseImpl in test_suite.get_children():
 		if test_case.test_name() == test_case_name:
 			if index != -1:
 				if test_case._test_case.attribute_index != index:

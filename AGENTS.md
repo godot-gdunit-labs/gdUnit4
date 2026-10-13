@@ -120,7 +120,7 @@ C#-specific tests live under `test/dotnet/`.
 
 ### Key Core Files
 
-- `src/core/_TestCase.gd` — Base test case class
+- `src/core/GdUnitTestCaseImpl.gd` — Base test case class
 - `src/core/GdObjects.gd` — Core object utilities
 - `src/core/execution/` — Test execution pipeline
 - `src/core/discovery/` — Test discovery logic

@@ -123,7 +123,7 @@ func has_size(expected: int) -> GdUnitDictionaryAssert:
 	return report_success()
 
 
-func _contains_keys(expected: Array, compare_mode: GdObjects.COMPARE_MODE) -> GdUnitDictionaryAssert:
+func _contains_keys(expected: Array, compare_mode: GdObjects.CompareMode) -> GdUnitDictionaryAssert:
 	var current :Variant = current_value()
 	var expected_value: Array = _extract_variadic_value(expected)
 	if current == null:
@@ -138,7 +138,7 @@ func _contains_keys(expected: Array, compare_mode: GdObjects.COMPARE_MODE) -> Gd
 	return report_success()
 
 
-func _contains_key_value(key :Variant, value :Variant, compare_mode :GdObjects.COMPARE_MODE) -> GdUnitDictionaryAssert:
+func _contains_key_value(key :Variant, value :Variant, compare_mode :GdObjects.CompareMode) -> GdUnitDictionaryAssert:
 	var current :Variant = current_value()
 	var expected := [key]
 	if current == null:
@@ -152,7 +152,7 @@ func _contains_key_value(key :Variant, value :Variant, compare_mode :GdObjects.C
 	return report_success()
 
 
-func _not_contains_keys(expected: Array, compare_mode: GdObjects.COMPARE_MODE) -> GdUnitDictionaryAssert:
+func _not_contains_keys(expected: Array, compare_mode: GdObjects.CompareMode) -> GdUnitDictionaryAssert:
 	var current :Variant = current_value()
 	var expected_value: Array = _extract_variadic_value(expected)
 	if current == null:
@@ -165,30 +165,30 @@ func _not_contains_keys(expected: Array, compare_mode: GdObjects.COMPARE_MODE) -
 
 
 func contains_keys(...expected: Array) -> GdUnitDictionaryAssert:
-	return _contains_keys(expected, GdObjects.COMPARE_MODE.PARAMETER_DEEP_TEST)
+	return _contains_keys(expected, GdObjects.CompareMode.PARAMETER_DEEP_TEST)
 
 
 func contains_key_value(key :Variant, value :Variant) -> GdUnitDictionaryAssert:
-	return _contains_key_value(key, value, GdObjects.COMPARE_MODE.PARAMETER_DEEP_TEST)
+	return _contains_key_value(key, value, GdObjects.CompareMode.PARAMETER_DEEP_TEST)
 
 
 func not_contains_keys(...expected: Array) -> GdUnitDictionaryAssert:
-	return _not_contains_keys(expected, GdObjects.COMPARE_MODE.PARAMETER_DEEP_TEST)
+	return _not_contains_keys(expected, GdObjects.CompareMode.PARAMETER_DEEP_TEST)
 
 
 func contains_same_keys(expected :Array) -> GdUnitDictionaryAssert:
-	return _contains_keys(expected, GdObjects.COMPARE_MODE.OBJECT_REFERENCE)
+	return _contains_keys(expected, GdObjects.CompareMode.OBJECT_REFERENCE)
 
 
 func contains_same_key_value(key :Variant, value :Variant) -> GdUnitDictionaryAssert:
-	return _contains_key_value(key, value, GdObjects.COMPARE_MODE.OBJECT_REFERENCE)
+	return _contains_key_value(key, value, GdObjects.CompareMode.OBJECT_REFERENCE)
 
 
 func not_contains_same_keys(...expected: Array) -> GdUnitDictionaryAssert:
-	return _not_contains_keys(expected, GdObjects.COMPARE_MODE.OBJECT_REFERENCE)
+	return _not_contains_keys(expected, GdObjects.CompareMode.OBJECT_REFERENCE)
 
 
-func _filter_by_key(element :Variant, values :Array, compare_mode :GdObjects.COMPARE_MODE, is_not :bool = false) -> bool:
+func _filter_by_key(element :Variant, values :Array, compare_mode :GdObjects.CompareMode, is_not :bool = false) -> bool:
 	for key :Variant in values:
 		if GdObjects.equals(key, element, true, compare_mode):
 			return is_not

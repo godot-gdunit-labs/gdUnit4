@@ -454,9 +454,9 @@ static func error_arr_contains_exactly(
 	current: Variant,
 	expected: Variant,
 	not_expect: Variant,
-	not_found: Variant, compare_mode: GdObjects.COMPARE_MODE) -> String:
+	not_found: Variant, compare_mode: GdObjects.CompareMode) -> String:
 	var failure_message := (
-		"Expecting contains exactly elements:" if compare_mode == GdObjects.COMPARE_MODE.PARAMETER_DEEP_TEST
+		"Expecting contains exactly elements:" if compare_mode == GdObjects.CompareMode.PARAMETER_DEEP_TEST
 		else "Expecting contains SAME exactly elements:"
 	)
 	if is_empty(not_expect) and is_empty(not_found):
@@ -481,10 +481,10 @@ static func error_arr_contains_exactly_in_any_order(
 	expected: Variant,
 	not_expect: Variant,
 	not_found: Variant,
-	compare_mode: GdObjects.COMPARE_MODE) -> String:
+	compare_mode: GdObjects.CompareMode) -> String:
 
 	var failure_message := (
-		"Expecting contains exactly elements:" if compare_mode == GdObjects.COMPARE_MODE.PARAMETER_DEEP_TEST
+		"Expecting contains exactly elements:" if compare_mode == GdObjects.CompareMode.PARAMETER_DEEP_TEST
 		else "Expecting contains SAME exactly elements:"
 	)
 	var error := "%s\n %s\n do contains exactly (in any order)\n %s" % [
@@ -497,8 +497,8 @@ static func error_arr_contains_exactly_in_any_order(
 	return error
 
 
-static func error_arr_not_contains(current: Variant, expected: Variant, found: Variant, compare_mode: GdObjects.COMPARE_MODE) -> String:
-	var failure_message := "Expecting:" if compare_mode == GdObjects.COMPARE_MODE.PARAMETER_DEEP_TEST else "Expecting SAME:"
+static func error_arr_not_contains(current: Variant, expected: Variant, found: Variant, compare_mode: GdObjects.CompareMode) -> String:
+	var failure_message := "Expecting:" if compare_mode == GdObjects.CompareMode.PARAMETER_DEEP_TEST else "Expecting SAME:"
 	var error := "%s\n %s\n do not contains\n %s" % [
 					_error(failure_message), _colored_value(current), _colored_value(expected)]
 	if not is_empty(found):
@@ -507,27 +507,27 @@ static func error_arr_not_contains(current: Variant, expected: Variant, found: V
 
 
 # - DictionaryAssert specific messages ----------------------------------------------
-static func error_contains_keys(current :Array, expected :Array, keys_not_found :Array, compare_mode :GdObjects.COMPARE_MODE) -> String:
+static func error_contains_keys(current :Array, expected :Array, keys_not_found :Array, compare_mode :GdObjects.CompareMode) -> String:
 	var failure := (
-		"Expecting contains keys:" if compare_mode == GdObjects.COMPARE_MODE.PARAMETER_DEEP_TEST
+		"Expecting contains keys:" if compare_mode == GdObjects.CompareMode.PARAMETER_DEEP_TEST
 		else "Expecting contains SAME keys:"
 	)
 	return "%s\n %s\n to contains:\n %s\n but can't find key's:\n %s" % [
 			_error(failure), _colored_value(current), _colored_value(expected), _colored_value(keys_not_found)]
 
 
-static func error_not_contains_keys(current :Array, expected :Array, keys_not_found :Array, compare_mode :GdObjects.COMPARE_MODE) -> String:
+static func error_not_contains_keys(current :Array, expected :Array, keys_not_found :Array, compare_mode :GdObjects.CompareMode) -> String:
 	var failure := (
-		"Expecting NOT contains keys:" if compare_mode == GdObjects.COMPARE_MODE.PARAMETER_DEEP_TEST
+		"Expecting NOT contains keys:" if compare_mode == GdObjects.CompareMode.PARAMETER_DEEP_TEST
 		else "Expecting NOT contains SAME keys"
 	)
 	return "%s\n %s\n do not contains:\n %s\n but contains key's:\n %s" % [
 			_error(failure), _colored_value(current), _colored_value(expected), _colored_value(keys_not_found)]
 
 
-static func error_contains_key_value(key :Variant, value :Variant, current_value :Variant, compare_mode :GdObjects.COMPARE_MODE) -> String:
+static func error_contains_key_value(key :Variant, value :Variant, current_value :Variant, compare_mode :GdObjects.CompareMode) -> String:
 	var failure := (
-		"Expecting contains key and value:" if compare_mode == GdObjects.COMPARE_MODE.PARAMETER_DEEP_TEST
+		"Expecting contains key and value:" if compare_mode == GdObjects.CompareMode.PARAMETER_DEEP_TEST
 		else "Expecting contains SAME key and value:"
 	)
 	return "%s\n %s : %s\n but contains\n %s : %s" % [

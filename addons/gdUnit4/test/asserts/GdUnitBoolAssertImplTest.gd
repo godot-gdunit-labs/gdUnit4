@@ -2,9 +2,6 @@
 class_name GdUnitBoolAssertImplTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/asserts/GdUnitBoolAssertImpl.gd'
-
 
 func test_is_true() -> void:
 	assert_bool(true).is_true()
@@ -17,7 +14,7 @@ func test_is_true() -> void:
 		.has_message("Expecting: 'true' but is '<null>'")
 
 
-func test_isFalse() -> void:
+func test_is_false() -> void:
 	assert_bool(false).is_false()
 
 	assert_failure(func() -> void: assert_bool(true).is_false()) \

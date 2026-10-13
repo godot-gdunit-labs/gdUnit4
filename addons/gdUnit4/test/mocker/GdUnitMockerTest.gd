@@ -52,7 +52,7 @@ func test_is_mockable_by_script_path() -> void:
 	assert_bool(GdUnitMockBuilder.is_mockable(resource_path + "capsuleshape2d.tres")).is_false()
 
 
-func test_is_mockable__overriden_func_get_class() -> void:
+func test_is_mockable_overriden_func_get_class() -> void:
 	# test with class type
 	assert_bool(GdUnitMockBuilder.is_mockable(OverridenGetClassTestClass))\
 		.override_failure_message("The class 'CustomResourceTestClass' should be mockable when 'func get_class()' is overriden")\
@@ -78,7 +78,7 @@ func test_mock_by_script_path() -> void:
 	assert_that(mock(resource_path + "CustomNodeTestClass.gd")).is_not_null()
 
 
-func test_mock_class__overriden_func_get_class() -> void:
+func test_mock_class_overriden_func_get_class() -> void:
 	assert_that(mock(OverridenGetClassTestClass)).is_not_null()
 	assert_that(mock(resource_path + "OverridenGetClassTestClass.gd")).is_not_null()
 
@@ -97,7 +97,7 @@ func test_mock_special_classes() -> void:
 	assert_that(m).is_not_null()
 
 
-func test_mock_Node() -> void:
+func test_mock_node() -> void:
 	var mocked_node: Variant = mock(Node)
 	assert_that(mocked_node).is_not_null()
 
@@ -134,21 +134,21 @@ func test_mock_class_with_field_initializer_calling_overridden_method() -> void:
 
 
 func test_mock_source_with_class_name_by_resource_path() -> void:
-	var resource_path_ := 'res://addons/gdUnit4/test/mocker/resources/GD-256/world.gd'
-	var m: Variant = mock(resource_path_)
+	var world_script_path := 'res://addons/gdUnit4/test/mocker/resources/GD-256/world.gd'
+	var m: Variant = mock(world_script_path)
 	var head :String = m.get_script().source_code.substr(0, 500)
 	assert_str(head)\
 		.contains("class_name DoubledMockClassMunderwoodPathingWorld")\
-		.contains("extends '%s'" % resource_path_)
+		.contains("extends '%s'" % world_script_path)
 
 
 func test_mock_source_with_class_name_by_class() -> void:
-	var resource_path_ := 'res://addons/gdUnit4/test/mocker/resources/GD-256/world.gd'
+	var world_script_path := 'res://addons/gdUnit4/test/mocker/resources/GD-256/world.gd'
 	var m: Variant = mock(Munderwood_Pathing_World)
 	var head :String = m.get_script().source_code.substr(0, 500)
 	assert_str(head)\
 		.contains("class_name DoubledMockClassMunderwoodPathingWorld")\
-		.contains("extends '%s'" % resource_path_)
+		.contains("extends '%s'" % world_script_path)
 
 
 func test_mock_extends_godot_class() -> void:
@@ -165,7 +165,7 @@ func _emit_ready(...args: Array) -> void:
 	_test_signal_args = args
 
 
-func test_mock_Node_func_vararg() -> void:
+func test_mock_node_func_vararg() -> void:
 	# setup
 	var mocked_node: Variant = mock(Node)
 
@@ -182,7 +182,7 @@ func test_mock_Node_func_vararg() -> void:
 	assert_that(mocked_node.rpc("test", "arg1", "argX", 42)).is_equal(ERR_CANT_CREATE)
 
 
-func test_mock_Node_func_vararg_call_real_func() -> void:
+func test_mock_node_func_vararg_call_real_func() -> void:
 	# setup
 	var mocked_node: Variant = mock(Node, CALL_REAL_FUNC)
 	assert_that(mocked_node).is_not_null()
@@ -428,10 +428,10 @@ func test_mock_custom_class_func_return_type_enum() -> void:
 	assert_that(m).is_not_null()
 	verify(m, 0).get_enum()
 
-	# verify enum return default ClassWithEnumReturnTypes.TEST_ENUM.FOO
-	assert_that(m.get_enum()).is_equal(ClassWithEnumReturnTypes.TEST_ENUM.FOO)
-	do_return(ClassWithEnumReturnTypes.TEST_ENUM.BAR).on(m).get_enum()
-	assert_that(m.get_enum()).is_equal(ClassWithEnumReturnTypes.TEST_ENUM.BAR)
+	# verify enum return default ClassWithEnumReturnTypes.TestEnum.FOO
+	assert_that(m.get_enum()).is_equal(ClassWithEnumReturnTypes.TestEnum.FOO)
+	do_return(ClassWithEnumReturnTypes.TestEnum.BAR).on(m).get_enum()
+	assert_that(m.get_enum()).is_equal(ClassWithEnumReturnTypes.TestEnum.BAR)
 	verify(m, 2).get_enum()
 
 	# with call real functions
@@ -439,9 +439,9 @@ func test_mock_custom_class_func_return_type_enum() -> void:
 	assert_that(m2).is_not_null()
 
 	# verify enum return type
-	assert_that(m2.get_enum()).is_equal(ClassWithEnumReturnTypes.TEST_ENUM.FOO)
-	do_return(ClassWithEnumReturnTypes.TEST_ENUM.BAR).on(m2).get_enum()
-	assert_that(m2.get_enum()).is_equal(ClassWithEnumReturnTypes.TEST_ENUM.BAR)
+	assert_that(m2.get_enum()).is_equal(ClassWithEnumReturnTypes.TestEnum.FOO)
+	do_return(ClassWithEnumReturnTypes.TestEnum.BAR).on(m2).get_enum()
+	assert_that(m2.get_enum()).is_equal(ClassWithEnumReturnTypes.TestEnum.BAR)
 
 
 func test_mock_custom_class_func_return_type_internal_class_enum() -> void:
@@ -450,9 +450,9 @@ func test_mock_custom_class_func_return_type_internal_class_enum() -> void:
 	verify(m, 0).get_inner_class_enum()
 
 	# verify enum return default
-	assert_that(m.get_inner_class_enum()).is_equal(ClassWithEnumReturnTypes.InnerClass.TEST_ENUM.FOO)
-	do_return(ClassWithEnumReturnTypes.InnerClass.TEST_ENUM.BAR).on(m).get_inner_class_enum()
-	assert_that(m.get_inner_class_enum()).is_equal(ClassWithEnumReturnTypes.InnerClass.TEST_ENUM.BAR)
+	assert_that(m.get_inner_class_enum()).is_equal(ClassWithEnumReturnTypes.InnerClass.TestEnum.FOO)
+	do_return(ClassWithEnumReturnTypes.InnerClass.TestEnum.BAR).on(m).get_inner_class_enum()
+	assert_that(m.get_inner_class_enum()).is_equal(ClassWithEnumReturnTypes.InnerClass.TestEnum.BAR)
 	verify(m, 2).get_inner_class_enum()
 
 	# with call real functions
@@ -460,9 +460,9 @@ func test_mock_custom_class_func_return_type_internal_class_enum() -> void:
 	assert_that(m2).is_not_null()
 
 	# verify enum return type
-	assert_that(m2.get_inner_class_enum()).is_equal(ClassWithEnumReturnTypes.InnerClass.TEST_ENUM.FOO)
-	do_return(ClassWithEnumReturnTypes.InnerClass.TEST_ENUM.BAR).on(m2).get_inner_class_enum()
-	assert_that(m2.get_inner_class_enum()).is_equal(ClassWithEnumReturnTypes.InnerClass.TEST_ENUM.BAR)
+	assert_that(m2.get_inner_class_enum()).is_equal(ClassWithEnumReturnTypes.InnerClass.TestEnum.FOO)
+	do_return(ClassWithEnumReturnTypes.InnerClass.TestEnum.BAR).on(m2).get_inner_class_enum()
+	assert_that(m2.get_inner_class_enum()).is_equal(ClassWithEnumReturnTypes.InnerClass.TestEnum.BAR)
 
 
 func test_mock_custom_class_func_return_type_external_class_enum() -> void:
@@ -471,9 +471,9 @@ func test_mock_custom_class_func_return_type_external_class_enum() -> void:
 	verify(m, 0).get_external_class_enum()
 
 	# verify enum return default
-	assert_that(m.get_external_class_enum()).is_equal(CustomEnums.TEST_ENUM.FOO)
-	do_return(CustomEnums.TEST_ENUM.BAR).on(m).get_external_class_enum()
-	assert_that(m.get_external_class_enum()).is_equal(CustomEnums.TEST_ENUM.BAR)
+	assert_that(m.get_external_class_enum()).is_equal(CustomEnums.TestEnum.FOO)
+	do_return(CustomEnums.TestEnum.BAR).on(m).get_external_class_enum()
+	assert_that(m.get_external_class_enum()).is_equal(CustomEnums.TestEnum.BAR)
 	verify(m, 2).get_external_class_enum()
 
 	# with call real functions
@@ -481,12 +481,12 @@ func test_mock_custom_class_func_return_type_external_class_enum() -> void:
 	assert_that(m2).is_not_null()
 
 	# verify enum return type
-	assert_that(m2.get_external_class_enum()).is_equal(CustomEnums.TEST_ENUM.FOO)
-	do_return(CustomEnums.TEST_ENUM.BAR).on(m2).get_external_class_enum()
-	assert_that(m2.get_external_class_enum()).is_equal(CustomEnums.TEST_ENUM.BAR)
+	assert_that(m2.get_external_class_enum()).is_equal(CustomEnums.TestEnum.FOO)
+	do_return(CustomEnums.TestEnum.BAR).on(m2).get_external_class_enum()
+	assert_that(m2.get_external_class_enum()).is_equal(CustomEnums.TestEnum.BAR)
 
 
-func test_mock_custom_class_extends_Node() -> void:
+func test_mock_custom_class_extends_node() -> void:
 	var m: Variant = mock(CustomNodeTestClass)
 	assert_that(m).is_not_null()
 
@@ -503,23 +503,23 @@ func test_mock_custom_class_extends_Node() -> void:
 	verify(m, 2).get_children()
 
 
-func test_mock_custom_class_extends_Node_real_func() -> void:
+func test_mock_custom_class_extends_node_real_func() -> void:
 	var m: Variant = mock(CustomNodeTestClass, CALL_REAL_FUNC)
 	assert_that(m).is_not_null()
 	# test mocked function returns default mock value
 	assert_that(m.get_child_count()).is_equal(0)
 	assert_that(m.get_children()).is_equal([])
 	# test real seters used
-	var nodeA :Node = auto_free(Node.new())
-	var nodeB :Node = auto_free(Node.new())
-	var nodeC :Node = auto_free(Node.new())
-	m.add_child(nodeA)
-	m.add_child(nodeB)
+	var node_a :Node = auto_free(Node.new())
+	var node_b :Node = auto_free(Node.new())
+	var node_c :Node = auto_free(Node.new())
+	m.add_child(node_a)
+	m.add_child(node_b)
 	assert_that(m.get_child_count()).is_equal(2)
-	assert_that(m.get_children()).contains_exactly([nodeA, nodeB])
-	verify(m, 1).add_child(nodeA)
-	verify(m, 1).add_child(nodeB)
-	verify(m, 0).add_child(nodeC)
+	assert_that(m.get_children()).contains_exactly([node_a, node_b])
+	verify(m, 1).add_child(node_a)
+	verify(m, 1).add_child(node_b)
+	verify(m, 0).add_child(node_c)
 	verify(m, 2).get_child_count()
 	verify(m, 2).get_children()
 
@@ -789,12 +789,12 @@ func test_matching_is_sorted() -> void:
 
 func test_do_return_with_matchers() -> void:
 	var mocked_node: Variant = mock(Node)
-	var childN :Node = auto_free(Node2D.new())
+	var child_n :Node = auto_free(Node2D.new())
 	var child1 :Node = auto_free(Node2D.new())
 	var child10 :Node = auto_free(Node2D.new())
 
-	# for any index return childN by using any() matcher
-	do_return(childN).on(mocked_node).get_child(any(), false)
+	# for any index return child_n by using any() matcher
+	do_return(child_n).on(mocked_node).get_child(any(), false)
 	# for index 1 and 10 do return 'child1' and 'child10'
 	do_return(child1).on(mocked_node).get_child(1, false)
 	do_return(child10).on(mocked_node).get_child(10, false)
@@ -805,16 +805,16 @@ func test_do_return_with_matchers() -> void:
 	assert_that(mocked_node.get_child(1, true)).is_null()
 	assert_that(mocked_node.get_child(2, true)).is_null()
 	assert_that(mocked_node.get_child(10, true)).is_null()
-	assert_that(mocked_node.get_child(0)).is_same(childN)
+	assert_that(mocked_node.get_child(0)).is_same(child_n)
 	assert_that(mocked_node.get_child(1)).is_same(child1)
-	assert_that(mocked_node.get_child(2)).is_same(childN)
-	assert_that(mocked_node.get_child(3)).is_same(childN)
-	assert_that(mocked_node.get_child(4)).is_same(childN)
-	assert_that(mocked_node.get_child(5)).is_same(childN)
-	assert_that(mocked_node.get_child(6)).is_same(childN)
-	assert_that(mocked_node.get_child(7)).is_same(childN)
-	assert_that(mocked_node.get_child(8)).is_same(childN)
-	assert_that(mocked_node.get_child(9)).is_same(childN)
+	assert_that(mocked_node.get_child(2)).is_same(child_n)
+	assert_that(mocked_node.get_child(3)).is_same(child_n)
+	assert_that(mocked_node.get_child(4)).is_same(child_n)
+	assert_that(mocked_node.get_child(5)).is_same(child_n)
+	assert_that(mocked_node.get_child(6)).is_same(child_n)
+	assert_that(mocked_node.get_child(7)).is_same(child_n)
+	assert_that(mocked_node.get_child(8)).is_same(child_n)
+	assert_that(mocked_node.get_child(9)).is_same(child_n)
 	assert_that(mocked_node.get_child(10)).is_same(child10)
 
 
@@ -881,7 +881,7 @@ func test_verify_string_argument_mach_case_sensitive() -> void:
 	verify_no_more_interactions(mocked_node)
 
 
-func test_verify_func_interaction_wiht_PoolStringArray() -> void:
+func test_verify_func_interaction_wiht_pool_string_array() -> void:
 	var mocked: Variant = mock(ClassWithPoolStringArrayFunc)
 
 	mocked.set_values(PackedStringArray())
@@ -890,7 +890,7 @@ func test_verify_func_interaction_wiht_PoolStringArray() -> void:
 	verify_no_more_interactions(mocked)
 
 
-func test_verify_func_interaction_wiht_PoolStringArray_fail() -> void:
+func test_verify_func_interaction_wiht_pool_string_array_fail() -> void:
 	var mocked: Variant = mock(ClassWithPoolStringArrayFunc)
 
 	mocked.set_values(PackedStringArray())

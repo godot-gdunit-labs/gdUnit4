@@ -7,9 +7,6 @@ extends GdUnitTestSuite
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/core/GdUnitTestSuiteBuilder.gd'
-
 var _example_source_gd :String
 
 
@@ -49,7 +46,7 @@ func test_create_gd_success() -> void:
 	assert_result(result).is_success()
 	var info: Dictionary = result.value()
 	assert_str(info.get("path")).is_equal("user://tmp/test/examples/test_person_test.gd")
-	assert_int(info.get("line")).is_equal(11)
+	assert_int(info.get("line")).is_equal(6)
 	@warning_ignore("unsafe_cast")
 	assert_tests(load(info.get("path") as String) as Script).contains_exactly(["test_first_name"])
 
@@ -59,7 +56,7 @@ func test_create_gd_success() -> void:
 	assert_result(result).is_success()
 	info = result.value()
 	assert_str(info.get("path")).is_equal("user://tmp/test/examples/test_person_test.gd")
-	assert_int(info.get("line")).is_equal(16)
+	assert_int(info.get("line")).is_equal(11)
 	@warning_ignore("unsafe_cast")
 	assert_tests(load(info.get("path") as String) as Script).contains_exactly_in_any_order(["test_first_name", "test_fully_name"])
 

@@ -2,9 +2,6 @@
 class_name GdUnitRunnerConfigTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/core/GdUnitRunnerConfig.gd'
-
 
 func test_initial_config() -> void:
 	var config := GdUnitRunnerConfig.new()

@@ -171,7 +171,7 @@ func serialize() -> Dictionary:
 	}
 	if _guid != null:
 		serialized["guid"] = _guid._guid
-	serialized["reports"] = _serialize_TestReports()
+	serialized["reports"] = _serialize_test_reports()
 	return serialized
 
 
@@ -192,7 +192,7 @@ func deserialize(serialized: Dictionary) -> GdUnitEvent:
 	return self
 
 
-func _serialize_TestReports() -> Array[Dictionary]:
+func _serialize_test_reports() -> Array[Dictionary]:
 	var serialized_reports :Array[Dictionary] = []
 	for report in _reports:
 		serialized_reports.append(report.serialize())

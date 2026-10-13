@@ -3,9 +3,6 @@
 class_name GdUnitSpyBuilderTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/spy/GdUnitSpyBuilder.gd'
-
 
 class NodeWithOutVirtualFunc extends Node:
 	func _ready() -> void:

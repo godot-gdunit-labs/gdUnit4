@@ -28,7 +28,7 @@ func _execute(context :GdUnitExecutionContext) -> void:
 		await _stage_before.execute(context)
 		for test_case_index in context.test_suite.get_child_count():
 			# iterate only over test cases
-			var test_case := context.test_suite.get_child(test_case_index) as _TestCase
+			var test_case := context.test_suite.get_child(test_case_index) as GdUnitTestCaseImpl
 			if not is_instance_valid(test_case):
 				continue
 			context.test_suite.set_active_test_case(test_case.test_name())
@@ -56,19 +56,19 @@ func clone_test_suite(test_suite :GdUnitTestSuite) -> GdUnitTestSuite:
 	dispose_timers(test_suite)
 	await GdUnitMemoryObserver.gc_guarded_instance("Manually free on awaiter", test_suite.__awaiter)
 	var parent := test_suite.get_parent()
-	var _test_suite := GdUnitTestSuite.new()
+	var suite_copy := GdUnitTestSuite.new()
 	parent.remove_child(test_suite)
-	copy_properties(test_suite, _test_suite)
+	copy_properties(test_suite, suite_copy)
 	for child in test_suite.get_children():
 		test_suite.remove_child(child)
-		_test_suite.add_child(child)
-	parent.add_child(_test_suite)
+		suite_copy.add_child(child)
+	parent.add_child(suite_copy)
 	@warning_ignore("return_value_discarded")
-	GdUnitMemoryObserver.guard_instance(_test_suite.__awaiter)
+	GdUnitMemoryObserver.guard_instance(suite_copy.__awaiter)
 	# finally free current test suite instance
 	test_suite.free()
 	await (Engine.get_main_loop() as SceneTree).process_frame
-	return _test_suite
+	return suite_copy
 
 
 func dispose_timers(test_suite :GdUnitTestSuite) -> void:
@@ -81,7 +81,7 @@ func dispose_timers(test_suite :GdUnitTestSuite) -> void:
 
 
 func copy_properties(source :Object, target :Object) -> void:
-	if not source is _TestCase and not source is GdUnitTestSuite:
+	if not source is GdUnitTestCaseImpl and not source is GdUnitTestSuite:
 		return
 	for property in source.get_property_list():
 		var property_name :String = property["name"]
@@ -99,7 +99,7 @@ func fire_test_suite_skipped(context :GdUnitExecutionContext) -> void:
 
 	for test_case_index in context.test_suite.get_child_count():
 			# iterate only over test cases
-			var test_case := context.test_suite.get_child(test_case_index) as _TestCase
+			var test_case := context.test_suite.get_child(test_case_index) as GdUnitTestCaseImpl
 			if not is_instance_valid(test_case):
 				continue
 			var test_case_context := GdUnitExecutionContext.of_test_case(context, test_case)

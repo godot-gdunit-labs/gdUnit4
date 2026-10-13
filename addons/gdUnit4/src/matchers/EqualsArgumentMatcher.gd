@@ -15,8 +15,8 @@ func is_match(value :Variant) -> bool:
 	return GdObjects.equals(_current, value, case_sensitive_check, compare_mode(value))
 
 
-func compare_mode(value :Variant) -> GdObjects.COMPARE_MODE:
+func compare_mode(value :Variant) -> GdObjects.CompareMode:
 	if _auto_deep_check_mode and is_instance_valid(value):
 		# we do deep check on all InputEvent's
-		return GdObjects.COMPARE_MODE.PARAMETER_DEEP_TEST if value is InputEvent else GdObjects.COMPARE_MODE.OBJECT_REFERENCE
-	return GdObjects.COMPARE_MODE.OBJECT_REFERENCE
+		return GdObjects.CompareMode.PARAMETER_DEEP_TEST if value is InputEvent else GdObjects.CompareMode.OBJECT_REFERENCE
+	return GdObjects.CompareMode.OBJECT_REFERENCE

@@ -16,7 +16,7 @@ const MAP_MOUSE_BUTTON_MASKS := {
 	MOUSE_BUTTON_XBUTTON2 : MOUSE_BUTTON_MASK_MB_XBUTTON2,
 }
 
-var GdUnitFuncAssertImpl: GDScript = ResourceLoader.load("res://addons/gdUnit4/src/asserts/GdUnitFuncAssertImpl.gd", "GDScript", ResourceLoader.CACHE_MODE_REUSE)
+var _func_assert_impl: GDScript = ResourceLoader.load("res://addons/gdUnit4/src/asserts/GdUnitFuncAssertImpl.gd", "GDScript", ResourceLoader.CACHE_MODE_REUSE)
 
 var _is_disposed := false
 var _current_scene: Node = null
@@ -91,7 +91,7 @@ func _init(p_scene: Variant, p_verbose: bool, p_hide_push_errors := false) -> vo
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE and is_instance_valid(self):
 		# reset time factor to normal
-		__deactivate_time_factor()
+		_deactivate_time_factor()
 		if is_instance_valid(_current_scene):
 			move_window_to_background()
 			_scene_tree().root.remove_child(_current_scene)
@@ -122,7 +122,7 @@ func simulate_action_pressed(action: String, event_index := -1) -> GdUnitSceneRu
 
 
 func simulate_action_press(action: String, event_index := -1) -> GdUnitSceneRunner:
-	__print_current_focus()
+	_print_current_focus()
 	var event := InputEventAction.new()
 	event.pressed = true
 	event.action = action
@@ -132,7 +132,7 @@ func simulate_action_press(action: String, event_index := -1) -> GdUnitSceneRunn
 
 
 func simulate_action_release(action: String, event_index := -1) -> GdUnitSceneRunner:
-	__print_current_focus()
+	_print_current_focus()
 	var event := InputEventAction.new()
 	event.pressed = false
 	event.action = action
@@ -152,7 +152,7 @@ func simulate_key_pressed(key_code: int, shift_pressed := false, ctrl_pressed :=
 
 func simulate_key_press(key_code: int, shift_pressed := false, ctrl_pressed := false) -> GdUnitSceneRunner:
 	_push_warning_deprecated_arguments(shift_pressed, ctrl_pressed)
-	__print_current_focus()
+	_print_current_focus()
 	var event := InputEventKey.new()
 	event.pressed = true
 	event.keycode = key_code as Key
@@ -169,7 +169,7 @@ func simulate_key_press(key_code: int, shift_pressed := false, ctrl_pressed := f
 
 func simulate_key_release(key_code: int, shift_pressed := false, ctrl_pressed := false) -> GdUnitSceneRunner:
 	_push_warning_deprecated_arguments(shift_pressed, ctrl_pressed)
-	__print_current_focus()
+	_print_current_focus()
 	var event := InputEventKey.new()
 	event.pressed = false
 	event.keycode = key_code as Key
@@ -408,9 +408,9 @@ func _do_touch_drag_at(index: int, drag_position: Vector2, time: float, trans_ty
 
 func set_time_factor(time_factor: float = 1.0) -> GdUnitSceneRunner:
 	_time_factor = min(9.0, time_factor)
-	__activate_time_factor()
-	__print("set time factor: %f" % _time_factor)
-	__print("set physics physics_ticks_per_second: %d" % (get_project_physics_ticks_per_second() * _time_factor))
+	_activate_time_factor()
+	_print("set time factor: %f" % _time_factor)
+	_print("set physics physics_ticks_per_second: %d" % (get_project_physics_ticks_per_second() * _time_factor))
 	return self
 
 
@@ -435,11 +435,11 @@ func simulate_until_object_signal(source: Object, signal_name: String, ...args: 
 
 
 func await_func(func_name: String, ...args: Array) -> GdUnitFuncAssert:
-	return GdUnitFuncAssertImpl.new(scene(), func_name, args)
+	return _func_assert_impl.new(scene(), func_name, args)
 
 
 func await_func_on(instance: Object, func_name: String, ...args: Array) -> GdUnitFuncAssert:
-	return GdUnitFuncAssertImpl.new(instance, func_name, args)
+	return _func_assert_impl.new(instance, func_name, args)
 
 
 func await_signal(signal_name: String, args := [], timeout := 2000 ) -> void:
@@ -504,12 +504,12 @@ func _scene_name() -> String:
 	return scene_script.resource_name.get_basename()
 
 
-func __activate_time_factor() -> void:
+func _activate_time_factor() -> void:
 	Engine.set_time_scale(_time_factor)
 	Engine.set_physics_ticks_per_second((get_project_physics_ticks_per_second() * _time_factor) as int)
 
 
-func __deactivate_time_factor() -> void:
+func _deactivate_time_factor() -> void:
 	Engine.set_time_scale(1)
 	Engine.set_physics_ticks_per_second(get_project_physics_ticks_per_second())
 
@@ -522,20 +522,20 @@ func get_project_physics_ticks_per_second() -> int:
 func _apply_input_modifiers(event: InputEvent) -> void:
 	if _last_input_event is InputEventWithModifiers and event is InputEventWithModifiers:
 		var last_input_event := _last_input_event as InputEventWithModifiers
-		var _event := event as InputEventWithModifiers
-		_event.meta_pressed = _event.meta_pressed or last_input_event.meta_pressed
-		_event.alt_pressed = _event.alt_pressed or last_input_event.alt_pressed
-		_event.shift_pressed = _event.shift_pressed or last_input_event.shift_pressed
-		_event.ctrl_pressed = _event.ctrl_pressed or last_input_event.ctrl_pressed
+		var modifier_event := event as InputEventWithModifiers
+		modifier_event.meta_pressed = modifier_event.meta_pressed or last_input_event.meta_pressed
+		modifier_event.alt_pressed = modifier_event.alt_pressed or last_input_event.alt_pressed
+		modifier_event.shift_pressed = modifier_event.shift_pressed or last_input_event.shift_pressed
+		modifier_event.ctrl_pressed = modifier_event.ctrl_pressed or last_input_event.ctrl_pressed
 		# this line results into reset the control_pressed state!!!
 		#event.command_or_control_autoremap = event.command_or_control_autoremap or _last_input_event.command_or_control_autoremap
 	if _last_input_event is InputEventKey and event is InputEventWithModifiers:
 		var last_input_event := _last_input_event as InputEventKey
-		var _event := event as InputEventWithModifiers
-		_event.shift_pressed = _event.shift_pressed or last_input_event.keycode == KEY_SHIFT
-		_event.alt_pressed = _event.alt_pressed or last_input_event.keycode == KEY_ALT
-		_event.ctrl_pressed = _event.ctrl_pressed or last_input_event.keycode == KEY_CTRL
-		_event.meta_pressed = _event.meta_pressed or  last_input_event.keycode == KEY_META
+		var modifier_event := event as InputEventWithModifiers
+		modifier_event.shift_pressed = modifier_event.shift_pressed or last_input_event.keycode == KEY_SHIFT
+		modifier_event.alt_pressed = modifier_event.alt_pressed or last_input_event.keycode == KEY_ALT
+		modifier_event.ctrl_pressed = modifier_event.ctrl_pressed or last_input_event.keycode == KEY_CTRL
+		modifier_event.meta_pressed = modifier_event.meta_pressed or  last_input_event.keycode == KEY_META
 
 
 # copy over current active mouse mask and combine with curren mask
@@ -544,12 +544,12 @@ func _apply_input_mouse_mask(event: InputEvent) -> void:
 	if _last_input_event is InputEventMouse and event is InputEventMouse:
 		(event as InputEventMouse).button_mask |= (_last_input_event as InputEventMouse).button_mask
 	if event is InputEventMouseButton:
-		var _event := event as InputEventMouseButton
-		var button_mask :int = MAP_MOUSE_BUTTON_MASKS.get(_event.get_button_index(), 0)
-		if _event.is_pressed():
-			_event.button_mask |= button_mask
+		var mouse_event := event as InputEventMouseButton
+		var button_mask :int = MAP_MOUSE_BUTTON_MASKS.get(mouse_event.get_button_index(), 0)
+		if mouse_event.is_pressed():
+			mouse_event.button_mask |= button_mask
 		else:
-			_event.button_mask ^= button_mask
+			mouse_event.button_mask ^= button_mask
 
 
 # copy over last mouse position if need
@@ -562,7 +562,7 @@ func _apply_input_mouse_position(event: InputEvent) -> void:
 func _handle_actions(event: InputEventAction) -> bool:
 	if not InputMap.event_is_action(event, event.action, true):
 		return false
-	__print("	process action %s (%s) <- %s" % [scene(), _scene_name(), event.as_text()])
+	_print("	process action %s (%s) <- %s" % [scene(), _scene_name(), event.as_text()])
 	if event.is_pressed():
 		Input.action_press(event.action, event.get_strength())
 	else:
@@ -585,7 +585,7 @@ func _handle_input_event(event: InputEvent) -> GdUnitSceneRunner:
 		# do not flush events if node processing disabled otherwise we run into errors at tree removed
 		if _current_scene.process_mode != Node.PROCESS_MODE_DISABLED:
 			Input.flush_buffered_events()
-		__print("	process event %s (%s) <- %s" % [current_scene, _scene_name(), event.as_text()])
+		_print("	process event %s (%s) <- %s" % [current_scene, _scene_name(), event.as_text()])
 		if(current_scene.has_method("_gui_input")):
 			(current_scene as Control)._gui_input(event)
 		if(current_scene.has_method("_unhandled_input")):
@@ -620,12 +620,12 @@ func _reset_input_to_default() -> void:
 	_last_input_event = null
 
 
-func __print(message: String) -> void:
+func _print(message: String) -> void:
 	if _verbose:
 		prints(message)
 
 
-func __print_current_focus() -> void:
+func _print_current_focus() -> void:
 	if not _verbose:
 		return
 	var focused_node := scene().get_viewport().gui_get_focus_owner()

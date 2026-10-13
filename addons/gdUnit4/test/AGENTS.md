@@ -14,9 +14,6 @@ class_name MyFeatureTest
 extends GdUnitTestSuite
 
 
-const __source = "res://addons/gdUnit4/src/path/to/MyFeature.gd"
-
-
 # optional lifecycle hooks
 func before_test() -> void:
     pass

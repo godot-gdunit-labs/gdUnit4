@@ -282,76 +282,76 @@ static func diff(current: String, expected: String) -> Array[Hunk]:
 
 
 # prototype
-static func longestCommonSubsequence(text1 :String, text2 :String) -> PackedStringArray:
-	var text1Words := text1.split(" ")
-	var text2Words := text2.split(" ")
-	var text1WordCount := text1Words.size()
-	var text2WordCount := text2Words.size()
-	var solutionMatrix := Array()
-	for i in text1WordCount+1:
+static func longest_common_subsequence(text1 :String, text2 :String) -> PackedStringArray:
+	var text1_words := text1.split(" ")
+	var text2_words := text2.split(" ")
+	var text1_word_count := text1_words.size()
+	var text2_word_count := text2_words.size()
+	var solution_matrix := Array()
+	for i in text1_word_count+1:
 		var ar := Array()
-		for n in text2WordCount+1:
+		for n in text2_word_count+1:
 			ar.append(0)
-		solutionMatrix.append(ar)
+		solution_matrix.append(ar)
 
-	for i in range(text1WordCount-1, 0, -1):
-		for j in range(text2WordCount-1, 0, -1):
-			if text1Words[i] == text2Words[j]:
-				solutionMatrix[i][j] = solutionMatrix[i + 1][j + 1] + 1;
+	for i in range(text1_word_count-1, 0, -1):
+		for j in range(text2_word_count-1, 0, -1):
+			if text1_words[i] == text2_words[j]:
+				solution_matrix[i][j] = solution_matrix[i + 1][j + 1] + 1;
 			else:
-				solutionMatrix[i][j] = max(solutionMatrix[i + 1][j], solutionMatrix[i][j + 1]);
+				solution_matrix[i][j] = max(solution_matrix[i + 1][j], solution_matrix[i][j + 1]);
 
 	var i := 0
 	var j := 0
-	var lcsResultList := PackedStringArray();
-	while (i < text1WordCount && j < text2WordCount):
-		if text1Words[i] == text2Words[j]:
+	var lcs_result_list := PackedStringArray();
+	while (i < text1_word_count && j < text2_word_count):
+		if text1_words[i] == text2_words[j]:
 			@warning_ignore("return_value_discarded")
-			lcsResultList.append(text2Words[j])
+			lcs_result_list.append(text2_words[j])
 			i += 1
 			j += 1
-		else: if (solutionMatrix[i + 1][j] >= solutionMatrix[i][j + 1]):
+		else: if (solution_matrix[i + 1][j] >= solution_matrix[i][j + 1]):
 			i += 1
 		else:
 			j += 1
-	return lcsResultList
+	return lcs_result_list
 
 
-static func markTextDifferences(text1 :String, text2 :String, lcsList :PackedStringArray, insertColor :Color, deleteColor:Color) -> String:
-	var stringBuffer := ""
-	if text1 == null and lcsList == null:
-		return stringBuffer
+static func mark_text_differences(text1 :String, text2 :String, lcs_list :PackedStringArray, insert_color :Color, delete_color:Color) -> String:
+	var string_buffer := ""
+	if text1 == null and lcs_list == null:
+		return string_buffer
 
-	var text1Words := text1.split(" ")
-	var text2Words := text2.split(" ")
+	var text1_words := text1.split(" ")
+	var text2_words := text2.split(" ")
 	var i := 0
 	var j := 0
-	var word1LastIndex := 0
-	var word2LastIndex := 0
-	for k in lcsList.size():
-		while i < text1Words.size() and j < text2Words.size():
-			if text1Words[i] == lcsList[k] and text2Words[j] == lcsList[k]:
-				stringBuffer += "<SPAN>" + lcsList[k] + " </SPAN>"
-				word1LastIndex = i + 1
-				word2LastIndex = j + 1
-				i = text1Words.size()
-				j = text2Words.size()
+	var word1_last_index := 0
+	var word2_last_index := 0
+	for k in lcs_list.size():
+		while i < text1_words.size() and j < text2_words.size():
+			if text1_words[i] == lcs_list[k] and text2_words[j] == lcs_list[k]:
+				string_buffer += "<SPAN>" + lcs_list[k] + " </SPAN>"
+				word1_last_index = i + 1
+				word2_last_index = j + 1
+				i = text1_words.size()
+				j = text2_words.size()
 
-			else: if text1Words[i] != lcsList[k]:
-				while i < text1Words.size() and text1Words[i] != lcsList[k]:
-					stringBuffer += "<SPAN style='BACKGROUND-COLOR:" + deleteColor.to_html() + "'>" + text1Words[i] + " </SPAN>"
+			else: if text1_words[i] != lcs_list[k]:
+				while i < text1_words.size() and text1_words[i] != lcs_list[k]:
+					string_buffer += "<SPAN style='BACKGROUND-COLOR:" + delete_color.to_html() + "'>" + text1_words[i] + " </SPAN>"
 					i += 1
-			else: if text2Words[j] != lcsList[k]:
-				while j < text2Words.size() and text2Words[j] != lcsList[k]:
-					stringBuffer += "<SPAN style='BACKGROUND-COLOR:" + insertColor.to_html() + "'>" + text2Words[j] + " </SPAN>"
+			else: if text2_words[j] != lcs_list[k]:
+				while j < text2_words.size() and text2_words[j] != lcs_list[k]:
+					string_buffer += "<SPAN style='BACKGROUND-COLOR:" + insert_color.to_html() + "'>" + text2_words[j] + " </SPAN>"
 					j += 1
-			i = word1LastIndex
-			j = word2LastIndex
+			i = word1_last_index
+			j = word2_last_index
 
-			while word1LastIndex < text1Words.size():
-				stringBuffer += "<SPAN style='BACKGROUND-COLOR:" + deleteColor.to_html() + "'>" + text1Words[word1LastIndex] + " </SPAN>"
-				word1LastIndex += 1
-			while word2LastIndex < text2Words.size():
-				stringBuffer += "<SPAN style='BACKGROUND-COLOR:" + insertColor.to_html() + "'>" + text2Words[word2LastIndex] + " </SPAN>"
-				word2LastIndex += 1
-	return stringBuffer
+			while word1_last_index < text1_words.size():
+				string_buffer += "<SPAN style='BACKGROUND-COLOR:" + delete_color.to_html() + "'>" + text1_words[word1_last_index] + " </SPAN>"
+				word1_last_index += 1
+			while word2_last_index < text2_words.size():
+				string_buffer += "<SPAN style='BACKGROUND-COLOR:" + insert_color.to_html() + "'>" + text2_words[word2_last_index] + " </SPAN>"
+				word2_last_index += 1
+	return string_buffer

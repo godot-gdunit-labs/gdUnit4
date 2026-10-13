@@ -4,9 +4,6 @@ extends GdUnitTestSuite
 @warning_ignore('unused_parameter')
 @warning_ignore('return_value_discarded')
 
-# TestSuite generated from
-const __source: String = 'res://addons/gdUnit4/src/core/command/GdUnitShortcut.gd'
-
 
 func test_default_keys() -> void:
 	match OS.get_name().to_lower():

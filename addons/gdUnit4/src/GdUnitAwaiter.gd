@@ -57,13 +57,13 @@ func await_signal_idle_frames(source :Object, signal_name :String, args :Array =
 #    # waits for 100ms
 #    await GdUnitAwaiter.await_millis(myNode, 100).completed
 # use this waiter and not `await get_tree().create_timer().timeout to prevent errors when a test case is timed out
-func await_millis(milliSec :int) -> void:
+func await_millis(milli_sec :int) -> void:
 	var timer :Timer = Timer.new()
 	timer.set_name("gdunit_await_millis_timer_%d" % timer.get_instance_id())
 	(Engine.get_main_loop() as SceneTree).root.add_child(timer)
 	timer.add_to_group("GdUnitTimers")
 	timer.set_one_shot(true)
-	timer.start(milliSec / 1000.0)
+	timer.start(milli_sec / 1000.0)
 	await timer.timeout
 	timer.queue_free()
 

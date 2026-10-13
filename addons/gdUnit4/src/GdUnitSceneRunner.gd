@@ -24,18 +24,16 @@ extends RefCounted
 
 
 ## Simulates that a key has been pressed.[br]
-## @deprecated: the modifier [b]shift_pressed[/b] and [b]ctrl_pressed[/b] will be removed in v7.0
 ## [member key_code] : the key code e.g. [constant KEY_ENTER][br]
 ## [codeblock]
 ##    func test_key_presssed():
 ##       var runner = scene_runner("res://scenes/simple_scene.tscn")
 ##       await runner.simulate_key_pressed(KEY_SPACE)
 ## [/codeblock]
-@abstract func simulate_key_pressed(key_code: int, shift_pressed := false, ctrl_pressed := false) -> GdUnitSceneRunner
+@abstract func simulate_key_pressed(key_code: int) -> GdUnitSceneRunner
 
 
 ## Simulates that a key is pressing.[br]
-## @deprecated: the modifier [b]shift_pressed[/b] and [b]ctrl_pressed[/b] will be removed in v7.0[br]See `test_key_shift_and_A_presssing` for example using key combinations
 ## [member key_code] : the key code e.g. [constant KEY_ENTER][br]
 ## [codeblock]
 ##    # Do simulate key pressing A
@@ -51,7 +49,7 @@ extends RefCounted
 ##       runner.simulate_key_press(KEY_A)
 ##       await _runner.await_input_processed()
 ## [/codeblock]
-@abstract func simulate_key_press(key_code: int, shift_pressed := false, ctrl_pressed := false) -> GdUnitSceneRunner
+@abstract func simulate_key_press(key_code: int) -> GdUnitSceneRunner
 
 
 ## Simulates that a key has been released.[br]
@@ -70,8 +68,7 @@ extends RefCounted
 ##       runner.simulate_key_release(KEY_A)
 ##       await _runner.await_input_processed()
 ## [/codeblock]
-## @deprecated: the modifier [b]shift_pressed[/b] and [b]ctrl_pressed[/b] will be removed in v7.0[br]See `test_key_shift_and_A_releasing` for example using key combinations
-@abstract func simulate_key_release(key_code: int, shift_pressed := false, ctrl_pressed := false) -> GdUnitSceneRunner
+@abstract func simulate_key_release(key_code: int) -> GdUnitSceneRunner
 
 
 ## Sets the mouse position to the specified vector, provided in pixels and relative to an origin at the upper left corner of the currently focused Window Manager game window.[br]

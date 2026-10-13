@@ -79,9 +79,7 @@ It takes the following arguments:
 
 ```gd
 # key_code: an integer value representing the key code of the key being pressed, e.g. KEY_ENTER for the enter key.
-# shift: deprecated, will be removed in v7.0 — use separate simulate_key_press(KEY_SHIFT) instead.
-# control: deprecated, will be removed in v7.0 — use separate simulate_key_press(KEY_CTRL) instead.
-func simulate_key_pressed(key_code: int, shift := false, control := false) -> GdUnitSceneRunner:
+func simulate_key_pressed(key_code: int) -> GdUnitSceneRunner:
 ```
 
 Here is an example of how to use simulate_key_pressed:
@@ -93,7 +91,8 @@ var runner := scene_runner("res://test_scene.tscn")
 runner.simulate_key_pressed(KEY_ENTER)
 await runner.await_input_processed()
 
-# Simulates key combination ctrl+C is pressedrunner.simulate_key_press(KEY_CTRL)
+# Simulates key combination ctrl+C is pressed
+runner.simulate_key_press(KEY_CTRL)
 runner.simulate_key_pressed(KEY_C)
 await runner.await_input_processed()
 ```
@@ -123,7 +122,8 @@ ISceneRunner runner = ISceneRunner.Load("res://test_scene.tscn");
 runner.SimulateKeyPressed(KeyList.Enter);
 await runner.AwaitInputProcessed();
 
-// Simulates key combination ctrl+C is pressedrunner.SimulateKeyPress(KeyList.Ctrl);
+// Simulates key combination ctrl+C is pressed
+runner.SimulateKeyPress(KeyList.Ctrl);
 runner.SimulateKeyPressed(KeyList.C);
 await runner.AwaitInputProcessed();
 ```
@@ -146,9 +146,7 @@ It takes the following arguments:
 
 ```gd
 # key_code : an integer value representing the key code of the key being pressed, e.g. KEY_ENTER for the enter key.
-# shift : deprecated, will be removed in v7.0 — use separate simulate_key_press(KEY_SHIFT) instead.
-# control : deprecated, will be removed in v7.0 — use separate simulate_key_press(KEY_CTRL) instead.
-func simulate_key_press(key_code: int, shift := false, control := false) -> GdUnitSceneRunner:
+func simulate_key_press(key_code: int) -> GdUnitSceneRunner:
 ```
 
 Here is an example of how to use simulate_key_press:
@@ -160,7 +158,8 @@ var runner := scene_runner("res://test_scene.tscn")
 runner.simulate_key_press(KEY_ENTER)
 await runner.await_input_processed()
 
-# Simulates key combination ctrl+C is pressedrunner.simulate_key_press(KEY_CTRL)
+# Simulates key combination ctrl+C is pressed
+runner.simulate_key_press(KEY_CTRL)
 runner.simulate_key_press(KEY_C)
 await runner.await_input_processed()
 
@@ -196,7 +195,8 @@ ISceneRunner runner = ISceneRunner.Load("res://test_scene.tscn");
 runner.SimulateKeyPress(KeyList.Enter);
 await runner.AwaitInputProcessed();
 
-// Simulates key combination ctrl+C is pressedrunner.SimulateKeyPress(KeyList.Ctrl);
+// Simulates key combination ctrl+C is pressed
+runner.SimulateKeyPress(KeyList.Ctrl);
 runner.SimulateKeyPress(KeyList.C);
 await runner.AwaitInputProcessed();
 
@@ -225,9 +225,7 @@ It takes the following arguments:
 
 ```gd
 # key_code : an integer value representing the key code of the key being released, e.g. KEY_ENTER for the enter key.
-# shift : deprecated, will be removed in v7.0 — use separate simulate_key_release(KEY_SHIFT) instead.
-# control : deprecated, will be removed in v7.0 — use separate simulate_key_release(KEY_CTRL) instead.
-func simulate_key_release(key_code: int, shift := false, control := false) -> GdUnitSceneRunner:
+func simulate_key_release(key_code: int) -> GdUnitSceneRunner:
 ```
 
 Here is an example of how to use simulate_key_release:
@@ -239,7 +237,8 @@ var runner := scene_runner("res://test_scene.tscn")
 runner.simulate_key_release(KEY_ENTER)
 await runner.await_input_processed()
 
-# Simulates key combination ctrl+C is releasedrunner.simulate_key_release(KEY_CTRL)
+# Simulates key combination ctrl+C is released
+runner.simulate_key_release(KEY_CTRL)
 runner.simulate_key_release(KEY_C)
 await runner.await_input_processed()
 
@@ -275,7 +274,8 @@ ISceneRunner runner = ISceneRunner.Load("res://test_scene.tscn");
 runner.SimulateKeyRelease(KeyList.Enter);
 await runner.AwaitInputProcessed();
 
-// Simulates key combination ctrl+C is releasedrunner.SimulateKeyRelease(KeyList.Ctrl);
+// Simulates key combination ctrl+C is released
+runner.SimulateKeyRelease(KeyList.Ctrl);
 runner.SimulateKeyRelease(KeyList.C);
 await runner.AwaitInputProcessed();
 

@@ -142,16 +142,14 @@ func simulate_action_release(action: String, event_index := -1) -> GdUnitSceneRu
 
 
 @warning_ignore("return_value_discarded")
-func simulate_key_pressed(key_code: int, shift_pressed := false, ctrl_pressed := false) -> GdUnitSceneRunner:
-	_push_warning_deprecated_arguments(shift_pressed, ctrl_pressed)
-	simulate_key_press(key_code, shift_pressed, ctrl_pressed)
+func simulate_key_pressed(key_code: int) -> GdUnitSceneRunner:
+	simulate_key_press(key_code)
 	await _scene_tree().process_frame
-	simulate_key_release(key_code, shift_pressed, ctrl_pressed)
+	simulate_key_release(key_code)
 	return self
 
 
-func simulate_key_press(key_code: int, shift_pressed := false, ctrl_pressed := false) -> GdUnitSceneRunner:
-	_push_warning_deprecated_arguments(shift_pressed, ctrl_pressed)
+func simulate_key_press(key_code: int) -> GdUnitSceneRunner:
 	_print_current_focus()
 	var event := InputEventKey.new()
 	event.pressed = true
@@ -159,16 +157,13 @@ func simulate_key_press(key_code: int, shift_pressed := false, ctrl_pressed := f
 	event.physical_keycode = key_code as Key
 	event.unicode = key_code
 	event.set_alt_pressed(key_code == KEY_ALT)
-	event.set_shift_pressed(shift_pressed)
-	event.set_ctrl_pressed(ctrl_pressed)
 	event.get_modifiers_mask()
 	_apply_input_modifiers(event)
 	_key_on_press.append(key_code)
 	return _handle_input_event(event)
 
 
-func simulate_key_release(key_code: int, shift_pressed := false, ctrl_pressed := false) -> GdUnitSceneRunner:
-	_push_warning_deprecated_arguments(shift_pressed, ctrl_pressed)
+func simulate_key_release(key_code: int) -> GdUnitSceneRunner:
 	_print_current_focus()
 	var event := InputEventKey.new()
 	event.pressed = false
@@ -176,8 +171,6 @@ func simulate_key_release(key_code: int, shift_pressed := false, ctrl_pressed :=
 	event.physical_keycode = key_code as Key
 	event.unicode = key_code
 	event.set_alt_pressed(key_code == KEY_ALT)
-	event.set_shift_pressed(shift_pressed)
-	event.set_ctrl_pressed(ctrl_pressed)
 	_apply_input_modifiers(event)
 	_key_on_press.erase(key_code)
 	return _handle_input_event(event)
@@ -641,10 +634,3 @@ func scene() -> Node:
 	if not _is_disposed:
 		push_error("The current scene instance is not valid anymore! check your test is valid. e.g. check for missing awaits.")
 	return null
-
-
-func _push_warning_deprecated_arguments(shift_pressed: bool, ctrl_pressed: bool) -> void:
-	if shift_pressed:
-		push_warning("Deprecated! Don't use 'shift_pressed' it will be removed in v7.0, checkout the documentaion how to use key combinations.")
-	if ctrl_pressed:
-		push_warning("Deprecated! Don't use 'ctrl_pressed' it will be removed in v7.0, checkout the documentaion how to use key combinations.")

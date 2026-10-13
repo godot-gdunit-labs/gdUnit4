@@ -1,4 +1,5 @@
 class_name DoubledMockClassSourceClassName
+# gdlint: disable=function-name,function-argument-name,function-variable-name,loop-variable-name,constant-name,class-variable-name
 
 ################################################################################
 # internal mocking stuff
@@ -17,8 +18,8 @@ class GdUnitMockDoublerState:
 	var return_value: Variant = null
 
 
-	func _init(working_mode_ := GdUnitMock.RETURN_DEFAULTS) -> void:
-		working_mode = working_mode_
+	func _init(mode := GdUnitMock.RETURN_DEFAULTS) -> void:
+		working_mode = mode
 
 
 var __mock_state := GdUnitMockDoublerState.new()

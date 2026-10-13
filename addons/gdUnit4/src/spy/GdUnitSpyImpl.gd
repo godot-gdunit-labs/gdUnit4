@@ -1,4 +1,5 @@
 class_name DoubledSpyClassSourceClassName
+# gdlint: disable=function-name,function-argument-name,function-variable-name,loop-variable-name,constant-name,class-variable-name
 
 const __INSTANCE_ID := "gdunit_doubler_instance_id_{instance_id}"
 
@@ -8,8 +9,8 @@ class GdUnitSpyDoublerState:
 
 	var excluded_methods := PackedStringArray()
 
-	func _init(excluded_methods__ := PackedStringArray()) -> void:
-		excluded_methods = excluded_methods__
+	func _init(methods := PackedStringArray()) -> void:
+		excluded_methods = methods
 
 
 var __spy_state := GdUnitSpyDoublerState.new()

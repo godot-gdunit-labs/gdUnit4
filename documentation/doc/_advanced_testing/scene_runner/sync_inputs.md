@@ -31,7 +31,8 @@ Here is an example of how to use simulate_frames:
 var runner := scene_runner("res://test_scene.tscn")
 
 # Simulates key combination ctrl+C is pressed
-runner.simulate_key_pressed(KEY_C, false, true)
+runner.simulate_key_press(KEY_CTRL)
+runner.simulate_key_pressed(KEY_C)
 
 # finalize the input event processing
 await runner.await_input_processed()

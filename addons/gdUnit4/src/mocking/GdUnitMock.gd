@@ -28,12 +28,6 @@ func on(obj: Variant) -> Variant:
 	return obj.__do_return(_value)
 
 
-## [color=yellow]`checked` is obsolete, use `on` instead [/color]
-func checked(obj :Object) -> Object:
-	push_warning("Using a deprecated function 'checked' use `on` instead")
-	return on(obj)
-
-
 static func _is_mock_or_spy(obj: Variant, func_sig: String) -> bool:
 	if obj is Object and not as_object(obj).has_method(func_sig):
 		push_error("Error: You try to use a non mock or spy!")

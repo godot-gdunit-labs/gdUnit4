@@ -42,7 +42,7 @@ func _execute(context :GdUnitExecutionContext) -> void:
 			GdUnitMemoryObserver.unguard_instance(fuzzer)
 
 
-func create_fuzzers(test_suite :GdUnitTestSuite, test_case :_TestCase) -> Array[Fuzzer]:
+func create_fuzzers(test_suite :GdUnitTestSuite, test_case :GdUnitTestCaseImpl) -> Array[Fuzzer]:
 	if not test_case.is_fuzzed():
 		return Array()
 	test_case.generate_seed()

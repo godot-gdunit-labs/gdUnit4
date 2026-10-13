@@ -26,7 +26,7 @@ var test_suite: GdUnitTestSuite = null:
 		return test_suite
 
 
-var test_case: _TestCase = null:
+var test_case: GdUnitTestCaseImpl = null:
 	get:
 		if test_case == null and _parent_context != null:
 			return _parent_context.test_case
@@ -104,7 +104,7 @@ static func of(pe: GdUnitExecutionContext) -> GdUnitExecutionContext:
 	return context
 
 
-static func of_test_case(pe: GdUnitExecutionContext, p_test_case: _TestCase) -> GdUnitExecutionContext:
+static func of_test_case(pe: GdUnitExecutionContext, p_test_case: GdUnitTestCaseImpl) -> GdUnitExecutionContext:
 	assert(p_test_case, "test_case is null")
 	var context := GdUnitExecutionContext.new(p_test_case.test_name(), pe)
 	context.test_case = p_test_case

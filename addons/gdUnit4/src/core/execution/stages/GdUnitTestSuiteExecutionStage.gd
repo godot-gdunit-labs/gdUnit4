@@ -28,7 +28,7 @@ func _execute(context :GdUnitExecutionContext) -> void:
 		await _stage_before.execute(context)
 		for test_case_index in context.test_suite.get_child_count():
 			# iterate only over test cases
-			var test_case := context.test_suite.get_child(test_case_index) as _TestCase
+			var test_case := context.test_suite.get_child(test_case_index) as GdUnitTestCaseImpl
 			if not is_instance_valid(test_case):
 				continue
 			context.test_suite.set_active_test_case(test_case.test_name())
@@ -81,7 +81,7 @@ func dispose_timers(test_suite :GdUnitTestSuite) -> void:
 
 
 func copy_properties(source :Object, target :Object) -> void:
-	if not source is _TestCase and not source is GdUnitTestSuite:
+	if not source is GdUnitTestCaseImpl and not source is GdUnitTestSuite:
 		return
 	for property in source.get_property_list():
 		var property_name :String = property["name"]
@@ -99,7 +99,7 @@ func fire_test_suite_skipped(context :GdUnitExecutionContext) -> void:
 
 	for test_case_index in context.test_suite.get_child_count():
 			# iterate only over test cases
-			var test_case := context.test_suite.get_child(test_case_index) as _TestCase
+			var test_case := context.test_suite.get_child(test_case_index) as GdUnitTestCaseImpl
 			if not is_instance_valid(test_case):
 				continue
 			var test_case_context := GdUnitExecutionContext.of_test_case(context, test_case)

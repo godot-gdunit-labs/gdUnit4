@@ -128,8 +128,8 @@ static func release_double(instance :Object) -> void:
 
 
 
-static func find_test_case(test_suite: Node, test_case_name: String, index := -1) -> _TestCase:
-	for test_case: _TestCase in test_suite.get_children():
+static func find_test_case(test_suite: Node, test_case_name: String, index := -1) -> GdUnitTestCaseImpl:
+	for test_case: GdUnitTestCaseImpl in test_suite.get_children():
 		if test_case.test_name() == test_case_name:
 			if index != -1:
 				if test_case._test_case.attribute_index != index:

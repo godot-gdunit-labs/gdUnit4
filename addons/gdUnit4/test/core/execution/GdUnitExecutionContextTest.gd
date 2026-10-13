@@ -13,7 +13,7 @@ func test_collect_report_statistics_with_errors() -> void:
 	# setup execution context tree like is build by the executor run
 	var ctx_suite := GdUnitExecutionContext.new("")
 	var ts :GdUnitTestSuite = auto_free(GdUnitTestSuite.new())
-	var tc :_TestCase = auto_free(create_test_case("test_case1", 0, ""))
+	var tc :GdUnitTestCaseImpl = auto_free(create_test_case("test_case1", 0, ""))
 	ts.add_child(tc)
 	ctx_suite.test_suite = ts
 	ctx_suite.orphan_monitor_start()
@@ -84,7 +84,7 @@ func test_collect_report_statistics_with_errors_on_suite_hooks() -> void:
 	# setup execution context tree like is build by the executor run
 	var ctx_suite := GdUnitExecutionContext.new("")
 	var ts :GdUnitTestSuite = auto_free(GdUnitTestSuite.new())
-	var tc :_TestCase = auto_free(create_test_case("test_case1", 0, ""))
+	var tc :GdUnitTestCaseImpl = auto_free(create_test_case("test_case1", 0, ""))
 	ts.add_child(tc)
 	ctx_suite.test_suite = ts
 	ctx_suite.orphan_monitor_start()
@@ -150,7 +150,7 @@ func test_collect_report_statistics_only_errors_on_test_hooks() -> void:
 	# setup execution context tree like is build by the executor run
 	var ctx_suite := GdUnitExecutionContext.new("")
 	var ts :GdUnitTestSuite = auto_free(GdUnitTestSuite.new())
-	var tc :_TestCase = auto_free(create_test_case("test_case1", 0, ""))
+	var tc :GdUnitTestCaseImpl = auto_free(create_test_case("test_case1", 0, ""))
 	ts.add_child(tc)
 	ctx_suite.test_suite = ts
 	ctx_suite.orphan_monitor_start()
@@ -214,7 +214,7 @@ func test_collect_report_statistics_all_tests_skipped() -> void:
 	# setup execution context tree like is build by the executor run
 	var ctx_suite := GdUnitExecutionContext.new("")
 	var ts :GdUnitTestSuite = auto_free(GdUnitTestSuite.new())
-	var tc :_TestCase = auto_free(create_test_case("test_case1", 0, ""))
+	var tc :GdUnitTestCaseImpl = auto_free(create_test_case("test_case1", 0, ""))
 	ts.add_child(tc)
 	ctx_suite.test_suite = ts
 	ctx_suite.orphan_monitor_start()
@@ -280,7 +280,7 @@ func test_simmulate_flaky_test(retry_count: int, is_flaky: bool, is_failed: bool
 	# setup execution context tree like is build by the executor run
 	var ctx_suite := GdUnitExecutionContext.new("")
 	var ts :GdUnitTestSuite = auto_free(GdUnitTestSuite.new())
-	var tc :_TestCase = auto_free(create_test_case("test_case1", 0, ""))
+	var tc :GdUnitTestCaseImpl = auto_free(create_test_case("test_case1", 0, ""))
 	ts.add_child(tc)
 	ctx_suite.test_suite = ts
 	ctx_suite.orphan_monitor_start()
@@ -356,13 +356,13 @@ func test_dispose_releases_error_monitor_logger() -> void:
 	assert_object(logger_ref.get_ref()).is_null()
 
 
-static func create_test_case(p_name: String, p_line_number: int, p_script_path: String) -> _TestCase:
+static func create_test_case(p_name: String, p_line_number: int, p_script_path: String) -> GdUnitTestCaseImpl:
 	var test_case := GdUnitTestCase.new()
 	test_case.test_name = p_name
 	test_case.line_number = p_line_number
 	test_case.source_file = p_script_path
 	var attribute := TestCaseAttribute.new()
-	return _TestCase.new(test_case, attribute, null)
+	return GdUnitTestCaseImpl.new(test_case, attribute, null)
 
 
 static func has_failures(context: GdUnitExecutionContext) -> bool:

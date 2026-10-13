@@ -1,7 +1,5 @@
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
-@warning_ignore('unused_parameter')
-@warning_ignore('return_value_discarded')
 
 
 var file_to_save: String

@@ -1,8 +1,6 @@
 # GdUnit generated TestSuite
 class_name GdUnitUiToolsTest
 extends GdUnitTestSuite
-@warning_ignore('unused_parameter')
-@warning_ignore('return_value_discarded')
 
 
 func test_merge_images_same_size() -> void:

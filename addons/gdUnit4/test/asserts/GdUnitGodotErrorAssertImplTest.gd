@@ -1,8 +1,6 @@
 # GdUnit generated TestSuite
 class_name GdUnitGodotErrorAssertImplTest
 extends GdUnitTestSuite
-@warning_ignore('unused_parameter')
-@warning_ignore('return_value_discarded')
 
 
 # skip see https://github.com/godotengine/godot/issues/80292

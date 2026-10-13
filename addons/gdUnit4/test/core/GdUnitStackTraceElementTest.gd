@@ -1,7 +1,5 @@
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
-@warning_ignore('unused_parameter')
-@warning_ignore('return_value_discarded')
 
 
 func test_of_creates_element_from_dict() -> void:

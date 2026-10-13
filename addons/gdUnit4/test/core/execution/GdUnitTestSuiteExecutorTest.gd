@@ -2,8 +2,6 @@
 # GdUnit generated TestSuite
 class_name GdUnitTestSuiteExecutorTest
 extends GdUnitTestSuite
-@warning_ignore('unused_parameter')
-@warning_ignore('return_value_discarded')
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 

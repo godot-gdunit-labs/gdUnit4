@@ -1,8 +1,6 @@
 # GdUnit generated TestSuite
 class_name GdUnitExpressionsTest
 extends GdUnitTestSuite
-@warning_ignore('unused_parameter')
-@warning_ignore('return_value_discarded')
 
 
 const TestFuzzers := preload("res://addons/gdUnit4/test/fuzzers/TestFuzzers.gd")

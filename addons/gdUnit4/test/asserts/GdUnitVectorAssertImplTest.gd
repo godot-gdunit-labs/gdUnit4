@@ -1,8 +1,6 @@
 # GdUnit generated TestSuite
 class_name GdUnitVectorAssertImplTest
 extends GdUnitTestSuite
-@warning_ignore('unused_parameter')
-@warning_ignore('return_value_discarded')
 
 
 var _test_seta := [

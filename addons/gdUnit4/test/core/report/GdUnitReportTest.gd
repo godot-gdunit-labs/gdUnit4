@@ -1,8 +1,6 @@
 # GdUnit generated TestSuite
 class_name GdUnitReportTest
 extends GdUnitTestSuite
-@warning_ignore('unused_parameter')
-@warning_ignore('return_value_discarded')
 
 
 #region _to_string

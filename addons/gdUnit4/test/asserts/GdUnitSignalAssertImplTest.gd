@@ -273,25 +273,25 @@ func test_monitor_signals() -> void:
 	var emitter_b: MyEmitter = monitor_signals(MyEmitter.new())
 
 	# verify the signals are not emitted initial
-	await assert_signal(emitter_a).wait_until(50).is_not_emitted('my_signal_a')
-	await assert_signal(emitter_a).wait_until(50).is_not_emitted('my_signal_b')
-	await assert_signal(emitter_b).wait_until(50).is_not_emitted('my_signal_a')
-	await assert_signal(emitter_b).wait_until(50).is_not_emitted('my_signal_b')
+	await assert_signal(emitter_a).wait_until(50).is_not_emitted("my_signal_a")
+	await assert_signal(emitter_a).wait_until(50).is_not_emitted("my_signal_b")
+	await assert_signal(emitter_b).wait_until(50).is_not_emitted("my_signal_a")
+	await assert_signal(emitter_b).wait_until(50).is_not_emitted("my_signal_b")
 
 	# emit signal `my_signal_a` on emitter_a
 	emitter_a.do_emit_a()
-	await assert_signal(emitter_a).is_emitted('my_signal_a')
+	await assert_signal(emitter_a).is_emitted("my_signal_a")
 
 	# emit signal `my_signal_b` on emitter_a
 	emitter_a.do_emit_b()
-	await assert_signal(emitter_a).is_emitted('my_signal_b', ["foo"])
+	await assert_signal(emitter_a).is_emitted("my_signal_b", ["foo"])
 	# verify emitter_b still has nothing emitted
-	await assert_signal(emitter_b).wait_until(50).is_not_emitted('my_signal_a')
-	await assert_signal(emitter_b).wait_until(50).is_not_emitted('my_signal_b')
+	await assert_signal(emitter_b).wait_until(50).is_not_emitted("my_signal_a")
+	await assert_signal(emitter_b).wait_until(50).is_not_emitted("my_signal_b")
 
 	# now verify emitter b
 	emitter_b.do_emit_a()
-	await assert_signal(emitter_b).wait_until(50).is_emitted('my_signal_a')
+	await assert_signal(emitter_b).wait_until(50).is_emitted("my_signal_a")
 
 
 class ExampleResource extends Resource:

@@ -23,10 +23,10 @@ func test_supported_types(value: Variant, _test_parameters := _test_seta) -> voi
 
 
 func test_unsupported_types(value: Variant, details: String, _test_parameters :=[
-	[true, 'bool'],
-	[42, 'int'],
-	[42.0, 'float'],
-	['foo', 'String'],
+	[true, "bool"],
+	[42, "int"],
+	[42.0, "float"],
+	["foo", "String"],
 ] ) -> void:
 	assert_failure(func() -> void: assert_vector(value))\
 		.is_failed()\

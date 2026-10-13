@@ -394,8 +394,8 @@ func _process_external_image_resources(input: String) -> String:
 						prints("Error creating image from response", error)
 					# replace characters where format characters
 					var new_url := IMAGE_DOWNLOAD_FOLDER + image_url.get_file().replace("_", "-")
-					if new_url.get_extension() != 'png':
-						new_url = new_url + '.png'
+					if new_url.get_extension() != "png":
+						new_url = new_url + ".png"
 					var err := image.save_png(new_url)
 					if err:
 						push_error("Can't save image to '%s'. Error: %s" % [new_url, error_string(err)])

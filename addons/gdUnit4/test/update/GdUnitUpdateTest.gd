@@ -3,7 +3,7 @@ class_name GdUnitUpdateTest
 extends GdUnitTestSuite
 
 # TestSuite generated from
-const GdUnitUpdate = preload('res://addons/gdUnit4/src/update/GdUnitUpdate.gd')
+const GdUnitUpdate = preload("res://addons/gdUnit4/src/update/GdUnitUpdate.gd")
 
 # Store original content to restore after test execution
 const TEST_RESOURCE := "res://addons/gdUnit4/test/update/resources/ExampleSceneWithUids.txt"

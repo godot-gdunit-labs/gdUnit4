@@ -149,7 +149,7 @@ func _validate_callback(predicate: Callable, expected: Variant = null) -> void:
 	if _interrupted:
 		# https://github.com/godotengine/godot/issues/73052
 		#var predicate_name = predicate.get_method()
-		var predicate_name: String = str(predicate).split('::')[1]
+		var predicate_name: String = str(predicate).split("::")[1]
 		@warning_ignore("return_value_discarded")
 		report_error(GdAssertMessages.error_interrupted(
 			predicate_name.strip_edges().trim_prefix("cb_"),

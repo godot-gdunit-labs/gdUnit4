@@ -65,9 +65,9 @@ static func as_property(sortcut: ShortCut) -> String:
 
 static func default_keys(shortcut: ShortCut) -> PackedInt32Array:
 	match OS.get_name().to_lower():
-		'windows':
+		"windows":
 			return DEFAULTS_WINDOWS[shortcut]
-		'macos':
+		"macos":
 			return DEFAULTS_MACOS[shortcut]
 		_:
 			return DEFAULTS_WINDOWS[shortcut]

@@ -89,7 +89,7 @@ func load_config(path: String = CONFIG_FILE) -> GdUnitResult:
 		var error := FileAccess.get_open_error()
 		return GdUnitResult.error("Can't load test runner configuration '%s'! ERROR: %s." % [path, error_string(error)])
 	var content := file.get_as_text()
-	if not content.is_empty() and content[0] == '{':
+	if not content.is_empty() and content[0] == "{":
 		# Parse as json
 		var test_json_conv := JSON.new()
 		var error := test_json_conv.parse(content)

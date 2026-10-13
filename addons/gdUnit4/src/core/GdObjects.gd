@@ -325,14 +325,14 @@ static func to_snake_case(value: String) -> String:
 	for ch in value:
 		var lower_ch := ch.to_lower()
 		if ch != lower_ch and result.size() > 1:
-			result.append('_')
+			result.append("_")
 		result.append(lower_ch)
-	return ''.join(result)
+	return "".join(result)
 
 
 static func is_snake_case(value: String) -> bool:
 	for ch in value:
-		if ch == '_':
+		if ch == "_":
 			continue
 		if ch == ch.to_upper():
 			return false
@@ -450,7 +450,7 @@ static func is_instance(value: Variant) -> bool:
 	if is_scene(value):
 		return true
 	@warning_ignore("unsafe_cast")
-	return not (value as Object).has_method('new') and not (value as Object).has_method('instance')
+	return not (value as Object).has_method("new") and not (value as Object).has_method("instance")
 
 
 # only object form type Node and attached filename

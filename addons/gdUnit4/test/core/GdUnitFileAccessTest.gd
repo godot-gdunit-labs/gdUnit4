@@ -47,8 +47,8 @@ func test_create_temp_dir() -> void:
 	file_to_save = temp_dir + "/save_game.dat"
 
 	var data := {
-		'user': "Hoschi",
-		'level': 42
+		"user": "Hoschi",
+		"level": 42
 	}
 	var file := FileAccess.open(file_to_save, FileAccess.WRITE)
 	file.store_line(JSON.stringify(data))

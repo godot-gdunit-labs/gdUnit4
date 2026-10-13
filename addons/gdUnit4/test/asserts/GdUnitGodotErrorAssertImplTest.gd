@@ -46,10 +46,10 @@ func test_is_assert_failed(
 	_skip_reason  := "Is skipped because the test will holt on script error in debug mode") -> void:
 
 	assert_error(produce_assert_error)\
-		.is_runtime_error('Assertion failed: this is an assert error')
+		.is_runtime_error("Assertion failed: this is an assert error")
 
 	assert_failure(func() -> void:
-		assert_error(produce_assert_success).is_runtime_error('Assertion failed: this is an assert error')
+		assert_error(produce_assert_success).is_runtime_error("Assertion failed: this is an assert error")
 	).is_failed().has_message("""
 		Expecting: a runtime error is triggered.
 			expected: 'Assertion failed: this is an assert error'
@@ -58,10 +58,10 @@ func test_is_assert_failed(
 
 
 func test_is_push_warning() -> void:
-	assert_error(produce_push_warning).is_push_warning('this is an push_warning')
+	assert_error(produce_push_warning).is_push_warning("this is an push_warning")
 
 	assert_failure(func() -> void:
-		assert_error(produce_push_warning).is_push_warning('this is an error')
+		assert_error(produce_push_warning).is_push_warning("this is an error")
 	).is_failed().has_message("""
 		Expecting: push_warning() is called.
 			expected: 'this is an error'
@@ -79,10 +79,10 @@ func test_is_push_warning_using_argument_matcher() -> void:
 
 
 func test_is_push_error() -> void:
-	assert_error(produce_push_error).is_push_error('this is an push_error')
+	assert_error(produce_push_error).is_push_error("this is an push_error")
 
 	assert_failure(func() -> void:
-		assert_error(produce_assert_success).is_push_error('this is an push_error')
+		assert_error(produce_assert_success).is_push_error("this is an push_error")
 	).is_failed().has_message("""
 		Expecting: push_error() is called.
 			expected: 'this is an push_error'
@@ -90,7 +90,7 @@ func test_is_push_error() -> void:
 		""".dedent().trim_prefix("\n"))
 
 	assert_failure(func() -> void:
-		assert_error(produce_push_warning).is_push_error('this is an push_error')
+		assert_error(produce_push_warning).is_push_error("this is an push_error")
 	).is_failed().has_message("""
 		Expecting: push_error() is called.
 			expected: 'this is an push_error'
@@ -157,11 +157,11 @@ func produce_assert_error() -> void:
 
 
 func produce_push_warning() -> void:
-	push_warning('this is an push_warning')
+	push_warning("this is an push_warning")
 
 
 func produce_push_error() -> void:
-	push_error('this is an push_error')
+	push_error("this is an push_error")
 
 
 func produce_runtime_error() -> void:

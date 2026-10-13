@@ -4,7 +4,7 @@ class_name GdUnitInspectorTreeMainPanelTest
 extends GdUnitTestSuite
 
 # TestSuite generated from
-const GdUnitInspectorTreeMainPanel := preload('res://addons/gdUnit4/src/ui/parts/GdUnitInspectorTreeMainPanel.gd')
+const GdUnitInspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/GdUnitInspectorTreeMainPanel.gd")
 
 const FAILED := GdUnitInspectorTreeMainPanel.STATE.FAILED
 const ERROR := GdUnitInspectorTreeMainPanel.STATE.ERROR

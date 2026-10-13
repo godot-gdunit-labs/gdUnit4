@@ -607,7 +607,7 @@ func _parse_end_function(input: String, remove_trailing_char := false) -> String
 		# check if the parsed value ends with comma or end of doubled breaked
 		# `<value>,` or `<function>())`
 		var trailing_char := input[current_index - 1]
-		if trailing_char == ',' or (bracket_count < 0 and trailing_char == ')'):
+		if trailing_char == "," or (bracket_count < 0 and trailing_char == ")"):
 			return input.substr(0, current_index - 1)
 	return input.substr(0, current_index)
 

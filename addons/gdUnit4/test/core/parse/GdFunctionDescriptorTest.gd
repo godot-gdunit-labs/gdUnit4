@@ -114,7 +114,7 @@ func test_extract_from_func_with_vararg() -> void:
 	assert_int(fd.return_type()).is_equal(GdObjects.TYPE_ENUM)
 	assert_array(fd.args()).contains_exactly([GdFunctionArgument.new("signal", TYPE_STRING_NAME)])
 	assert_array(fd.varargs()).contains_exactly([
-		GdFunctionArgument.new("varargs", GdObjects.TYPE_VARARG, '')
+		GdFunctionArgument.new("varargs", GdObjects.TYPE_VARARG, "")
 	])
 
 

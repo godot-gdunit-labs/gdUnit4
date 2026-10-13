@@ -216,11 +216,11 @@ func build_arguments() -> String:
 
 func build_super_calls() -> String:
 	if !fd.is_vararg():
-		return 'super(%s)\n' % ", ".join(func_args)
+		return "super(%s)\n" % ", ".join(func_args)
 
 	var match_block := "match varargs_.size():\n"
 	for index in range(0, 11):
-		match_block += '{index}: super({args})\n'.format({
+		match_block += "{index}: super({args})\n".format({
 			"index" : index,
 			"args" : ", ".join(func_args + build_vararg_list(index))
 		}).indent("\t")

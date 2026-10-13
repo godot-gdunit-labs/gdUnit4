@@ -188,7 +188,7 @@ static func extract_from(descriptor: Dictionary, p_is_engine := true) -> GdFunct
 	var func_return_type := _extract_return_type(return_descriptor)
 
 	# Add hotfix to handle Godot bug https://github.com/godotengine/godot/issues/122629
-	if func_name == '_static_init':
+	if func_name == "_static_init":
 		func_return_type = GdObjects.TYPE_VOID
 
 	return GdFunctionDescriptor.new(
@@ -240,7 +240,7 @@ static func _build_varargs(p_is_vararg: bool) -> Array[GdFunctionArgument]:
 	var func_varargs: Array[GdFunctionArgument] = []
 	if not p_is_vararg:
 		return func_varargs
-	func_varargs.push_back(GdFunctionArgument.new("varargs", GdObjects.TYPE_VARARG, ''))
+	func_varargs.push_back(GdFunctionArgument.new("varargs", GdObjects.TYPE_VARARG, ""))
 	return func_varargs
 
 

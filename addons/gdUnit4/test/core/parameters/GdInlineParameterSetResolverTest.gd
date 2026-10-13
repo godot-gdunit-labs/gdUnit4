@@ -8,15 +8,15 @@ const DATA2 := ["bb"]
 
 
 var example_parameters := [
-	'[auto_free(Node.new()), Node]',
-	'[auto_free(Node3D.new()), Node3D]',
+	"[auto_free(Node.new()), Node]",
+	"[auto_free(Node3D.new()), Node3D]",
 	'["abc", "String"]',
 	'[_x, "Integer"]',
-	'[_obj, Node2D]',
-	'[TestObj.new(), TestObj]',
-	'[Vector3(1,1,1), Vector2(2,2)]',
-	'[Color(1,1,1), _color]',
-	'_test_set_a]'
+	"[_obj, Node2D]",
+	"[TestObj.new(), TestObj]",
+	"[Vector3(1,1,1), Vector2(2,2)]",
+	"[Color(1,1,1), _color]",
+	"_test_set_a]"
 	]
 
 @warning_ignore_start("unused_private_class_variable")
@@ -123,10 +123,10 @@ func using_parameters_with_script_constants(_func_name: String, _expected_type: 
 
 func using_parameters_with_comments(_a: int, _b: int, _c: String, _expected: int, _test_parameters := [
 	# before data set
-	[1, 2, '3', 6], # after data set
+	[1, 2, "3", 6], # after data set
 	# between data sets
-	[3, 4, '5', 11],
-	[6, 7, 'string #ABCD', 21], # dataset with [comment] sign
+	[3, 4, "5", 11],
+	[6, 7, "string #ABCD", 21], # dataset with [comment] sign
 	[6, 7, "string #ABCD", 21] # dataset with "comment" sign
 	#eof
 ]) -> void:
@@ -282,10 +282,10 @@ func test_get_parameters_with_constants() -> void:
 
 func test_get_parameters_with_constants_uses_fast_path() -> void:
 	var test_parameters := [
-		'[Vector2.ZERO, Vector2.ONE, Vector2.DOWN, Vector2.INF]',
-		'[Vector3.ZERO, Vector3.ONE, Vector3.DOWN, Vector3.INF]',
-		'[Vector4.ZERO, Vector4.ONE, Vector4.INF]',
-		'[Color.RED, Color.WEB_GRAY]',
+		"[Vector2.ZERO, Vector2.ONE, Vector2.DOWN, Vector2.INF]",
+		"[Vector3.ZERO, Vector3.ONE, Vector3.DOWN, Vector3.INF]",
+		"[Vector4.ZERO, Vector4.ONE, Vector4.INF]",
+		"[Color.RED, Color.WEB_GRAY]",
 	]
 	var resolver := GdInlineParameterSetResolver.new(test_parameters, "", "")
 
@@ -400,9 +400,9 @@ func test_resolve_parameters_with_comments() -> void:
 	assert_that(params).is_not_null()
 	assert_array(params) \
 		.is_equal([
-			[1, 2, '3', 6, []],
-			[3, 4, '5', 11, []],
-			[6, 7, 'string #ABCD', 21, []],
+			[1, 2, "3", 6, []],
+			[3, 4, "5", 11, []],
+			[6, 7, "string #ABCD", 21, []],
 			[6, 7, "string #ABCD", 21, []]])
 
 

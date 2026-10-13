@@ -9,7 +9,7 @@ var _decoders := {
 	TYPE_STRING: func(value: Variant) -> String: return '"%s"' % value,
 	TYPE_STRING_NAME: _on_type_string_name,
 	TYPE_BOOL: func(value: Variant) -> String: return str(value).to_lower(),
-	TYPE_FLOAT: func(value: Variant) -> String: return '%f' % value,
+	TYPE_FLOAT: func(value: Variant) -> String: return "%f" % value,
 	TYPE_COLOR: _on_type_color,
 	TYPE_ARRAY: _on_type_array.bind(TYPE_ARRAY),
 	TYPE_PACKED_BYTE_ARRAY: _on_type_array.bind(TYPE_PACKED_BYTE_ARRAY),
@@ -55,12 +55,12 @@ static func _regex(pattern: String) -> RegEx:
 
 
 func get_decoder(type: int) -> Callable:
-	return _decoders.get(type, func(value: Variant) -> String: return '%s' % value)
+	return _decoders.get(type, func(value: Variant) -> String: return "%s" % value)
 
 
 func _on_type_string_name(value: StringName) -> String:
 	if value.is_empty():
-		return 'StringName()'
+		return "StringName()"
 	return 'StringName("%s")' % value
 
 
@@ -76,21 +76,21 @@ func _on_type_color(color: Color) -> String:
 
 func _on_type_node_path(path: NodePath) -> String:
 	if path.is_empty():
-		return 'NodePath()'
+		return "NodePath()"
 	return 'NodePath("%s")' % path
 
 
 func _on_type_callable(_cb: Callable) -> String:
-	return 'Callable()'
+	return "Callable()"
 
 
 func _on_type_signal(_s: Signal) -> String:
-	return 'Signal()'
+	return "Signal()"
 
 
 func _on_type_dictionary(dict: Dictionary) -> String:
 	if dict.is_empty():
-		return '{}'
+		return "{}"
 	return str(dict)
 
 

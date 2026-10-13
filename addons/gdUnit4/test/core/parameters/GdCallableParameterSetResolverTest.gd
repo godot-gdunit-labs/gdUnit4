@@ -218,7 +218,7 @@ func test_split_argumens1(arg1: String, arg2: String, _test_parameters := _param
 	assert_str(arg2).is_equal("d,ef")
 
 
-func test_split_argumens2(arg1: String, arg2: String, _test_parameters := _parameters_string_arg('abc', 'd"ef')) -> void:
+func test_split_argumens2(arg1: String, arg2: String, _test_parameters := _parameters_string_arg("abc", 'd"ef')) -> void:
 	assert_str(arg1).is_equal("abc")
 	assert_str(arg2).is_equal("d\"ef")
 
@@ -228,7 +228,7 @@ func test_split_argumens3(arg1: String, arg2: String, _test_parameters := _param
 	assert_str(arg2).is_equal("d\"ef")
 
 
-func test_split_argumens4(arg1: String, arg2: String, _test_parameters := _parameters_string_arg('abc', 'd\'ef')) -> void:
+func test_split_argumens4(arg1: String, arg2: String, _test_parameters := _parameters_string_arg("abc", 'd\'ef')) -> void:
 	assert_str(arg1).is_equal("abc")
 	assert_str(arg2).is_equal("d'ef")
 
@@ -257,7 +257,7 @@ func test_split_argumens() -> void:
 	assert_array(GdCallableParameterSetResolver._split_argumens('12, Node3d.new(), true, "d,ef"'))\
 		.contains_exactly([
 			"12",
-			'Node3d.new()',
+			"Node3d.new()",
 			"true",
 			'"d,ef"'
 		])

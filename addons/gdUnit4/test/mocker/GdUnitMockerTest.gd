@@ -134,7 +134,7 @@ func test_mock_class_with_field_initializer_calling_overridden_method() -> void:
 
 
 func test_mock_source_with_class_name_by_resource_path() -> void:
-	var world_script_path := 'res://addons/gdUnit4/test/mocker/resources/GD-256/world.gd'
+	var world_script_path := "res://addons/gdUnit4/test/mocker/resources/GD-256/world.gd"
 	var m: Variant = mock(world_script_path)
 	var head: String = m.get_script().source_code.substr(0, 500)
 	assert_str(head)\
@@ -143,7 +143,7 @@ func test_mock_source_with_class_name_by_resource_path() -> void:
 
 
 func test_mock_source_with_class_name_by_class() -> void:
-	var world_script_path := 'res://addons/gdUnit4/test/mocker/resources/GD-256/world.gd'
+	var world_script_path := "res://addons/gdUnit4/test/mocker/resources/GD-256/world.gd"
 	var m: Variant = mock(Munderwood_Pathing_World)
 	var head: String = m.get_script().source_code.substr(0, 500)
 	assert_str(head)\

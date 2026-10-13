@@ -11,7 +11,7 @@ var _style: StyleBoxFlat
 
 func before_test() -> void:
 	@warning_ignore("unsafe_method_access")
-	var control: Control = load('res://addons/gdUnit4/src/ui/parts/GdUnitInspectorProgressBar.tscn').instantiate()
+	var control: Control = load("res://addons/gdUnit4/src/ui/parts/GdUnitInspectorProgressBar.tscn").instantiate()
 	add_child(control)
 	_progress = control.find_child("ProgressBar", true, false)
 

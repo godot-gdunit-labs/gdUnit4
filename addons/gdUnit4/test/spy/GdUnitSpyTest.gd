@@ -58,7 +58,7 @@ func test_spy_on_node() -> void:
 
 
 func test_spy_source_with_class_name_by_resource_path() -> void:
-	var instance: Object = auto_free(_load('res://addons/gdUnit4/test/mocker/resources/GD-256/world.gd').new())
+	var instance: Object = auto_free(_load("res://addons/gdUnit4/test/mocker/resources/GD-256/world.gd").new())
 	var m: Variant = spy(instance)
 	@warning_ignore("unsafe_method_access")
 	var head: String = m.get_script().source_code.substr(0, 500)

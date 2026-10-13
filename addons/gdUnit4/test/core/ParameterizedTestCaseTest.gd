@@ -248,8 +248,8 @@ func test_with_string_contains_brackets(
 		[3, "flowchart TD\nid((This is a circular node))"],
 		[4, "flowchart TD\nid>This is a flag shaped node]"],
 		[5, "flowchart TD\nid{'This is a rhombus node'}"],
-		[6, 'flowchart TD\nid((This is a circular node))'],
-		[7, 'flowchart TD\nid>This is a flag shaped node]'],
+		[6, "flowchart TD\nid((This is a circular node))"],
+		[7, "flowchart TD\nid>This is a flag shaped node]"],
 		[8, 'flowchart TD\nid{"This is a rhombus node"}'],
 		[9, """
 			flowchart TD
@@ -263,8 +263,8 @@ func test_with_string_contains_brackets(
 		3: assert_str(value).is_equal("flowchart TD\nid((This is a circular node))")
 		4: assert_str(value).is_equal("flowchart TD\nid>" + "This is a flag shaped node]")
 		5: assert_str(value).is_equal("flowchart TD\nid{'This is a rhombus node'}")
-		6: assert_str(value).is_equal('flowchart TD\nid((This is a circular node))')
-		7: assert_str(value).is_equal('flowchart TD\nid>This is a flag shaped node]')
+		6: assert_str(value).is_equal("flowchart TD\nid((This is a circular node))")
+		7: assert_str(value).is_equal("flowchart TD\nid>This is a flag shaped node]")
 		8: assert_str(value).is_equal('flowchart TD\nid{"This is a rhombus node"}')
 		9: assert_str(value).is_equal("""
 			flowchart TD

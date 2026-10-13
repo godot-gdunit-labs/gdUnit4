@@ -33,7 +33,7 @@ func test_decode_primitives(variant_type: int, value: Variant, expected: String,
 	[TYPE_STRING, "hello", '"hello"'],
 	[TYPE_STRING, "", '""'],
 	[TYPE_STRING_NAME, StringName("hello"), 'StringName("hello")'],
-	[TYPE_STRING_NAME, StringName(""), 'StringName()'],
+	[TYPE_STRING_NAME, StringName(""), "StringName()"],
 	]) -> void:
 
 	assert_that(GdDefaultValueDecoder.decode_typed(variant_type, value)).is_equal(expected)
@@ -143,7 +143,7 @@ func test_decode_color(variant_type: int, value: Color, expected: String, _test_
 
 
 func test_decode_node_path(variant_type: int, value: NodePath, expected: String, _test_parameters := [
-	[TYPE_NODE_PATH, NodePath(), 'NodePath()'],
+	[TYPE_NODE_PATH, NodePath(), "NodePath()"],
 	[TYPE_NODE_PATH, NodePath("/foo/bar"), 'NodePath("/foo/bar")'],
 	]) -> void:
 	assert_that(GdDefaultValueDecoder.decode_typed(variant_type, value)).is_equal(expected)
@@ -151,37 +151,37 @@ func test_decode_node_path(variant_type: int, value: NodePath, expected: String,
 
 
 func test_decode_rid(variant_type: int, value: RID, expected: String, _test_parameters := [
-	[TYPE_RID, RID(), 'RID()'],
+	[TYPE_RID, RID(), "RID()"],
 	]) -> void:
 	assert_that(GdDefaultValueDecoder.decode_typed(variant_type, value)).is_equal(expected)
 	_tested_types[variant_type] = 1
 
 
 func _test_decode_object(variant_type: int, value: Node, expected: String, _test_parameters := [
-	[TYPE_OBJECT, Node.new(), 'Node.new()'],
+	[TYPE_OBJECT, Node.new(), "Node.new()"],
 	]) -> void:
 	assert_that(GdDefaultValueDecoder.decode_typed(variant_type, value)).is_equal(expected)
 	_tested_types[variant_type] = 1
 
 
 func test_decode_callable(variant_type: int, value: Callable, expected: String, _test_parameters := [
-	[TYPE_CALLABLE, Callable(), 'Callable()'],
+	[TYPE_CALLABLE, Callable(), "Callable()"],
 	]) -> void:
 	assert_that(GdDefaultValueDecoder.decode_typed(variant_type, value)).is_equal(expected)
 	_tested_types[variant_type] = 1
 
 
 func test_decode_signal(variant_type: int, value: Signal, expected: String, _test_parameters := [
-	[TYPE_SIGNAL, Signal(), 'Signal()'],
+	[TYPE_SIGNAL, Signal(), "Signal()"],
 	]) -> void:
 	assert_that(GdDefaultValueDecoder.decode_typed(variant_type, value)).is_equal(expected)
 	_tested_types[variant_type] = 1
 
 
 func test_decode_dictionary(variant_type: int, value: Dictionary, expected: String, _test_parameters := [
-	[TYPE_DICTIONARY, {}, '{}'],
-	[TYPE_DICTIONARY, Dictionary(), '{}'],
-	[TYPE_DICTIONARY, {1:2, 2:3}, '{ 1: 2, 2: 3 }'],
+	[TYPE_DICTIONARY, {}, "{}"],
+	[TYPE_DICTIONARY, Dictionary(), "{}"],
+	[TYPE_DICTIONARY, {1:2, 2:3}, "{ 1: 2, 2: 3 }"],
 	[TYPE_DICTIONARY, {"aa":2, "bb":"cc"}, '{ "aa": 2, "bb": "cc" }'],
 	]) -> void:
 	assert_that(GdDefaultValueDecoder.decode_typed(variant_type, value)).is_equal(expected)
@@ -189,9 +189,9 @@ func test_decode_dictionary(variant_type: int, value: Dictionary, expected: Stri
 
 
 func test_decode_array(variant_type: int, value: Array, expected: String, _test_parameters := [
-	[TYPE_ARRAY, [], '[]'],
-	[TYPE_ARRAY, Array(), '[]'],
-	[TYPE_ARRAY, [1,2,3], '[1, 2, 3]'],
+	[TYPE_ARRAY, [], "[]"],
+	[TYPE_ARRAY, Array(), "[]"],
+	[TYPE_ARRAY, [1,2,3], "[1, 2, 3]"],
 	]) -> void:
 	assert_that(GdDefaultValueDecoder.decode_typed(variant_type, value)).is_equal(expected)
 	_tested_types[variant_type] = 1
@@ -199,45 +199,45 @@ func test_decode_array(variant_type: int, value: Array, expected: String, _test_
 
 func test_decode_typed_arrays(variant_type: int, value: Variant, expected: String, _test_parameters := [
 	[TYPE_PACKED_BYTE_ARRAY, PackedByteArray(),
-		'PackedByteArray()'],
+		"PackedByteArray()"],
 	[TYPE_PACKED_BYTE_ARRAY, PackedByteArray([1, 2, 3]),
-		'PackedByteArray([1, 2, 3])'],
+		"PackedByteArray([1, 2, 3])"],
 	[TYPE_PACKED_COLOR_ARRAY, PackedColorArray(),
-		'PackedColorArray()'],
+		"PackedColorArray()"],
 	[TYPE_PACKED_COLOR_ARRAY, PackedColorArray([Color.RED, Color.BLUE]),
-		'PackedColorArray([Color'+str(Color(1, 0, 0, 1))+', Color'+str(Color(0, 0, 1, 1))+'])'],
+		"PackedColorArray([Color"+str(Color(1, 0, 0, 1))+", Color"+str(Color(0, 0, 1, 1))+"])"],
 	[TYPE_PACKED_FLOAT32_ARRAY, PackedFloat32Array(),
-		'PackedFloat32Array()'],
+		"PackedFloat32Array()"],
 	[TYPE_PACKED_FLOAT32_ARRAY, PackedFloat32Array([1.2, 2.3]),
-		'PackedFloat32Array([1.20000004768372, 2.29999995231628])'],
+		"PackedFloat32Array([1.20000004768372, 2.29999995231628])"],
 	[TYPE_PACKED_FLOAT64_ARRAY, PackedFloat64Array(),
-		'PackedFloat64Array()'],
+		"PackedFloat64Array()"],
 	[TYPE_PACKED_FLOAT64_ARRAY, PackedFloat64Array([1.2, 2.3]),
-		'PackedFloat64Array([1.2, 2.3])'],
+		"PackedFloat64Array([1.2, 2.3])"],
 	[TYPE_PACKED_INT32_ARRAY, PackedInt32Array(),
-		'PackedInt32Array()'],
+		"PackedInt32Array()"],
 	[TYPE_PACKED_INT32_ARRAY, PackedInt32Array([1, 2]),
-		'PackedInt32Array([1, 2])'],
+		"PackedInt32Array([1, 2])"],
 	[TYPE_PACKED_INT64_ARRAY, PackedInt64Array(),
-		'PackedInt64Array()'],
+		"PackedInt64Array()"],
 	[TYPE_PACKED_INT64_ARRAY, PackedInt64Array([1, 2]),
-		'PackedInt64Array([1, 2])'],
+		"PackedInt64Array([1, 2])"],
 	[TYPE_PACKED_STRING_ARRAY, PackedStringArray(),
-		'PackedStringArray()'],
+		"PackedStringArray()"],
 	[TYPE_PACKED_STRING_ARRAY, PackedStringArray(["aa", "bb"]),
 		'PackedStringArray(["aa", "bb"])'],
 	[TYPE_PACKED_VECTOR2_ARRAY, PackedVector2Array(),
-		'PackedVector2Array()'],
+		"PackedVector2Array()"],
 	[TYPE_PACKED_VECTOR2_ARRAY, PackedVector2Array([Vector2.ONE, Vector2.ONE*2]),
-		'PackedVector2Array([Vector2'+str(Vector2.ONE)+', Vector2'+str(Vector2.ONE*2)+'])'],
+		"PackedVector2Array([Vector2"+str(Vector2.ONE)+", Vector2"+str(Vector2.ONE*2)+"])"],
 	[TYPE_PACKED_VECTOR3_ARRAY, PackedVector3Array(),
-		'PackedVector3Array()'],
+		"PackedVector3Array()"],
 	[TYPE_PACKED_VECTOR3_ARRAY, PackedVector3Array([Vector3.ONE, Vector3.ONE*2]),
-		'PackedVector3Array([Vector3'+str(Vector3.ONE)+', Vector3'+str(Vector3.ONE*2)+'])'],
+		"PackedVector3Array([Vector3"+str(Vector3.ONE)+", Vector3"+str(Vector3.ONE*2)+"])"],
 	[TYPE_PACKED_VECTOR4_ARRAY, PackedVector4Array(),
-		'PackedVector4Array()'],
+		"PackedVector4Array()"],
 	[TYPE_PACKED_VECTOR4_ARRAY, PackedVector4Array([Vector4.ONE, Vector4.ONE*2]),
-		'PackedVector4Array([Vector4'+str(Vector4.ONE)+', Vector4'+str(Vector4.ONE*2)+'])']
+		"PackedVector4Array([Vector4"+str(Vector4.ONE)+", Vector4"+str(Vector4.ONE*2)+"])"]
 	]) -> void:
 	assert_that(GdDefaultValueDecoder.decode_typed(variant_type, value)).is_equal(expected)
 	_tested_types[variant_type] = 1

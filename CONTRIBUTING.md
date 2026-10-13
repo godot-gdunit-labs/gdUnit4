@@ -129,7 +129,11 @@ GDScript linting uses `gdtoolkit` (`gdlint`).
 [Install GDlint](https://github.com/Scony/godot-gdscript-toolkit)
 
 You can optionally run `gdlint` locally to check your changes before submitting a PR.  
-Linting is enforced by CI.
+Linting is enforced by CI for all plugin sources and tests:
+
+```bash
+gdlint addons/gdUnit4/
+```
 
 ### Project Structure
 

@@ -39,12 +39,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p reports/gdlint/
-          gdlint addons/gdUnit4/bin/ | tee reports/gdlint/gdlint.txt
-          gdlint addons/gdUnit4/src/cmd/ | tee reports/gdlint/cmd.txt
-          gdlint addons/gdUnit4/src/reporters/ | tee reports/gdlint/report.txt
-          gdlint addons/gdUnit4/src/network | tee reports/gdlint/gdlint_networkcode.txt
-          gdlint addons/gdUnit4/src/asserts | tee reports/gdlint/gdlint_asserts.txt
-          gdlint addons/gdUnit4/src/reporters/html | tee reports/gdlint/html_reporters.txt
+          gdlint addons/gdUnit4/ 2>&1 | tee reports/gdlint/gdlint.txt
 
       - name: Upload GDLint Report
         if: failure()

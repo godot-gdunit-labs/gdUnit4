@@ -58,16 +58,10 @@ dotnet format gdUnit4.csproj --verify-no-changes --verbosity diagnostic
 Requires `gdlint` (gdscript-toolkit 4.5.0):
 
 ```bash
-gdlint addons/gdUnit4/bin/
-gdlint addons/gdUnit4/src/cmd/
-gdlint addons/gdUnit4/src/core/parameters
-gdlint addons/gdUnit4/src/reporters/
-gdlint addons/gdUnit4/src/network
-gdlint addons/gdUnit4/src/asserts
-
-# For tests
-gdlint addons/gdUnit4/test/core/parameters
+gdlint addons/gdUnit4/
 ```
+
+CI lints the whole plugin, sources and tests. Directories named `resources` are excluded by `.gdlintrc`.
 
 ### Markdown Linting
 
@@ -241,11 +235,7 @@ Run all linting locally before pushing to avoid CI failures:
 
 ```bash
 # GDScript lint (mirrors .github/workflows/gdlint.yml)
-gdlint addons/gdUnit4/bin/
-gdlint addons/gdUnit4/src/cmd/
-gdlint addons/gdUnit4/src/reporters/
-gdlint addons/gdUnit4/src/network
-gdlint addons/gdUnit4/src/asserts
+gdlint addons/gdUnit4/
 
 # Markdown lint
 markdownlint-cli2 --config .github/actions/formatting_checks/.markdownlint.jsonc "**/*.md"

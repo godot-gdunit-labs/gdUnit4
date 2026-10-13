@@ -40,7 +40,7 @@ dotnet format gdUnit4.csproj --verify-no-changes --verbosity diagnostic
 ## Coding Conventions
 
 **GDScript** — enforced by gdlint (gdscript-toolkit 4.5.0):
-- Max line length: 140 characters
+- Max line length: 180 characters
 - Max file lines: 1000
 - Max public methods: 40
 - Max function arguments: 11
@@ -50,11 +50,7 @@ dotnet format gdUnit4.csproj --verify-no-changes --verbosity diagnostic
 ## GDScript Linting
 
 ```bash
-gdlint addons/gdUnit4/bin/
-gdlint addons/gdUnit4/src/cmd/
-gdlint addons/gdUnit4/src/reporters/
-gdlint addons/gdUnit4/src/network
-gdlint addons/gdUnit4/src/asserts
+gdlint addons/gdUnit4/
 ```
 
 ## Branch and PR Conventions

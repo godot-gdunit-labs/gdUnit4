@@ -8,18 +8,18 @@ const GdUnitTools = preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 const _SHOW_DEBUG := false
 
 
-var _store :Array[Variant] = []
+var _store: Array[Variant] = []
 # enable for debugging purposes
 var _is_stdout_verbose := false
 
 
 ## Registration of an instance to be released when an execution phase is completed
-func register_auto_free(obj :Variant) -> Variant:
+func register_auto_free(obj: Variant) -> Variant:
 	if not is_instance_valid(obj):
 		return obj
 	# do not register on GDScriptNativeClass
 	@warning_ignore("unsafe_cast")
-	if typeof(obj) == TYPE_OBJECT and (obj as Object).is_class("GDScriptNativeClass") :
+	if typeof(obj) == TYPE_OBJECT and (obj as Object).is_class("GDScriptNativeClass"):
 		return obj
 	#if obj is GDScript or obj is ScriptExtension:
 	#	return obj
@@ -42,12 +42,12 @@ static func _is_instance_guard_enabled() -> bool:
 	return false
 
 
-static func debug_observe(name :String, obj :Object, indent :int = 0) -> void:
+static func debug_observe(name: String, obj: Object, indent: int = 0) -> void:
 	if not _SHOW_DEBUG:
 		return
-	var script :GDScript= obj if obj is GDScript else obj.get_script()
+	var script: GDScript = obj if obj is GDScript else obj.get_script()
 	if script:
-		var base_script :GDScript = script.get_base_script()
+		var base_script: GDScript = script.get_base_script()
 		@warning_ignore("unsafe_method_access")
 		prints(
 			"".lpad(indent, "	"),
@@ -61,13 +61,13 @@ static func debug_observe(name :String, obj :Object, indent :int = 0) -> void:
 			script.resource_path
 		)
 		if base_script:
-			debug_observe("+", base_script, indent+1)
+			debug_observe("+", base_script, indent + 1)
 	else:
 		@warning_ignore("unsafe_method_access")
 		prints(name, obj, obj.get_class(), obj.get_name())
 
 
-static func guard_instance(obj :Object) -> void:
+static func guard_instance(obj: Object) -> void:
 	if not _is_instance_guard_enabled():
 		return
 	var tag := TAG_OBSERVE_INSTANCE + str(abs(obj.get_instance_id()))
@@ -77,7 +77,7 @@ static func guard_instance(obj :Object) -> void:
 	Engine.set_meta(tag, obj)
 
 
-static func unguard_instance(obj :Object, verbose := true) -> void:
+static func unguard_instance(obj: Object, verbose := true) -> void:
 	if not _is_instance_guard_enabled():
 		return
 	var tag := TAG_OBSERVE_INSTANCE + str(abs(obj.get_instance_id()))
@@ -87,7 +87,7 @@ static func unguard_instance(obj :Object, verbose := true) -> void:
 		Engine.remove_meta(tag)
 
 
-static func gc_guarded_instance(name :String, instance :Object) -> void:
+static func gc_guarded_instance(name: String, instance: Object) -> void:
 	if not _is_instance_guard_enabled():
 		return
 	await (Engine.get_main_loop() as SceneTree).process_frame
@@ -111,13 +111,13 @@ static func gc_on_guarded_instances() -> void:
 		return
 	for tag in Engine.get_meta_list():
 		if tag.begins_with(TAG_OBSERVE_INSTANCE):
-			var instance :Object = Engine.get_meta(tag)
+			var instance: Object = Engine.get_meta(tag)
 			await gc_guarded_instance("Leaked instance detected:", instance)
 			await GdUnitTools.free_instance(instance, false)
 
 
 # store the object into global store aswell to be verified by 'is_marked_auto_free'
-func _tag_object(obj :Variant) -> void:
+func _tag_object(obj: Variant) -> void:
 	var tagged_object: Array = Engine.get_meta(TAG_AUTO_FREE, [])
 	tagged_object.append(obj)
 	Engine.set_meta(TAG_AUTO_FREE, tagged_object)
@@ -131,7 +131,7 @@ func gc() -> void:
 		print_verbose("GdUnit4:gc():running", " freeing %d objects .." % _store.size())
 	var tagged_objects: Array = Engine.get_meta(TAG_AUTO_FREE, [])
 	while not _store.is_empty():
-		var value :Variant = _store.pop_front()
+		var value: Variant = _store.pop_front()
 		tagged_objects.erase(value)
 		await GdUnitTools.free_instance(value, _is_stdout_verbose)
 	assert(_store.is_empty(), "The memory observer has still entries in the store!")

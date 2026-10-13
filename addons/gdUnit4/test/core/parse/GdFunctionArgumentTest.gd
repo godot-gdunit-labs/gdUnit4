@@ -246,6 +246,6 @@ func test_parse_parameters_performance() -> void:
 	@warning_ignore_start("integer_division")
 	prints("--- _parse_parameters:overall performance (%d iterations) ---" % ITERATIONS)
 	prints("	%8d µs  (%d µs/iteration)" % [elapsed_time, elapsed_time / ITERATIONS])
-	assert_int(elapsed_time/ITERATIONS).is_less(200)
+	assert_int(elapsed_time / ITERATIONS).is_less(200)
 	@warning_ignore_restore("integer_division")
 #endregion

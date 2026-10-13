@@ -9,11 +9,11 @@ var _custom_failure_message := ""
 var _additional_failure_message := ""
 
 
-func _set_do_expect_fail(enabled :bool = true) -> void:
+func _set_do_expect_fail(enabled: bool = true) -> void:
 	Engine.set_meta(GdUnitConstants.EXPECT_ASSERT_REPORT_FAILURES, enabled)
 
 
-func execute_and_await(assertion :Callable, do_await := true) -> GdUnitFailureAssert:
+func execute_and_await(assertion: Callable, do_await := true) -> GdUnitFailureAssert:
 	# do not report any failure from the original assertion we want to test
 	_set_do_expect_fail(true)
 	var thread_context := GdUnitThreadManager.get_current_context()
@@ -41,13 +41,13 @@ func execute_and_await(assertion :Callable, do_await := true) -> GdUnitFailureAs
 	return self
 
 
-func execute(assertion :Callable) -> GdUnitFailureAssert:
+func execute(assertion: Callable) -> GdUnitFailureAssert:
 	@warning_ignore("return_value_discarded")
 	execute_and_await(assertion, false)
 	return self
 
 
-func _on_test_failed(value :bool) -> void:
+func _on_test_failed(value: bool) -> void:
 	_is_failed = value
 
 
@@ -89,7 +89,7 @@ func is_failed() -> GdUnitFailureAssert:
 	return self
 
 
-func has_line(expected :int) -> GdUnitFailureAssert:
+func has_line(expected: int) -> GdUnitFailureAssert:
 	var current := GdAssertReports.get_last_error_line_number()
 	if current != expected:
 		return _report_error("Expect: to failed on line '%d'\n but was '%d'." % [expected, current])
@@ -104,7 +104,7 @@ func has_stack_trace(stack_trace_elements: Array[GdUnitStackTraceElement]) -> Gd
 	return self
 
 
-func has_message(expected :String) -> GdUnitFailureAssert:
+func has_message(expected: String) -> GdUnitFailureAssert:
 	@warning_ignore("return_value_discarded")
 	is_failed()
 	var expected_error := GdUnitTools.normalize_text(GdUnitTools.richtext_normalize(expected))
@@ -116,7 +116,7 @@ func has_message(expected :String) -> GdUnitFailureAssert:
 	return self
 
 
-func contains_message(expected :String) -> GdUnitFailureAssert:
+func contains_message(expected: String) -> GdUnitFailureAssert:
 	var expected_error := GdUnitTools.normalize_text(expected)
 	var current_error := GdUnitTools.normalize_text(GdUnitTools.richtext_normalize(_failure_message))
 	if not current_error.contains(expected_error):
@@ -126,7 +126,7 @@ func contains_message(expected :String) -> GdUnitFailureAssert:
 	return self
 
 
-func starts_with_message(expected :String) -> GdUnitFailureAssert:
+func starts_with_message(expected: String) -> GdUnitFailureAssert:
 	var expected_error := GdUnitTools.normalize_text(expected)
 	var current_error := GdUnitTools.normalize_text(GdUnitTools.richtext_normalize(_failure_message))
 	if current_error.find(expected_error) != 0:
@@ -136,7 +136,7 @@ func starts_with_message(expected :String) -> GdUnitFailureAssert:
 	return self
 
 
-func _report_error(error_message :String, failure_line_number: int = -1) -> GdUnitAssert:
+func _report_error(error_message: String, failure_line_number: int = -1) -> GdUnitAssert:
 	var stack_trace := GdUnitStackTrace.new()
 	var line_number := failure_line_number if failure_line_number != -1 else stack_trace.get_line_number()
 	var failure_message := GdAssertMessages.build_failure_message(error_message, _additional_failure_message, _custom_failure_message)

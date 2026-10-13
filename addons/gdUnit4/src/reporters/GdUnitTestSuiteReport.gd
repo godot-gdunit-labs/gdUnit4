@@ -20,7 +20,7 @@ func failure_report() -> String:
 	return report_message
 
 
-func set_duration(p_duration :int) -> void:
+func set_duration(p_duration: int) -> void:
 	_duration = p_duration
 
 
@@ -32,19 +32,19 @@ func duration() -> int:
 	return _duration
 
 
-func set_skipped(skipped :int) -> void:
+func set_skipped(skipped: int) -> void:
 	_skipped_count += skipped
 
 
-func set_orphans(orphans :int) -> void:
+func set_orphans(orphans: int) -> void:
 	_orphan_count = orphans
 
 
-func set_failed(count :int) -> void:
+func set_failed(count: int) -> void:
 	_failure_count += count
 
 
-func set_reports(failure_reports :Array[GdUnitReport]) -> void:
+func set_reports(failure_reports: Array[GdUnitReport]) -> void:
 	_failure_reports = failure_reports
 
 

@@ -259,8 +259,8 @@ static func _build_native_class_mapping() -> Dictionary[String, Variant]:
 
 static func copy_properties(source: Object, dest: Object) -> void:
 	for property in source.get_property_list():
-		var property_name :String = property["name"]
-		var property_value :Variant = source.get(property_name)
+		var property_name: String = property["name"]
+		var property_value: Variant = source.get(property_name)
 		if EXCLUDE_PROPERTIES_TO_COPY.has(property_name):
 			continue
 		#if dest.get(property_name) == null:

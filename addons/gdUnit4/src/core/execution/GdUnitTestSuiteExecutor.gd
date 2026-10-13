@@ -6,7 +6,7 @@ class_name GdUnitTestSuiteExecutor
 @warning_ignore("unused_private_class_variable")
 var _assertions := GdUnitAssertions.new()
 var _execute_stage := GdUnitTestSuiteExecutionStage.new()
-var _debug_mode : bool
+var _debug_mode: bool
 var _terminated := false
 
 func _init(debug_mode: bool = false) -> void:
@@ -53,5 +53,5 @@ func run_and_wait(tests: Array[GdUnitTestCase]) -> void:
 		GdUnitSignals.instance().gdunit_event.emit(GdUnitStop.new())
 
 
-func fail_fast(enabled :bool) -> void:
+func fail_fast(enabled: bool) -> void:
 	_execute_stage.fail_fast(enabled)

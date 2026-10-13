@@ -13,29 +13,29 @@ enum TimeUnit {
 	YEAR   = 7
 }
 
-const SECONDS_PER_MINUTE:int = 60
-const MINUTES_PER_HOUR:int = 60
-const HOURS_PER_DAY:int = 24
-const MILLIS_PER_SECOND:int = 1000
-const MILLIS_PER_MINUTE:int = MILLIS_PER_SECOND * SECONDS_PER_MINUTE
-const MILLIS_PER_HOUR:int   = MILLIS_PER_MINUTE * MINUTES_PER_HOUR
+const SECONDS_PER_MINUTE: int = 60
+const MINUTES_PER_HOUR: int = 60
+const HOURS_PER_DAY: int = 24
+const MILLIS_PER_SECOND: int = 1000
+const MILLIS_PER_MINUTE: int = MILLIS_PER_SECOND * SECONDS_PER_MINUTE
+const MILLIS_PER_HOUR: int = MILLIS_PER_MINUTE * MINUTES_PER_HOUR
 
-var _time :int
-var _hour :int
-var _minute :int
-var _second :int
-var _millisecond :int
+var _time: int
+var _hour: int
+var _minute: int
+var _second: int
+var _millisecond: int
 
 
 static func now() -> LocalTime:
 	return LocalTime.new(_get_system_time_msecs())
 
 
-static func of_unix_time(time_ms :int) -> LocalTime:
+static func of_unix_time(time_ms: int) -> LocalTime:
 	return LocalTime.new(time_ms)
 
 
-static func local_time(hours :int, minutes :int, seconds :int, milliseconds :int) -> LocalTime:
+static func local_time(hours: int, minutes: int, seconds: int, milliseconds: int) -> LocalTime:
 	return LocalTime.new(MILLIS_PER_HOUR * hours\
 		+ MILLIS_PER_MINUTE * minutes\
 		+ MILLIS_PER_SECOND * seconds\
@@ -50,8 +50,8 @@ func elapsed_since_ms() -> int:
 	return LocalTime._get_system_time_msecs() - _time
 
 
-func plus(time_unit :TimeUnit, value :int) -> LocalTime:
-	var add_value:int = 0
+func plus(time_unit: TimeUnit, value: int) -> LocalTime:
+	var add_value: int = 0
 	match time_unit:
 		TimeUnit.MILLIS:
 			add_value = value
@@ -66,7 +66,7 @@ func plus(time_unit :TimeUnit, value :int) -> LocalTime:
 	return self
 
 
-static func elapsed(p_time_ms :int) -> String:
+static func elapsed(p_time_ms: int) -> String:
 	var new_time := LocalTime.new(p_time_ms)
 	if new_time._hour > 0:
 		return "%dh %dmin %ds %dms" % [new_time._hour, new_time._minute, new_time._second, new_time._millisecond]
@@ -81,11 +81,11 @@ static func elapsed(p_time_ms :int) -> String:
 func _init(time: int) -> void:
 	_time = time
 	@warning_ignore("integer_division")
-	_hour  =  (time / MILLIS_PER_HOUR) % 24
+	_hour = (time / MILLIS_PER_HOUR) % 24
 	@warning_ignore("integer_division")
-	_minute =  (time / MILLIS_PER_MINUTE) % 60
+	_minute = (time / MILLIS_PER_MINUTE) % 60
 	@warning_ignore("integer_division")
-	_second =  (time / MILLIS_PER_SECOND) % 60
+	_second = (time / MILLIS_PER_SECOND) % 60
 	_millisecond = time % 1000
 
 

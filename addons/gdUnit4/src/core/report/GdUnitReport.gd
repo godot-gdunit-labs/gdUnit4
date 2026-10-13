@@ -13,9 +13,9 @@ enum {
 	SKIPPED,
 }
 
-var _type :int
-var _line_number :int
-var _message :String
+var _type: int
+var _line_number: int
+var _message: String
 var _current_value: Variant
 var _error: GdUnitError
 
@@ -28,7 +28,7 @@ func from_error(p_type: int, error: GdUnitError) -> GdUnitReport:
 	return self
 
 
-func create(p_type :int, p_line_number :int, p_message :String) -> GdUnitReport:
+func create(p_type: int, p_line_number: int, p_message: String) -> GdUnitReport:
 	_type = p_type
 	_line_number = p_line_number
 	_message = p_message
@@ -97,9 +97,9 @@ func serialize() -> Dictionary:
 
 
 func deserialize(serialized: Dictionary) -> GdUnitReport:
-	_type        = serialized["type"]
+	_type = serialized["type"]
 	_line_number = serialized["line_number"]
-	_message     = serialized["message"]
+	_message = serialized["message"]
 	if serialized.has("stack_trace"):
 		@warning_ignore("unsafe_cast")
 		var trace := GdUnitStackTrace.deserialize(serialized["stack_trace"] as String)

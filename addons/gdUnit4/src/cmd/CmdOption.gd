@@ -2,11 +2,11 @@ class_name CmdOption
 extends RefCounted
 
 
-var _commands :PackedStringArray
-var _help :String
-var _description :String
-var _type :int
-var _arg_optional :bool = false
+var _commands: PackedStringArray
+var _help: String
+var _description: String
+var _type: int
+var _arg_optional: bool = false
 
 
 # constructs a command option by given arguments
@@ -15,7 +15,7 @@ var _arg_optional :bool = false
 # description: a full description of the command
 # type: the argument type
 # arg_optional: defines of the argument optional
-func _init(p_commands :String, p_help :String, p_description :String, p_type :int = TYPE_NIL, p_arg_optional :bool = false) -> void:
+func _init(p_commands: String, p_help: String, p_description: String, p_type: int = TYPE_NIL, p_arg_optional: bool = false) -> void:
 	_commands = p_commands.replace(" ", "").replace("\t", "").split(",")
 	_help = p_help
 	_description = p_description

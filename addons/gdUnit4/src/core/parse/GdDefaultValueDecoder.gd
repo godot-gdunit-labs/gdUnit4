@@ -5,11 +5,11 @@ extends GdUnitSingleton
 
 @warning_ignore("unused_parameter")
 var _decoders := {
-	TYPE_NIL: func(value :Variant) -> String: return "null",
-	TYPE_STRING: func(value :Variant) -> String: return '"%s"' % value,
+	TYPE_NIL: func(value: Variant) -> String: return "null",
+	TYPE_STRING: func(value: Variant) -> String: return '"%s"' % value,
 	TYPE_STRING_NAME: _on_type_string_name,
-	TYPE_BOOL: func(value :Variant) -> String: return str(value).to_lower(),
-	TYPE_FLOAT: func(value :Variant) -> String: return '%f' % value,
+	TYPE_BOOL: func(value: Variant) -> String: return str(value).to_lower(),
+	TYPE_FLOAT: func(value: Variant) -> String: return '%f' % value,
 	TYPE_COLOR: _on_type_color,
 	TYPE_ARRAY: _on_type_array.bind(TYPE_ARRAY),
 	TYPE_PACKED_BYTE_ARRAY: _on_type_array.bind(TYPE_PACKED_BYTE_ARRAY),
@@ -55,7 +55,7 @@ static func _regex(pattern: String) -> RegEx:
 
 
 func get_decoder(type: int) -> Callable:
-	return _decoders.get(type, func(value :Variant) -> String: return '%s' % value)
+	return _decoders.get(type, func(value: Variant) -> String: return '%s' % value)
 
 
 func _on_type_string_name(value: StringName) -> String:

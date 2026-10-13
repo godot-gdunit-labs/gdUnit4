@@ -48,9 +48,9 @@ func add_stack_trace(message: RichTextLabel, trace: GdUnitStackTrace) -> void:
 		message.append_text(frame._source.get_file())
 		message.append_text(" : ")
 		message.append_text(str(frame._line))
-		message.pop() # push_color
-		message.pop() # push_meta
-		message.pop() # push_indent
+		message.pop()  # push_color
+		message.pop()  # push_meta
+		message.pop()  # push_indent
 		message.newline()
 
 	if not message.meta_clicked.is_connected(_on_meta_clicked):

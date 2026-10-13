@@ -43,7 +43,7 @@ func setup_update_notification(control: Button) -> void:
 	_test_reporter.print_message("Searching for updates... ", Color.CORNFLOWER_BLUE)
 	var update_client := GdUnitUpdateClient.new()
 	add_child(update_client)
-	var response :GdUnitUpdateClient.HttpResponse = await update_client.request_latest_version()
+	var response: GdUnitUpdateClient.HttpResponse = await update_client.request_latest_version()
 	if response.status() != 200:
 		_test_reporter.println_message("Information cannot be retrieved from GitHub!", GdUnitEditorColorTheme.state_failure)
 		_test_reporter.println_message("Error:  %s" % response.response(), GdUnitEditorColorTheme.state_failure)
@@ -61,7 +61,7 @@ func setup_update_notification(control: Button) -> void:
 	tween.tween_property(control, "self_modulate", Color.VIOLET, .2).set_trans(Tween.TransitionType.TRANS_LINEAR)
 	tween.tween_property(control, "self_modulate", GdUnitEditorColorTheme.state_warning, .2).set_trans(Tween.TransitionType.TRANS_BOUNCE)
 	tween.parallel()
-	tween.tween_property(control, "scale", Vector2.ONE*1.05, .4).set_trans(Tween.TransitionType.TRANS_LINEAR)
+	tween.tween_property(control, "scale", Vector2.ONE * 1.05, .4).set_trans(Tween.TransitionType.TRANS_LINEAR)
 	tween.tween_property(control, "scale", Vector2.ONE, .4).set_trans(Tween.TransitionType.TRANS_BOUNCE)
 	tween.set_loops(-1)
 	tween.play()

@@ -7,7 +7,7 @@ const ID := "Create Test"
 
 func _init() -> void:
 	super(ID, GdUnitShortcut.ShortCut.CREATE_TEST)
-	icon =  GdUnitUiTools.get_icon("New")
+	icon = GdUnitUiTools.get_icon("New")
 
 
 func execute(..._parameters: Array) -> void:

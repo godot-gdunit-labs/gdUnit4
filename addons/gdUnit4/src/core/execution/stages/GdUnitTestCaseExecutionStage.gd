@@ -13,7 +13,7 @@ var _stage_fuzzer_test: IGdUnitExecutionStage = GdUnitTestCaseFuzzedExecutionSta
 ##  -> test_case() [br]
 ##  -> test_after() [br]
 @warning_ignore("redundant_await")
-func _execute(context :GdUnitExecutionContext) -> void:
+func _execute(context: GdUnitExecutionContext) -> void:
 	var test_case := context.test_case
 
 	if GdUnitSettings.is_project_settings_auto_save():
@@ -35,7 +35,7 @@ func _execute(context :GdUnitExecutionContext) -> void:
 		context.test_case.dispose()
 
 
-func set_debug_mode(debug_mode :bool = false) -> void:
+func set_debug_mode(debug_mode: bool = false) -> void:
 	super.set_debug_mode(debug_mode)
 	_stage_single_test.set_debug_mode(debug_mode)
 	_stage_fuzzer_test.set_debug_mode(debug_mode)

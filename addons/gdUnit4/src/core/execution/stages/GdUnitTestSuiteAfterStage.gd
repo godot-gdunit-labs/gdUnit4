@@ -7,7 +7,7 @@ extends IGdUnitExecutionStage
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
 
-func _execute(context :GdUnitExecutionContext) -> void:
+func _execute(context: GdUnitExecutionContext) -> void:
 	var test_suite := context.test_suite
 
 	@warning_ignore("redundant_await")

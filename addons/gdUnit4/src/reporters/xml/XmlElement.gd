@@ -1,15 +1,15 @@
 class_name XmlElement
 extends RefCounted
 
-var _name :String
+var _name: String
 # Dictionary[String, String]
-var _attributes :Dictionary = {}
-var _childs :Array[XmlElement] = []
-var _parent :XmlElement = null
-var _text :String = ""
+var _attributes: Dictionary = {}
+var _childs: Array[XmlElement] = []
+var _parent: XmlElement = null
+var _text: String = ""
 
 
-func _init(name :String) -> void:
+func _init(name: String) -> void:
 	_name = name
 
 
@@ -21,23 +21,23 @@ func dispose() -> void:
 	_parent = null
 
 
-func attribute(name :String, value :Variant) -> XmlElement:
+func attribute(name: String, value: Variant) -> XmlElement:
 	_attributes[name] = str(value)
 	return self
 
 
-func text(p_text :String) -> XmlElement:
+func text(p_text: String) -> XmlElement:
 	_text = p_text if p_text.ends_with("\n") else p_text + "\n"
 	return self
 
 
-func add_child(child :XmlElement) -> XmlElement:
+func add_child(child: XmlElement) -> XmlElement:
 	_childs.append(child)
 	child._parent = self
 	return self
 
 
-func add_childs(childs :Array[XmlElement]) -> XmlElement:
+func add_childs(childs: Array[XmlElement]) -> XmlElement:
 	for child in childs:
 		@warning_ignore("return_value_discarded")
 		add_child(child)
@@ -65,5 +65,5 @@ func to_xml() -> String:
 			"text": cdata(_text)})
 
 
-func cdata(p_text :String) -> String:
-	return "" if p_text.is_empty() else "<![CDATA[\n{text}]]>\n".format({"text" : p_text})
+func cdata(p_text: String) -> String:
+	return "" if p_text.is_empty() else "<![CDATA[\n{text}]]>\n".format({"text": p_text})

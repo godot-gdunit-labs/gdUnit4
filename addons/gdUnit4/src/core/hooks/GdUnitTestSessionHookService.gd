@@ -116,8 +116,8 @@ func execute(hook_func: String, session: GdUnitTestSession, reverse := false) ->
 	var failed_hook_calls: Array[GdUnitResult] = []
 
 	for hook_index in enigne_hooks.size():
-		var index := enigne_hooks.size()-hook_index-1 if reverse else hook_index
-		var hook: = enigne_hooks[index]
+		var index := enigne_hooks.size() - hook_index - 1 if reverse else hook_index
+		var hook := enigne_hooks[index]
 		if not is_enabled(hook):
 			continue
 		if OS.is_stdout_verbose():
@@ -134,7 +134,7 @@ func execute(hook_func: String, session: GdUnitTestSession, reverse := false) ->
 	var errors := failed_hook_calls.map(func(result: GdUnitResult) -> String:
 		return "Hook call '%s' failed with error: '%s'" % [hook_func, result.error_message()]
 	)
-	return GdUnitResult.error( "\n".join(errors))
+	return GdUnitResult.error("\n".join(errors))
 
 
 func save_hock_setttings() -> void:

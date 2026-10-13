@@ -35,15 +35,15 @@ func after_test() -> void:
 	_collected_events.clear()
 
 
-func _on_gdunit_event_debug(event :GdUnitEvent) -> void:
+func _on_gdunit_event_debug(event: GdUnitEvent) -> void:
 	_collected_events.append(event)
 
 
-func flating_message(message :String) -> String:
+func flating_message(message: String) -> String:
 	return GdUnitTools.richtext_normalize(message)
 
 
-func run_tests(tests :Array[GdUnitTestCase], settings := {}) -> Array[GdUnitEvent]:
+func run_tests(tests: Array[GdUnitTestCase], settings := {}) -> Array[GdUnitEvent]:
 	# run in a separate context to not affect the current test run
 	await GdUnitThreadManager.run("test_executor_%d" % randi(), func() -> void:
 		var executor := GdUnitTestSuiteExecutor.new(true)
@@ -67,7 +67,7 @@ func run_tests(tests :Array[GdUnitTestCase], settings := {}) -> Array[GdUnitEven
 	return _collected_events
 
 
-func assert_event_list(events :Array[GdUnitEvent], suite_name :String, test_case_names :Array[String]) -> void:
+func assert_event_list(events: Array[GdUnitEvent], suite_name: String, test_case_names: Array[String]) -> void:
 	var expected_events := Array()
 	expected_events.append(tuple(GdUnitEvent.TESTSUITE_BEFORE, suite_name, any_class(GdUnitGUID), test_case_names.size()))
 	for test_case in test_case_names:
@@ -86,14 +86,14 @@ func assert_event_list(events :Array[GdUnitEvent], suite_name :String, test_case
 		.contains_exactly(expected_events)
 
 
-func assert_test_counters(events :Array[GdUnitEvent]) -> GdUnitArrayAssert:
+func assert_test_counters(events: Array[GdUnitEvent]) -> GdUnitArrayAssert:
 	var filtered_events := events.filter(func(event: GdUnitEvent) -> bool:
 		return event.type() in [GdUnitEvent.TESTSUITE_BEFORE, GdUnitEvent.TESTSUITE_AFTER, GdUnitEvent.TESTCASE_BEFORE, GdUnitEvent.TESTCASE_AFTER]
 	)
 	return assert_array(filtered_events).extractv(extr("guid"), extr("type"), extr("error_count"), extr("failed_count"), extr("orphan_nodes"))
 
 
-func assert_event_states(events :Array[GdUnitEvent]) -> GdUnitArrayAssert:
+func assert_event_states(events: Array[GdUnitEvent]) -> GdUnitArrayAssert:
 	var filtered_events := events.filter(func(event: GdUnitEvent) -> bool:
 		return event.type() in [GdUnitEvent.TESTSUITE_BEFORE, GdUnitEvent.TESTSUITE_AFTER, GdUnitEvent.TESTCASE_BEFORE, GdUnitEvent.TESTCASE_AFTER]
 	)
@@ -773,10 +773,10 @@ func test_execute_parameterizied_tests() -> void:
 
 	# simulate test suite execution
 	# run the tests with to compare type save
-	var original_mode :Variant = ProjectSettings.get_setting(GdUnitSettings.REPORT_ASSERT_STRICT_NUMBER_TYPE_COMPARE)
+	var original_mode: Variant = ProjectSettings.get_setting(GdUnitSettings.REPORT_ASSERT_STRICT_NUMBER_TYPE_COMPARE)
 	ProjectSettings.set_setting(GdUnitSettings.REPORT_ASSERT_STRICT_NUMBER_TYPE_COMPARE, true)
 	var events := await run_tests(all_tests, {
-		GdUnitSettings.REPORT_ASSERT_STRICT_NUMBER_TYPE_COMPARE : true
+		GdUnitSettings.REPORT_ASSERT_STRICT_NUMBER_TYPE_COMPARE: true
 	})
 	# the test is partial failing because of diverent type in the dictionary
 	assert_array(events).extractv(
@@ -904,8 +904,8 @@ func test_execute_test_case_is_flaky_and_failed() -> void:
 
 	# simulate flaky test suite execution
 	var events := await run_tests(all_tests, {
-		GdUnitSettings.TEST_FLAKY_CHECK : true,
-		GdUnitSettings.TEST_FLAKY_MAX_RETRIES : 5
+		GdUnitSettings.TEST_FLAKY_CHECK: true,
+		GdUnitSettings.TEST_FLAKY_MAX_RETRIES: 5
 	})
 
 	assert_array(events).extractv(extr("type"), extr("guid"), extr("is_flaky"), extr("is_success"))\
@@ -941,8 +941,8 @@ func test_execute_test_case_is_flaky_and_success() -> void:
 
 	# simulate flaky test suite execution
 	var events := await run_tests(all_tests, {
-		GdUnitSettings.TEST_FLAKY_CHECK : true,
-		GdUnitSettings.TEST_FLAKY_MAX_RETRIES : 6
+		GdUnitSettings.TEST_FLAKY_CHECK: true,
+		GdUnitSettings.TEST_FLAKY_MAX_RETRIES: 6
 	})
 
 	# verify test execution results. all test should pass at least after 6 retries
@@ -968,7 +968,7 @@ func test_execute_push_error_monitoring_disabled() -> void:
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	# execute all tests
 	var events := await run_tests(all_tests, {
-		GdUnitSettings.REPORT_PUSH_ERRORS : false
+		GdUnitSettings.REPORT_PUSH_ERRORS: false
 	})
 
 	assert_array(events).extractv(extr("type"), extr("test_name"), extr("is_success"))\
@@ -988,7 +988,7 @@ func test_execute_push_error_monitoring_enabled() -> void:
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	# execute all tests
 	var events := await run_tests(all_tests, {
-		GdUnitSettings.REPORT_PUSH_ERRORS : true
+		GdUnitSettings.REPORT_PUSH_ERRORS: true
 	})
 
 	assert_array(events).extractv(extr("type"), extr("test_name"), extr("is_success"))\
@@ -1003,7 +1003,7 @@ func test_execute_push_error_monitoring_enabled() -> void:
 		])
 
 
-func filter_by_test_case(events:  Array[GdUnitEvent], test: GdUnitTestCase) -> Array[GdUnitEvent]:
+func filter_by_test_case(events: Array[GdUnitEvent], test: GdUnitTestCase) -> Array[GdUnitEvent]:
 	return events.filter(func (event: GdUnitEvent) -> bool:
 		return event.guid().equals(test.guid) and event.type() == GdUnitEvent.TESTCASE_AFTER
 	)

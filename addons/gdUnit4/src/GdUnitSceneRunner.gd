@@ -301,7 +301,7 @@ extends RefCounted
 ## [member signal_name] : The name of the signal to wait for[br]
 ## [member args] : The signal arguments as an array[br]
 ## [member timeout] : The maximum duration (in milliseconds) to wait for the signal to be emitted before failing
-@abstract func await_signal(signal_name: String, args := [], timeout := 2000 ) -> void
+@abstract func await_signal(signal_name: String, args := [], timeout := 2000) -> void
 
 
 ## Waits for the specified signal to be emitted by a particular source node. If the signal is not emitted within the given timeout, the operation fails.[br]
@@ -309,7 +309,7 @@ extends RefCounted
 ## [member signal_name] : The name of the signal to wait for[br]
 ## [member args] : The signal arguments as an array[br]
 ## [member timeout] : tThe maximum duration (in milliseconds) to wait for the signal to be emitted before failing
-@abstract func await_signal_on(source: Object, signal_name: String, args := [], timeout := 2000 ) -> void
+@abstract func await_signal_on(source: Object, signal_name: String, args := [], timeout := 2000) -> void
 
 
 ## Restores the scene window to a windowed mode and brings it to the foreground.[br]

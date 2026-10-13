@@ -8,7 +8,7 @@ static func run() -> Array[GdUnitTestCase]:
 	GdUnitSignals.instance().gdunit_event.emit(GdUnitEventTestDiscoverStart.new())
 
 	# We run the test discovery in an extra thread so that the main thread is not blocked
-	var t:= Thread.new()
+	var t := Thread.new()
 	@warning_ignore("return_value_discarded")
 	t.start(func () -> Array[GdUnitTestCase]:
 		# Loading previous test session
@@ -68,7 +68,7 @@ static func restore_last_session() -> void:
 		return
 
 	# We run the test session restoring in an extra thread so that the main thread is not blocked
-	var t:= Thread.new()
+	var t := Thread.new()
 	t.start(func () -> void:
 		# Do sync the main thread before emit the discovered test suites to the inspector
 		await (Engine.get_main_loop() as SceneTree).process_frame

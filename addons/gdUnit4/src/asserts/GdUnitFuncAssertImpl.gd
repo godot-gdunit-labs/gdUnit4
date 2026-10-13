@@ -5,16 +5,16 @@ const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 const DEFAULT_TIMEOUT := 2000
 
 
-var _current_value_provider :ValueProvider
-var _custom_failure_message :String = ""
+var _current_value_provider: ValueProvider
+var _custom_failure_message: String = ""
 var _additional_failure_message: String = ""
 var _line_number := -1
 var _timeout := DEFAULT_TIMEOUT
 var _interrupted := false
-var _sleep_timer :Timer = null
+var _sleep_timer: Timer = null
 
 
-func _init(instance :Object, func_name :String, args := Array()) -> void:
+func _init(instance: Object, func_name: String, args := Array()) -> void:
 	_line_number = GdUnitStackTrace.new().get_line_number()
 	GdAssertReports.reset_last_error_line_number()
 	# save the actual assert instance on the current thread context
@@ -28,10 +28,10 @@ func _init(instance :Object, func_name :String, args := Array()) -> void:
 		_current_value_provider = CallBackValueProvider.new(instance, func_name, args)
 
 
-func _notification(what :int) -> void:
+func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
 		_interrupted = true
-		var main_node :Node = (Engine.get_main_loop() as SceneTree).root
+		var main_node: Node = (Engine.get_main_loop() as SceneTree).root
 		if is_instance_valid(_current_value_provider):
 			_current_value_provider.dispose()
 			_current_value_provider = null
@@ -48,7 +48,7 @@ func report_success() -> GdUnitFuncAssert:
 	return self
 
 
-func report_error(failure :String) -> GdUnitFuncAssert:
+func report_error(failure: String) -> GdUnitFuncAssert:
 	var failure_message := GdAssertMessages.build_failure_message(failure, _additional_failure_message, _custom_failure_message)
 	GdAssertReports.report_error(GdUnitError.new(failure_message, _line_number, GdUnitStackTrace.new()))
 	return self
@@ -105,19 +105,19 @@ func is_not_equal(expected: Variant) -> GdUnitFuncAssert:
 
 # we need actually to define this Callable as functions otherwise we results into leaked scripts here
 # this is actually a Godot bug and needs this kind of workaround
-func cb_is_null(c :Variant, _e :Variant) -> bool: return c == null
-func cb_is_not_null(c :Variant, _e :Variant) -> bool: return c != null
-func cb_is_false(c :Variant, _e :Variant) -> bool: return c == false
-func cb_is_true(c :Variant, _e :Variant) -> bool: return c == true
-func cb_is_equal(c :Variant, e :Variant) -> bool: return GdObjects.equals(c,e)
-func cb_is_not_equal(c :Variant, e :Variant) -> bool: return not GdObjects.equals(c, e)
+func cb_is_null(c: Variant, _e: Variant) -> bool: return c == null
+func cb_is_not_null(c: Variant, _e: Variant) -> bool: return c != null
+func cb_is_false(c: Variant, _e: Variant) -> bool: return c == false
+func cb_is_true(c: Variant, _e: Variant) -> bool: return c == true
+func cb_is_equal(c: Variant, e: Variant) -> bool: return GdObjects.equals(c,e)
+func cb_is_not_equal(c: Variant, e: Variant) -> bool: return not GdObjects.equals(c, e)
 
 
 func do_interrupt() -> void:
 	_interrupted = true
 
 
-func _validate_callback(predicate :Callable, expected :Variant = null) -> void:
+func _validate_callback(predicate: Callable, expected: Variant = null) -> void:
 	if _interrupted:
 		return
 	GdUnitMemoryObserver.guard_instance(self)
@@ -130,13 +130,13 @@ func _validate_callback(predicate :Callable, expected :Variant = null) -> void:
 	@warning_ignore("return_value_discarded")
 	timer.timeout.connect(do_interrupt, CONNECT_DEFERRED)
 	timer.set_one_shot(true)
-	timer.start((_timeout/1000.0)*time_scale)
+	timer.start((_timeout / 1000.0) * time_scale)
 	_sleep_timer = Timer.new()
-	_sleep_timer.set_name("gdunit_funcassert_sleep_timer_%d" % _sleep_timer.get_instance_id() )
+	_sleep_timer.set_name("gdunit_funcassert_sleep_timer_%d" % _sleep_timer.get_instance_id())
 	scene_tree.root.add_child(_sleep_timer)
 
 	while true:
-		var current :Variant = await next_current_value()
+		var current: Variant = await next_current_value()
 		# is interupted or predicate success
 		if _interrupted or predicate.call(current, expected):
 			break
@@ -149,7 +149,7 @@ func _validate_callback(predicate :Callable, expected :Variant = null) -> void:
 	if _interrupted:
 		# https://github.com/godotengine/godot/issues/73052
 		#var predicate_name = predicate.get_method()
-		var predicate_name :String = str(predicate).split('::')[1]
+		var predicate_name: String = str(predicate).split('::')[1]
 		@warning_ignore("return_value_discarded")
 		report_error(GdAssertMessages.error_interrupted(
 			predicate_name.strip_edges().trim_prefix("cb_"),

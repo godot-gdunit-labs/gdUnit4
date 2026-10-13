@@ -3,7 +3,7 @@
 class_name GdUnitTestCaseBeforeStage
 extends IGdUnitExecutionStage
 
-var _call_stage :bool
+var _call_stage: bool
 
 
 func _init(call_stage := true) -> void:

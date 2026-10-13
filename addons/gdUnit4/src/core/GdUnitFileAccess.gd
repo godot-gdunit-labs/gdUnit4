@@ -13,7 +13,7 @@ static func clear_tmp() -> void:
 
 
 # Creates a new file under
-static func create_temp_file(relative_path :String, file_name :String, mode := FileAccess.WRITE) -> FileAccess:
+static func create_temp_file(relative_path: String, file_name: String, mode := FileAccess.WRITE) -> FileAccess:
 	var file_path := create_temp_dir(relative_path) + "/" + file_name
 	var file := FileAccess.open(file_path, mode)
 	if file == null:
@@ -28,7 +28,7 @@ static func temp_dir() -> String:
 	return GDUNIT_TEMP
 
 
-static func create_temp_dir(folder_name :String) -> String:
+static func create_temp_dir(folder_name: String) -> String:
 	var new_folder := temp_dir() + "/" + folder_name
 	if not DirAccess.dir_exists_absolute(new_folder):
 		@warning_ignore("return_value_discarded")
@@ -36,7 +36,7 @@ static func create_temp_dir(folder_name :String) -> String:
 	return new_folder
 
 
-static func copy_file(from_file :String, to_dir :String) -> GdUnitResult:
+static func copy_file(from_file: String, to_dir: String) -> GdUnitResult:
 	var dir := DirAccess.open(to_dir)
 	if dir != null:
 		var to_file := to_dir + "/" + from_file.get_file()
@@ -48,7 +48,7 @@ static func copy_file(from_file :String, to_dir :String) -> GdUnitResult:
 	return GdUnitResult.error("Directory not found: " + to_dir)
 
 
-static func copy_directory(from_dir :String, to_dir :String, recursive :bool = false) -> bool:
+static func copy_directory(from_dir: String, to_dir: String, recursive: bool = false) -> bool:
 	if not DirAccess.dir_exists_absolute(from_dir):
 		push_error("Source directory not found '%s'" % from_dir)
 		return false
@@ -88,7 +88,7 @@ static func copy_directory(from_dir :String, to_dir :String, recursive :bool = f
 	return false
 
 
-static func delete_directory(path :String, only_content := false) -> void:
+static func delete_directory(path: String, only_content := false) -> void:
 	var dir := DirAccess.open(path)
 	if dir != null:
 		var dir_path := dir.get_current_dir()
@@ -114,7 +114,7 @@ static func delete_directory(path :String, only_content := false) -> void:
 				push_error("Delete %s failed: %s" % [dir_path, error_string(err)])
 
 
-static func delete_path_index_lower_equals_than(path :String, prefix :String, index :int) -> int:
+static func delete_path_index_lower_equals_than(path: String, prefix: String, index: int) -> int:
 	var dir := DirAccess.open(path)
 	if dir == null:
 		return 0
@@ -136,7 +136,7 @@ static func delete_path_index_lower_equals_than(path :String, prefix :String, in
 
 # scans given path for sub directories by given prefix and returns the highest index numer
 # e.g. <prefix_%d>
-static func find_last_path_index(path :String, prefix :String) -> int:
+static func find_last_path_index(path: String, prefix: String) -> int:
 	var dir := DirAccess.open(path)
 	if dir == null:
 		return 0
@@ -173,7 +173,7 @@ static func as_file_uri(path: String) -> String:
 	return "file://" + absolute_path.uri_encode().replace("%2F", "/").replace("%3A", ":")
 
 
-static func scan_dir(path :String) -> PackedStringArray:
+static func scan_dir(path: String) -> PackedStringArray:
 	var dir := DirAccess.open(path)
 	if dir == null or not dir.dir_exists(path):
 		return PackedStringArray()
@@ -191,7 +191,7 @@ static func scan_dir(path :String) -> PackedStringArray:
 	return content
 
 
-static func resource_as_array(resource_path :String) -> PackedStringArray:
+static func resource_as_array(resource_path: String) -> PackedStringArray:
 	var file := FileAccess.open(resource_path, FileAccess.READ)
 	if file == null:
 		push_error("ERROR: Can't read resource '%s'. %s" % [resource_path, error_string(FileAccess.get_open_error())])
@@ -203,7 +203,7 @@ static func resource_as_array(resource_path :String) -> PackedStringArray:
 	return file_content
 
 
-static func resource_as_string(resource_path :String) -> String:
+static func resource_as_string(resource_path: String) -> String:
 	var file := FileAccess.open(resource_path, FileAccess.READ)
 	if file == null:
 		push_error("ERROR: Can't read resource '%s'. %s" % [resource_path, error_string(FileAccess.get_open_error())])
@@ -211,7 +211,7 @@ static func resource_as_string(resource_path :String) -> String:
 	return file.get_as_text()
 
 
-static func extract_zip(zip_package :String, dest_path :String) -> GdUnitResult:
+static func extract_zip(zip_package: String, dest_path: String) -> GdUnitResult:
 	var zip: ZIPReader = ZIPReader.new()
 	var err := zip.open(zip_package)
 	if err != OK:

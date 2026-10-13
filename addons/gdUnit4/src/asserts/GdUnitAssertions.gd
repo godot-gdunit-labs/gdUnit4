@@ -31,9 +31,9 @@ func _init() -> void:
 # We go this hard way to increase the loading performance to avoid reparsing all the used scripts
 # for more detailed info -> https://github.com/godotengine/godot/issues/67400
 # gdlint:disable=function-name
-static func __lazy_load(script_path :String) -> GDScript:
+static func __lazy_load(script_path: String) -> GDScript:
 	return ResourceLoader.load(script_path, "GDScript", ResourceLoader.CACHE_MODE_REUSE)
 
 
-static func validate_value_type(value :Variant, type :Variant.Type) -> bool:
+static func validate_value_type(value: Variant, type: Variant.Type) -> bool:
 	return value == null or typeof(value) == type

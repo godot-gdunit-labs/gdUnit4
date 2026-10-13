@@ -4,8 +4,8 @@ extends GdUnitTestSuite
 
 
 func test_time_constants() -> void:
-	assert_int(LocalTime.MILLIS_PER_HOUR).is_equal(1000*60*60)
-	assert_int(LocalTime.MILLIS_PER_MINUTE).is_equal(1000*60)
+	assert_int(LocalTime.MILLIS_PER_HOUR).is_equal(1000 * 60 * 60)
+	assert_int(LocalTime.MILLIS_PER_MINUTE).is_equal(1000 * 60)
 	assert_int(LocalTime.MILLIS_PER_SECOND).is_equal(1000)
 	assert_int(LocalTime.HOURS_PER_DAY).is_equal(24)
 	assert_int(LocalTime.MINUTES_PER_HOUR).is_equal(60)
@@ -38,8 +38,8 @@ func test_of_unix_time() -> void:
 func test_to_string() -> void:
 	assert_str(LocalTime.local_time(10, 12, 22, 333)._to_string()).is_equal("10:12:22.333")
 	assert_str(LocalTime.local_time(23, 59, 59, 999)._to_string()).is_equal("23:59:59.999")
-	assert_str(LocalTime.local_time( 0, 0, 0, 000)._to_string()).is_equal("00:00:00.000")
-	assert_str(LocalTime.local_time( 2, 4, 3, 10)._to_string()).is_equal("02:04:03.010")
+	assert_str(LocalTime.local_time(0, 0, 0, 000)._to_string()).is_equal("00:00:00.000")
+	assert_str(LocalTime.local_time(2, 4, 3, 10)._to_string()).is_equal("02:04:03.010")
 
 
 func test_plus_seconds() -> void:
@@ -53,9 +53,9 @@ func test_plus_seconds() -> void:
 	var start_time := time2._time
 	for iteration in 10000:
 		var t := LocalTime.of_unix_time(start_time)
-		var seconds:int = randi_range(0, 1000)
+		var seconds: int = randi_range(0, 1000)
 		t.plus(LocalTime.TimeUnit.SECOND, seconds)
-		var expected :=  LocalTime.of_unix_time(start_time + (seconds * LocalTime.MILLIS_PER_SECOND))
+		var expected := LocalTime.of_unix_time(start_time + (seconds * LocalTime.MILLIS_PER_SECOND))
 		assert_str(t._to_string()).is_equal(expected._to_string())
 
 

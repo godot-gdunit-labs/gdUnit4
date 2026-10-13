@@ -181,7 +181,7 @@ func set_error(error: GdUnitError) -> void:
 
 
 func last_error() -> GdUnitError:
-	if  _last_error != null:
+	if _last_error != null:
 		return _last_error
 
 	if _report_collector.reports().is_empty():
@@ -212,9 +212,9 @@ func calculate_statistics(test_reports: Array[GdUnitReport]) -> Dictionary:
 	var orphan_count := GdUnitTestReportCollector.count_orphans(test_reports)
 	var is_failed := !is_success()
 	var elapsed_time := _timer.elapsed_since_ms()
-	var retries :=  1 if _parent_context == null else _sub_context.size()
+	var retries := 1 if _parent_context == null else _sub_context.size()
 	# Mark as flaky if it is successful, but errors were counted
-	var is_flaky := retries > 1  and not is_failed
+	var is_flaky := retries > 1 and not is_failed
 	# In the case of a flakiness test, we do not report an error counter, as an unreliable test is considered successful
 	# after a certain number of repetitions.
 	if is_flaky:
@@ -247,7 +247,7 @@ func is_success() -> bool:
 
 func is_skipped() -> bool:
 	return (
-		_sub_context.any(func(c :GdUnitExecutionContext) -> bool:
+		_sub_context.any(func(c: GdUnitExecutionContext) -> bool:
 			return c.is_skipped())
 		or test_case.is_skipped() if test_case != null else false
 	)

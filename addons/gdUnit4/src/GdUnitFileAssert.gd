@@ -35,4 +35,4 @@ extends GdUnitAssert
 @abstract func is_script() -> GdUnitFileAssert
 
 
-@abstract func contains_exactly(expected_rows :Array) -> GdUnitFileAssert
+@abstract func contains_exactly(expected_rows: Array) -> GdUnitFileAssert

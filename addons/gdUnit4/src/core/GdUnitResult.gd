@@ -11,7 +11,7 @@ enum {
 var _state: int
 var _warn_message := ""
 var _error_message := ""
-var _value :Variant = null
+var _value: Variant = null
 
 
 static func empty() -> GdUnitResult:
@@ -29,7 +29,7 @@ static func success(p_value: Variant = "") -> GdUnitResult:
 
 
 static func warn(p_warn_message: String, p_value: Variant = null) -> GdUnitResult:
-	assert(not p_warn_message.is_empty()) #,"The message must not be empty")
+	assert(not p_warn_message.is_empty())  #,"The message must not be empty")
 	var result := GdUnitResult.new()
 	result._value = p_value
 	result._warn_message = p_warn_message

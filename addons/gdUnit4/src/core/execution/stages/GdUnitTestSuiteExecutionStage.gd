@@ -4,9 +4,9 @@ extends IGdUnitExecutionStage
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
-var _stage_before :IGdUnitExecutionStage = GdUnitTestSuiteBeforeStage.new()
-var _stage_after :IGdUnitExecutionStage = GdUnitTestSuiteAfterStage.new()
-var _stage_test :IGdUnitExecutionStage = GdUnitTestCaseExecutionStage.new()
+var _stage_before: IGdUnitExecutionStage = GdUnitTestSuiteBeforeStage.new()
+var _stage_after: IGdUnitExecutionStage = GdUnitTestSuiteAfterStage.new()
+var _stage_test: IGdUnitExecutionStage = GdUnitTestCaseExecutionStage.new()
 var _fail_fast := false
 
 
@@ -15,7 +15,7 @@ var _fail_fast := false
 ##  -> before() [br]
 ##  -> run all test cases [br]
 ##  -> after() [br]
-func _execute(context :GdUnitExecutionContext) -> void:
+func _execute(context: GdUnitExecutionContext) -> void:
 	if context.test_suite.__is_skipped:
 		await fire_test_suite_skipped(context)
 	else:
@@ -51,7 +51,7 @@ func _execute(context :GdUnitExecutionContext) -> void:
 
 
 # clones a test suite and moves the test cases to new instance
-func clone_test_suite(test_suite :GdUnitTestSuite) -> GdUnitTestSuite:
+func clone_test_suite(test_suite: GdUnitTestSuite) -> GdUnitTestSuite:
 	await (Engine.get_main_loop() as SceneTree).process_frame
 	dispose_timers(test_suite)
 	await GdUnitMemoryObserver.gc_guarded_instance("Manually free on awaiter", test_suite.__awaiter)
@@ -71,7 +71,7 @@ func clone_test_suite(test_suite :GdUnitTestSuite) -> GdUnitTestSuite:
 	return suite_copy
 
 
-func dispose_timers(test_suite :GdUnitTestSuite) -> void:
+func dispose_timers(test_suite: GdUnitTestSuite) -> void:
 	GdUnitTools.release_timers()
 	for child in test_suite.get_children():
 		if child is Timer:
@@ -80,17 +80,17 @@ func dispose_timers(test_suite :GdUnitTestSuite) -> void:
 			child.free()
 
 
-func copy_properties(source :Object, target :Object) -> void:
+func copy_properties(source: Object, target: Object) -> void:
 	if not source is GdUnitTestCaseImpl and not source is GdUnitTestSuite:
 		return
 	for property in source.get_property_list():
-		var property_name :String = property["name"]
+		var property_name: String = property["name"]
 		if property_name == "__awaiter":
 			continue
 		target.set(property_name, source.get(property_name))
 
 
-func fire_test_suite_skipped(context :GdUnitExecutionContext) -> void:
+func fire_test_suite_skipped(context: GdUnitExecutionContext) -> void:
 	var test_suite := context.test_suite
 	var skip_count := test_suite.get_child_count()
 	fire_event(GdUnitEvent.new()\
@@ -142,12 +142,12 @@ func fire_test_skipped(context: GdUnitExecutionContext, skip_count := 1) -> void
 	fire_event(GdUnitEvent.new().test_after(test_case.id(), test_case.test_name(), statistics, [report]))
 
 
-func set_debug_mode(debug_mode :bool = false) -> void:
+func set_debug_mode(debug_mode: bool = false) -> void:
 	super.set_debug_mode(debug_mode)
 	_stage_before.set_debug_mode(debug_mode)
 	_stage_after.set_debug_mode(debug_mode)
 	_stage_test.set_debug_mode(debug_mode)
 
 
-func fail_fast(enabled :bool) -> void:
+func fail_fast(enabled: bool) -> void:
 	_fail_fast = enabled

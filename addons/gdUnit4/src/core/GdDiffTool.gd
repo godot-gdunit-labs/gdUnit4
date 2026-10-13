@@ -282,20 +282,20 @@ static func diff(current: String, expected: String) -> Array[Hunk]:
 
 
 # prototype
-static func longest_common_subsequence(text1 :String, text2 :String) -> PackedStringArray:
+static func longest_common_subsequence(text1: String, text2: String) -> PackedStringArray:
 	var text1_words := text1.split(" ")
 	var text2_words := text2.split(" ")
 	var text1_word_count := text1_words.size()
 	var text2_word_count := text2_words.size()
 	var solution_matrix := Array()
-	for i in text1_word_count+1:
+	for i in text1_word_count + 1:
 		var ar := Array()
-		for n in text2_word_count+1:
+		for n in text2_word_count + 1:
 			ar.append(0)
 		solution_matrix.append(ar)
 
-	for i in range(text1_word_count-1, 0, -1):
-		for j in range(text2_word_count-1, 0, -1):
+	for i in range(text1_word_count - 1, 0, -1):
+		for j in range(text2_word_count - 1, 0, -1):
 			if text1_words[i] == text2_words[j]:
 				solution_matrix[i][j] = solution_matrix[i + 1][j + 1] + 1;
 			else:
@@ -317,7 +317,7 @@ static func longest_common_subsequence(text1 :String, text2 :String) -> PackedSt
 	return lcs_result_list
 
 
-static func mark_text_differences(text1 :String, text2 :String, lcs_list :PackedStringArray, insert_color :Color, delete_color:Color) -> String:
+static func mark_text_differences(text1: String, text2: String, lcs_list: PackedStringArray, insert_color: Color, delete_color: Color) -> String:
 	var string_buffer := ""
 	if text1 == null and lcs_list == null:
 		return string_buffer

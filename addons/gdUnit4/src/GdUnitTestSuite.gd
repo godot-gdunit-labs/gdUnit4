@@ -565,7 +565,7 @@ func any_packed_color_array() -> GdUnitArgumentMatcher:
 
 
 ## Argument matcher to match any instance of given class
-func any_class(clazz :Object) -> GdUnitArgumentMatcher:
+func any_class(clazz: Object) -> GdUnitArgumentMatcher:
 	@warning_ignore("unsafe_method_access")
 	return __gdunit_argument_matchers().any_class(clazz)
 

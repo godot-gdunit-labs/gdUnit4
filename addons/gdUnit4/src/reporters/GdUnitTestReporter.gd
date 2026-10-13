@@ -23,22 +23,22 @@ func init_statistics() -> void:
 
 func add_test_statistics(event: GdUnitEvent) -> void:
 	_statistics[event.guid()] = {
-		"error_count" :  event.error_count(),
-		"failed_count" : event.failed_count(),
-		"skipped_count" : event.skipped_count(),
-		"flaky_count" : event.is_flaky() as int,
-		"orphan_nodes" : event.orphan_nodes()
+		"error_count": event.error_count(),
+		"failed_count": event.failed_count(),
+		"skipped_count": event.skipped_count(),
+		"flaky_count": event.is_flaky() as int,
+		"orphan_nodes": event.orphan_nodes()
 	}
 
 
 func build_test_suite_statisitcs(event: GdUnitEvent) -> Dictionary:
-	var statistic :=  {
-		"total_count" : _statistics.size(),
-		"error_count" : event.error_count(),
-		"failed_count" : event.failed_count(),
-		"skipped_count" : event.skipped_count(),
-		"flaky_count" : 0,
-		"orphan_nodes" : event.orphan_nodes()
+	var statistic := {
+		"total_count": _statistics.size(),
+		"error_count": event.error_count(),
+		"failed_count": event.failed_count(),
+		"skipped_count": event.skipped_count(),
+		"flaky_count": 0,
+		"orphan_nodes": event.orphan_nodes()
 	}
 	_summary["suite_count"] += 1
 	_summary["total_count"] += _statistics.size()
@@ -49,7 +49,7 @@ func build_test_suite_statisitcs(event: GdUnitEvent) -> Dictionary:
 	_summary["elapsed_time"] += event.elapsed_time()
 
 	for key: String in ["error_count", "failed_count", "skipped_count", "flaky_count", "orphan_nodes"]:
-		var value: int = _statistics.values().reduce(get_value.bind(key), 0 )
+		var value: int = _statistics.values().reduce(get_value.bind(key), 0)
 		statistic[key] += value
 		_summary[key] += value
 

@@ -53,12 +53,12 @@ func test_create_multipe_fuzzers() -> void:
 	var fuzzer_b := GdUnitExpressionRunner.new().to_fuzzer(GDScript.new(), "Fuzzers.rangei(10, 20)")
 	assert_that(fuzzer_a).is_not_null()
 	assert_object(fuzzer_a).is_instanceof(IntFuzzer)
-	var a :IntFuzzer = fuzzer_a
+	var a: IntFuzzer = fuzzer_a
 	assert_int(a._from).is_equal(-10)
 	assert_int(a._to).is_equal(TestFuzzers.MAX_VALUE)
 	assert_that(fuzzer_b).is_not_null()
 	assert_object(fuzzer_b).is_instanceof(IntFuzzer)
-	var b :IntFuzzer = fuzzer_b
+	var b: IntFuzzer = fuzzer_b
 	assert_int(b._from).is_equal(10)
 	assert_int(b._to).is_equal(20)
 

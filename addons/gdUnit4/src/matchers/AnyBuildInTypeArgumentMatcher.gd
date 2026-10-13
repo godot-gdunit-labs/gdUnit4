@@ -1,14 +1,14 @@
 class_name AnyBuildInTypeArgumentMatcher
 extends GdUnitArgumentMatcher
 
-var _type : PackedInt32Array = []
+var _type: PackedInt32Array = []
 
 
-func _init(type :PackedInt32Array) -> void:
+func _init(type: PackedInt32Array) -> void:
 	_type = type
 
 
-func is_match(value :Variant) -> bool:
+func is_match(value: Variant) -> bool:
 	return _type.has(typeof(value))
 
 

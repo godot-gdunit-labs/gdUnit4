@@ -147,7 +147,7 @@ func _inherits(current: Variant, type: Variant) -> GdUnitResult:
 
 	var obj: Object = current
 	for p in obj.get_property_list():
-		var clazz_name :String = p["name"]
+		var clazz_name: String = p["name"]
 		if p["usage"] == PROPERTY_USAGE_CATEGORY and clazz_name == p["hint_string"] and clazz_name == type_as_string:
 			return GdUnitResult.success("")
 	var script: Script = obj.get_script()

@@ -12,8 +12,8 @@ func before() -> void:
 func test_collect_report_statistics_with_errors() -> void:
 	# setup execution context tree like is build by the executor run
 	var ctx_suite := GdUnitExecutionContext.new("")
-	var ts :GdUnitTestSuite = auto_free(GdUnitTestSuite.new())
-	var tc :GdUnitTestCaseImpl = auto_free(create_test_case("test_case1", 0, ""))
+	var ts: GdUnitTestSuite = auto_free(GdUnitTestSuite.new())
+	var tc: GdUnitTestCaseImpl = auto_free(create_test_case("test_case1", 0, ""))
 	ts.add_child(tc)
 	ctx_suite.test_suite = ts
 	ctx_suite.orphan_monitor_start()
@@ -83,8 +83,8 @@ func test_collect_report_statistics_with_errors() -> void:
 func test_collect_report_statistics_with_errors_on_suite_hooks() -> void:
 	# setup execution context tree like is build by the executor run
 	var ctx_suite := GdUnitExecutionContext.new("")
-	var ts :GdUnitTestSuite = auto_free(GdUnitTestSuite.new())
-	var tc :GdUnitTestCaseImpl = auto_free(create_test_case("test_case1", 0, ""))
+	var ts: GdUnitTestSuite = auto_free(GdUnitTestSuite.new())
+	var tc: GdUnitTestCaseImpl = auto_free(create_test_case("test_case1", 0, ""))
 	ts.add_child(tc)
 	ctx_suite.test_suite = ts
 	ctx_suite.orphan_monitor_start()
@@ -149,8 +149,8 @@ func test_collect_report_statistics_with_errors_on_suite_hooks() -> void:
 func test_collect_report_statistics_only_errors_on_test_hooks() -> void:
 	# setup execution context tree like is build by the executor run
 	var ctx_suite := GdUnitExecutionContext.new("")
-	var ts :GdUnitTestSuite = auto_free(GdUnitTestSuite.new())
-	var tc :GdUnitTestCaseImpl = auto_free(create_test_case("test_case1", 0, ""))
+	var ts: GdUnitTestSuite = auto_free(GdUnitTestSuite.new())
+	var tc: GdUnitTestCaseImpl = auto_free(create_test_case("test_case1", 0, ""))
 	ts.add_child(tc)
 	ctx_suite.test_suite = ts
 	ctx_suite.orphan_monitor_start()
@@ -213,8 +213,8 @@ func test_collect_report_statistics_only_errors_on_test_hooks() -> void:
 func test_collect_report_statistics_all_tests_skipped() -> void:
 	# setup execution context tree like is build by the executor run
 	var ctx_suite := GdUnitExecutionContext.new("")
-	var ts :GdUnitTestSuite = auto_free(GdUnitTestSuite.new())
-	var tc :GdUnitTestCaseImpl = auto_free(create_test_case("test_case1", 0, ""))
+	var ts: GdUnitTestSuite = auto_free(GdUnitTestSuite.new())
+	var tc: GdUnitTestCaseImpl = auto_free(create_test_case("test_case1", 0, ""))
 	ts.add_child(tc)
 	ctx_suite.test_suite = ts
 	ctx_suite.orphan_monitor_start()
@@ -230,7 +230,7 @@ func test_collect_report_statistics_all_tests_skipped() -> void:
 				# test execution
 				var ctx_test_call := GdUnitExecutionContext.of(ctx_test_hook)
 				ctx_test_call.gc(GdUnitExecutionContext.GcOrphansCheck.TEST_CASE)
-				var expected_report := ctx_test_call.add_report(GdUnitReport.new().create(GdUnitReport.SKIPPED, index*5, "skipped test %d" % index))
+				var expected_report := ctx_test_call.add_report(GdUnitReport.new().create(GdUnitReport.SKIPPED, index * 5, "skipped test %d" % index))
 
 				ctx_test_hook.gc(GdUnitExecutionContext.GcOrphansCheck.TEST_HOOK_AFTER)
 				# verify
@@ -279,8 +279,8 @@ func test_simmulate_flaky_test(retry_count: int, is_flaky: bool, is_failed: bool
 	[3, true, false],]) -> void:
 	# setup execution context tree like is build by the executor run
 	var ctx_suite := GdUnitExecutionContext.new("")
-	var ts :GdUnitTestSuite = auto_free(GdUnitTestSuite.new())
-	var tc :GdUnitTestCaseImpl = auto_free(create_test_case("test_case1", 0, ""))
+	var ts: GdUnitTestSuite = auto_free(GdUnitTestSuite.new())
+	var tc: GdUnitTestCaseImpl = auto_free(create_test_case("test_case1", 0, ""))
 	ts.add_child(tc)
 	ctx_suite.test_suite = ts
 	ctx_suite.orphan_monitor_start()
@@ -322,7 +322,7 @@ func test_simmulate_flaky_test(retry_count: int, is_flaky: bool, is_failed: bool
 				GdUnitEvent.SKIPPED_COUNT: 0,
 				GdUnitEvent.ORPHAN_NODES: 0,
 			})
-			assert_bool(statistics[GdUnitEvent.FLAKY]).override_failure_message("Shold be marked as %s" %  "flaky" if is_flaky else "").is_equal(is_flaky)
+			assert_bool(statistics[GdUnitEvent.FLAKY]).override_failure_message("Shold be marked as %s" % "flaky" if is_flaky else "").is_equal(is_flaky)
 			assert_bool(statistics[GdUnitEvent.FAILED]).override_failure_message("Expect be failing: %s" % is_failed).is_equal(is_failed)
 
 		ctx_suite.gc(GdUnitExecutionContext.GcOrphansCheck.SUITE_HOOK_AFTER)

@@ -175,7 +175,7 @@ func _print_at(_message: String, cursor_pos: int, _color: Color, _effect: GdUnit
 		cursor_pos = cursor_pos - _message.length()
 
 	if cursor_pos > _current_pos:
-		printraw("[%dG" % cursor_pos) # Move cursor to absolute position
+		printraw("[%dG" % cursor_pos)  # Move cursor to absolute position
 	else:
 		_message = " " + _message
 
@@ -206,7 +206,7 @@ func restore_cursor() -> GdUnitCSIMessageWriter:
 
 ## Clears screen content and resets cursor position.
 func clear() -> void:
-	printraw("[2J[H") # Clear screen and move cursor to home
+	printraw("[2J[H")  # Clear screen and move cursor to home
 	_current_pos = 0
 
 

@@ -939,11 +939,11 @@ func test_extract() -> void:
 
 
 class TestObj:
-	var _name :String
-	var _value :Variant
-	var _x :Variant
+	var _name: String
+	var _value: Variant
+	var _x: Variant
 
-	func _init(name :String, value :Variant, x :Variant = null) -> void:
+	func _init(name: String, value: Variant, x: Variant = null) -> void:
 		_name = name
 		_value = value
 		_x = x
@@ -1126,10 +1126,10 @@ func test_is_failure() -> void:
 
 class ExampleTestClass extends RefCounted:
 	var _childs := Array()
-	var _parent :RefCounted = null
+	var _parent: RefCounted = null
 
 
-	func add_child(child :ExampleTestClass) -> ExampleTestClass:
+	func add_child(child: ExampleTestClass) -> ExampleTestClass:
 		_childs.append(child)
 		child._parent = self
 		return self

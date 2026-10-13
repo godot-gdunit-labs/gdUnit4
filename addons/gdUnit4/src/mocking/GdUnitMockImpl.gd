@@ -78,7 +78,7 @@ static func __sort_dictionary(__unsorted_args: Dictionary) -> Dictionary:
 	__sorted_args.sort_custom(__sort_by_argument_matcher)
 	var __sorted_result := {}
 	for __index in __sorted_args.size():
-		var key :Variant = __sorted_args[__index]
+		var key: Variant = __sorted_args[__index]
 		__sorted_result[key] = __unsorted_args[key]
 	return __sorted_result
 
@@ -133,7 +133,7 @@ static func __is_do_not_call_real_func(__func_name: String, __func_args := []) -
 	# not yet initialized, fall back to calling the real function
 	if doubler_state == null:
 		return false
-	var __is_call_real_func: bool = doubler_state.working_mode == GdUnitMock.CALL_REAL_FUNC  and not doubler_state.excluded_methods.has(__func_name)
+	var __is_call_real_func: bool = doubler_state.working_mode == GdUnitMock.CALL_REAL_FUNC and not doubler_state.excluded_methods.has(__func_name)
 	# do not call real funcions for mocked functions
 	if __is_call_real_func and doubler_state.return_values.has(__func_name):
 		@warning_ignore("unsafe_method_access")

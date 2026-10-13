@@ -6,14 +6,14 @@ extends GdUnitSceneRunner
 
 # mapping of mouse buttons and his masks
 const MAP_MOUSE_BUTTON_MASKS := {
-	MOUSE_BUTTON_LEFT : MOUSE_BUTTON_MASK_LEFT,
-	MOUSE_BUTTON_RIGHT : MOUSE_BUTTON_MASK_RIGHT,
-	MOUSE_BUTTON_MIDDLE : MOUSE_BUTTON_MASK_MIDDLE,
+	MOUSE_BUTTON_LEFT: MOUSE_BUTTON_MASK_LEFT,
+	MOUSE_BUTTON_RIGHT: MOUSE_BUTTON_MASK_RIGHT,
+	MOUSE_BUTTON_MIDDLE: MOUSE_BUTTON_MASK_MIDDLE,
 	# https://github.com/godotengine/godot/issues/73632
-	MOUSE_BUTTON_WHEEL_UP : 1 << (MOUSE_BUTTON_WHEEL_UP - 1),
-	MOUSE_BUTTON_WHEEL_DOWN : 1 << (MOUSE_BUTTON_WHEEL_DOWN - 1),
-	MOUSE_BUTTON_XBUTTON1 : MOUSE_BUTTON_MASK_MB_XBUTTON1,
-	MOUSE_BUTTON_XBUTTON2 : MOUSE_BUTTON_MASK_MB_XBUTTON2,
+	MOUSE_BUTTON_WHEEL_UP: 1 << (MOUSE_BUTTON_WHEEL_UP - 1),
+	MOUSE_BUTTON_WHEEL_DOWN: 1 << (MOUSE_BUTTON_WHEEL_DOWN - 1),
+	MOUSE_BUTTON_XBUTTON1: MOUSE_BUTTON_MASK_MB_XBUTTON1,
+	MOUSE_BUTTON_XBUTTON2: MOUSE_BUTTON_MASK_MB_XBUTTON2,
 }
 
 var _func_assert_impl: GDScript = ResourceLoader.load("res://addons/gdUnit4/src/asserts/GdUnitFuncAssertImpl.gd", "GDScript", ResourceLoader.CACHE_MODE_REUSE)
@@ -408,7 +408,7 @@ func set_time_factor(time_factor: float = 1.0) -> GdUnitSceneRunner:
 
 
 func simulate_frames(frames: int, delta_milli: int = -1) -> GdUnitSceneRunner:
-	var time_shift_frames :int = max(1, frames / _time_factor)
+	var time_shift_frames: int = max(1, frames / _time_factor)
 	for frame in time_shift_frames:
 		if delta_milli == -1:
 			await _scene_tree().process_frame
@@ -435,11 +435,11 @@ func await_func_on(instance: Object, func_name: String, ...args: Array) -> GdUni
 	return _func_assert_impl.new(instance, func_name, args)
 
 
-func await_signal(signal_name: String, args := [], timeout := 2000 ) -> void:
+func await_signal(signal_name: String, args := [], timeout := 2000) -> void:
 	await _awaiter.await_signal_on(scene(), signal_name, args, timeout)
 
 
-func await_signal_on(source: Object, signal_name: String, args := [], timeout := 2000 ) -> void:
+func await_signal_on(source: Object, signal_name: String, args := [], timeout := 2000) -> void:
 	await _awaiter.await_signal_on(source, signal_name, args, timeout)
 
 
@@ -458,7 +458,7 @@ func move_window_to_background() -> GdUnitSceneRunner:
 
 
 func _property_exists(name: String) -> bool:
-	return scene().get_property_list().any(func(properties :Dictionary) -> bool: return properties["name"] == name)
+	return scene().get_property_list().any(func(properties: Dictionary) -> bool: return properties["name"] == name)
 
 
 func get_property(name: String) -> Variant:
@@ -488,8 +488,8 @@ func find_child(name: String, recursive: bool = true, owned: bool = false) -> No
 func _scene_name() -> String:
 	if scene() == null:
 		return "unknown"
-	var scene_script :GDScript = scene().get_script()
-	var scene_name :String = scene().get_name()
+	var scene_script: GDScript = scene().get_script()
+	var scene_name: String = scene().get_name()
 	if not scene_script:
 		return scene_name
 	if not scene_name.begins_with("@"):
@@ -528,7 +528,7 @@ func _apply_input_modifiers(event: InputEvent) -> void:
 		modifier_event.shift_pressed = modifier_event.shift_pressed or last_input_event.keycode == KEY_SHIFT
 		modifier_event.alt_pressed = modifier_event.alt_pressed or last_input_event.keycode == KEY_ALT
 		modifier_event.ctrl_pressed = modifier_event.ctrl_pressed or last_input_event.keycode == KEY_CTRL
-		modifier_event.meta_pressed = modifier_event.meta_pressed or  last_input_event.keycode == KEY_META
+		modifier_event.meta_pressed = modifier_event.meta_pressed or last_input_event.keycode == KEY_META
 
 
 # copy over current active mouse mask and combine with curren mask
@@ -538,7 +538,7 @@ func _apply_input_mouse_mask(event: InputEvent) -> void:
 		(event as InputEventMouse).button_mask |= (_last_input_event as InputEventMouse).button_mask
 	if event is InputEventMouseButton:
 		var mouse_event := event as InputEventMouseButton
-		var button_mask :int = MAP_MOUSE_BUTTON_MASKS.get(mouse_event.get_button_index(), 0)
+		var button_mask: int = MAP_MOUSE_BUTTON_MASKS.get(mouse_event.get_button_index(), 0)
 		if mouse_event.is_pressed():
 			mouse_event.button_mask |= button_mask
 		else:
@@ -593,17 +593,17 @@ func _handle_input_event(event: InputEvent) -> GdUnitSceneRunner:
 @warning_ignore("return_value_discarded")
 func _reset_input_to_default() -> void:
 	# reset all mouse button to inital state if need
-	for m_button :int in _mouse_button_on_press.duplicate():
+	for m_button: int in _mouse_button_on_press.duplicate():
 		if Input.is_mouse_button_pressed(m_button):
 			simulate_mouse_button_release(m_button)
 	_mouse_button_on_press.clear()
 
-	for key_scancode :int in _key_on_press.duplicate():
+	for key_scancode: int in _key_on_press.duplicate():
 		if Input.is_key_pressed(key_scancode):
 			simulate_key_release(key_scancode)
 	_key_on_press.clear()
 
-	for action :String in _action_on_press.duplicate():
+	for action: String in _action_on_press.duplicate():
 		if Input.is_action_pressed(action):
 			simulate_action_release(action)
 	_action_on_press.clear()

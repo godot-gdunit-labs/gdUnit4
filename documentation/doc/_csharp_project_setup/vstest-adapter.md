@@ -118,6 +118,17 @@ Below is an example:
                          For large or complex Godot projects, you may need to increase this value.
                          Default: 20000 (20 seconds) -->
         <CompileProcessTimeout>20000</CompileProcessTimeout>
+
+        <!-- The maximum duration allowed to connect to the Godot runtime host in milliseconds.
+                         Increase this value for environments where the Godot host needs more time to start.
+                         Default: 10000 (10 seconds) -->
+        <GodotConnectTimeout>10000</GodotConnectTimeout>
+
+        <!-- When set to true, a failing exit of the Godot runtime host after all test results are reported,
+                         for example a crash with SIGSEGV or SIGABRT during the engine shutdown, is reported as a warning
+                         and does not fail the test run. A failing exit before all test results are reported always fails the run.
+                         Default: false -->
+        <TolerateExitCodeAfterCompletion>false</TolerateExitCodeAfterCompletion>
     </GdUnit4>
 </RunSettings>
 ```

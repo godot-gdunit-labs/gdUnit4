@@ -210,7 +210,7 @@ func test_is_singleton() -> void:
 		var singleton := Engine.get_singleton(singleton_name)
 		assert_bool(GdObjects.is_singleton(singleton)) \
 			.override_failure_message("Expect to a singleton: '%s' Instance: %s, Class: %s" % [singleton_name, singleton, singleton.get_class()]) \
-			. is_true()
+			.is_true()
 	# false tests
 	assert_bool(GdObjects.is_singleton(10)).is_false()
 	assert_bool(GdObjects.is_singleton(true)).is_false()

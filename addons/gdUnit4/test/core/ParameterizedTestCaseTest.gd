@@ -96,7 +96,7 @@ func after() -> void:
 			var expected_values: Variant = _expected_tests[test_name]
 			assert_that(current_values)\
 				.override_failure_message("Expecting '%s' called with parameters:\n %s\n but was\n %s" % [test_name, expected_values, current_values])\
-				. is_equal(expected_values)
+				.is_equal(expected_values)
 		else:
 			fail("Missing test '%s' executed!" % test_name)
 

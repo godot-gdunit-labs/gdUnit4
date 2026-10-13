@@ -170,7 +170,7 @@ func test_discover_tests_with_fuzzers() -> void:
 			extr("source_file"),
 			extr("line_number"),
 			extr("attribute_index"))\
-		. contains_exactly(
+		.contains_exactly(
 			tuple("TestSuiteWithFuzzers", "test_do_skip_as_first_param", script.resource_path, 4, -1),
 			tuple("TestSuiteWithFuzzers", "test_do_skip_in_middle", script.resource_path, 11, -1),
 			tuple("TestSuiteWithFuzzers", "test_do_skip_as_last_param", script.resource_path, 18, -1),
@@ -192,7 +192,7 @@ func test_discover_tests_with_static_parameterset() -> void:
 			extr("source_file"),
 			extr("line_number"),
 			extr("attribute_index"))\
-		. contains_exactly(
+		.contains_exactly(
 			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_bool_value", script.resource_path, 20, 0),
 			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_bool_value", script.resource_path, 20, 1),
 			tuple("TestSuiteWithStaticParameterSet", "test_parameterized_int_values", script.resource_path, 27, 0),
@@ -230,7 +230,7 @@ func test_discover_tests_with_dynamic_parameterset() -> void:
 			extr("source_file"),
 			extr("line_number"),
 			extr("attribute_index"))\
-		. contains_exactly(
+		.contains_exactly(
 			# test_with_dynamic_parameters_typed_array
 			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_typed_array", script.resource_path, 25, 0),
 			tuple("TestSuiteWithDynamicParameterSet", "test_with_dynamic_parameters_typed_array", script.resource_path, 25, 1),

@@ -212,7 +212,7 @@ func test_await_signal_without_time_factor() -> void:
 		# should be interrupted is will never change to Color.KHAKI
 		await assert_failure_await(func x() -> void: await runner.await_signal( "panel_color_change", [box1, Color.KHAKI], 300))
 	).has_message("await_signal_on(panel_color_change, [%s, %s]) timed out after 300ms" % [str(box1), str(Color.KHAKI)])\
-		. has_line(213)
+		.has_line(213)
 
 
 func test_await_signal_with_time_factor() -> void:
@@ -229,7 +229,7 @@ func test_await_signal_with_time_factor() -> void:
 		# should be interrupted is will never change to Color.KHAKI
 		await assert_failure_await(func x() -> void: await runner.await_signal("panel_color_change", [box1, Color.KHAKI], 30))
 	).has_message("await_signal_on(panel_color_change, [%s, %s]) timed out after 30ms" % [str(box1), str(Color.KHAKI)])\
-		. has_line(230)
+		.has_line(230)
 
 
 func test_manipulate_time_scale() -> void:

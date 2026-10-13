@@ -213,7 +213,7 @@ func test_override_failure_message() -> void:
 			.override_failure_message("Custom failure message") \
 			.is_null()) \
 		.is_failed() \
-		. has_message("Custom failure message")
+		.has_message("Custom failure message")
 
 
 func test_append_failure_message() -> void:

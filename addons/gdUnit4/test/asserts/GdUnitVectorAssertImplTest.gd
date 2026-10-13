@@ -72,7 +72,7 @@ func test_is_equal() -> void:
 	# comparing different vector types
 	assert_failure(func() -> void: assert_vector(Vector2.ONE).is_equal(Vector3.ONE)) \
 		.is_failed() \
-		. has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
+		.has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
 
 
 func test_is_equal_over_all_types(value: Variant, _test_parameters := _test_seta) -> void:
@@ -87,10 +87,10 @@ func test_is_not_equal() -> void:
 
 	assert_failure(func() -> void: assert_vector(Vector2(1.2, 1.000001)).is_not_equal(Vector2(1.2, 1.000001))) \
 		.is_failed() \
-		. has_message("Expecting:\n '(1.2, 1.000001)'\n not equal to\n '(1.2, 1.000001)'")
+		.has_message("Expecting:\n '(1.2, 1.000001)'\n not equal to\n '(1.2, 1.000001)'")
 	assert_failure(func() -> void: assert_vector(Vector2(1.2, 1.000001)).is_not_equal(Vector3(1.2, 1.000001, 1.0))) \
 		.is_failed() \
-		. has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
+		.has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
 
 
 func test_is_not_equal_over_all_types(value: Variant, _test_parameters := _test_seta) -> void:
@@ -134,7 +134,7 @@ func test_is_equal_approx() -> void:
 		)
 	assert_failure(func() -> void: assert_vector(Vector2(1.2, 1.000001)).is_equal_approx(Vector3.ONE, Vector3(1.2, 1.000001, 1.0))) \
 		.is_failed() \
-		. has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
+		.has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
 	assert_failure(func() -> void: assert_vector(Vector2(0.878431, 0.505882)).is_equal_approx(Vector2(0.878431, 0.105882), Vector2(0.000001, 0.000001))) \
 		.is_failed() \
 		.has_message("""
@@ -180,13 +180,13 @@ func test_is_less() -> void:
 		)
 	assert_failure(func() -> void: assert_vector(Vector2(1.2, 1.000001)).is_less(Vector2(1.2, 1.000001))) \
 		.is_failed() \
-		. has_message("Expecting to be less than:\n '(1.2, 1.000001)' but was '(1.2, 1.000001)'")
+		.has_message("Expecting to be less than:\n '(1.2, 1.000001)' but was '(1.2, 1.000001)'")
 	assert_failure(func() -> void: assert_vector(null).is_less(Vector2(1.2, 1.000001))) \
 		.is_failed() \
 		.has_message("Expecting to be less than:\n '(1.2, 1.000001)' but was '<null>'")
 	assert_failure(func() -> void: assert_vector(Vector2(1.2, 1.000001)).is_less(Vector3(1.2, 1.000001, 1.0))) \
 		.is_failed() \
-		. has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
+		.has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
 
 
 func test_is_less_over_all_types(value: Variant, expected: Variant, _test_parameters := [
@@ -213,13 +213,13 @@ func test_is_less_equal() -> void:
 		)
 	assert_failure(func() -> void: assert_vector(Vector2(1.2, 1.000002)).is_less_equal(Vector2(1.2, 1.000001))) \
 		.is_failed() \
-		. has_message("Expecting to be less than or equal:\n '(1.2, 1.000001)' but was '(1.2, 1.000002)'")
+		.has_message("Expecting to be less than or equal:\n '(1.2, 1.000001)' but was '(1.2, 1.000002)'")
 	assert_failure(func() -> void: assert_vector(null).is_less_equal(Vector2(1.2, 1.000001))) \
 		.is_failed() \
-		. has_message("Expecting to be less than or equal:\n '(1.2, 1.000001)' but was '<null>'")
+		.has_message("Expecting to be less than or equal:\n '(1.2, 1.000001)' but was '<null>'")
 	assert_failure(func() -> void: assert_vector(Vector2(1.2, 1.000002)).is_less_equal(Vector3(1.2, 1.000001, 1.0))) \
 		.is_failed() \
-		. has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
+		.has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
 
 
 func test_is_less_equal_over_all_types(value: Variant, expected: Variant, _test_parameters := [
@@ -251,13 +251,13 @@ func test_is_greater() -> void:
 		)
 	assert_failure(func() -> void: assert_vector(Vector2(1.2, 1.000001)).is_greater(Vector2(1.2, 1.000001))) \
 		.is_failed() \
-		. has_message("Expecting to be greater than:\n '(1.2, 1.000001)' but was '(1.2, 1.000001)'")
+		.has_message("Expecting to be greater than:\n '(1.2, 1.000001)' but was '(1.2, 1.000001)'")
 	assert_failure(func() -> void: assert_vector(null).is_greater(Vector2(1.2, 1.000001))) \
 		.is_failed() \
-		. has_message("Expecting to be greater than:\n '(1.2, 1.000001)' but was '<null>'")
+		.has_message("Expecting to be greater than:\n '(1.2, 1.000001)' but was '<null>'")
 	assert_failure(func() -> void: assert_vector(Vector2(1.2, 1.000001)).is_greater(Vector3(1.2, 1.000001, 1.0))) \
 		.is_failed() \
-		. has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
+		.has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
 
 
 func test_is_greater_over_all_types(value: Variant, expected: Variant, _test_parameters := [
@@ -285,13 +285,13 @@ func test_is_greater_equal() -> void:
 		)
 	assert_failure(func() -> void: assert_vector(Vector2(1.2, 1.000002)).is_greater_equal(Vector2(1.2, 1.000003))) \
 		.is_failed() \
-		. has_message("Expecting to be greater than or equal:\n '(1.2, 1.000003)' but was '(1.2, 1.000002)'")
+		.has_message("Expecting to be greater than or equal:\n '(1.2, 1.000003)' but was '(1.2, 1.000002)'")
 	assert_failure(func() -> void: assert_vector(null).is_greater_equal(Vector2(1.2, 1.000003))) \
 		.is_failed() \
-		. has_message("Expecting to be greater than or equal:\n '(1.2, 1.000003)' but was '<null>'")
+		.has_message("Expecting to be greater than or equal:\n '(1.2, 1.000003)' but was '<null>'")
 	assert_failure(func() -> void: assert_vector(Vector2(1.2, 1.000002)).is_greater_equal(Vector3(1.2, 1.000003, 1.0))) \
 		.is_failed() \
-		. has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
+		.has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
 
 
 func test_is_greater_equal_over_all_types(value: Variant, expected: Variant, _test_parameters := [
@@ -333,7 +333,7 @@ func test_is_between_failed() -> void:
 		)
 	assert_failure(func() -> void: assert_vector(current).is_between(Vector2.ZERO, Vector3.ONE)) \
 		.is_failed() \
-		. has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
+		.has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
 
 
 func test_is_between_over_all_types(value: Variant, from: Variant, to: Variant, _test_parameters := [
@@ -361,7 +361,7 @@ func test_is_not_between(fuzzer := Fuzzers.rangev2(Vector2.ONE, Vector2.ONE * 2)
 		)
 	assert_failure(func() -> void: assert_vector(Vector2.ONE).is_not_between(Vector3.ZERO, Vector2.ONE)) \
 		.is_failed() \
-		. has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
+		.has_message("Unexpected type comparison:\n Expecting type 'Vector2' but is 'Vector3'")
 
 
 func test_is_not_between_over_all_types(value: Variant, from: Variant, to: Variant, _test_parameters := [

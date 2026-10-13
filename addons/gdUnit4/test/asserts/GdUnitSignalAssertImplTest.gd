@@ -245,7 +245,7 @@ func test_is_signal_exists() -> void:
 		.is_signal_exists("visibility_changed")\
 		.is_signal_exists("tree_entered")\
 		.is_signal_exists(node.tree_exiting)\
-		. is_signal_exists(node.tree_exited)
+		.is_signal_exists(node.tree_exited)
 
 	(
 		await assert_failure_await(func() -> void: assert_signal(node).is_signal_exists("not_existing_signal"))

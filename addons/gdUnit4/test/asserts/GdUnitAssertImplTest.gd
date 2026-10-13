@@ -66,7 +66,7 @@ func test_get_line_number_verify() -> void:
 	assert_failure(func() -> void: verify(obj, 1).get_reference_count()) \
 		.is_failed() \
 		.has_line(66) \
-		. has_message("Expecting interaction on:\n	'get_reference_count()'	1 time's\nBut found interactions on:\n")
+		.has_message("Expecting interaction on:\n	'get_reference_count()'	1 time's\nBut found interactions on:\n")
 
 
 func test_is_null() -> void:
@@ -122,7 +122,7 @@ func test_override_failure_message() -> void:
 			.is_null()) \
 		.is_failed() \
 		.has_line(120) \
-		. has_message("Custom failure message")
+		.has_message("Custom failure message")
 
 
 func test_assert_not_yet_implemented() -> void:

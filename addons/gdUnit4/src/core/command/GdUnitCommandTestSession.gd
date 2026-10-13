@@ -76,8 +76,8 @@ static func force_pause_scene() -> bool:
 
 					var connected_signals := button.get_signal_connection_list("pressed")
 					if not connected_signals.is_empty():
-						for signal_ in connected_signals:
-							var cb: Callable = signal_["callable"]
+						for connected_signal in connected_signals:
+							var cb: Callable = connected_signal["callable"]
 							cb.call()
 						return true
 	push_error("GdUnitCommandTestSession:force_pause_scene() Can't find Editor component 'EditorRunBar'")

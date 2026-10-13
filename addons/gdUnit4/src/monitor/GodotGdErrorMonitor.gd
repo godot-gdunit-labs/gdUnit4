@@ -103,19 +103,19 @@ func erase_log_entry(log_entry: ErrorLogEntry) -> void:
 
 
 func to_reports() -> Array[GdUnitReport]:
-	var reports_: Array[GdUnitReport] = []
+	var error_reports: Array[GdUnitReport] = []
 
-	reports_.assign(log_entries().map(_to_report))
+	error_reports.assign(log_entries().map(_to_report))
 
-	return reports_
+	return error_reports
 
 
-static func _to_report(errorLog: ErrorLogEntry) -> GdUnitReport:
+static func _to_report(error_log: ErrorLogEntry) -> GdUnitReport:
 
 	var failure := "%s\n  %s" % [
 		GdAssertMessages._error("Godot Runtime Error !"),
-		GdAssertMessages._colored_value(errorLog._message)]
-	var error := GdUnitError.new(failure, errorLog._line, errorLog._stack_trace)
+		GdAssertMessages._colored_value(error_log._message)]
+	var error := GdUnitError.new(failure, error_log._line, error_log._stack_trace)
 	return GdUnitReport.new().from_error(GdUnitReport.ABORT, error)
 
 

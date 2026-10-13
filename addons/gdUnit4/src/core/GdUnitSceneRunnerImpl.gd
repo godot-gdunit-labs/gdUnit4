@@ -522,20 +522,20 @@ func get_project_physics_ticks_per_second() -> int:
 func _apply_input_modifiers(event: InputEvent) -> void:
 	if _last_input_event is InputEventWithModifiers and event is InputEventWithModifiers:
 		var last_input_event := _last_input_event as InputEventWithModifiers
-		var _event := event as InputEventWithModifiers
-		_event.meta_pressed = _event.meta_pressed or last_input_event.meta_pressed
-		_event.alt_pressed = _event.alt_pressed or last_input_event.alt_pressed
-		_event.shift_pressed = _event.shift_pressed or last_input_event.shift_pressed
-		_event.ctrl_pressed = _event.ctrl_pressed or last_input_event.ctrl_pressed
+		var modifier_event := event as InputEventWithModifiers
+		modifier_event.meta_pressed = modifier_event.meta_pressed or last_input_event.meta_pressed
+		modifier_event.alt_pressed = modifier_event.alt_pressed or last_input_event.alt_pressed
+		modifier_event.shift_pressed = modifier_event.shift_pressed or last_input_event.shift_pressed
+		modifier_event.ctrl_pressed = modifier_event.ctrl_pressed or last_input_event.ctrl_pressed
 		# this line results into reset the control_pressed state!!!
 		#event.command_or_control_autoremap = event.command_or_control_autoremap or _last_input_event.command_or_control_autoremap
 	if _last_input_event is InputEventKey and event is InputEventWithModifiers:
 		var last_input_event := _last_input_event as InputEventKey
-		var _event := event as InputEventWithModifiers
-		_event.shift_pressed = _event.shift_pressed or last_input_event.keycode == KEY_SHIFT
-		_event.alt_pressed = _event.alt_pressed or last_input_event.keycode == KEY_ALT
-		_event.ctrl_pressed = _event.ctrl_pressed or last_input_event.keycode == KEY_CTRL
-		_event.meta_pressed = _event.meta_pressed or  last_input_event.keycode == KEY_META
+		var modifier_event := event as InputEventWithModifiers
+		modifier_event.shift_pressed = modifier_event.shift_pressed or last_input_event.keycode == KEY_SHIFT
+		modifier_event.alt_pressed = modifier_event.alt_pressed or last_input_event.keycode == KEY_ALT
+		modifier_event.ctrl_pressed = modifier_event.ctrl_pressed or last_input_event.keycode == KEY_CTRL
+		modifier_event.meta_pressed = modifier_event.meta_pressed or  last_input_event.keycode == KEY_META
 
 
 # copy over current active mouse mask and combine with curren mask
@@ -544,12 +544,12 @@ func _apply_input_mouse_mask(event: InputEvent) -> void:
 	if _last_input_event is InputEventMouse and event is InputEventMouse:
 		(event as InputEventMouse).button_mask |= (_last_input_event as InputEventMouse).button_mask
 	if event is InputEventMouseButton:
-		var _event := event as InputEventMouseButton
-		var button_mask :int = MAP_MOUSE_BUTTON_MASKS.get(_event.get_button_index(), 0)
-		if _event.is_pressed():
-			_event.button_mask |= button_mask
+		var mouse_event := event as InputEventMouseButton
+		var button_mask :int = MAP_MOUSE_BUTTON_MASKS.get(mouse_event.get_button_index(), 0)
+		if mouse_event.is_pressed():
+			mouse_event.button_mask |= button_mask
 		else:
-			_event.button_mask ^= button_mask
+			mouse_event.button_mask ^= button_mask
 
 
 # copy over last mouse position if need

@@ -323,9 +323,9 @@ static func normalize_path(path: String) -> String:
 static func create_test_suite(test_suite_path: String, source_path: String) -> GdUnitResult:
 	# create directory if not exists
 	if not DirAccess.dir_exists_absolute(test_suite_path.get_base_dir()):
-		var error_ := DirAccess.make_dir_recursive_absolute(test_suite_path.get_base_dir())
-		if error_ != OK:
-			return GdUnitResult.error("Can't create directoy  at: %s. Error code %s" % [test_suite_path.get_base_dir(), error_])
+		var dir_error := DirAccess.make_dir_recursive_absolute(test_suite_path.get_base_dir())
+		if dir_error != OK:
+			return GdUnitResult.error("Can't create directoy  at: %s. Error code %s" % [test_suite_path.get_base_dir(), dir_error])
 	var script := GDScript.new()
 	script.source_code = GdUnitTestSuiteTemplate.build_template(source_path)
 	var error := ResourceSaver.save(script, test_suite_path)

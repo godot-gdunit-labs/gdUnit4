@@ -204,12 +204,12 @@ func collect_reports(recursive: bool) -> Array[GdUnitReport]:
 	return current_reports
 
 
-func calculate_statistics(reports_: Array[GdUnitReport]) -> Dictionary:
-	var failed_count := GdUnitTestReportCollector.count_failures(reports_)
-	var error_count := GdUnitTestReportCollector.count_errors(reports_)
-	var warn_count := GdUnitTestReportCollector.count_warnings(reports_)
-	var skip_count := GdUnitTestReportCollector.count_skipped(reports_)
-	var orphan_count := GdUnitTestReportCollector.count_orphans(reports_)
+func calculate_statistics(test_reports: Array[GdUnitReport]) -> Dictionary:
+	var failed_count := GdUnitTestReportCollector.count_failures(test_reports)
+	var error_count := GdUnitTestReportCollector.count_errors(test_reports)
+	var warn_count := GdUnitTestReportCollector.count_warnings(test_reports)
+	var skip_count := GdUnitTestReportCollector.count_skipped(test_reports)
+	var orphan_count := GdUnitTestReportCollector.count_orphans(test_reports)
 	var is_failed := !is_success()
 	var elapsed_time := _timer.elapsed_since_ms()
 	var retries :=  1 if _parent_context == null else _sub_context.size()

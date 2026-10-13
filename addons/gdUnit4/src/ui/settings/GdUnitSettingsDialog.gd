@@ -49,8 +49,8 @@ func setup_properties(properties_parent: Control, property_category: String) -> 
 	var category_properties := GdUnitSettings.list_settings(property_category)
 	# sort by key
 	category_properties.sort_custom(_sort_by_key)
-	var theme_ := Theme.new()
-	theme_.set_constant("h_separation", "GridContainer", 12)
+	var grid_theme := Theme.new()
+	grid_theme.set_constant("h_separation", "GridContainer", 12)
 	var last_category := "!"
 	var min_size_overall := 0.0
 	var labels := []
@@ -58,13 +58,13 @@ func setup_properties(properties_parent: Control, property_category: String) -> 
 	var info_labels := []
 	var grid: GridContainer = null
 	for p in category_properties:
-		var min_size_ := 0.0
+		var min_width := 0.0
 		var property: GdUnitProperty = p
 		var current_category := property.category()
 		if not grid or current_category != last_category:
 			grid = GridContainer.new()
 			grid.columns = 4
-			grid.theme = theme_
+			grid.theme = grid_theme
 
 			var sub_category: Control = _properties_template.get_child(3).duplicate()
 			var category_label: Label = sub_category.get_child(0)
@@ -96,14 +96,14 @@ func setup_properties(properties_parent: Control, property_category: String) -> 
 		info.text = property.help()
 		info_labels.append(info)
 		grid.add_child(info)
-		if min_size_overall < min_size_:
-			min_size_overall = min_size_
+		if min_size_overall < min_width:
+			min_size_overall = min_width
 
 	for controls: Array in [labels, inputs, info_labels]:
-		var _size: float = controls.map(func(c: Control) -> float: return c.size.x).max()
-		min_size_overall += _size
+		var max_width: float = controls.map(func(c: Control) -> float: return c.size.x).max()
+		min_size_overall += max_width
 		for control: Control in controls:
-			control.custom_minimum_size.x = _size
+			control.custom_minimum_size.x = max_width
 	properties_parent.custom_minimum_size.x = min_size_overall
 
 

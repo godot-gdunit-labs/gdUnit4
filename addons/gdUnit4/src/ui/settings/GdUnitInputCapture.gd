@@ -27,8 +27,8 @@ func _input(event: InputEvent) -> void:
 	if not is_visible_in_tree():
 		return
 	if event is InputEventKey and event.is_pressed() and not event.is_echo():
-		var _event := event as InputEventKey
-		match _event.keycode:
+		var key_event := event as InputEventKey
+		match key_event.keycode:
 			KEY_CTRL:
 				_input_event.ctrl_pressed = true
 			KEY_SHIFT:
@@ -38,8 +38,8 @@ func _input(event: InputEvent) -> void:
 			KEY_META:
 				_input_event.meta_pressed = true
 			_:
-				_input_event.keycode = _event.keycode
-		_apply_input_modifiers(_event)
+				_input_event.keycode = key_event.keycode
+		_apply_input_modifiers(key_event)
 		accept_event()
 
 	if event is InputEventKey and not event.is_pressed():
@@ -49,8 +49,8 @@ func _input(event: InputEvent) -> void:
 
 func _apply_input_modifiers(event: InputEvent) -> void:
 	if event is InputEventWithModifiers:
-		var _event := event as InputEventWithModifiers
-		_input_event.meta_pressed = _event.meta_pressed or _input_event.meta_pressed
-		_input_event.alt_pressed = _event.alt_pressed or _input_event.alt_pressed
-		_input_event.shift_pressed = _event.shift_pressed or _input_event.shift_pressed
-		_input_event.ctrl_pressed = _event.ctrl_pressed or _input_event.ctrl_pressed
+		var modifier_event := event as InputEventWithModifiers
+		_input_event.meta_pressed = modifier_event.meta_pressed or _input_event.meta_pressed
+		_input_event.alt_pressed = modifier_event.alt_pressed or _input_event.alt_pressed
+		_input_event.shift_pressed = modifier_event.shift_pressed or _input_event.shift_pressed
+		_input_event.ctrl_pressed = modifier_event.ctrl_pressed or _input_event.ctrl_pressed

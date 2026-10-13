@@ -176,30 +176,30 @@ func _to_string() -> String:
 
 
 # extract function description given by Object.get_method_list()
-static func extract_from(descriptor: Dictionary, is_engine_ := true) -> GdFunctionDescriptor:
+static func extract_from(descriptor: Dictionary, p_is_engine := true) -> GdFunctionDescriptor:
 	var func_name: String = descriptor["name"]
 	var function_flags: int = descriptor["flags"]
 	var return_descriptor: Dictionary = descriptor["return"]
 	var clazz_name: String = return_descriptor["class_name"]
-	var is_virtual_: bool = function_flags & METHOD_FLAG_VIRTUAL
-	var is_static_: bool = function_flags & METHOD_FLAG_STATIC
-	var is_vararg_: bool = function_flags & METHOD_FLAG_VARARG
+	var func_is_virtual: bool = function_flags & METHOD_FLAG_VIRTUAL
+	var func_is_static: bool = function_flags & METHOD_FLAG_STATIC
+	var func_is_vararg: bool = function_flags & METHOD_FLAG_VARARG
 
-	var return_type_ := _extract_return_type(return_descriptor)
+	var func_return_type := _extract_return_type(return_descriptor)
 
 	# Add hotfix to handle Godot bug https://github.com/godotengine/godot/issues/122629
 	if func_name == '_static_init':
-		return_type_ = GdObjects.TYPE_VOID
+		func_return_type = GdObjects.TYPE_VOID
 
 	return GdFunctionDescriptor.new(
 		func_name,
-		is_virtual_,
-		is_static_,
-		is_engine_,
-		return_type_,
+		func_is_virtual,
+		func_is_static,
+		p_is_engine,
+		func_return_type,
 		clazz_name,
 		_extract_args(descriptor),
-		_build_varargs(is_vararg_)
+		_build_varargs(func_is_vararg)
 	)
 
 
@@ -216,7 +216,7 @@ static func _extract_return_type(return_info: Dictionary) -> int:
 
 
 static func _extract_args(descriptor: Dictionary) -> Array[GdFunctionArgument]:
-	var args_: Array[GdFunctionArgument] = []
+	var func_args: Array[GdFunctionArgument] = []
 	var arguments: Array = descriptor["args"]
 	var defaults: Array = descriptor["default_args"]
 	# iterate backwards because the default values are stored from right to left
@@ -232,16 +232,16 @@ static func _extract_args(descriptor: Dictionary) -> Array[GdFunctionArgument]:
 
 		#var arg_class: StringName = arg["class_name"]
 		var default_value: Variant = GdFunctionArgument.UNDEFINED if defaults.is_empty() else defaults.pop_back()
-		args_.push_front(GdFunctionArgument.new(arg_name, arg_type, default_value, arg_type_hint))
-	return args_
+		func_args.push_front(GdFunctionArgument.new(arg_name, arg_type, default_value, arg_type_hint))
+	return func_args
 
 
 static func _build_varargs(p_is_vararg: bool) -> Array[GdFunctionArgument]:
-	var varargs_: Array[GdFunctionArgument] = []
+	var func_varargs: Array[GdFunctionArgument] = []
 	if not p_is_vararg:
-		return varargs_
-	varargs_.push_back(GdFunctionArgument.new("varargs", GdObjects.TYPE_VARARG, ''))
-	return varargs_
+		return func_varargs
+	func_varargs.push_back(GdFunctionArgument.new("varargs", GdObjects.TYPE_VARARG, ''))
+	return func_varargs
 
 
 static func _argument_name(arg: Dictionary) -> String:

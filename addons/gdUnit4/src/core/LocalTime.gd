@@ -51,30 +51,30 @@ func elapsed_since_ms() -> int:
 
 
 func plus(time_unit :TimeUnit, value :int) -> LocalTime:
-	var addValue:int = 0
+	var add_value:int = 0
 	match time_unit:
 		TimeUnit.MILLIS:
-			addValue = value
+			add_value = value
 		TimeUnit.SECOND:
-			addValue = value * MILLIS_PER_SECOND
+			add_value = value * MILLIS_PER_SECOND
 		TimeUnit.MINUTE:
-			addValue = value * MILLIS_PER_MINUTE
+			add_value = value * MILLIS_PER_MINUTE
 		TimeUnit.HOUR:
-			addValue = value * MILLIS_PER_HOUR
+			add_value = value * MILLIS_PER_HOUR
 	@warning_ignore("return_value_discarded")
-	_init(_time + addValue)
+	_init(_time + add_value)
 	return self
 
 
 static func elapsed(p_time_ms :int) -> String:
-	var local_time_ := LocalTime.new(p_time_ms)
-	if local_time_._hour > 0:
-		return "%dh %dmin %ds %dms" % [local_time_._hour, local_time_._minute, local_time_._second, local_time_._millisecond]
-	if local_time_._minute > 0:
-		return "%dmin %ds %dms" % [local_time_._minute, local_time_._second, local_time_._millisecond]
-	if local_time_._second > 0:
-		return "%ds %dms" % [local_time_._second, local_time_._millisecond]
-	return "%dms" % local_time_._millisecond
+	var new_time := LocalTime.new(p_time_ms)
+	if new_time._hour > 0:
+		return "%dh %dmin %ds %dms" % [new_time._hour, new_time._minute, new_time._second, new_time._millisecond]
+	if new_time._minute > 0:
+		return "%dmin %ds %dms" % [new_time._minute, new_time._second, new_time._millisecond]
+	if new_time._second > 0:
+		return "%ds %dms" % [new_time._second, new_time._millisecond]
+	return "%dms" % new_time._millisecond
 
 
 # create from epoch timestamp in ms

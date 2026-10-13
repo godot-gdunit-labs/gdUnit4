@@ -110,12 +110,12 @@ var _client: GdUnitUpdateClient
 
 
 static func regex(pattern: String) -> RegEx:
-	var regex_ := RegEx.new()
-	var err := regex_.compile(pattern)
+	var pattern_regex := RegEx.new()
+	var err := pattern_regex.compile(pattern)
 	if err != OK:
 		push_error("error '%s' checked pattern '%s'" % [err, pattern])
 		return null
-	return regex_
+	return pattern_regex
 
 
 func _init() -> void:
@@ -159,27 +159,27 @@ func convert_text(input: String) -> String:
 	input = process_tables(input)
 
 	for pattern: Array in md_replace_patterns:
-		var regex_: RegEx = pattern[0]
+		var pattern_regex: RegEx = pattern[0]
 		var bb_replace: Variant = pattern[1]
 		if bb_replace is Callable:
 			@warning_ignore("unsafe_method_access")
-			input = await bb_replace.call(regex_, input)
+			input = await bb_replace.call(pattern_regex, input)
 		else:
 			@warning_ignore("unsafe_cast")
-			input = regex_.sub(input, bb_replace as String, true)
+			input = pattern_regex.sub(input, bb_replace as String, true)
 	return input
 
 
 func convert_code_block(input: String) -> String:
 	for pattern: Array in code_block_patterns:
-		var regex_: RegEx = pattern[0]
+		var pattern_regex: RegEx = pattern[0]
 		var bb_replace: Variant = pattern[1]
 		if bb_replace is Callable:
 			@warning_ignore("unsafe_method_access")
-			input = await bb_replace.call(regex_, input)
+			input = await bb_replace.call(pattern_regex, input)
 		else:
 			@warning_ignore("unsafe_cast")
-			input = regex_.sub(input, bb_replace as String, true)
+			input = pattern_regex.sub(input, bb_replace as String, true)
 	return input
 
 

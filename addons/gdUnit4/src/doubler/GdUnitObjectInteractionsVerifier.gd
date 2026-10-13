@@ -40,14 +40,14 @@ func verify_interactions(func_name: String, args: Array[Variant]) -> void:
 
 	var assert_tool := GdUnitAssertImpl.new("")
 	if total_interactions != expected_interactions:
-		var __expected_summary := {function_args : expected_interactions}
+		var expected_summary := {function_args : expected_interactions}
 		var error_message: String
 		# if no interactions macht collect not verified interactions for failure report
 		if summary.is_empty():
-			var __current_summary := verify_no_more_interactions()
-			error_message = GdAssertMessages.error_validate_interactions(__current_summary, __expected_summary)
+			var current_summary := verify_no_more_interactions()
+			error_message = GdAssertMessages.error_validate_interactions(current_summary, expected_summary)
 		else:
-			error_message = GdAssertMessages.error_validate_interactions(summary, __expected_summary)
+			error_message = GdAssertMessages.error_validate_interactions(summary, expected_summary)
 		@warning_ignore("return_value_discarded")
 		assert_tool.report_error(error_message)
 	else:

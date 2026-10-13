@@ -33,27 +33,27 @@ func _set_shortcut() -> void:
 	var keys := GdUnitShortcut.default_keys(shortcut_type)
 	if property != null:
 		keys = property.value()
-	var inputEvent := _create_shortcut_input_even(keys)
+	var input_event := _create_shortcut_input_even(keys)
 
 	shortcut = Shortcut.new()
-	shortcut.set_events([inputEvent])
+	shortcut.set_events([input_event])
 
 
 func _create_shortcut_input_even(key_codes: PackedInt32Array) -> InputEventKey:
-	var inputEvent := InputEventKey.new()
-	inputEvent.pressed = true
+	var input_event := InputEventKey.new()
+	input_event.pressed = true
 	for key_code in key_codes:
 		match key_code:
 			KEY_ALT:
-				inputEvent.alt_pressed = true
+				input_event.alt_pressed = true
 			KEY_SHIFT:
-				inputEvent.shift_pressed = true
+				input_event.shift_pressed = true
 			KEY_CTRL:
-				inputEvent.ctrl_pressed = true
+				input_event.ctrl_pressed = true
 			_:
-				inputEvent.keycode = key_code as Key
-				inputEvent.physical_keycode = key_code as Key
-	return inputEvent
+				input_event.keycode = key_code as Key
+				input_event.physical_keycode = key_code as Key
+	return input_event
 
 
 func stop() -> void:

@@ -161,9 +161,9 @@ class Variable extends Token:
 	func _scan_type(p_value: String) -> int:
 		if p_value.begins_with("\"") and p_value.ends_with("\""):
 			return TYPE_STRING
-		var type_ := GdObjects.string_to_type(p_value)
-		if type_ != TYPE_NIL:
-			return type_
+		var value_type := GdObjects.string_to_type(p_value)
+		if value_type != TYPE_NIL:
+			return value_type
 		if p_value.is_valid_int():
 			return TYPE_INT
 		if p_value.is_valid_float():
@@ -629,8 +629,8 @@ func extract_inner_class(source_rows: PackedStringArray, clazz_name :String) -> 
 func extract_func_signature(rows: PackedStringArray, index: int) -> String:
 	var signature := ""
 
-	for rowIndex in range(index, rows.size()):
-		var row := rows[rowIndex]
+	for row_idx in range(index, rows.size()):
+		var row := rows[row_idx]
 		row = _regex_strip_comments.sub(row, "").strip_edges(false)
 		if row.is_empty():
 			continue
@@ -674,8 +674,8 @@ func _enrich_function_descriptor(script: GDScript, fds: Array[GdFunctionDescript
 			break
 
 		var rows := script_to_scan.source_code.split("\n")
-		for rowIndex in rows.size():
-			var input := rows[rowIndex]
+		for row_idx in rows.size():
+			var input := rows[row_idx]
 			# step over inner class functions
 			if input.begins_with("\t"):
 				continue
@@ -701,14 +701,14 @@ func _enrich_function_descriptor(script: GDScript, fds: Array[GdFunctionDescript
 				continue
 			# Mark as enriched
 			enriched_functions[function_name] = true
-			var func_signature := extract_func_signature(rows, rowIndex)
+			var func_signature := extract_func_signature(rows, row_idx)
 			var func_arguments := _parse_function_arguments(func_signature)
-			var func_begin_line := rowIndex + 1
+			var func_begin_line := row_idx + 1
 			var func_end_line := _parse_func_end_line(rows, func_begin_line)
 			# enrich missing default values
 			fd.enrich_arguments(func_arguments)
 			fd.enrich_file_info(script_to_scan.resource_path, func_begin_line, func_end_line)
-			fd._is_coroutine = is_func_coroutine(rows, rowIndex)
+			fd._is_coroutine = is_func_coroutine(rows, row_idx)
 			# enrich return class name if not set
 			if fd.return_type() == TYPE_OBJECT and fd._return_class in ["", "Resource", "RefCounted"]:
 				var var_token := parse_return_token(func_signature)
@@ -734,8 +734,8 @@ func _parse_func_end_line(rows: PackedStringArray, func_row_index: int) -> int:
 
 func is_func_coroutine(rows :PackedStringArray, index :int) -> bool:
 	var is_coroutine := false
-	for rowIndex in range(index+1, rows.size()):
-		var input := rows[rowIndex].strip_edges()
+	for row_idx in range(index+1, rows.size()):
+		var input := rows[row_idx].strip_edges()
 		if input.begins_with("#") or input.is_empty():
 			continue
 		var token := next_token(input, 0)
@@ -779,11 +779,11 @@ func _prescan_script(script: GDScript) -> void:
 func parse(clazz_name :String, clazz_path :PackedStringArray) -> GdUnitResult:
 	if clazz_path.is_empty():
 		return GdUnitResult.error("Invalid script path '%s'" % clazz_path)
-	var is_inner_class_ := is_inner_class(clazz_path)
+	var is_inner := is_inner_class(clazz_path)
 	var script :GDScript = load(clazz_path[0])
 	_prescan_script(script)
 
-	if is_inner_class_:
+	if is_inner:
 		var inner_class_name := clazz_path[1]
 		if _scanned_inner_classes.has(inner_class_name):
 			# do load only on inner class source code and enrich the stored script instance
@@ -791,7 +791,7 @@ func parse(clazz_name :String, clazz_path :PackedStringArray) -> GdUnitResult:
 			script = _script_constants.get(inner_class_name)
 			script.source_code = source_code
 	var function_descriptors := get_function_descriptors(script)
-	var gd_class := GdClassDescriptor.new(clazz_name, is_inner_class_, function_descriptors)
+	var gd_class := GdClassDescriptor.new(clazz_name, is_inner, function_descriptors)
 	return GdUnitResult.success(gd_class)
 
 

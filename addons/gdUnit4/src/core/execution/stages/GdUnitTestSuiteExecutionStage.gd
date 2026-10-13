@@ -56,19 +56,19 @@ func clone_test_suite(test_suite :GdUnitTestSuite) -> GdUnitTestSuite:
 	dispose_timers(test_suite)
 	await GdUnitMemoryObserver.gc_guarded_instance("Manually free on awaiter", test_suite.__awaiter)
 	var parent := test_suite.get_parent()
-	var _test_suite := GdUnitTestSuite.new()
+	var suite_copy := GdUnitTestSuite.new()
 	parent.remove_child(test_suite)
-	copy_properties(test_suite, _test_suite)
+	copy_properties(test_suite, suite_copy)
 	for child in test_suite.get_children():
 		test_suite.remove_child(child)
-		_test_suite.add_child(child)
-	parent.add_child(_test_suite)
+		suite_copy.add_child(child)
+	parent.add_child(suite_copy)
 	@warning_ignore("return_value_discarded")
-	GdUnitMemoryObserver.guard_instance(_test_suite.__awaiter)
+	GdUnitMemoryObserver.guard_instance(suite_copy.__awaiter)
 	# finally free current test suite instance
 	test_suite.free()
 	await (Engine.get_main_loop() as SceneTree).process_frame
-	return _test_suite
+	return suite_copy
 
 
 func dispose_timers(test_suite :GdUnitTestSuite) -> void:

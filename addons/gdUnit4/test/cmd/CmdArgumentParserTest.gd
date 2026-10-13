@@ -9,7 +9,7 @@ var option_b := CmdOption.new("-b, --bar", "-b <value>", "comand with required a
 var option_c := CmdOption.new("-c, --calc", "-c [value]", "command with optional argument", TYPE_STRING, true)
 var option_x := CmdOption.new("-x", "some help text x", "some description x")
 
-var _cmd_options :CmdOptions
+var _cmd_options: CmdOptions
 
 
 func before() -> void:
@@ -100,7 +100,7 @@ func test_parse_success_repead_cmd_args() -> void:
 	])
 
 	# with repeading commands argument
-	result = parser.parse(["-d", "dir/dir/CmdTool.gd", "-c", "argument1", "-a",  "-c", "argument2",  "-c", "argument3"])
+	result = parser.parse(["-d", "dir/dir/CmdTool.gd", "-c", "argument1", "-a", "-c", "argument2", "-c", "argument3"])
 	assert_result(result).is_success()
 	assert_array(result.value()).contains_exactly([
 		CmdCommand.new("-c", ["argument1", "argument2", "argument3"]),

@@ -3,12 +3,12 @@ class_name GdUnitTestSuiteTest
 extends GdUnitTestSuite
 
 
-var _events :Array[GdUnitEvent] = []
+var _events: Array[GdUnitEvent] = []
 var _retry_count := 0
 var _test_unknown_argument_in_test_case_is_called := false
 
 
-func collect_report(event :GdUnitEvent) -> void:
+func collect_report(event: GdUnitEvent) -> void:
 	_events.push_back(event)
 
 
@@ -45,17 +45,17 @@ func test_assert_that_types() -> void:
 	assert_object(assert_that(Plane.PLANE_XY)).is_instanceof(GdUnitAssertImpl)
 
 
-func test_unknown_argument_in_test_case(_invalid_arg :int) -> void:
+func test_unknown_argument_in_test_case(_invalid_arg: int) -> void:
 	_test_unknown_argument_in_test_case_is_called = true
 	fail("This test case should be not executed, it must be skipped.")
 
 
 func test_find_child() -> void:
-	var node_a :Node3D = auto_free(Node3D.new())
+	var node_a: Node3D = auto_free(Node3D.new())
 	node_a.set_name("node_a")
-	var node_b :Node3D = auto_free(Node3D.new())
+	var node_b: Node3D = auto_free(Node3D.new())
 	node_b.set_name("node_b")
-	var node_c :Node3D = auto_free(Node3D.new())
+	var node_c: Node3D = auto_free(Node3D.new())
 	node_c.set_name("node_c")
 	add_child(node_a, true)
 	node_a.add_child(node_b, true)
@@ -67,11 +67,11 @@ func test_find_child() -> void:
 
 
 func test_find_by_path() -> void:
-	var node_a :Node3D = auto_free(Node3D.new())
+	var node_a: Node3D = auto_free(Node3D.new())
 	node_a.set_name("node_a")
-	var node_b :Node3D = auto_free(Node3D.new())
+	var node_b: Node3D = auto_free(Node3D.new())
 	node_b.set_name("node_b")
-	var node_c :Node3D = auto_free(Node3D.new())
+	var node_c: Node3D = auto_free(Node3D.new())
 	node_c.set_name("node_c")
 	add_child(node_a, true)
 	node_a.add_child(node_b, true)

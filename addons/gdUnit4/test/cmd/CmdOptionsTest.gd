@@ -8,7 +8,7 @@ var option_f := CmdOption.new("-f, --foo", "some help text foo", "some descripti
 var option_b := CmdOption.new("-b, --bar", "some help text bar", "some description bar")
 var option_x := CmdOption.new("-x", "some help text x", "some description x")
 
-var _cmd_options :CmdOptions
+var _cmd_options: CmdOptions
 
 
 func before() -> void:

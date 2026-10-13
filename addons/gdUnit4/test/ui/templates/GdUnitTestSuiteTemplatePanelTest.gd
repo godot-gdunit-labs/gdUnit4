@@ -5,7 +5,7 @@ extends GdUnitTestSuite
 
 
 func test_show() -> void:
-	var template :Variant = spy("res://addons/gdUnit4/src/ui/templates/GdUnitTestSuiteTemplatePanel.tscn")
+	var template: Variant = spy("res://addons/gdUnit4/src/ui/templates/GdUnitTestSuiteTemplatePanel.tscn")
 	scene_runner(template)
 
 	# verify the followup functions are called by _ready()

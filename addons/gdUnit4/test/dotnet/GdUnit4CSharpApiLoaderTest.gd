@@ -12,7 +12,7 @@ func before(_do_skip := not GdUnit4CSharpApiLoader.is_api_loaded(), _skip_reason
 	pass
 
 
-func test_is_engine_version_supported(version :int, expected :bool, _test_parameters := [
+func test_is_engine_version_supported(version: int, expected: bool, _test_parameters := [
 	[0x40100, false],
 	[0x40500, false],
 	[0x40603, false],

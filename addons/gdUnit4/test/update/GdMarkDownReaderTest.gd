@@ -5,7 +5,7 @@ extends GdUnitTestSuite
 const GdUnitUpdateClient = preload("res://addons/gdUnit4/src/update/GdUnitUpdateClient.gd")
 
 var _reader := preload("res://addons/gdUnit4/src/update/GdMarkDownReader.gd").new()
-var _client :GdUnitUpdateClient
+var _client: GdUnitUpdateClient
 
 
 func before() -> void:
@@ -55,7 +55,7 @@ func test_to_bbcode_embeded_text() -> void:
 
 func test_process_image() -> void:
 	#regex("!\\[(.*?)\\]\\((.*?)(( )+(.*?))?\\)")
-	var reg_ex :RegEx = _reader.md_replace_patterns[25][0]
+	var reg_ex: RegEx = _reader.md_replace_patterns[25][0]
 
 	# without tooltip
 	assert_str(await _reader.process_image(reg_ex, "![alt text](res://addons/gdUnit4/test/update/resources/icon48.png)"))\
@@ -82,7 +82,7 @@ func test_process_image() -> void:
 
 func test_process_image_by_reference() -> void:
 	#regex("!\\[(.*?)\\]\\((.*?)(( )+(.*?))?\\)")
-	var reg_ex :RegEx = _reader.md_replace_patterns[24][0]
+	var reg_ex: RegEx = _reader.md_replace_patterns[24][0]
 	var input := """
 		![alt text1][logo-1]
 

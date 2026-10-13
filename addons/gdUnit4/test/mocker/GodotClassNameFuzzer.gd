@@ -26,10 +26,10 @@ const EXCLUDED_CLASSES = [
 	"UPNP"
 ]
 
-var class_names :Array[String] = []
+var class_names: Array[String] = []
 
 
-func _init(no_singleton :bool = false, only_instancialbe :bool = false) -> void:
+func _init(no_singleton: bool = false, only_instancialbe: bool = false) -> void:
 	#class_names = ClassDB.get_class_list()
 	for clazz_name in ClassDB.get_class_list():
 		#https://github.com/godotengine/godot/issues/67643

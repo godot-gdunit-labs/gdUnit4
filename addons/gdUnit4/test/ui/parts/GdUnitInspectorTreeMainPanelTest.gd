@@ -97,7 +97,7 @@ func set_test_state(test_cases: Array[GdUnitTestCase], state: GdUnitInspectorTre
 	#		_inspector.set_state_succeded(item)
 
 
-func get_item_state(parent :TreeItem, item_name :String = "") -> int:
+func get_item_state(parent: TreeItem, item_name: String = "") -> int:
 	for item in parent.get_children():
 		if item.get_text(0) == item_name:
 			return GdUnitInspectorTreeMainPanel.get_item_state(item)[0]
@@ -450,7 +450,7 @@ func test_tree_view_mode_tree() -> void:
 
 
 func test_custom_sort_by_original_index() -> void:
-	var tree :Tree = auto_free(Tree.new())
+	var tree: Tree = auto_free(Tree.new())
 	var tree_root := tree.create_item()
 
 	create_folder_item(tree_root, "folder_a")
@@ -474,7 +474,7 @@ func test_custom_sort_by_original_index() -> void:
 
 
 func test_custom_sort_by_name_ascending() -> void:
-	var tree :Tree = auto_free(Tree.new())
+	var tree: Tree = auto_free(Tree.new())
 	var tree_root := tree.create_item()
 
 	create_folder_item(tree_root, "folder_a")
@@ -498,7 +498,7 @@ func test_custom_sort_by_name_ascending() -> void:
 
 
 func test_custom_sort_by_name_descending() -> void:
-	var tree :Tree = auto_free(Tree.new())
+	var tree: Tree = auto_free(Tree.new())
 	var tree_root := tree.create_item()
 
 	create_folder_item(tree_root, "folder_a")
@@ -521,7 +521,7 @@ func test_custom_sort_by_name_descending() -> void:
 			break
 
 func test_custom_sort_by_execution_time() -> void:
-	var tree :Tree = auto_free(Tree.new())
+	var tree: Tree = auto_free(Tree.new())
 	var tree_root := tree.create_item()
 
 	create_folder_item(tree_root, "folder_a", 1000)
@@ -544,7 +544,7 @@ func test_custom_sort_by_execution_time() -> void:
 			break
 
 
-func create_test_item(parent: TreeItem, test_name: String, execution_time := 0 ) -> TreeItem:
+func create_test_item(parent: TreeItem, test_name: String, execution_time := 0) -> TreeItem:
 	var item := parent.create_child()
 	var index := parent.get_child_count()
 	item.set_meta(GdUnitInspectorTreeMainPanel.META_GDUNIT_TYPE, GdUnitInspectorTreeMainPanel.GdUnitType.TEST_CASE)
@@ -567,7 +567,7 @@ func test_discover_tests() -> void:
 	# verify the InspectorProgressBar is connected to gdunit_test_discovered signal
 	assert_bool(GdUnitSignals.instance().gdunit_test_discover_added.is_connected(_inspector.on_test_case_discover_added))\
 		.override_failure_message("The 'InspectorProgressBar' must be connected to signal 'gdunit_test_discovered'")\
-		.is_true()
+		. is_true()
 
 
 func test_on_test_case_discover_added() -> void:
@@ -592,8 +592,8 @@ func test_on_test_case_discover_added() -> void:
 	var dir_x := create_child(dir_a, "(0/1) dir_x")
 	var my_test_suite2 := create_child(dir_x, "(0/1) my_test_suite2")
 	create_child(my_test_suite2, "test_foo")
-	var my_test_suite3 := create_child(expected_root,  "(0/1) my_test_suite3")
-	create_child(my_test_suite3,  "test_foo")
+	var my_test_suite3 := create_child(expected_root, "(0/1) my_test_suite3")
+	create_child(my_test_suite3, "test_foo")
 
 	assert_tree_equals(_inspector._tree_root, expected_root)
 
@@ -673,7 +673,7 @@ func test_collect_test_cases_gd_872(_do_skip := not GdUnit4CSharpApiLoader.is_ap
 			"Minimal.Tests.ATests.TestExample2",
 			"Minimal.Tests.AZTests.TestExample",
 			"Minimal.Tests.AZTests.TestExample2"])\
-		.has_size(4)
+		. has_size(4)
 	# Validate suite `Minimal.Tests.ATests`
 	var test_case1: GdUnitTestCase = tests_by_id["Minimal.Tests.ATests.TestExample"]
 	var test_case2: GdUnitTestCase = tests_by_id["Minimal.Tests.ATests.TestExample2"]
@@ -709,13 +709,13 @@ func _build_tree_path(item: TreeItem, tree_path: String = "") -> String:
 	return _build_tree_path(item.get_parent(), part)
 
 
-func assert_tree_equals(tree_left :TreeItem, tree_right: TreeItem) -> bool:
+func assert_tree_equals(tree_left: TreeItem, tree_right: TreeItem) -> bool:
 	var left_childs := tree_left.get_children()
 	var right_childs := tree_right.get_children()
 
 	assert_that(left_childs.size())\
 		.override_failure_message("Expecting same child count %d vs %d on item %s" % [left_childs.size(), right_childs.size(), tree_left.get_meta("gdUnit_name")])\
-		.is_equal(right_childs.size())
+		. is_equal(right_childs.size())
 
 	if is_failure():
 		return false
@@ -744,21 +744,21 @@ func _print_execution_times(item: TreeItem) -> void:
 	prints("_________________________________________________")
 
 
-func _print_tree(tree_left :TreeItem, indent: String = "\t") -> void:
+func _print_tree(tree_left: TreeItem, indent: String = "\t") -> void:
 	var left := tree_left.get_children()
 	for index in left.size():
 		var l: TreeItem = left[index]
 		var state_value: int = l.get_meta(_inspector.META_GDUNIT_STATE)
-		var state :Variant = _inspector.STATE.keys()[state_value]
+		var state: Variant = _inspector.STATE.keys()[state_value]
 		prints(indent, l.get_meta("gdunit_original_index"), ":", get_item_name(l), state)
-		_print_tree(l, indent+"\t")
+		_print_tree(l, indent + "\t")
 
 
-func _print_tree_up(item :TreeItem, indent: String = "\t") -> void:
+func _print_tree_up(item: TreeItem, indent: String = "\t") -> void:
 	prints(indent, get_item_name(item), "index:", item.get_meta("gdunit_original_index"))
 	var parent := item.get_parent()
 	if parent != null:
-		_print_tree_up(parent, indent+"\t")
+		_print_tree_up(parent, indent + "\t")
 
 
 func get_item_name(item: TreeItem) -> String:
@@ -773,8 +773,8 @@ func get_item_execution_time(item: TreeItem) -> String:
 
 func rebuild_tree_from_resource(resource: String) -> TreeItem:
 	var json := FileAccess.open(resource, FileAccess.READ)
-	var dict :Dictionary = JSON.parse_string(json.get_as_text())
-	var tree :Tree = auto_free(Tree.new())
+	var dict: Dictionary = JSON.parse_string(json.get_as_text())
+	var tree: Tree = auto_free(Tree.new())
 	var root := tree.create_item()
 	var items: Dictionary = dict["TreeItem"]
 	create_tree_item_form_dict(root, items)
@@ -782,7 +782,7 @@ func rebuild_tree_from_resource(resource: String) -> TreeItem:
 
 
 func create_tree_item_form_dict(item: TreeItem, data: Dictionary) -> TreeItem:
-	for key:String in data.keys():
+	for key: String in data.keys():
 		match key:
 			"collapsed":
 				@warning_ignore("unsafe_cast")
@@ -794,8 +794,8 @@ func create_tree_item_form_dict(item: TreeItem, data: Dictionary) -> TreeItem:
 				return create_tree_item_form_dict(next, data[key] as Dictionary)
 
 			"childrens":
-				var childs_data :Array = data[key]
-				for child_data:Dictionary in childs_data:
+				var childs_data: Array = data[key]
+				for child_data: Dictionary in childs_data:
 					create_tree_item_form_dict(item, child_data)
 
 		if key.begins_with("metadata"):
@@ -804,7 +804,7 @@ func create_tree_item_form_dict(item: TreeItem, data: Dictionary) -> TreeItem:
 	return item
 
 
-func create_child( parent: TreeItem, item_name: String) -> TreeItem:
+func create_child(parent: TreeItem, item_name: String) -> TreeItem:
 	var item := parent.create_child()
 	item.set_text(0, item_name)
 	var regex := RegEx.new()
@@ -826,6 +826,6 @@ func cs_load_non_cached(resource_path: String) -> Script:
 
 class ItemNameExtractor extends GdUnitValueExtractor:
 
-	func extract_value(value :Variant) -> Variant:
+	func extract_value(value: Variant) -> Variant:
 		var item: TreeItem = value
 		return item.get_meta(GdUnitInspectorTreeMainPanel.META_GDUNIT_NAME)

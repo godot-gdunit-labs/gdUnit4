@@ -12,7 +12,7 @@ class NodeWithOutVirtualFunc extends Node:
 
 
 func test_spy_on_script_respect_virtual_functions() -> void:
-	var do_spy :Variant = auto_free(GdUnitSpyBuilder.spy_on_script(auto_free(NodeWithOutVirtualFunc.new()), [], true).new())
+	var do_spy: Variant = auto_free(GdUnitSpyBuilder.spy_on_script(auto_free(NodeWithOutVirtualFunc.new()), [], true).new())
 
 	do_spy.__init_doubler()
 	do_spy.__init([])
@@ -29,10 +29,10 @@ func test_spy_on_scene_with_onready_parameters() -> void:
 	var original_progress_value: Variant = scene.progress
 	assert_object(original_progress_value).is_not_null()
 	assert_object(scene._parameter_obj).is_not_null()
-	assert_dict(scene._parameter_dict).is_equal({"key" : "value"})
+	assert_dict(scene._parameter_dict).is_equal({"key": "value"})
 
 	# create spy on scene
-	var spy_scene :Variant = spy(scene)
+	var spy_scene: Variant = spy(scene)
 
 	# verify the @onready property is set
 	assert_object(spy_scene.progress).is_same(original_progress_value)

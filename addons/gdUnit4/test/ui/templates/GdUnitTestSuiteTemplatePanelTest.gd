@@ -3,9 +3,6 @@
 class_name GdUnitTestSuiteTemplatePanelTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/ui/templates/GdUnitTestSuiteTemplatePanel.gd'
-
 
 func test_show() -> void:
 	var template :Variant = spy("res://addons/gdUnit4/src/ui/templates/GdUnitTestSuiteTemplatePanel.tscn")

@@ -4,8 +4,6 @@
 class_name TestSuiteScannerTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/core/GdUnitTestSuiteScanner.gd'
 
 func before_test() -> void:
 	ProjectSettings.set_setting(GdUnitSettings.TEST_SUITE_NAMING_CONVENTION, GdUnitSettings.NAMING_CONVENTIONS.AUTO_DETECT)
@@ -111,11 +109,6 @@ func test_create_test_suite_pascal_case_path() -> void:
 			"# GdUnit generated TestSuite",
 			"class_name PascalCaseWithClassNameTest",
 			"extends GdUnitTestSuite",
-			"@warning_ignore('unused_parameter')",
-			"@warning_ignore('return_value_discarded')",
-			"",
-			"# TestSuite generated from",
-			"const __source: String = '%s'" % source_path,
 			""])
 	# checked source with class_name is NOT set
 	source_path = "res://addons/gdUnit4/test/core/resources/naming_conventions/PascalCaseWithoutClassName.gd"
@@ -130,11 +123,6 @@ func test_create_test_suite_pascal_case_path() -> void:
 			"# GdUnit generated TestSuite",
 			"class_name PascalCaseWithoutClassNameTest",
 			"extends GdUnitTestSuite",
-			"@warning_ignore('unused_parameter')",
-			"@warning_ignore('return_value_discarded')",
-			"",
-			"# TestSuite generated from",
-			"const __source: String = '%s'" % source_path,
 			""])
 
 
@@ -153,11 +141,6 @@ func test_create_test_suite_snake_case_path() -> void:
 			"# GdUnit generated TestSuite",
 			"class_name SnakeCaseWithClassNameTest",
 			"extends GdUnitTestSuite",
-			"@warning_ignore('unused_parameter')",
-			"@warning_ignore('return_value_discarded')",
-			"",
-			"# TestSuite generated from",
-			"const __source: String = '%s'" % source_path,
 			""])
 	# checked source with class_name is NOT set
 	source_path ="res://addons/gdUnit4/test/core/resources/naming_conventions/snake_case_without_class_name.gd"
@@ -172,11 +155,6 @@ func test_create_test_suite_snake_case_path() -> void:
 			"# GdUnit generated TestSuite",
 			"class_name SnakeCaseWithoutClassNameTest",
 			"extends GdUnitTestSuite",
-			"@warning_ignore('unused_parameter')",
-			"@warning_ignore('return_value_discarded')",
-			"",
-			"# TestSuite generated from",
-			"const __source: String = '%s'" % source_path,
 			""])
 
 
@@ -189,7 +167,7 @@ func test_create_test_case() -> void:
 	var result := GdUnitTestSuiteScanner.create_test_case(test_suite_path, "last_name", source_path)
 	assert_bool(result.is_success()).is_true()
 	var info :Dictionary = result.value()
-	assert_int(info.get("line")).is_equal(11)
+	assert_int(info.get("line")).is_equal(6)
 	assert_file(info.get("path")).exists()\
 		.is_file()\
 		.is_script()\
@@ -197,11 +175,6 @@ func test_create_test_case() -> void:
 			"# GdUnit generated TestSuite",
 			"class_name PersonTest",
 			"extends GdUnitTestSuite",
-			"@warning_ignore('unused_parameter')",
-			"@warning_ignore('return_value_discarded')",
-			"",
-			"# TestSuite generated from",
-			"const __source: String = '%s'" % source_path,
 			"",
 			"",
 			"func test_last_name() -> void:",
@@ -211,7 +184,7 @@ func test_create_test_case() -> void:
 	# try to add again
 	result = GdUnitTestSuiteScanner.create_test_case(test_suite_path, "last_name", source_path)
 	assert_bool(result.is_success()).is_true()
-	assert_that(result.value()).is_equal({"line" : 16, "path": test_suite_path})
+	assert_that(result.value()).is_equal({"line" : 11, "path": test_suite_path})
 
 
 # https://github.com/MikeSchulze/gdUnit4/issues/25
@@ -253,7 +226,7 @@ func test_scan_by_inheritance_class_name() -> void:
 
 
 func test_get_test_case_line_number() -> void:
-	assert_int(GdUnitTestSuiteScanner.get_test_case_line_number("res://addons/gdUnit4/test/core/GdUnitTestSuiteScannerTest.gd", "get_test_case_line_number")).is_equal(255)
+	assert_int(GdUnitTestSuiteScanner.get_test_case_line_number("res://addons/gdUnit4/test/core/GdUnitTestSuiteScannerTest.gd", "get_test_case_line_number")).is_equal(228)
 	assert_int(GdUnitTestSuiteScanner.get_test_case_line_number("res://addons/gdUnit4/test/core/GdUnitTestSuiteScannerTest.gd", "unknown")).is_equal(-1)
 
 

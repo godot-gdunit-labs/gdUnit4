@@ -2,9 +2,6 @@
 class_name GdUnitIntAssertImplTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/asserts/GdUnitIntAssertImpl.gd'
-
 
 func test_is_null() -> void:
 	assert_int(null).is_null()

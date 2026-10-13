@@ -3,10 +3,6 @@ class_name GdArrayToolsTest
 extends GdUnitTestSuite
 
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/core/GdArrayTools.gd'
-
-
 func test_as_string(_test: String, value: Variant, expected: String, _test_parameters := [
 	['Array', Array([1, 2]), '[1, 2]'],
 	['Array', Array([1.0, 2.212]), '[1.000000, 2.212000]'],

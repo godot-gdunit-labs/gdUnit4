@@ -3,9 +3,6 @@ extends GdUnitTestSuite
 @warning_ignore('unused_parameter')
 @warning_ignore('return_value_discarded')
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/core/GdUnitFileAccess.gd'
-
 
 var file_to_save :String
 var _test_paths: PackedStringArray = []

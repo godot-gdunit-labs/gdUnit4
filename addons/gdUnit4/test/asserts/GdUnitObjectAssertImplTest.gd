@@ -2,9 +2,6 @@
 class_name GdUnitObjectAssertImplTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/asserts/GdUnitObjectAssertImpl.gd'
-
 
 func test_is_equal() -> void:
 	assert_object(Mesh.new()).is_equal(Mesh.new())

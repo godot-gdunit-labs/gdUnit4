@@ -3,10 +3,6 @@ class_name GdUnitResultAssertImplTest
 extends GdUnitTestSuite
 
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/asserts/GdUnitResultAssertImpl.gd'
-
-
 func test_is_null() -> void:
 	assert_result(null).is_null()
 

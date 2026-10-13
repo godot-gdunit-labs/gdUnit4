@@ -3,9 +3,6 @@ class_name GdUnitCommandTestSessionTest
 extends GdUnitTestSuite
 
 
-const __source = "res://addons/gdUnit4/src/core/command/GdUnitCommandTestSession.gd"
-
-
 var _command: GdUnitCommandTestSession
 
 class TestGdUnitCommandTestSession extends GdUnitCommandTestSession:

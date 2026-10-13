@@ -2,9 +2,6 @@ class_name GdUnitFontsTest
 extends GdUnitTestSuite
 
 
-const __source = 'res://addons/gdUnit4/src/ui/GdUnitFonts.gd'
-
-
 class TestEditorSettings:
 	var _values: Dictionary
 

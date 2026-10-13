@@ -2,8 +2,6 @@
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/asserts/GdUnitArrayAssertImpl.gd'
 
 func before() -> void:
 	ProjectSettings.set_setting(GdUnitSettings.REPORT_ASSERT_WARNINGS, false)

@@ -2,9 +2,6 @@
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/asserts/GdUnitArrayAssertImpl.gd'
-
 
 func test_is_array_assert(_test: String, array: Variant, _test_parameters := [
 	["Array", Array()],

@@ -2,9 +2,6 @@
 class_name GdUnitResultTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/core/GdUnitResult.gd'
-
 
 func test_serde() -> void:
 	var value := {

@@ -1,9 +1,6 @@
 extends GdUnitTestSuite
 
 
-const __source = "res://addons/gdUnit4/src/core/hooks/GdUnitBaseReporterTestSessionHook.gd"
-
-
 class FakeReportWriter extends GdUnitReportWriter:
 
 	func write(_report_path: String, _report: GdUnitReportSummary) -> String:

@@ -1,8 +1,6 @@
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/network/GdUnitTcpServer.gd'
 
 var tcp_server: GdUnitTcpServer
 var tcp_client: GdUnitTcpClient

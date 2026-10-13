@@ -3,9 +3,6 @@
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/core/GdUnitSceneRunner.gd'
-
 
 var _runner :GdUnitSceneRunner
 var _scene_spy :Node

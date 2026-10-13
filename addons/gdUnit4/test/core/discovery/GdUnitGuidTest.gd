@@ -4,9 +4,6 @@ extends GdUnitTestSuite
 @warning_ignore('unused_parameter')
 @warning_ignore('return_value_discarded')
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/core/discovery/GdUnitGUID.gd'
-
 
 func test_initialization() -> void:
 	# Test initialization with empty string

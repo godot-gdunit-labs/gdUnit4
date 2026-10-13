@@ -2,9 +2,6 @@
 class_name GdUnitEventTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/core/event/GdUnitEvent.gd'
-
 
 func test_GdUnitEvent_defaults() -> void:
 	var event := GdUnitEvent.new()

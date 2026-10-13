@@ -3,8 +3,6 @@ class_name GdUnitProjectSettingsAutoSaveTest
 extends GdUnitTestSuite
 
 
-const __source = "res://addons/gdUnit4/src/GdUnitTestSuite.gd"
-
 const IGNORE := GdUnitSettings.GdScriptWarningMode.IGNORE
 const ERROR := GdUnitSettings.GdScriptWarningMode.ERROR
 

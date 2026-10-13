@@ -4,9 +4,6 @@ extends GdUnitTestSuite
 @warning_ignore('unused_parameter')
 @warning_ignore('return_value_discarded')
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/ui/GdUnitUiTools.gd'
-
 
 func test__merge_images_same_size() -> void:
 	var image_a := Image.create(16, 16, false, Image.FORMAT_RGBA8)

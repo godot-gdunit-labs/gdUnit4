@@ -2,8 +2,6 @@
 class_name GdUnitSettingsTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/core/GdUnitSettings.gd'
 
 const IGNORE := GdUnitSettings.GdScriptWarningMode.IGNORE
 const WARN := GdUnitSettings.GdScriptWarningMode.WARN

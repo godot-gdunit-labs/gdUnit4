@@ -2,8 +2,6 @@
 class_name GdMarkDownReaderTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/update/GdMarkDownReader.gd'
 const GdUnitUpdateClient = preload("res://addons/gdUnit4/src/update/GdUnitUpdateClient.gd")
 
 var _reader := preload("res://addons/gdUnit4/src/update/GdMarkDownReader.gd").new()

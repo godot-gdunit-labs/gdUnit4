@@ -3,8 +3,6 @@
 class_name CmdCommandHandlerTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/cmd/CmdCommandHandler.gd'
 
 var _cmd_options: CmdOptions
 var _cmd_instance: TestCommands

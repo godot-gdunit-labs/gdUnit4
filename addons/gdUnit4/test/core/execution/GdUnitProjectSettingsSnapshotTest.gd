@@ -3,8 +3,6 @@ class_name GdUnitProjectSettingsSnapshotTest
 extends GdUnitTestSuite
 
 
-const __source = "res://addons/gdUnit4/src/core/execution/GdUnitProjectSettingsSnapshot.gd"
-
 const IGNORE := GdUnitSettings.GdScriptWarningMode.IGNORE
 const WARN := GdUnitSettings.GdScriptWarningMode.WARN
 const ERROR := GdUnitSettings.GdScriptWarningMode.ERROR

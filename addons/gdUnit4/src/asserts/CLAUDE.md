@@ -120,9 +120,6 @@ TYPE_OBJECT:
 ```gdscript
 class_name GdUnit<Type>AssertImplTest
 extends GdUnitTestSuite
-
-
-const __source = 'res://addons/gdUnit4/src/asserts/GdUnit<Type>AssertImpl.gd'
 ```
 
 Minimum test coverage: supported types, unsupported types (type-check error message),

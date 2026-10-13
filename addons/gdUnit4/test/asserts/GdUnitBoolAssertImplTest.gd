@@ -2,9 +2,6 @@
 class_name GdUnitBoolAssertImplTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/asserts/GdUnitBoolAssertImpl.gd'
-
 
 func test_is_true() -> void:
 	assert_bool(true).is_true()

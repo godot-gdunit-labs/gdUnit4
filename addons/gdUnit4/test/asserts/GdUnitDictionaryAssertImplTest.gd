@@ -1,9 +1,6 @@
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/asserts/GdUnitDictionaryAssertImpl.gd'
-
 
 func test_must_fail_has_invlalid_type() -> void:
 	assert_failure(func() -> void: assert_dict(1)) \

@@ -2,8 +2,6 @@
 class_name GdFunctionDescriptorTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/core/parse/GdFunctionDescriptor.gd'
 
 const RETURN_TYPE_VARIANTS_SOURCE := """
 	enum MyEnum { A, B }

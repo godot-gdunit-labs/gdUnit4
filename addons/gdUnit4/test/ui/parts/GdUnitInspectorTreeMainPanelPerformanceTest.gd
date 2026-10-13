@@ -2,8 +2,6 @@
 class_name GdUnitInspectorTreeMainPanelPerformanceTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/ui/parts/GdUnitInspectorTreeMainPanel.gd'
 
 # this test-suite contains only empty test to run as performance indicator
 

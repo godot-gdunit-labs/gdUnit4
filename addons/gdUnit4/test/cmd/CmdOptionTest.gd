@@ -2,9 +2,6 @@
 class_name CmdOptionTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/cmd/CmdOption.gd'
-
 
 func test_commands() -> void:
 	assert_array(CmdOption.new("-a", "help a", "describe a").commands())\

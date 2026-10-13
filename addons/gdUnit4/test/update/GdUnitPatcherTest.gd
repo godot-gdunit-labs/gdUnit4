@@ -2,8 +2,6 @@
 class_name GdUnitPatcherTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/update/GdUnitPatcher.gd'
 
 const _patches := "res://addons/gdUnit4/test/update/resources/patches/"
 

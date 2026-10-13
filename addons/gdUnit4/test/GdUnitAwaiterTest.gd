@@ -8,9 +8,6 @@ signal test_signal_a()
 signal test_signal_b()
 signal test_signal_c(value :String)
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/GdUnitAwaiter.gd'
-
 
 func after_test() -> void:
 	for node in (Engine.get_main_loop() as SceneTree).root.get_children():
@@ -71,7 +68,7 @@ func test_await_signal_on_never_emitted_timedout() -> void:
 	(
 		# we  wait for 'test_signal_c("yyy")' which  is never emitted
 		await assert_failure_await(func x() -> void: await await_signal_on(self, "test_signal_c", ["yyy"], 200))
-	).has_line(73)\
+	).has_line(70)\
 		.has_message("await_signal_on(test_signal_c, [\"yyy\"]) timed out after 200ms")
 
 
@@ -79,7 +76,7 @@ func test_await_signal_on_invalid_source_timedout() -> void:
 	(
 		# we  wait for a signal on a already freed instance
 		await assert_failure_await(func x() -> void: await await_signal_on(invalid_node(), "tree_entered", [], 300))
-	).has_line(81)\
+	).has_line(78)\
 		.has_message(GdAssertMessages.error_await_signal_on_invalid_instance(null, "tree_entered", []))
 
 

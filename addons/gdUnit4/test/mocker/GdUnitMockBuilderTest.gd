@@ -2,8 +2,6 @@
 class_name GdUnitMockBuilderTest
 extends GdUnitTestSuite
 
-# TestSuite generated from
-const __source = 'res://addons/gdUnit4/src/mocking/GdUnitMockBuilder.gd'
 
 func test_mock_on_script_path_without_class_name() -> void:
 	var instance :Object = (load("res://addons/gdUnit4/test/mocker/resources/ClassWithoutNameA.gd") as GDScript).new()

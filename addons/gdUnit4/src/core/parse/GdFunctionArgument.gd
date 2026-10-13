@@ -79,7 +79,7 @@ func _extract_value_type(value: String) -> int:
 	if value != UNDEFINED:
 		if _fuzzer_regex.search(_name):
 			return GdObjects.TYPE_FUZZER
-		if value.rfind(")") == value.length()-1:
+		if value.rfind(")") == value.length() - 1:
 			return GdObjects.TYPE_FUNC
 	return _type
 

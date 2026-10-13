@@ -1,7 +1,7 @@
 class_name GdUnitCommandInspectorRunTests
 extends GdUnitCommandTestSession
 
-const  GdUnitInspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/GdUnitInspectorTreeMainPanel.gd")
+const GdUnitInspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/GdUnitInspectorTreeMainPanel.gd")
 const ID := "Run Inspector Tests"
 
 

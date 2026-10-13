@@ -47,7 +47,7 @@ var _operator_mul := Operator.new("*")
 var _operator_div := Operator.new("/")
 var _operator_remainder := Operator.new("%")
 
-var _tokens :Array[Token] = [
+var _tokens: Array[Token] = [
 	_token_space,
 	_token_tabulator,
 	_token_new_line,
@@ -87,7 +87,7 @@ var _script_constants := {}
 var _is_awaiting := GdUnitTools.to_regex("\\bawait\\s+(?![^\"]*\"[^\"]*$)(?!.*#.*await)")
 
 
-static func to_unix_format(input :String) -> String:
+static func to_unix_format(input: String) -> String:
 	return input.replace("\r\n", "\n")
 
 
@@ -116,7 +116,7 @@ class Token extends RefCounted:
 	func is_variable() -> bool:
 		return false
 
-	func is_token(token_name :String) -> bool:
+	func is_token(token_name: String) -> bool:
 		return _token == token_name
 
 	func is_skippable() -> bool:
@@ -146,9 +146,9 @@ class SkippableToken extends Token:
 
 # Token to parse function arguments
 class Variable extends Token:
-	var _plain_value :String
-	var _typed_value :Variant
-	var _type :int = TYPE_NIL
+	var _plain_value: String
+	var _typed_value: Variant
+	var _type: int = TYPE_NIL
 
 
 	func _init(p_value: String) -> void:
@@ -173,10 +173,10 @@ class Variable extends Token:
 		return TYPE_OBJECT
 
 
-	func _cast_to_type(p_value :String, p_type: int) -> Variant:
+	func _cast_to_type(p_value: String, p_type: int) -> Variant:
 		match p_type:
 			TYPE_STRING:
-				return p_value#.substr(1, p_value.length() - 2)
+				return p_value  #.substr(1, p_value.length() - 2)
 			TYPE_INT:
 				return p_value.to_int()
 			TYPE_FLOAT:
@@ -285,7 +285,7 @@ class TokenInnerClass extends RegExToken:
 		_content.clear()
 		_content.append(source_rows[offset])
 		# parse class content
-		for row_index in range(offset+1, source_rows.size()):
+		for row_index in range(offset + 1, source_rows.size()):
 			# scan until next non tab
 			var source_row := source_rows[row_index]
 			var row := TokenInnerClass._strip_leading_spaces(source_row)
@@ -316,9 +316,9 @@ func get_token(input: String, current_index: int) -> Token:
 	return _token_not_match
 
 
-func next_token(input: String, current_index: int, ignore_tokens :Array[Token] = []) -> Token:
+func next_token(input: String, current_index: int, ignore_tokens: Array[Token] = []) -> Token:
 	var token := _token_not_match
-	for t :Token in _tokens.filter(func(t :Token) -> bool: return not ignore_tokens.has(t)):
+	for t: Token in _tokens.filter(func(t: Token) -> bool: return not ignore_tokens.has(t)):
 
 		if t.match(input, current_index):
 			token = t
@@ -427,7 +427,7 @@ func _parse_function_arguments(input: String) -> Array[Dictionary]:
 		token = next_token(input, current_index)
 		# fallback to not end in a endless loop
 		if token == _token_not_match:
-			var error : = """
+			var error: = """
 				Parsing Error: Invalid token at pos %d found.
 				Please report this error!
 				source_code:
@@ -441,7 +441,7 @@ func _parse_function_arguments(input: String) -> Array[Dictionary]:
 		current_index += token._consumed
 		if token.is_skippable():
 			continue
-		if token == _token_bracket_round_open :
+		if token == _token_bracket_round_open:
 			in_function = true
 			bracket += 1
 		if token == _token_bracket_round_close:
@@ -511,16 +511,16 @@ func _parse_function_arguments(input: String) -> Array[Dictionary]:
 						bracket += 1
 					_token_bracket_curly_open:
 						bracket += 1
-					_token_bracket_round_open :
+					_token_bracket_round_open:
 						bracket += 1
 						# if value a function?
 						if bracket > 1:
 							# complete the argument value
-							var func_begin := input.substr(current_index-_token_bracket_round_open ._consumed)
+							var func_begin := input.substr(current_index - _token_bracket_round_open._consumed)
 							var func_body := _parse_end_function(func_begin)
 							arg_value += func_body
 							# fix parse index to end of value
-							current_index += func_body.length() - _token_bracket_round_open ._consumed - _token_bracket_round_close._consumed
+							current_index += func_body.length() - _token_bracket_round_open._consumed - _token_bracket_round_close._consumed
 					_token_bracket_square_close:
 						bracket -= 1
 					_token_bracket_curly_close:
@@ -569,18 +569,18 @@ func _parse_end_function(input: String, remove_trailing_char := false) -> String
 	while current_index < len(input) and not end_of_func:
 		var character := input[current_index]
 		# step over strings
-		if character == "'" :
-			current_index = _find_unescaped_quote(input, "'", current_index+1) + 1
+		if character == "'":
+			current_index = _find_unescaped_quote(input, "'", current_index + 1) + 1
 			if current_index == 0:
 				push_error("Parsing error on '%s', can't evaluate end of string." % input)
 				return ""
 			continue
-		if character == '"' :
+		if character == '"':
 			# test for string blocks
 			if input.find('"""', current_index) == current_index:
-				current_index = input.find('"""', current_index+3) + 3
+				current_index = input.find('"""', current_index + 3) + 3
 			else:
-				current_index = _find_unescaped_quote(input, '"', current_index+1) + 1
+				current_index = _find_unescaped_quote(input, '"', current_index + 1) + 1
 			if current_index == 0:
 				push_error("Parsing error on '%s', can't evaluate end of string." % input)
 				return ""
@@ -606,13 +606,13 @@ func _parse_end_function(input: String, remove_trailing_char := false) -> String
 	if remove_trailing_char:
 		# check if the parsed value ends with comma or end of doubled breaked
 		# `<value>,` or `<function>())`
-		var trailing_char := input[current_index-1]
+		var trailing_char := input[current_index - 1]
 		if trailing_char == ',' or (bracket_count < 0 and trailing_char == ')'):
-			return input.substr(0, current_index-1)
+			return input.substr(0, current_index - 1)
 	return input.substr(0, current_index)
 
 
-func extract_inner_class(source_rows: PackedStringArray, clazz_name :String) -> PackedStringArray:
+func extract_inner_class(source_rows: PackedStringArray, clazz_name: String) -> PackedStringArray:
 	for row_index in source_rows.size():
 		var input := source_rows[row_index]
 		var token := next_token(input, 0)
@@ -641,11 +641,11 @@ func extract_func_signature(rows: PackedStringArray, index: int) -> String:
 	return ""
 
 
-func get_class_name(script :GDScript) -> String:
+func get_class_name(script: GDScript) -> String:
 	var source_code := GdScriptParser.to_unix_format(script.source_code)
 	var source_rows := source_code.split("\n")
 
-	for index :int in min(10, source_rows.size()):
+	for index: int in min(10, source_rows.size()):
 		var input := source_rows[index]
 		var token := next_token(input, 0)
 		if token == _token_class_name:
@@ -732,9 +732,9 @@ func _parse_func_end_line(rows: PackedStringArray, func_row_index: int) -> int:
 	return last_non_empty + 1
 
 
-func is_func_coroutine(rows :PackedStringArray, index :int) -> bool:
+func is_func_coroutine(rows: PackedStringArray, index: int) -> bool:
 	var is_coroutine := false
-	for row_idx in range(index+1, rows.size()):
+	for row_idx in range(index + 1, rows.size()):
 		var input := rows[row_idx].strip_edges()
 		if input.begins_with("#") or input.is_empty():
 			continue
@@ -748,15 +748,15 @@ func is_func_coroutine(rows :PackedStringArray, index :int) -> bool:
 	return is_coroutine
 
 
-func is_inner_class(clazz_path :PackedStringArray) -> bool:
+func is_inner_class(clazz_path: PackedStringArray) -> bool:
 	return clazz_path.size() > 1
 
 
-func is_func_end(row :String) -> bool:
+func is_func_end(row: String) -> bool:
 	return row.strip_edges(false, true).ends_with(":")
 
 
-func _patch_inner_class_names(clazz :String, clazz_name :String = "") -> String:
+func _patch_inner_class_names(clazz: String, clazz_name: String = "") -> String:
 	var inner_clazz_name := clazz.split(".")[0]
 	if _scanned_inner_classes.has(inner_clazz_name):
 		return inner_clazz_name
@@ -769,18 +769,18 @@ func _patch_inner_class_names(clazz :String, clazz_name :String = "") -> String:
 
 func _prescan_script(script: GDScript) -> void:
 	_script_constants = script.get_script_constant_map()
-	for key :String in _script_constants.keys():
-		var value :Variant = _script_constants.get(key)
+	for key: String in _script_constants.keys():
+		var value: Variant = _script_constants.get(key)
 		if value is GDScript:
 			@warning_ignore("return_value_discarded")
 			_scanned_inner_classes.append(key)
 
 
-func parse(clazz_name :String, clazz_path :PackedStringArray) -> GdUnitResult:
+func parse(clazz_name: String, clazz_path: PackedStringArray) -> GdUnitResult:
 	if clazz_path.is_empty():
 		return GdUnitResult.error("Invalid script path '%s'" % clazz_path)
 	var is_inner := is_inner_class(clazz_path)
-	var script :GDScript = load(clazz_path[0])
+	var script: GDScript = load(clazz_path[0])
 	_prescan_script(script)
 
 	if is_inner:

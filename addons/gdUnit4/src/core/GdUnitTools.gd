@@ -4,17 +4,17 @@ extends RefCounted
 static var _richtext_normalize: RegEx
 
 
-static func normalize_text(text :String) -> String:
+static func normalize_text(text: String) -> String:
 	return text.replace("\r", "");
 
 
-static func richtext_normalize(input :String) -> String:
+static func richtext_normalize(input: String) -> String:
 	if _richtext_normalize == null:
 		_richtext_normalize = to_regex("\\[/?(b|color|bgcolor|right|table|cell).*?\\]")
 	return _richtext_normalize.sub(input, "", true).replace("\r", "")
 
 
-static func to_regex(pattern :String) -> RegEx:
+static func to_regex(pattern: String) -> RegEx:
 	var regex := RegEx.new()
 	var err := regex.compile(pattern)
 	if err != OK:
@@ -22,12 +22,12 @@ static func to_regex(pattern :String) -> RegEx:
 	return regex
 
 
-static func prints_verbose(message :String) -> void:
+static func prints_verbose(message: String) -> void:
 	if OS.is_stdout_verbose():
 		prints(message)
 
 
-static func free_instance(instance :Variant, use_call_deferred :bool = false, is_stdout_verbose := false) -> bool:
+static func free_instance(instance: Variant, use_call_deferred: bool = false, is_stdout_verbose := false) -> bool:
 	if instance is Array:
 		var as_array: Array = instance
 		for element: Variant in as_array:
@@ -85,12 +85,12 @@ static func free_instance(instance :Variant, use_call_deferred :bool = false, is
 	return !is_instance_valid(instance)
 
 
-static func _release_connections(instance :Object) -> void:
+static func _release_connections(instance: Object) -> void:
 	if is_instance_valid(instance):
 		# disconnect from all connected signals to force freeing, otherwise it ends up in orphans
 		for connection in instance.get_incoming_connections():
-			var connected_signal :Signal = connection["signal"]
-			var connected_callable :Callable = connection["callable"]
+			var connected_signal: Signal = connection["signal"]
+			var connected_callable: Callable = connection["callable"]
 			#prints(instance, connection)
 			#prints("signal", connected_signal.get_name(), connected_signal.get_object())
 			#prints("callable", connected_callable.get_object())
@@ -105,7 +105,7 @@ static func release_timers() -> void:
 	var scene_tree := Engine.get_main_loop() as SceneTree
 	if scene_tree.root == null:
 		return
-	for node :Node in scene_tree.root.get_children():
+	for node: Node in scene_tree.root.get_children():
 		if is_instance_valid(node) and node.is_in_group("GdUnitTimers"):
 			if is_instance_valid(node):
 				scene_tree.root.remove_child.call_deferred(node)
@@ -114,7 +114,7 @@ static func release_timers() -> void:
 
 
 # the finally cleaup unfreed resources and singletons
-static func dispose_all(use_call_deferred :bool = false) -> void:
+static func dispose_all(use_call_deferred: bool = false) -> void:
 	prints("Run dispose test resources")
 	release_timers()
 	GdUnitSingleton.dispose(use_call_deferred)
@@ -122,7 +122,7 @@ static func dispose_all(use_call_deferred :bool = false) -> void:
 
 
 # if instance an mock or spy we need manually freeing the self reference
-static func release_double(instance :Object) -> void:
+static func release_double(instance: Object) -> void:
 	if instance.has_method("__release_double"):
 		instance.call("__release_double")
 

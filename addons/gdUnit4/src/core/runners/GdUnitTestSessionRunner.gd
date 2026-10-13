@@ -54,7 +54,7 @@ var report_path: String:
 var current_report_history_index: int:
 	get:
 		if max_report_history > 1:
-			return  GdUnitFileAccess.find_last_path_index(report_base_path, GdUnitConstants.REPORT_DIR_PREFIX) + 1
+			return GdUnitFileAccess.find_last_path_index(report_base_path, GdUnitConstants.REPORT_DIR_PREFIX) + 1
 		return 1
 
 
@@ -72,13 +72,13 @@ var _runner_config := GdUnitRunnerConfig.new()
 
 ## The test suite executor instance
 var _executor: GdUnitTestSuiteExecutor
-var _hooks : GdUnitTestSessionHookService
+var _hooks: GdUnitTestSessionHookService
 
 ## Current runner state
 var _state := READY
 
 ## Current tests to be processed
-var _test_cases: Array[GdUnitTestCase] =  []
+var _test_cases: Array[GdUnitTestCase] = []
 
 # holds the current test session context
 var _test_session: GdUnitTestSession

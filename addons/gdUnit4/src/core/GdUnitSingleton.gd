@@ -16,7 +16,7 @@ static func instance(name: String, clazz: Callable) -> Variant:
 	if Engine.has_meta(name):
 		return Engine.get_meta(name)
 	var singleton: Variant = clazz.call()
-	if  is_instance_of(singleton, RefCounted):
+	if is_instance_of(singleton, RefCounted):
 		@warning_ignore("unsafe_cast")
 		push_error("Invalid singleton implementation detected for '%s' is `%s`!" % [name, (singleton as RefCounted).get_class()])
 		return

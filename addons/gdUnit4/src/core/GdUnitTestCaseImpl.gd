@@ -27,7 +27,7 @@ func _init(test_case: GdUnitTestCase, attribute: TestCaseAttribute, parameter_re
 func execute(p_test_parameter := Array(), p_iteration := 0) -> void:
 	_failure_received(false)
 	_current_iteration = p_iteration - 1
-	if _current_iteration == - 1:
+	if _current_iteration == -1:
 		_set_failure_handler()
 		set_timeout()
 
@@ -87,7 +87,7 @@ func test_completed() -> void:
 
 
 func update_fuzzers(input_values: Array, iteration: int) -> void:
-	for fuzzer :Variant in input_values:
+	for fuzzer: Variant in input_values:
 		if fuzzer is Fuzzer:
 			fuzzer._iteration_index = iteration + 1
 
@@ -229,7 +229,7 @@ func generate_seed() -> void:
 		seed(_attribute.test_seed)
 
 
-func do_skip(skipped: bool, reason: String="") -> void:
+func do_skip(skipped: bool, reason: String = "") -> void:
 	_attribute.is_skipped = skipped
 	_attribute.skip_reason = reason
 

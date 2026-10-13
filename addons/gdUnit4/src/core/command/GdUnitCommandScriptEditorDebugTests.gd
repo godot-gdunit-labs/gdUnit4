@@ -7,7 +7,7 @@ const ID := "Debug ScriptEditor Tests"
 
 func _init() -> void:
 	super(ID, GdUnitShortcut.ShortCut.RUN_TESTCASE_DEBUG)
-	icon =  GdUnitUiTools.get_icon("PlayStart")
+	icon = GdUnitUiTools.get_icon("PlayStart")
 
 
 func execute(..._parameters: Array) -> void:

@@ -12,16 +12,16 @@ const EXIT_FAIL_FAST = "exit_on_first_fail"
 const CONFIG_FILE = "res://addons/gdUnit4/GdUnitRunner.cfg"
 
 var _config := {
-		VERSION : CONFIG_VERSION,
+		VERSION: CONFIG_VERSION,
 		# a set of directories or testsuite paths as key and a optional set of testcases as values
 
-		TESTS : Array([], TYPE_OBJECT, "RefCounted", GdUnitTestCase),
+		TESTS: Array([], TYPE_OBJECT, "RefCounted", GdUnitTestCase),
 
 		# the port of running test server for this session
-		SERVER_PORT : -1,
+		SERVER_PORT: -1,
 
 		# Exit on first failure
-		EXIT_FAIL_FAST : false
+		EXIT_FAIL_FAST: false
 	}
 
 
@@ -68,10 +68,10 @@ func save_config(path: String = CONFIG_FILE) -> GdUnitResult:
 		return GdUnitResult.error("Can't write test runner configuration '%s'! %s" % [path, error_string(error)])
 
 	var to_save := {
-		VERSION : CONFIG_VERSION,
-		EXIT_FAIL_FAST : is_fail_fast(),
-		SERVER_PORT : server_port(),
-		TESTS : Array()
+		VERSION: CONFIG_VERSION,
+		EXIT_FAIL_FAST: is_fail_fast(),
+		SERVER_PORT: server_port(),
+		TESTS: Array()
 	}
 
 	var tests: Array = to_save.get(TESTS)
@@ -99,7 +99,7 @@ func load_config(path: String = CONFIG_FILE) -> GdUnitResult:
 		if not config.has(VERSION):
 			return GdUnitResult.error("The runner configuration '%s' is invalid! The format is changed please delete it manually and start a new test run." % path)
 
-		var default: Array[Dictionary] =  Array([], TYPE_DICTIONARY, "", null)
+		var default: Array[Dictionary] = Array([], TYPE_DICTIONARY, "", null)
 		var tests_as_json: Array = config.get(TESTS, default)
 		_config = config
 		_config[TESTS] = convert_test_json_to_test_cases(tests_as_json)
@@ -131,7 +131,7 @@ func fix_value_types() -> void:
 
 func convert_array_to_packed_string_array(data: Dictionary) -> void:
 	for key in data.keys() as Array[String]:
-		var values :Array = data[key]
+		var values: Array = data[key]
 		data[key] = PackedStringArray(values)
 
 

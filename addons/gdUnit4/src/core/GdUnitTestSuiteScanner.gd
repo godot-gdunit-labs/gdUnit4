@@ -1,7 +1,7 @@
 class_name GdUnitTestSuiteScanner
 extends RefCounted
 
-const TEST_FUNC_TEMPLATE ="""
+const TEST_FUNC_TEMPLATE = """
 
 func test_${func_name}() -> void:
 	# remove this line and complete your test
@@ -272,7 +272,7 @@ func _handle_test_suite_arguments(test_suite: GdUnitTestSuite, script: GDScript,
 
 # converts given file name by configured naming convention
 static func _to_naming_convention(file_name: String) -> String:
-	var nc :int = GdUnitSettings.get_setting(GdUnitSettings.TEST_SUITE_NAMING_CONVENTION, 0)
+	var nc: int = GdUnitSettings.get_setting(GdUnitSettings.TEST_SUITE_NAMING_CONVENTION, 0)
 	match nc:
 		GdUnitSettings.NamingConventions.AUTO_DETECT:
 			if GdObjects.is_snake_case(file_name):
@@ -300,7 +300,7 @@ static func resolve_test_suite_path(source_script_path: String, test_root_folder
 	var test_suite_path: String
 	var src_folder := source_script_path.find("/src/")
 	if src_folder != -1:
-		test_suite_path = source_script_path.replace("/src/", "/"+test_root_folder+"/")
+		test_suite_path = source_script_path.replace("/src/", "/" + test_root_folder + "/")
 	else:
 		var paths := source_script_path.split("/", false)
 		# is a plugin script?
@@ -367,7 +367,7 @@ func get_extends_classname(resource_path: String) -> String:
 	return ""
 
 
-static func add_test_case(resource_path: String, func_name: String)  -> GdUnitResult:
+static func add_test_case(resource_path: String, func_name: String) -> GdUnitResult:
 	var script := load_with_disabled_warnings(resource_path)
 	# count all exiting lines and add two as space to add new test case
 	var line_number := count_lines(script) + 2
@@ -387,7 +387,7 @@ static func add_test_case(resource_path: String, func_name: String)  -> GdUnitRe
 	var error := ResourceSaver.save(script, resource_path)
 	if error != OK:
 		return GdUnitResult.error("Can't add test case at: %s to '%s'. Error code %s" % [func_name, resource_path, error])
-	return GdUnitResult.success({ "path" : resource_path, "line" : line_number})
+	return GdUnitResult.success({"path": resource_path, "line": line_number})
 
 
 static func count_lines(script: Script) -> int:
@@ -398,7 +398,7 @@ static func test_suite_exists(test_suite_path: String) -> bool:
 	return FileAccess.file_exists(test_suite_path)
 
 
-static func test_case_exists(test_suite_path :String, func_name :String) -> bool:
+static func test_case_exists(test_suite_path: String, func_name: String) -> bool:
 	if not test_suite_exists(test_suite_path):
 		return false
 	var script := load_with_disabled_warnings(test_suite_path)
@@ -411,7 +411,7 @@ static func test_case_exists(test_suite_path :String, func_name :String) -> bool
 static func create_test_case(test_suite_path: String, func_name: String, source_script_path: String) -> GdUnitResult:
 	if test_case_exists(test_suite_path, func_name):
 		var line_number := get_test_case_line_number(test_suite_path, func_name)
-		return GdUnitResult.success({ "path" : test_suite_path, "line" : line_number})
+		return GdUnitResult.success({"path": test_suite_path, "line": line_number})
 
 	if not test_suite_exists(test_suite_path):
 		var result := create_test_suite(test_suite_path, source_script_path)

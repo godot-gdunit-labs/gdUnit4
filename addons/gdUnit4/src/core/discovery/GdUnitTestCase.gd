@@ -73,14 +73,14 @@ static func to_dict(test: GdUnitTestCase) -> Dictionary:
 		"guid": test.guid._guid,
 		"suite_resource_path": test.suite_resource_path,
 		"managed_type": test.suite_name,
-		"test_name" : test.test_name,
-		"simple_name" : test.display_name,
-		"fully_qualified_name" : test.fully_qualified_name,
-		"attribute_index" : test.attribute_index,
-		"source_file" : test.source_file,
-		"line_number" : test.line_number,
-		"require_godot_runtime" : test.require_godot_runtime,
-		"assembly_location" : test.assembly_location
+		"test_name": test.test_name,
+		"simple_name": test.display_name,
+		"fully_qualified_name": test.fully_qualified_name,
+		"attribute_index": test.attribute_index,
+		"source_file": test.source_file,
+		"line_number": test.line_number,
+		"require_godot_runtime": test.require_godot_runtime,
+		"assembly_location": test.assembly_location
 	}
 
 

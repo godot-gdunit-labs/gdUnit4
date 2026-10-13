@@ -2,7 +2,7 @@ class_name GdUnitCommandHandler
 extends Node
 
 
-var _commnand_mappings: Dictionary[String, GdUnitBaseCommand]= {}
+var _commnand_mappings: Dictionary[String, GdUnitBaseCommand] = {}
 var _running_command: GdUnitBaseCommand = null
 var _wait_time := 0.0
 
@@ -31,7 +31,7 @@ func _init() -> void:
 
 	# schedule discover tests if enabled and running inside the editor
 	if Engine.is_editor_hint() and GdUnitSettings.is_test_discover_enabled():
-		var timer :SceneTreeTimer = (Engine.get_main_loop() as SceneTree).create_timer(5)
+		var timer: SceneTreeTimer = (Engine.get_main_loop() as SceneTree).create_timer(5)
 		@warning_ignore("return_value_discarded")
 		timer.timeout.connect(cmd_discover_tests)
 
@@ -40,7 +40,7 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
 		for command: GdUnitBaseCommand in _commnand_mappings.values():
 			if Engine.is_editor_hint():
-				EditorInterface.get_command_palette().remove_command("GdUnit4/"+command.id)
+				EditorInterface.get_command_palette().remove_command("GdUnit4/" + command.id)
 			command.free()
 		_commnand_mappings.clear()
 
@@ -101,7 +101,7 @@ func command_execute(...parameters: Array) -> void:
 		_running_command = null
 		return
 
-	_running_command =  _commnand_mappings[command_id]
+	_running_command = _commnand_mappings[command_id]
 	_running_command.is_running = true
 	await _running_command.callv("execute", parameters)
 
@@ -115,7 +115,7 @@ func _register_command(command: GdUnitBaseCommand) -> void:
 	_commnand_mappings[command.id] = command
 	if Engine.is_editor_hint():
 		EditorInterface.get_base_control().add_child(command)
-		EditorInterface.get_command_palette().add_command(command.id, "GdUnit4/"+command.id, command.execute, command.shortcut.get_as_text() if command.shortcut else "None")
+		EditorInterface.get_command_palette().add_command(command.id, "GdUnit4/" + command.id, command.execute, command.shortcut.get_as_text() if command.shortcut else "None")
 
 
 func cmd_discover_tests() -> void:
@@ -139,7 +139,7 @@ func _on_settings_changed(property: GdUnitProperty) -> void:
 		command.update_shortcut()
 
 	if property.name() == GdUnitSettings.TEST_DISCOVER_ENABLED:
-		var timer :SceneTreeTimer = (Engine.get_main_loop() as SceneTree).create_timer(3)
+		var timer: SceneTreeTimer = (Engine.get_main_loop() as SceneTree).create_timer(3)
 		@warning_ignore("return_value_discarded")
 		timer.timeout.connect(cmd_discover_tests)
 

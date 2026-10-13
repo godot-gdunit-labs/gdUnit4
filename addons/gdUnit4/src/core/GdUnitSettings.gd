@@ -50,10 +50,10 @@ const REPORT_SETTINGS = MAIN_CATEGORY + "/report"
 const GROUP_GODOT = REPORT_SETTINGS + "/godot"
 const REPORT_PUSH_ERRORS = GROUP_GODOT + "/push_error"
 const REPORT_SCRIPT_ERRORS = GROUP_GODOT + "/script_error"
-const REPORT_ORPHANS  = REPORT_SETTINGS + "/verbose_orphans"
+const REPORT_ORPHANS = REPORT_SETTINGS + "/verbose_orphans"
 const GROUP_ASSERT = REPORT_SETTINGS + "/assert"
 const REPORT_ASSERT_WARNINGS = GROUP_ASSERT + "/verbose_warnings"
-const REPORT_ASSERT_ERRORS   = GROUP_ASSERT + "/verbose_errors"
+const REPORT_ASSERT_ERRORS = GROUP_ASSERT + "/verbose_errors"
 const REPORT_ASSERT_STRICT_NUMBER_TYPE_COMPARE = GROUP_ASSERT + "/strict_number_type_compare"
 
 # Godot debug stdout/logging settings
@@ -110,16 +110,16 @@ const GROUP_FEATURE = MAIN_CATEGORY + "/feature"
 
 # defaults
 # server connection timeout in minutes
-const DEFAULT_SERVER_TIMEOUT :int = 30
+const DEFAULT_SERVER_TIMEOUT: int = 30
 # test case runtime timeout in seconds
-const DEFAULT_TEST_TIMEOUT :int = 60*5
+const DEFAULT_TEST_TIMEOUT: int = 60 * 5
 # the folder to create new test-suites
-const DEFAULT_TEST_LOOKUP_FOLDER :String = "test"
+const DEFAULT_TEST_LOOKUP_FOLDER: String = "test"
 
 # help texts
 const HELP_TEST_LOOKUP_FOLDER := "Subfolder where test suites are located (or empty to use source folder directly)"
 
-static var _property_help :Dictionary[String, String] = {}
+static var _property_help: Dictionary[String, String] = {}
 
 
 static func setup() -> void:
@@ -223,7 +223,7 @@ static func set_property_help(property_name: String, help_text: String) -> void:
 	_property_help[property_name] = help_text
 
 
-static func get_setting(name :String, default :Variant) -> Variant:
+static func get_setting(name: String, default: Variant) -> Variant:
 	if ProjectSettings.has_setting(name):
 		return ProjectSettings.get_setting(name)
 	return default
@@ -235,7 +235,7 @@ static func is_update_notification_enabled() -> bool:
 	return false
 
 
-static func set_update_notification(enable :bool) -> void:
+static func set_update_notification(enable: bool) -> void:
 	ProjectSettings.set_setting(UPDATE_NOTIFICATION_ENABLED, enable)
 	_save_settings()
 
@@ -244,7 +244,7 @@ static func get_log_path() -> String:
 	return ProjectSettings.get_setting(STDOUT_WITE_TO_FILE)
 
 
-static func set_log_path(path :String) -> void:
+static func set_log_path(path: String) -> void:
 	ProjectSettings.set_setting(STDOUT_ENABLE_TO_FILE, true)
 	ProjectSettings.set_setting(STDOUT_WITE_TO_FILE, path)
 	_save_settings()
@@ -360,7 +360,7 @@ static func get_rerun_max_retries() -> int:
 	return get_setting(TEST_RERUN_UNTIL_FAILURE_RETRIES, 10)
 
 
-static func set_test_discover_enabled(enable :bool) -> void:
+static func set_test_discover_enabled(enable: bool) -> void:
 	var property := get_property(TEST_DISCOVER_ENABLED)
 	property.set_value(enable)
 	update_property(property)
@@ -380,7 +380,7 @@ static func validate_is_inferred_declaration_enabled() -> GdUnitResult:
 	for path: String in directory_rules.keys():
 		if "res://addons/gdUnit4".begins_with(path) and path.length() > best_match.length():
 			best_match = path
-	var is_excluded :bool = not best_match.is_empty() and directory_rules[best_match] == GdScriptWarningDirectoryMode.EXCLUDE
+	var is_excluded: bool = not best_match.is_empty() and directory_rules[best_match] == GdScriptWarningDirectoryMode.EXCLUDE
 	if not is_excluded:
 		return GdUnitResult.error("""
 			GdUnit4: 'inferred_declaration' is set to Warning/Error!
@@ -392,16 +392,16 @@ static func validate_is_inferred_declaration_enabled() -> GdUnitResult:
 static func list_settings(category: String) -> Array[GdUnitProperty]:
 	var settings: Array[GdUnitProperty] = []
 	for property in ProjectSettings.get_property_list():
-		var property_name :String = property["name"]
+		var property_name: String = property["name"]
 		if property_name.begins_with(category):
 			settings.append(build_property(property_name, property))
 	return settings
 
 
-static func update_property(property :GdUnitProperty) -> Variant:
-	var current_value :Variant = ProjectSettings.get_setting(property.name())
+static func update_property(property: GdUnitProperty) -> Variant:
+	var current_value: Variant = ProjectSettings.get_setting(property.name())
 	if current_value != property.value():
-		var error :Variant = validate_property_value(property)
+		var error: Variant = validate_property_value(property)
 		if error != null:
 			return error
 		ProjectSettings.set_setting(property.name(), property.value())
@@ -410,20 +410,20 @@ static func update_property(property :GdUnitProperty) -> Variant:
 	return null
 
 
-static func reset_property(property :GdUnitProperty) -> void:
+static func reset_property(property: GdUnitProperty) -> void:
 	ProjectSettings.set_setting(property.name(), property.default())
 	GdUnitSignals.instance().gdunit_settings_changed.emit(property)
 	_save_settings()
 
 
-static func validate_property_value(property :GdUnitProperty) -> Variant:
+static func validate_property_value(property: GdUnitProperty) -> Variant:
 	match property.name():
 		TEST_LOOKUP_FOLDER:
 			return validate_lookup_folder(property.value_as_string())
 		_: return null
 
 
-static func validate_lookup_folder(value :String) -> Variant:
+static func validate_lookup_folder(value: String) -> Variant:
 	if value.is_empty() or value == "/":
 		return null
 	if value.contains("res:"):
@@ -433,7 +433,7 @@ static func validate_lookup_folder(value :String) -> Variant:
 	return null
 
 
-static func save_property(name :String, value :Variant) -> void:
+static func save_property(name: String, value: Variant) -> void:
 	ProjectSettings.set_setting(name, value)
 	_save_settings()
 
@@ -451,13 +451,13 @@ static func _save_settings() -> void:
 		return
 
 
-static func has_property(name :String) -> bool:
-	return ProjectSettings.get_property_list().any(func(property :Dictionary) -> bool: return property["name"] == name)
+static func has_property(name: String) -> bool:
+	return ProjectSettings.get_property_list().any(func(property: Dictionary) -> bool: return property["name"] == name)
 
 
-static func get_property(name :String) -> GdUnitProperty:
+static func get_property(name: String) -> GdUnitProperty:
 	for property in ProjectSettings.get_property_list():
-		var property_name :String = property["name"]
+		var property_name: String = property["name"]
 		if property_name == name:
 			return build_property(name, property)
 	return null
@@ -469,16 +469,16 @@ static func build_property(property_name: String, property: Dictionary) -> GdUni
 	var default: Variant = ProjectSettings.property_get_revert(property_name)
 	var hint_string: String = property["hint_string"]
 	var value_set := PackedStringArray() if hint_string.is_empty() else hint_string.split(",")
-	var help_text :String = _property_help.get(property_name, "")
+	var help_text: String = _property_help.get(property_name, "")
 	return GdUnitProperty.new(property_name, value_type, value, default, help_text, value_set)
 
 
-static func migrate_property(old_property :String, new_property :String, default_value :Variant, help :String, converter := Callable()) -> void:
+static func migrate_property(old_property: String, new_property: String, default_value: Variant, help: String, converter := Callable()) -> void:
 	var property := get_property(old_property)
 	if property == null:
 		prints("Migration not possible, property '%s' not found" % old_property)
 		return
-	var value :Variant = converter.call(property.value()) if converter.is_valid() else property.value()
+	var value: Variant = converter.call(property.value()) if converter.is_valid() else property.value()
 	ProjectSettings.set_setting(new_property, value)
 	ProjectSettings.set_initial_value(new_property, default_value)
 	set_property_help(new_property, help)

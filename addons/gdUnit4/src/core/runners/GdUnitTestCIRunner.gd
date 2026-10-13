@@ -326,7 +326,7 @@ func init_gd_unit() -> void:
 		show_help()
 		return
 	# build runner config by given commands
-	var commands :Array[CmdCommand] = []
+	var commands: Array[CmdCommand] = []
 	@warning_ignore("unsafe_cast")
 	commands.append_array(result.value() as Array)
 	result = (
@@ -444,7 +444,7 @@ func is_skipped(test: GdUnitTestCase) -> bool:
 		if not skip_file.contains(":"):
 			continue
 		var parts: PackedStringArray = skip_file.rsplit(":")
-		var skipped_suite :=  parts[0]
+		var skipped_suite := parts[0]
 		var skipped_test := parts[1]
 		# is suite skipped by full path or suite name
 		if (skipped_suite == test.suite_name or test.source_file.contains(skipped_suite)) and skipped_test == test.test_name:

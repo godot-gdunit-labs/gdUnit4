@@ -42,7 +42,7 @@ static func load_test_suite_gd(resource_path: String) -> GdUnitTestSuite:
 static func load_test_suite_cs(resource_path: String) -> Node:
 	if not GdUnit4CSharpApiLoader.is_api_loaded():
 		return null
-	var script :Script = ClassDB.instantiate("CSharpScript")
+	var script: Script = ClassDB.instantiate("CSharpScript")
 	script.source_code = GdUnitFileAccess.resource_as_string(resource_path)
 	script.resource_path = resource_path
 	script.reload()
@@ -52,7 +52,7 @@ static func load_test_suite_cs(resource_path: String) -> Node:
 static func load_cs_script(resource_path: String, debug_write := false) -> Script:
 	if not GdUnit4CSharpApiLoader.is_api_loaded():
 		return null
-	var script :Script = ClassDB.instantiate("CSharpScript")
+	var script: Script = ClassDB.instantiate("CSharpScript")
 	script.source_code = GdUnitFileAccess.resource_as_string(resource_path)
 	var script_resource_path := resource_path.replace(resource_path.get_extension(), "cs")
 	if debug_write:
@@ -61,7 +61,7 @@ static func load_cs_script(resource_path: String, debug_write := false) -> Scrip
 		DirAccess.remove_absolute(script_resource_path)
 		var err := ResourceSaver.save(script, script_resource_path)
 		if err != OK:
-			print_debug("Can't save debug resource",script_resource_path, "Error:", error_string(err))
+			print_debug("Can't save debug resource", script_resource_path, "Error:", error_string(err))
 		script.take_over_path(script_resource_path)
 	else:
 		script.take_over_path(resource_path)

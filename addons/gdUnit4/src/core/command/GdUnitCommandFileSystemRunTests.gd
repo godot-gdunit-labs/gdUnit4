@@ -7,7 +7,7 @@ const ID := "Run FileSystem Tests"
 
 func _init() -> void:
 	super(ID, GdUnitShortcut.ShortCut.RUN_TESTSUITE)
-	icon =  GdUnitUiTools.get_icon("Play")
+	icon = GdUnitUiTools.get_icon("Play")
 
 
 func execute(...parameters: Array) -> void:

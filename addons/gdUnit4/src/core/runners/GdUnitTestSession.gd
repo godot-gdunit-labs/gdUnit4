@@ -105,7 +105,7 @@ var report_path: String:
 ##
 ## The collection is typically populated before session startup and remains
 ## constant during test execution.
-var _test_cases : Array[GdUnitTestCase] = []
+var _test_cases: Array[GdUnitTestCase] = []
 
 
 ## Initializes the test session and sets up event forwarding.[br]

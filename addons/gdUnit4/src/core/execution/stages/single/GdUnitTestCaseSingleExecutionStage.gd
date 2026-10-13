@@ -3,12 +3,12 @@ class_name GdUnitTestCaseSingleExecutionStage
 extends IGdUnitExecutionStage
 
 
-var _stage_before :IGdUnitExecutionStage = GdUnitTestCaseBeforeStage.new()
-var _stage_after :IGdUnitExecutionStage = GdUnitTestCaseAfterStage.new()
-var _stage_test :IGdUnitExecutionStage = GdUnitTestCaseSingleTestStage.new()
+var _stage_before: IGdUnitExecutionStage = GdUnitTestCaseBeforeStage.new()
+var _stage_after: IGdUnitExecutionStage = GdUnitTestCaseAfterStage.new()
+var _stage_test: IGdUnitExecutionStage = GdUnitTestCaseSingleTestStage.new()
 
 
-func _execute(context :GdUnitExecutionContext) -> void:
+func _execute(context: GdUnitExecutionContext) -> void:
 	fire_event(GdUnitEvent.new().test_before(context.test_case.id()))
 	while context.retry_execution():
 		var test_context := GdUnitExecutionContext.of(context)
@@ -23,12 +23,12 @@ func _execute(context :GdUnitExecutionContext) -> void:
 	if context.is_skipped():
 		fire_test_skipped(context)
 	else:
-		var reports: = context.collect_reports(true)
+		var reports := context.collect_reports(true)
 		var statistics := context.calculate_statistics(reports)
 		fire_event(GdUnitEvent.new().test_after(context.test_case.id(), context.test_case.test_name(), statistics, reports))
 
 
-func set_debug_mode(debug_mode :bool = false) -> void:
+func set_debug_mode(debug_mode: bool = false) -> void:
 	super.set_debug_mode(debug_mode)
 	_stage_before.set_debug_mode(debug_mode)
 	_stage_after.set_debug_mode(debug_mode)

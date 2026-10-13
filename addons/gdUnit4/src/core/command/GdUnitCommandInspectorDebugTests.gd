@@ -1,13 +1,13 @@
 class_name GdUnitCommandInspectorDebugTests
 extends GdUnitCommandTestSession
 
-const  GdUnitInspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/GdUnitInspectorTreeMainPanel.gd")
+const GdUnitInspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/GdUnitInspectorTreeMainPanel.gd")
 const ID := "Debug Inspector Tests"
 
 
 func _init() -> void:
 	super(ID, GdUnitShortcut.ShortCut.RERUN_TESTS_DEBUG)
-	icon =  GdUnitUiTools.get_icon("PlayStart")
+	icon = GdUnitUiTools.get_icon("PlayStart")
 
 
 func execute(..._parameters: Array) -> void:

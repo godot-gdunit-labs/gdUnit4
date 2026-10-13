@@ -50,7 +50,7 @@ func build_constructor_arguments(parameter_map: Dictionary, expression: String) 
 	var extracted_arguments := result.get_string("args").strip_edges()
 	if extracted_arguments.is_empty():
 		return []
-	var arguments :Array = extracted_arguments.split(",")
+	var arguments: Array = extracted_arguments.split(",")
 	return arguments.map(func(argument: String) -> Variant:
 		var value := argument.strip_edges()
 

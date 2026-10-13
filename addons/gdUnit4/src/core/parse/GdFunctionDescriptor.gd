@@ -101,7 +101,7 @@ func is_coroutine() -> bool:
 
 func is_parameterized() -> bool:
 	for current in _args:
-		var arg :GdFunctionArgument = current
+		var arg: GdFunctionArgument = current
 		if arg.name() in GdFunctionArgument.ARG_PARAMETERIZED_TEST:
 			return true
 	return false
@@ -171,7 +171,7 @@ func _to_string() -> String:
 		return fsignature + "[Line:(%d,%d)] func %s(%s):" % [begin_line(), end_line(), name(), typed_args()]
 	var func_template := fsignature + "[Line:(%d,%d)] func %s(%s) -> %s:"
 	if is_static():
-		func_template= "[Line:(%d,%d)] static func %s(%s) -> %s:"
+		func_template = "[Line:(%d,%d)] static func %s(%s) -> %s:"
 	return func_template % [begin_line(), end_line(), name(), typed_args(), return_type_as_string()]
 
 

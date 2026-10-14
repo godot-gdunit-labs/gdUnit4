@@ -97,7 +97,7 @@ func _run_suite(test_statistics: Dictionary, suite_statistics: Dictionary) -> Ar
 	return writer.printed_at
 
 
-@warning_ignore("missing_tool")
+@warning_ignore_start("missing_tool")
 
 
 class TestMessageWriter extends GdUnitMessageWriter:
@@ -125,3 +125,6 @@ class TestMessageWriter extends GdUnitMessageWriter:
 
 	func clear() -> void:
 		printed_at.clear()
+
+
+@warning_ignore_restore("missing_tool")

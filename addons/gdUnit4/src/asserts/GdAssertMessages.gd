@@ -80,14 +80,12 @@ static func input_event_as_text(event: InputEvent) -> String:
 	return text.dedent()
 
 
-@warning_ignore_start("return_value_discarded")
-
-
 static func colored_diff(current: String, expected: String, hunks: Array[GdDiffTool.Hunk]) -> String:
 	if current.is_empty() and hunks.is_empty():
 		return "<empty>"
 	var result := PackedStringArray()
 	var position: int = 0
+	@warning_ignore_start("return_value_discarded")
 	for hunk: GdDiffTool.Hunk in hunks:
 		result.append(current.substr(position, hunk.current_start - position))
 		# characters only found in the expected value are missing, characters only found in the current value are additional
@@ -97,10 +95,8 @@ static func colored_diff(current: String, expected: String, hunks: Array[GdDiffT
 			result.append(format_chars(current.substr(hunk.current_start, hunk.current_len), ADD_COLOR))
 		position = hunk.current_start + hunk.current_len
 	result.append(current.substr(position))
+	@warning_ignore_restore("return_value_discarded")
 	return "".join(result)
-
-
-@warning_ignore_restore("return_value_discarded")
 
 
 static func _typed_value(value: Variant) -> String:

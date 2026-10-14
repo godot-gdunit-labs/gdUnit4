@@ -108,9 +108,6 @@ func test_timeout_long_running_test_abort(_timeout := 4000) -> void:
 	prints("F", "end test test_timeout")
 
 
-@warning_ignore("unused_variable")
-
-
 func test_timeout_fuzzer(fuzzer := Fuzzers.rangei(-23, 22), _timeout := 2000) -> void:
 	discard_error_interupted_by_timeout()
 	fuzzer.next_value()

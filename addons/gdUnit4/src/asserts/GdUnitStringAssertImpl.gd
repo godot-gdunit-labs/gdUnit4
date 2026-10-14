@@ -67,11 +67,9 @@ func is_equal_ignoring_case(expected: Variant) -> GdUnitStringAssert:
 	return _is_equal(expected, false, GdAssertMessages.error_equal_ignoring_case)
 
 
-@warning_ignore_start("unsafe_call_argument")
-
-
 func _is_equal(expected: Variant, case_sensitive: bool, message_cb: Callable) -> GdUnitStringAssert:
 	var current: Variant = current_value()
+	@warning_ignore_start("unsafe_call_argument")
 	if current == null:
 		return report_error(message_cb.call(current, expected))
 	var cur_value := str(current)
@@ -84,10 +82,8 @@ func _is_equal(expected: Variant, case_sensitive: bool, message_cb: Callable) ->
 		var hunks: Array[GdDiffTool.Hunk] = GdDiffTool.diff(cur_value, exp_value)
 		var formatted_current := GdAssertMessages.colored_diff(cur_value, exp_value, hunks)
 		return report_error(message_cb.call(formatted_current, exp_value))
+	@warning_ignore_restore("unsafe_call_argument")
 	return report_success()
-
-
-@warning_ignore_restore("unsafe_call_argument")
 
 
 func is_not_equal(expected: Variant) -> GdUnitStringAssert:

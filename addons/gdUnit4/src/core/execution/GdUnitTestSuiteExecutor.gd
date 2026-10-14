@@ -8,6 +8,7 @@ var _execute_stage := GdUnitTestSuiteExecutionStage.new()
 var _debug_mode: bool
 var _terminated := false
 
+
 func _init(debug_mode: bool = false) -> void:
 	_execute_stage.set_debug_mode(debug_mode)
 	_debug_mode = debug_mode

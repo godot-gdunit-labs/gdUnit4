@@ -64,6 +64,7 @@ const RETURN_TYPE_VARIANTS_SOURCE := """
 
 var _return_type_variants_script: GDScript
 
+
 func before() -> void:
 	_return_type_variants_script = GdScriptTestHelper.build_tmp_script(RETURN_TYPE_VARIANTS_SOURCE)
 
@@ -212,6 +213,8 @@ func test_extract_from_inferred_void_pass() -> void:
 	var method_descriptor := GdScriptTestHelper.get_script_method_descriptor(_return_type_variants_script, "inferred_void_pass")
 	var fd := GdFunctionDescriptor.extract_from(method_descriptor, false)
 	assert_int(fd.return_type()).is_equal(GdObjects.TYPE_VARIANT)
+
+
 #endregion
 
 

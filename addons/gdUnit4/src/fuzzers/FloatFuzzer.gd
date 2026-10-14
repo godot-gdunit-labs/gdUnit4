@@ -21,6 +21,7 @@ var _from: float = 0
 ## Maximum value (inclusive) for generated floats.
 var _to: float = 0
 
+
 func _init(from: float, to: float) -> void:
 	assert(from <= to, "Invalid range!")
 	_from = from

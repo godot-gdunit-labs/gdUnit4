@@ -8,6 +8,7 @@ const TEST_SCENE := preload("res://addons/gdUnit4/test/mocker/resources/scenes/T
 var resource_path := "res://addons/gdUnit4/test/mocker/resources/"
 var _test_signal_args := Array()
 
+
 func before() -> void:
 	# disable error pushing for testing
 	ProjectSettings.set_setting(GdUnitSettings.REPORT_PUSH_ERRORS, false)

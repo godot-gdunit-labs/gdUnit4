@@ -18,6 +18,8 @@ const WARNINGS = true
 const NO_WARNING = false
 
 var _collected_events: Array[GdUnitEvent] = []
+
+
 func before() -> void:
 	GdUnitSignals.instance().gdunit_event_debug.connect(_on_gdunit_event_debug)
 	# we run without flaky check

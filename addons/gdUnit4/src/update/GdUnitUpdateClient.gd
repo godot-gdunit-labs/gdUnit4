@@ -3,6 +3,7 @@ extends Node
 
 signal request_completed(response: HttpResponse)
 
+
 class HttpResponse:
 	var _http_status: int
 	var _body: PackedByteArray

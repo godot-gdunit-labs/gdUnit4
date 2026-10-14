@@ -14,6 +14,7 @@ func test_to_string_failure_with_unknown_line() -> void:
 	var report := GdUnitReport.new().create(GdUnitReport.FAILURE, -1, "test message")
 	assert_str(report.to_string()).is_equal("[color=green]line [/color][color=aqua]<n/a>:[/color] test message")
 
+
 #endregion
 
 
@@ -32,9 +33,11 @@ func test_stack_trace_returns_trace_from_error() -> void:
 	var report := GdUnitReport.new().from_error(GdUnitReport.FAILURE, GdUnitError.new("test message", 10, trace))
 	assert_that(report.stack_trace()).is_equal(trace)
 
+
 #endregion
 
 #region serialize / deserialize
+
 
 func test_serialize_report_contains_all_base_fields() -> void:
 	var serialized := GdUnitReport.new().create(GdUnitReport.FAILURE, 42, "test message").serialize()

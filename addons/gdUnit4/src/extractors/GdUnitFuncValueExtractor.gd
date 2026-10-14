@@ -5,6 +5,7 @@ extends GdUnitValueExtractor
 var _func_names: PackedStringArray
 var _args: Array
 
+
 func _init(func_name: String, p_args: Array) -> void:
 	_func_names = func_name.split(".")
 	_args = p_args

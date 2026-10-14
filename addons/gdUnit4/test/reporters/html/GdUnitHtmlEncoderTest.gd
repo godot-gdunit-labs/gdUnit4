@@ -9,6 +9,8 @@ func test_plain_text_is_unchanged() -> void:
 
 func test_empty_string_is_unchanged() -> void:
 	assert_str(GdUnitHtmlEncoder.encode("")).is_equal("")
+
+
 #endregion
 
 
@@ -19,6 +21,8 @@ func test_ampersand_is_encoded() -> void:
 
 func test_ampersand_is_not_double_encoded() -> void:
 	assert_str(GdUnitHtmlEncoder.encode("&amp;")).is_equal("&amp;amp;")
+
+
 #endregion
 
 
@@ -29,6 +33,8 @@ func test_less_than_is_encoded() -> void:
 
 func test_greater_than_is_encoded() -> void:
 	assert_str(GdUnitHtmlEncoder.encode("x > 0")).is_equal("x &gt; 0")
+
+
 #endregion
 
 
@@ -39,6 +45,8 @@ func test_double_quote_is_encoded() -> void:
 
 func test_single_quote_is_encoded() -> void:
 	assert_str(GdUnitHtmlEncoder.encode("it's")).is_equal("it&#39;s")
+
+
 #endregion
 
 

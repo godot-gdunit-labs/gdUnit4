@@ -111,6 +111,8 @@ func test_diff_rebuilds_expected_on_similar_values() -> void:
 					expected = expected.erase(pos, 1).insert(pos, "#")
 
 		assert_str(_apply(current, expected, GdDiffTool.diff(current, expected))).is_equal(expected)
+
+
 #endregion
 
 

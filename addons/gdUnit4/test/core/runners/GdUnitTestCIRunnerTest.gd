@@ -164,6 +164,8 @@ func test_set_report_dir_absolute_root_path() -> void:
 
 	runner.set_report_dir("/tmp/gdunit4/reports")
 	assert_str(runner.report_base_path).is_equal("/tmp/gdunit4/reports")
+
+
 #endregion
 
 
@@ -186,6 +188,8 @@ func test_cleanup_report_history_on_relative_report_dir() -> void:
 
 	runner.cleanup_report_history()
 	assert_array(DirAccess.get_directories_at(runner.report_base_path)).contains_exactly_in_any_order(["report_4", "report_5"])
+
+
 #endregion
 
 

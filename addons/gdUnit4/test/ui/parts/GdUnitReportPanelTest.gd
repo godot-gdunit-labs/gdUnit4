@@ -33,6 +33,8 @@ func test_clear_removes_all_report_children() -> void:
 	assert_int(_panel.report_list.get_child_count()).is_equal(0)
 	# Give the engine time to queue_free marked objects
 	await await_idle_frame()
+
+
 #endregion
 
 
@@ -59,6 +61,7 @@ func test_show_report_replaces_previous_reports() -> void:
 	# Give the engine time to queue_free marked objects
 	await await_idle_frame()
 
+
 #endregion
 
 
@@ -70,7 +73,10 @@ func test_meta_clicked_signal_is_connected_when_stack_trace_has_frames() -> void
 	var label: RichTextLabel = auto_free(_panel.build_report(_build_report_with_frames("test", frames)))
 	assert_bool(label.meta_clicked.is_connected(_panel._on_meta_clicked)).is_true()
 
+
 @warning_ignore_start("redundant_await")
+
+
 func test_on_meta_clicked_is_called_with_expected_frame_on_click() -> void:
 	# Use a real source path so GdUnitScriptEditorControls.edit_script can load() the script
 	var frame1 := GdUnitStackTraceElement.new(
@@ -95,6 +101,7 @@ func test_on_meta_clicked_is_called_with_expected_frame_on_click() -> void:
 	# Verify _on_meta_clicked was invoked with the expected stack frame
 	@warning_ignore("unsafe_method_access")
 	verify(panel_spy)._on_meta_clicked(frame1)
+
 
 @warning_ignore_restore("redundant_await")
 #endregion

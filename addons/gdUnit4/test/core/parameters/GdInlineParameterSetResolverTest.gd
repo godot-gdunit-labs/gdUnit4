@@ -26,8 +26,10 @@ var _test_param1 := 10
 var _test_param2 := 20
 @warning_ignore_restore("unused_private_class_variable")
 
+
 func parameters_as_array(index: int, arg1: String, arg2: String) -> Array[Variant]:
 	return [index, arg1, arg2]
+
 
 class TestObj:
 	func _init() -> void:
@@ -175,9 +177,12 @@ func using_typed_dictionary_parameter(_items: Dictionary[String, int], _test_par
 	[{"bar" : 20}],
 	]) -> void:
 	pass
+
+
 #endregion
 
 #region get_parameters
+
 
 func test_get_parameters() -> void:
 	var resolver := GdInlineParameterSetResolver.new(example_parameters, "", "")
@@ -351,6 +356,7 @@ func test_fallback_warning_includes_source_context() -> void:
 
 #endregion
 #region _resolve_parameters
+
 
 func test_resolve_parameters_with_different_types() -> void:
 	assert_array(_resolve_parameters("using_parameters_static_int_values")) \
@@ -544,6 +550,8 @@ func _resolve_parameters(child_name: String) -> Array[Array]:
 	for i in resolver.get_max_index():
 		result.append(resolver.get_parameters(self, i))
 	return result
+
+
 #endregion
 
 
@@ -580,6 +588,7 @@ func test_performance_get_parameters_overall() -> void:
 	prints("	%8d µs  (%d µs/iteration)" % [elapsed_time, elapsed_time / ITERATIONS])
 	assert_int(elapsed_time / ITERATIONS).is_less(60)
 	@warning_ignore_restore("integer_division")
+
 
 #endregion
 

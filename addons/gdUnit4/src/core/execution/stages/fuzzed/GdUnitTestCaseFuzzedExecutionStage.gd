@@ -27,6 +27,7 @@ func _execute(context: GdUnitExecutionContext) -> void:
 		var statistics := context.calculate_statistics(reports)
 		fire_event(GdUnitEvent.new().test_after(context.test_case.id(), context.test_case.test_name(), statistics, reports))
 
+
 func set_debug_mode(debug_mode: bool = false) -> void:
 	super.set_debug_mode(debug_mode)
 	_stage_before.set_debug_mode(debug_mode)

@@ -4,6 +4,7 @@ extends GdUnitTestSuite
 
 var _command: GdUnitCommandTestSession
 
+
 class TestGdUnitCommandTestSession extends GdUnitCommandTestSession:
 	# gdlint: ignore=unnecessary-pass
 	pass
@@ -28,6 +29,7 @@ func test_is_valid_runner_process_false() -> void:
 
 	# `0` is the uninitialized/debug-mode value and must never be treated as a killable process.
 	assert_bool(GdUnitCommandTestSession._is_valid_runner_process(0)).is_false()
+
 
 func test_is_valid_runner_process_true() -> void:
 	var args: PackedStringArray

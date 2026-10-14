@@ -262,6 +262,7 @@ func test_split_argumens() -> void:
 
 #region performance
 
+
 func test_performance_single() -> void:
 	const ITERATIONS := 1000
 	var resolver := GdCallableParameterSetResolver.new(self, "_dynamic_parameterset(5)")

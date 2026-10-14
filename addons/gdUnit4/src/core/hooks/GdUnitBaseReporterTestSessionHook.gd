@@ -18,6 +18,7 @@ var _reporter: GdUnitTestReporter
 var _report_writer: GdUnitReportWriter
 var _report_converter: Callable
 
+
 func _init(report_writer: GdUnitReportWriter, hook_name: String, hook_description: String, report_converter: Callable) -> void:
 	super(hook_name, hook_description)
 	_reporter = GdUnitTestReporter.new()

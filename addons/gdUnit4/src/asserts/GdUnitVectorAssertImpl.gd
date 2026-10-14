@@ -4,6 +4,7 @@ var _base: GdUnitAssertImpl
 var _current_type: int
 var _type_check: bool
 
+
 func _init(current: Variant, type_check := true) -> void:
 	_type_check = type_check
 	_base = GdUnitAssertImpl.new(current)

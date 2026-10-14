@@ -4,6 +4,7 @@ extends RefCounted
 
 var _id: String
 
+
 # constructs new Monitor with given id
 func _init(p_id: String) -> void:
 	_id = p_id

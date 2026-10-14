@@ -98,6 +98,8 @@ func _run_suite(test_statistics: Dictionary, suite_statistics: Dictionary) -> Ar
 
 
 @warning_ignore("missing_tool")
+
+
 class TestMessageWriter extends GdUnitMessageWriter:
 	var printed_at: Array[String] = []
 

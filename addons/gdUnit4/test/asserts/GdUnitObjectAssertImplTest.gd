@@ -259,6 +259,7 @@ class MyNode extends Node:
 	# gdlint: ignore=unnecessary-pass
 	pass
 
+
 class MyExtendedNode extends MyNode:
 	# gdlint: ignore=unnecessary-pass
 	pass

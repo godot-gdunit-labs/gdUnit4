@@ -7,6 +7,7 @@ var _thread_context_by_id: Dictionary[int, GdUnitThreadContext] = {}
 ## holds the current thread id
 var _current_thread_id: int = -1
 
+
 func _init() -> void:
 	# add initail the main thread
 	_current_thread_id = OS.get_thread_caller_id()

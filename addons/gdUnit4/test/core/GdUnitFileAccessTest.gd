@@ -254,6 +254,8 @@ func test_delete_path_index_lower_equals_than_by_relative_path() -> void:
 
 	assert_int(GdUnitFileAccess.delete_path_index_lower_equals_than(test_dir, "report_", 3)).is_equal(3)
 	assert_array(DirAccess.get_directories_at(test_dir)).contains_exactly_in_any_order(["report_4", "report_5"])
+
+
 #endregion
 
 
@@ -289,6 +291,8 @@ func test_delete_path_index_lower_equals_than_by_absolute_path() -> void:
 
 	assert_int(GdUnitFileAccess.delete_path_index_lower_equals_than(test_dir, "report_", 3)).is_equal(3)
 	assert_array(DirAccess.get_directories_at(test_dir)).contains_exactly_in_any_order(["report_4", "report_5"])
+
+
 #endregion
 
 

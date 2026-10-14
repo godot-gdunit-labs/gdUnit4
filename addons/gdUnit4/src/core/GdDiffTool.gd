@@ -50,6 +50,7 @@ class MyersSearch:
 	var _work_left: int = MAX_WORK
 
 	@warning_ignore_start("return_value_discarded")
+
 	func _init(a: PackedInt32Array, b: PackedInt32Array) -> void:
 		_a = a
 		_b = b
@@ -61,6 +62,7 @@ class MyersSearch:
 		_kv_backward.resize(diagonals)
 		_kv_offset = b.size() + 1
 		_cost_limit = maxi(MIN_COST_LIMIT, _bogo_sqrt(diagonals))
+
 	@warning_ignore_restore("return_value_discarded")
 
 	func run() -> void:

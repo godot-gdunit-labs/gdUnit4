@@ -22,9 +22,11 @@ func test_is_project_settings_auto_save_reflects_disabled_flag() -> void:
 	# restore the flag so the change never leaves this test
 	ProjectSettings.set_setting(GdUnitSettings.TEST_PROJECT_SETTINGS_AUTO_SAVE, original)
 
+
 #endregion
 
 #region explicit save / restore
+
 
 func test_save_restore_isolates_setting_change() -> void:
 	var key := GdUnitSettings.GDSCRIPT_WARNINGS_INFERRED_DECLARATION
@@ -35,9 +37,11 @@ func test_save_restore_isolates_setting_change() -> void:
 	restore_project_settings()
 	assert_that(ProjectSettings.get_setting(key)).is_equal(original)
 
+
 #endregion
 
 #region execution stage gating
+
 
 # Runs a suite through the real executor in an isolated thread context with a chosen
 # auto-save flag, so the execution stages decide whether to snapshot the settings.

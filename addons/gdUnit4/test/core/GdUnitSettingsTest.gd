@@ -129,6 +129,8 @@ func test_property_enum_info() -> void:
 		.contains_key_value("hint", PROPERTY_HINT_ENUM)\
 		.contains_key_value("hint_string", ",".join(value_set))
 	assert_that(ProjectSettings.property_get_revert(property_name)).is_equal(GdUnitSettings.NamingConventions.AUTO_DETECT)
+
+
 #endregion
 
 
@@ -180,6 +182,8 @@ func test_migrate_property_change_value() -> void:
 	assert_int(new_property.type()).is_equal(old_property.type())
 	assert_str(new_property.default()).is_equal(old_property.default())
 	assert_str(new_property.help()).is_equal(old_property.help())
+
+
 #endregion
 
 

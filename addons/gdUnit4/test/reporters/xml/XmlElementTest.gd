@@ -16,6 +16,7 @@ func test_attribute() -> void:
 	assert_str(element.to_xml()).is_equal(expected)
 	element.dispose()
 
+
 func test_empty() -> void:
 	var element := XmlElement.new("testsuites")
 	var expected := """

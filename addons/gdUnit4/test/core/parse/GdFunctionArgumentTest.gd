@@ -233,6 +233,7 @@ func test_parse_parameter_set() -> void:
 
 #region performance
 
+
 func test_parse_parameters_performance() -> void:
 	const ITERATIONS := 10000
 

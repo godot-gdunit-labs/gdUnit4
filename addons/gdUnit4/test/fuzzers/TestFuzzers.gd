@@ -3,6 +3,7 @@ extends RefCounted
 const MIN_VALUE := -10
 const MAX_VALUE := 22
 
+
 class NestedFuzzer extends Fuzzer:
 
 	func _init() -> void:

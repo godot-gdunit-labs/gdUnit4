@@ -18,6 +18,7 @@ func _callable_parameters(_a: int, _b: int, _test_parameters := _build_params())
 func _callable_parameters_with_args(_a: int, _b: int, _test_parameters := _parameters_string_args("abc", "def")) -> void:
 	pass
 
+
 func _properties_parameters(_a: int, _b: int, _test_parameters := _test_properties) -> void:
 	pass
 
@@ -40,6 +41,7 @@ func _descriptor(func_name: String) -> GdFunctionDescriptor:
 
 
 #region create
+
 
 func test_create_returns_null_for_non_parameterized() -> void:
 	var resolver := GdParameterSetResolverFactory.create(_descriptor("_no_parameters"), self)

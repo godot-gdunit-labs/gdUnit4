@@ -3,6 +3,7 @@ extends GdUnitTestSuite
 
 var o2: C2
 
+
 # This test setup uses two monitors, which are created for each new test.
 # The monitors must be reinitialized for each run, otherwise signals from previous runs will be detected incorrectly.
 # See https://github.com/MikeSchulze/gdUnit4/issues/1002
@@ -31,11 +32,13 @@ func test_monitor_obj2_success() -> void:
 	o2._on_s1()
 	await assert_signal(o2).wait_until(500).is_emitted("s2")
 
+
 class C1:
 	signal s1
 
 	func emit() -> void:
 		s1.emit()
+
 
 class C2:
 	signal s2

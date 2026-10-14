@@ -26,6 +26,7 @@ class TestEventListener extends RefCounted:
 		var test_event := GdUnitEvent.new().deserialize(event)
 		GdUnitSignals.instance().gdunit_event.emit(test_event)
 
+
 static var _test_event_listener := TestEventListener.new()
 
 

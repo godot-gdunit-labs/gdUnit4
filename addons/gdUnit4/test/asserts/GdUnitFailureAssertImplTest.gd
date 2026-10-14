@@ -75,6 +75,7 @@ func test_assert_failure_on_assert_result() -> void:
 
 #region has_stack_trace
 
+
 func _stack_fail_1() -> void:
 	assert_bool(true).is_false()
 
@@ -92,8 +93,8 @@ func test_has_stack_trace_depth_1() -> void:
 		.is_failed() \
 		.has_message("Expecting: 'false' but is 'true'") \
 		.has_stack_trace([
-			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 79, "_stack_fail_1"),
-			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 91, "test_has_stack_trace_depth_1"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 80, "_stack_fail_1"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 92, "test_has_stack_trace_depth_1"),
 		])
 
 
@@ -102,10 +103,10 @@ func test_has_stack_trace_depth_3() -> void:
 		.is_failed() \
 		.has_message("Expecting: 'false' but is 'true'") \
 		.has_stack_trace([
-			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 79, "_stack_fail_1"),
-			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 83, "_stack_fail_2"),
-			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 87, "_stack_fail_3"),
-			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 101, "test_has_stack_trace_depth_3"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 80, "_stack_fail_1"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 84, "_stack_fail_2"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 88, "_stack_fail_3"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/asserts/GdUnitFailureAssertImplTest.gd", 102, "test_has_stack_trace_depth_3"),
 		])
 
 #endregion

@@ -7,6 +7,7 @@ var _current_iterations: Dictionary
 var _expected_iterations: Dictionary
 var _fuzzer_instance_before: Fuzzer = null
 
+
 # a simple test fuzzer where provided a hard coded value set
 class TestFuzzer extends Fuzzer:
 	var _data := [0, 1, 2, 3, 4, 5, 6, 23, 8, 9]

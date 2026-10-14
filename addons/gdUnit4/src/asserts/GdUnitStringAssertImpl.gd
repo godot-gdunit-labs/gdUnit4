@@ -68,6 +68,8 @@ func is_equal_ignoring_case(expected: Variant) -> GdUnitStringAssert:
 
 
 @warning_ignore_start("unsafe_call_argument")
+
+
 func _is_equal(expected: Variant, case_sensitive: bool, message_cb: Callable) -> GdUnitStringAssert:
 	var current: Variant = current_value()
 	if current == null:
@@ -83,6 +85,8 @@ func _is_equal(expected: Variant, case_sensitive: bool, message_cb: Callable) ->
 		var formatted_current := GdAssertMessages.colored_diff(cur_value, exp_value, hunks)
 		return report_error(message_cb.call(formatted_current, exp_value))
 	return report_success()
+
+
 @warning_ignore_restore("unsafe_call_argument")
 
 

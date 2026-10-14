@@ -516,6 +516,7 @@ func test_custom_sort_by_name_descending() -> void:
 		if is_failure():
 			break
 
+
 func test_custom_sort_by_execution_time() -> void:
 	var tree: Tree = auto_free(Tree.new())
 	var tree_root := tree.create_item()
@@ -558,6 +559,7 @@ func create_folder_item(parent: TreeItem, folder_name: String, execution_time :=
 	item.set_meta(GdUnitInspectorTreeMainPanel.META_GDUNIT_ORIGINAL_INDEX, index)
 	item.set_meta(GdUnitInspectorTreeMainPanel.META_GDUNIT_EXECUTION_TIME, execution_time)
 	return item
+
 
 func test_discover_tests() -> void:
 	# verify the InspectorProgressBar is connected to gdunit_test_discovered signal
@@ -688,8 +690,10 @@ func test_collect_test_cases_gd_872(_do_skip := not GdUnit4CSharpApiLoader.is_ap
 	# Valide suite find by resource name
 	assert_object(_inspector._find_tree_item_by_test_suite(_inspector._tree_root, test_case1.suite_resource_path, "AZTests")).is_not_null()
 
+
 ## test helpers to validate two trees
 # ------------------------------------------------------------------------------------------------------------------------------------------
+
 
 func buld_test_case_tree_path(test_case: GdUnitTestCase) -> String:
 	var test := _inspector._find_tree_item_by_id(_inspector._tree_root, test_case.guid)

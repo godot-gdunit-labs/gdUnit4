@@ -109,6 +109,7 @@ func test_get_parameters() -> void:
 
 #region performance
 
+
 func test_performance_single() -> void:
 	const ITERATIONS := 1000
 	var resolver := GdPropertyParameterSetResolver.new(self, "_parameters_with_references_typed")

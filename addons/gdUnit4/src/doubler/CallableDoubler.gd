@@ -19,6 +19,7 @@ func _init(cb: Callable) -> void:
 	assert(cb != null, "Invalid argument <cb> must not be null")
 	_cb = cb
 
+
 ## --- helpers -----------------------------------------------------------------------------------------------------------------------------
 static func map_func_name(method_info: Dictionary) -> String:
 	return method_info["name"]
@@ -56,6 +57,7 @@ static func callable_functions() -> PackedStringArray:
 ## -----------------------------------------------------------------------------------------------------------------------------------------
 ## Callable functions stubing
 ## -----------------------------------------------------------------------------------------------------------------------------------------
+
 
 func bind(...varargs: Array) -> Callable:
 	_cb = _cb.bindv(varargs)

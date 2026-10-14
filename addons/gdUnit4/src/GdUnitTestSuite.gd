@@ -65,6 +65,8 @@ func __gdunit_argument_matchers() -> GDScript:
 
 func __gdunit_object_interactions() -> GDScript:
 	return __lazy_load("res://addons/gdUnit4/src/doubler/GdUnitObjectInteractions.gd")
+
+
 # gdlint: enable=function-name
 
 
@@ -283,6 +285,7 @@ func scene_runner(scene: Variant, verbose := false) -> GdUnitSceneRunner:
 
 
 # === Mocking  & Spy ===========================================================
+
 
 ## Creates a mock for given class name
 func mock(clazz: Variant, mock_mode := RETURN_DEFAULTS) -> Variant:
@@ -608,6 +611,7 @@ func tuple(...args: Array) -> GdUnitTuple:
 
 # === Asserts ==================================================================
 
+
 # gdlint: disable=max-returns
 ## The common assertion tool to verify values.
 ## It checks the given value by type to fit to the best assert
@@ -633,6 +637,8 @@ func assert_that(current: Variant) -> GdUnitAssert:
 			return assert_object(current)
 		_:
 			return __gdunit_assert().new(current)
+
+
 # gdlint: enable=max-returns
 
 

@@ -86,6 +86,8 @@ func _on_signal_emmited(
 	if is_signal_collecting(emitter, signal_name):
 		@warning_ignore("unsafe_cast")
 		(_collected_signals[emitter][signal_name] as Array).append(signal_args)
+
+
 # gdlint: enable=function-arguments-number
 
 

@@ -38,6 +38,8 @@ func after() -> void:
 
 
 @warning_ignore_start("redundant_await")
+
+
 func test_receive_single_message(_timeout := 1000) -> void:
 	monitor_signals(tcp_server, false)
 
@@ -102,5 +104,6 @@ func test_receive_message_split_across_polls(_timeout := 1000) -> void:
 	# split desynced the stream and the message never gets reassembled
 	await assert_signal(tcp_server).is_emitted("rpc_data", message)
 	raw.disconnect_from_host()
+
 
 @warning_ignore_restore("redundant_await")

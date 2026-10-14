@@ -879,6 +879,8 @@ func test_doc_argument_matchers_example() -> void:
 	# Verify that the function was called with any integer value 3 times
 	@warning_ignore("unsafe_method_access")
 	verify(spyed_instance, 3).set_value(any_int())
+
+
 #endregion
 
 

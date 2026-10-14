@@ -9,6 +9,7 @@ const GdUnitUpdate = preload("res://addons/gdUnit4/src/update/GdUnitUpdate.gd")
 const TEST_RESOURCE := "res://addons/gdUnit4/test/update/resources/ExampleSceneWithUids.txt"
 var original_content: String
 
+
 func before() -> void:
 	var file := FileAccess.open(TEST_RESOURCE, FileAccess.READ)
 	original_content = file.get_as_text()
@@ -19,6 +20,7 @@ func after() -> void:
 	var file := FileAccess.open(TEST_RESOURCE, FileAccess.WRITE)
 	file.store_string(original_content)
 	file.close()
+
 
 func after_test() -> void:
 	clean_temp_dir()

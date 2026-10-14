@@ -43,6 +43,8 @@ func test_colored_diff_formats_control_characters() -> void:
 	assert_str(_colored_diff("line1\nline2", "line1\nline3")).is_equal("line1\nline" + SUB % "3" + ADD % "2")
 	assert_str(_colored_diff("a\tb", "a b")).is_equal("a" + SUB % " " + ADD % "<TAB>" + "b")
 	assert_str(_colored_diff("ab\u001bcd", "abcd")).is_equal("ab" + ADD % "<ESC>" + "cd")
+
+
 #endregion
 
 
@@ -51,6 +53,8 @@ func test_format_chars() -> void:
 	assert_str(GdAssertMessages.format_chars("", GdAssertMessages.ADD_COLOR)).is_empty()
 	assert_str(GdAssertMessages.format_chars("abc", GdAssertMessages.ADD_COLOR)).is_equal(ADD % "abc")
 	assert_str(GdAssertMessages.format_chars("a\r\n\u0001b\u007f", GdAssertMessages.SUB_COLOR)).is_equal(SUB % "a<CR><LF><0x01>b<DEL>")
+
+
 #endregion
 
 

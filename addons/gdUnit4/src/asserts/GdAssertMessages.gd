@@ -81,6 +81,8 @@ static func input_event_as_text(event: InputEvent) -> String:
 
 
 @warning_ignore_start("return_value_discarded")
+
+
 static func colored_diff(current: String, expected: String, hunks: Array[GdDiffTool.Hunk]) -> String:
 	if current.is_empty() and hunks.is_empty():
 		return "<empty>"
@@ -96,6 +98,8 @@ static func colored_diff(current: String, expected: String, hunks: Array[GdDiffT
 		position = hunk.current_start + hunk.current_len
 	result.append(current.substr(position))
 	return "".join(result)
+
+
 @warning_ignore_restore("return_value_discarded")
 
 
@@ -320,6 +324,7 @@ static func error_is_false(current: Variant) -> String:
 
 # - Integer/Float Assert specific messages -----------------------------------------------------
 
+
 static func error_is_even(current: Variant) -> String:
 	return "%s\n %s must be even" % [_error("Expecting:"), _colored_value(current)]
 
@@ -435,6 +440,7 @@ static func error_has_length(current: Variant, expected: int, compare_operator: 
 
 
 # - ArrayAssert specific messgaes ---------------------------------------------------
+
 
 static func error_arr_contains(current: Variant, expected: Variant, not_expect: Variant, not_found: Variant, by_reference: bool) -> String:
 	var failure_message := "Expecting contains SAME elements:" if by_reference else "Expecting contains elements:"
@@ -614,7 +620,10 @@ static func result_message(result: GdUnitResult) -> String:
 		GdUnitResult.ERROR: return result.error_message()
 		GdUnitResult.EMPTY: return ""
 	return "UNKNOWN"
+
+
 # -----------------------------------------------------------------------------------
+
 
 # - Spy|Mock specific errors ----------------------------------------------------
 static func error_no_more_interactions(summary: Dictionary) -> String:

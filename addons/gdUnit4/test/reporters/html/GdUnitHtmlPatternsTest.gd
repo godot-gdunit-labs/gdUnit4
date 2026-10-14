@@ -26,6 +26,8 @@ func test_href_is_not_unquoted() -> void:
 	var link := "./test_suites/my_test.game_test.html"
 	var html := GdUnitHtmlPatterns.create_suite_record(link, report)
 	assert_str(html).not_contains("href=%s" % link)
+
+
 #endregion
 
 
@@ -38,6 +40,8 @@ func test_get_path_as_link_simple() -> void:
 func test_get_path_as_link_converts_slashes_to_dots() -> void:
 	var report := _make_suite_report("res://a/b/c/game_test.gd", "game_test")
 	assert_str(GdUnitHtmlPatterns.get_path_as_link(report)).is_equal("../path/a.b.c.html")
+
+
 #endregion
 
 
@@ -50,6 +54,8 @@ func test_create_suite_output_path_converts_slashes_to_dots() -> void:
 func test_create_suite_output_path_replaces_spaces_with_underscores() -> void:
 	var result := GdUnitHtmlPatterns.create_suite_output_path("/reports", "my test/suite", "MyTest")
 	assert_str(result).is_equal("/reports/test_suites/my_test.suite.MyTest.html")
+
+
 #endregion
 
 
@@ -62,6 +68,8 @@ func test_create_path_output_path_converts_slashes_to_dots() -> void:
 func test_create_path_output_path_replaces_spaces_with_underscores() -> void:
 	var result := GdUnitHtmlPatterns.create_path_output_path("/reports", "my test/suite")
 	assert_str(result).is_equal("/reports/path/my_test.suite.html")
+
+
 #endregion
 
 

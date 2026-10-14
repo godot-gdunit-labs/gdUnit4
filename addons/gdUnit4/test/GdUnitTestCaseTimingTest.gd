@@ -8,6 +8,7 @@ var _iteration_timer_start := 0
 var _test_values_current: Dictionary
 var _test_values_expected: Dictionary
 
+
 class TestCaseStatistics:
 	var _test_before_calls: int
 	var _test_after_calls: int

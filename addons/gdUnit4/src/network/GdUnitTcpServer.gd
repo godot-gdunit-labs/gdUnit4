@@ -10,6 +10,7 @@ signal rpc_data(rpc_data: RPC)
 var _server: TCPServer
 var _server_name: String
 
+
 class TcpConnection extends GdUnitTcpNode:
 	var _id: int
 	var _stream: StreamPeerTCP

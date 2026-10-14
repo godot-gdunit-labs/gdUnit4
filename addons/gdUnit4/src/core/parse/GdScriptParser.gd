@@ -280,6 +280,7 @@ class TokenInnerClass extends RegExToken:
 				continue
 			break
 		_consumed += TokenInnerClass._consumed_bytes("".join(_content))
+
 	@warning_ignore_restore("return_value_discarded")
 
 	func _to_string() -> String:
@@ -352,6 +353,8 @@ func is_allowed_character(input: String) -> bool:
 	if code_point == 34 or code_point == 39:
 		return true
 	return false
+
+
 # gdlint: enable=max-returns
 
 

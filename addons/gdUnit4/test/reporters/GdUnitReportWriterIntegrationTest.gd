@@ -24,6 +24,8 @@ func _setup_base(report_dir_name: String, writer: GdUnitReportWriter) -> void:
 
 func after() -> void:
 	GdUnitSignals.instance().gdunit_event_debug.disconnect(_on_test_event)
+
+
 #endregion
 
 
@@ -118,6 +120,8 @@ func _replace_timestamps(input_text: String) -> String:
 	var regex := RegEx.new()
 	regex.compile("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}")
 	return regex.sub(input_text, "2026-01-01T00:00:00", true)
+
+
 #endregion
 
 

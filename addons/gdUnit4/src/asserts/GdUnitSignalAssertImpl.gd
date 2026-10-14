@@ -102,20 +102,14 @@ func is_signal_exists(signal_or_name: Variant) -> GdUnitSignalAssert:
 func is_emitted(signal_name: Variant, ...signal_args: Array) -> GdUnitSignalAssert:
 	_line_number = GdUnitStackTrace.new().get_line_number()
 	@warning_ignore("unsafe_call_argument")
-	return await _wail_until_signal(
-		signal_name,
-		_wrap_arguments.callv(signal_args),
-		false)
+	return await _wail_until_signal(signal_name, _wrap_arguments.callv(signal_args), false)
 
 
 # Verifies that given signal is NOT emitted until waiting time
 func is_not_emitted(signal_name: Variant, ...signal_args: Array) -> GdUnitSignalAssert:
 	_line_number = GdUnitStackTrace.new().get_line_number()
 	@warning_ignore("unsafe_call_argument")
-	return await _wail_until_signal(
-		signal_name,
-		_wrap_arguments.callv(signal_args),
-		true)
+	return await _wail_until_signal(signal_name, _wrap_arguments.callv(signal_args), true)
 
 
 func _wrap_arguments(...args: Array) -> Array:

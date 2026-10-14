@@ -12,8 +12,8 @@ func test_${func_name}() -> void:
 const EXCLUDE_SCAN_DIRECTORIES = [
 	"res://addons/gdUnit4/bin",
 	"res://addons/gdUnit4/src",
-	"res://reports"]
-
+	"res://reports",
+]
 
 const ARGUMENT_TIMEOUT := "timeout"
 const ARGUMENT_SKIP := "do_skip"
@@ -136,9 +136,7 @@ func load_suite(script: GDScript, tests: Array[GdUnitTestCase]) -> GdUnitTestSui
 	test_suite.set_name(first_test.suite_name)
 
 	# We need to group first all parameterized tests together to load the parameter set once
-	var grouped_by_test := GdArrayTools.group_by(tests, func(test: GdUnitTestCase) -> String:
-		return test.test_name
-	)
+	var grouped_by_test := GdArrayTools.group_by(tests, func(test: GdUnitTestCase) -> String: return test.test_name)
 	# Extract function descriptors
 	var test_names: PackedStringArray = grouped_by_test.keys()
 	test_names.append("before")
@@ -173,9 +171,7 @@ func _build_test_attribute(script: GDScript, fd: GdFunctionDescriptor) -> TestCa
 		if arg.type() == GdObjects.TYPE_FUZZER:
 			if not seen_config_arguments.is_empty():
 				attribute.is_skipped = true
-				attribute.skip_reason = (
-					"Fuzzer argument '%s' must be declared before the test config argument(s) %s."
-					% [arg.name(), seen_config_arguments])
+				attribute.skip_reason = ("Fuzzer argument '%s' must be declared before the test config argument(s) %s." % [arg.name(), seen_config_arguments])
 				return attribute
 			attribute.fuzzers.append(arg)
 		else:

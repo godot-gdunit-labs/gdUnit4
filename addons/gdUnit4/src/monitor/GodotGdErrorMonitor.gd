@@ -31,20 +31,11 @@ class GdUnitLogger extends Logger:
 				return
 
 	func _log_error(
-		_function: String,
-		_file: String,
-		_line: int,
-		message: String,
-		_rationale: String,
-		_editor_notify: bool,
-		error_type: int,
-		script_backtraces: Array[ScriptBacktrace]
-		) -> void:
+		_function: String, _file: String, _line: int, message: String, _rationale: String, _editor_notify: bool, error_type: int, script_backtraces: Array[ScriptBacktrace]
+	) -> void:
 		var stack_trace := GdUnitStackTrace.from_script_backtraces(script_backtraces)
 		if stack_trace.get_frames().size() == 0:
-			stack_trace = GdUnitStackTrace.new([
-				GdUnitStackTraceElement.new(_file, _line, _function)
-			])
+			stack_trace = GdUnitStackTrace.new([GdUnitStackTraceElement.new(_file, _line, _function)])
 
 		match error_type:
 			ErrorType.ERROR_TYPE_WARNING:
@@ -102,10 +93,7 @@ func to_reports() -> Array[GdUnitReport]:
 
 
 static func _to_report(error_log: ErrorLogEntry) -> GdUnitReport:
-
-	var failure := "%s\n  %s" % [
-		GdAssertMessages._error("Godot Runtime Error !"),
-		GdAssertMessages._colored_value(error_log._message)]
+	var failure := "%s\n  %s" % [GdAssertMessages._error("Godot Runtime Error !"), GdAssertMessages._colored_value(error_log._message)]
 	var error := GdUnitError.new(failure, error_log._line, error_log._stack_trace)
 	return GdUnitReport.new().from_error(GdUnitReport.ABORT, error)
 

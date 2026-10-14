@@ -49,15 +49,7 @@ static func debug_observe(name: String, obj: Object, indent: int = 0) -> void:
 		var base_script: GDScript = script.get_base_script()
 		@warning_ignore("unsafe_method_access")
 		prints(
-			"".lpad(indent, "	"),
-			name,
-			obj,
-			obj.get_class(),
-			"reference_count:",
-			obj.get_reference_count() if obj is RefCounted else 0,
-			"script:",
-			script,
-			script.resource_path
+			"".lpad(indent, "	"), name, obj, obj.get_class(), "reference_count:", obj.get_reference_count() if obj is RefCounted else 0, "script:", script, script.resource_path
 		)
 		if base_script:
 			debug_observe("+", base_script, indent + 1)

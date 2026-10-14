@@ -124,9 +124,7 @@ func return_type_as_string() -> String:
 
 
 func set_argument_value(arg_name: String, value: String) -> void:
-	var argument: GdFunctionArgument = _args.filter(func(arg: GdFunctionArgument) -> bool:
-		return arg.name() == arg_name
-		).front()
+	var argument: GdFunctionArgument = _args.filter(func(arg: GdFunctionArgument) -> bool: return arg.name() == arg_name).front()
 	if argument != null:
 		argument.set_value(value)
 
@@ -192,14 +190,7 @@ static func extract_from(descriptor: Dictionary, p_is_engine := true) -> GdFunct
 		func_return_type = GdObjects.TYPE_VOID
 
 	return GdFunctionDescriptor.new(
-		func_name,
-		func_is_virtual,
-		func_is_static,
-		p_is_engine,
-		func_return_type,
-		clazz_name,
-		_extract_args(descriptor),
-		_build_varargs(func_is_vararg)
+		func_name, func_is_virtual, func_is_static, p_is_engine, func_return_type, clazz_name, _extract_args(descriptor), _build_varargs(func_is_vararg)
 	)
 
 

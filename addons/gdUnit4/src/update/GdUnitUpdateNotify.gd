@@ -25,9 +25,7 @@ func _ready() -> void:
 	@warning_ignore("return_value_discarded")
 	#GdUnitFonts.init_fonts(_content)
 	_update_progress.set_visible(false)
-	_update_progress.hidden.connect(func() -> void:
-		_update_button.set_disabled(false)
-	)
+	_update_progress.hidden.connect(func() -> void: _update_button.set_disabled(false))
 
 
 func request_releases() -> bool:

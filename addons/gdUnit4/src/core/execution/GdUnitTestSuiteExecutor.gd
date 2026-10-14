@@ -29,9 +29,7 @@ func run_and_wait(tests: Array[GdUnitTestCase]) -> void:
 		prints("!!! Reporting orphan nodes is disabled. Please check GdUnit settings.")
 
 	# first we group all tests by resource path
-	var grouped_by_suites := GdArrayTools.group_by(tests, func(test: GdUnitTestCase) -> String:
-		return test.suite_resource_path
-	)
+	var grouped_by_suites := GdArrayTools.group_by(tests, func(test: GdUnitTestCase) -> String: return test.suite_resource_path)
 	var scanner := GdUnitTestSuiteScanner.new()
 	for suite_path: String in grouped_by_suites.keys():
 		if _terminated:

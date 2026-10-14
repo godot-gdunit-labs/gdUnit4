@@ -1,13 +1,12 @@
 class_name GdInlineParameterSetResolver
 extends GdParameterSetResolver
 
-
 const EXCLUDE_PROPERTIES_TO_COPY := [
 	"script",
 	"type",
 	"Node",
-	"_import_path"]
-
+	"_import_path",
+]
 
 const EXPRESSION_TEMPLATE := """
 extends '${clazz_path}'
@@ -31,12 +30,7 @@ static var _number_literal_regex: RegEx
 static var _script_variant_type_regex: RegEx
 
 
-func _init(
-	parameter_sets: PackedStringArray,
-	source_path: String,
-	function_name: String,
-	args: Array[GdFunctionArgument] = []
-) -> void:
+func _init(parameter_sets: PackedStringArray, source_path: String, function_name: String, args: Array[GdFunctionArgument] = []) -> void:
 	super(args)
 	_parameter_sets = parameter_sets
 	_source_path = source_path

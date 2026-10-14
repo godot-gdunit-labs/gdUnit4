@@ -49,10 +49,7 @@ func load_hook(hook_resourc_path: String) -> GdUnitResult:
 
 func enable_hook(hook: GdUnitTestSessionHook, enabled: bool) -> void:
 	_enable_hook(hook, enabled)
-	GdUnitSignals.instance().gdunit_message.emit("Session hook '{name}' {enabled}.".format({
-		"name": hook.name,
-		"enabled": "enabled" if enabled else "disabled"})
-	)
+	GdUnitSignals.instance().gdunit_message.emit("Session hook '{name}' {enabled}.".format({"name": hook.name, "enabled": "enabled" if enabled else "disabled"}))
 	save_hock_setttings()
 
 
@@ -131,9 +128,7 @@ func execute(hook_func: String, session: GdUnitTestSession, reverse := false) ->
 	if failed_hook_calls.is_empty():
 		return GdUnitResult.success()
 
-	var errors := failed_hook_calls.map(func(result: GdUnitResult) -> String:
-		return "Hook call '%s' failed with error: '%s'" % [hook_func, result.error_message()]
-	)
+	var errors := failed_hook_calls.map(func(result: GdUnitResult) -> String: return "Hook call '%s' failed with error: '%s'" % [hook_func, result.error_message()])
 	return GdUnitResult.error("\n".join(errors))
 
 
@@ -158,9 +153,7 @@ func load_hook_settings() -> void:
 		var enabled := hooks_resource_paths[hock_path]
 
 		# Do not reinstall already installed hooks
-		var existing_hooks := enigne_hooks.filter(func(element: GdUnitTestSessionHook) -> bool:
-			return element.get_script().resource_path == hock_path
-		)
+		var existing_hooks := enigne_hooks.filter(func(element: GdUnitTestSessionHook) -> bool: return element.get_script().resource_path == hock_path)
 		var existing_hook: GdUnitTestSessionHook = null if existing_hooks.is_empty() else existing_hooks.front()
 		# Applay enabled settings
 		if existing_hook != null:

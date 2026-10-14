@@ -33,15 +33,8 @@ func _init() -> void:
 
 
 func _log_error(
-	_function: String,
-	source_file: String,
-	source_line: int,
-	message: String,
-	_rationale: String,
-	_editor_notify: bool,
-	error_type: int,
-	_script_backtraces: Array[ScriptBacktrace]
-	) -> void:
+	_function: String, source_file: String, source_line: int, message: String, _rationale: String, _editor_notify: bool, error_type: int, _script_backtraces: Array[ScriptBacktrace]
+) -> void:
 	if error_type != ErrorType.ERROR_TYPE_SCRIPT:
 		return
 	_errors.append(ScriptError.new(message, source_file, source_line))

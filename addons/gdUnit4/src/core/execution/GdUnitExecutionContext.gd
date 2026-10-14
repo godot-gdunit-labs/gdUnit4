@@ -6,9 +6,8 @@ enum GcOrphansCheck {
 	NONE,
 	SUITE_HOOK_AFTER,
 	TEST_HOOK_AFTER,
-	TEST_CASE
+	TEST_CASE,
 }
-
 
 var error_monitor: GodotGdErrorMonitor = null:
 	get:
@@ -296,10 +295,7 @@ func gc(gc_orphan_check: GcOrphansCheck = GcOrphansCheck.NONE) -> void:
 			collect_orphan_node_details()""")
 
 		GcOrphansCheck.TEST_CASE:
-			report_ophans(test_case.line_number(),
-			"	collect_orphan_node_details()"
-			)
-
+			report_ophans(test_case.line_number(), "	collect_orphan_node_details()")
 
 
 func report_ophans(line_number: int, additonal_info := "") -> void:

@@ -48,7 +48,7 @@ func is_failed(state: GdUnitInspectorTreeConstants.STATE) -> bool:
 	return state in [
 		GdUnitInspectorTreeConstants.STATE.FAILED,
 		GdUnitInspectorTreeConstants.STATE.ERROR,
-		GdUnitInspectorTreeConstants.STATE.ABORDED]
+		GdUnitInspectorTreeConstants.STATE.ABORDED,]
 
 
 func is_flaky(state: GdUnitInspectorTreeConstants.STATE) -> bool:

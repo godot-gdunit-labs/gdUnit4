@@ -431,9 +431,9 @@ func _parse_function_arguments(input: String) -> Array[Dictionary]:
 		if in_function:
 			var arg_value := ""
 			var current_argument := {
-				"name" : "",
-				"value" : GdFunctionArgument.UNDEFINED,
-				"type" : TYPE_VARIANT
+				"name": "",
+				"value": GdFunctionArgument.UNDEFINED,
+				"type": TYPE_VARIANT,
 			}
 
 			# parse type and default value
@@ -508,9 +508,9 @@ func _parse_function_arguments(input: String) -> Array[Dictionary]:
 						if bracket <= 1:
 							# next argument
 							current_argument = {
-								"name" : "",
-								"value" : GdFunctionArgument.UNDEFINED,
-								"type" : GdObjects.TYPE_VARIANT
+								"name": "",
+								"value": GdFunctionArgument.UNDEFINED,
+								"type": GdObjects.TYPE_VARIANT,
 							}
 							continue
 	return arguments

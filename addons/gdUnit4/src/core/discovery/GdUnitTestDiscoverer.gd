@@ -93,9 +93,7 @@ static func recover_test_guid(current: GdUnitTestCase, recovered_tests: Array[Gd
 
 
 static func console_log_discover_results(tests: Array[GdUnitTestCase]) -> void:
-	var grouped_by_suites := GdArrayTools.group_by(tests, func(test: GdUnitTestCase) -> String:
-		return test.source_file
-	)
+	var grouped_by_suites := GdArrayTools.group_by(tests, func(test: GdUnitTestCase) -> String: return test.source_file)
 	for suite_tests: Array in grouped_by_suites.values():
 		var test_case: GdUnitTestCase = suite_tests[0]
 		console_log("Discover: TestSuite %s with %d tests found" % [test_case.source_file, suite_tests.size()])
@@ -168,15 +166,7 @@ static func discover_parameterised_tests(source: Node, fd: GdFunctionDescriptor)
 		var parameter_expression := parameter_expressions[parameter_index]
 
 		@warning_ignore("return_value_discarded")
-		test_cases.append(
-			GdUnitTestCase.from(
-				fd.source_path(),
-				fd.source_path(),
-				fd.begin_line(),
-				fd.name(),
-				parameter_index,
-				parameter_expression)
-			)
+		test_cases.append(GdUnitTestCase.from(fd.source_path(), fd.source_path(), fd.begin_line(), fd.name(), parameter_index, parameter_expression))
 	return test_cases
 
 

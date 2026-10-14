@@ -129,6 +129,4 @@ func _build_fully_qualified_name(_resource_path: String) -> void:
 		fully_qualified_name = "%s.%s" % [name_space, test_name]
 	else:
 		fully_qualified_name = "%s.%s.%s" % [name_space, test_name, display_name]
-	assert(
-		fully_qualified_name != null and not fully_qualified_name.is_empty(),
-		"Precondition: The parameter 'fully_qualified_name' can't be resolved")
+	assert(fully_qualified_name != null and not fully_qualified_name.is_empty(), "Precondition: The parameter 'fully_qualified_name' can't be resolved")

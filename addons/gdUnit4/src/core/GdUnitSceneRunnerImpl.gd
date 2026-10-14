@@ -317,11 +317,7 @@ func simulate_screen_touch_drag_absolute(index: int, position: Vector2, time: fl
 
 @warning_ignore("return_value_discarded")
 func simulate_screen_touch_drag_drop(
-	index: int,
-	position: Vector2,
-	drop_position: Vector2,
-	time: float = 1.0,
-	trans_type: Tween.TransitionType = Tween.TRANS_LINEAR
+	index: int, position: Vector2, drop_position: Vector2, time: float = 1.0, trans_type: Tween.TransitionType = Tween.TRANS_LINEAR
 ) -> GdUnitSceneRunner:
 	simulate_screen_touch_press(index, position)
 	return await _do_touch_drag_at(index, drop_position, time, trans_type)

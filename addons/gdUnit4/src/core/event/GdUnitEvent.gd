@@ -11,7 +11,7 @@ enum {
 	DISCOVER_START,
 	DISCOVER_END,
 	SESSION_START,
-	SESSION_CLOSE
+	SESSION_CLOSE,
 }
 
 const WARNINGS = "warnings"
@@ -162,12 +162,12 @@ func _to_string() -> String:
 
 func serialize() -> Dictionary:
 	var serialized := {
-		"type"         : _event_type,
+		"type": _event_type,
 		"resource_path": _resource_path,
-		"suite_name"   : _suite_name,
-		"test_name"    : _test_name,
-		"total_count"  : _total_count,
-		"statistics"    : _statistics
+		"suite_name": _suite_name,
+		"test_name": _test_name,
+		"total_count": _total_count,
+		"statistics": _statistics,
 	}
 	if _guid != null:
 		serialized["guid"] = _guid._guid

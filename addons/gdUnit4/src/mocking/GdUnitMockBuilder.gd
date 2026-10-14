@@ -88,10 +88,7 @@ static func mock_on_scene(scene: PackedScene, debug_write: bool) -> Variant:
 static func get_class_info(clazz: Variant) -> Dictionary:
 	var clazz_name: String = GdObjects.extract_class_name(clazz).value()
 	var clazz_path := GdObjects.extract_class_path(clazz)
-	return {
-		"class_name" : clazz_name,
-		"class_path" : clazz_path
-	}
+	return {"class_name": clazz_name, "class_path": clazz_path}
 
 
 static func mock_on_script(instance: Object, clazz: Variant, function_excludes: PackedStringArray, debug_write: bool) -> GDScript:
@@ -99,10 +96,9 @@ static func mock_on_script(instance: Object, clazz: Variant, function_excludes: 
 	var class_info := get_class_info(clazz)
 	var clazz_name: String = class_info.get("class_name")
 	var clazz_path: PackedStringArray = class_info.get("class_path", [clazz_name])
-	var mock_template := MOCK_TEMPLATE.source_code.format({
-		"instance_id" : abs(instance.get_instance_id()),
-		"gdunit_source_class": clazz_name if clazz_path.is_empty() else clazz_path[0]
-	})
+	var mock_template := MOCK_TEMPLATE.source_code.format(
+		{"instance_id": abs(instance.get_instance_id()), "gdunit_source_class": clazz_name if clazz_path.is_empty() else clazz_path[0]}
+	)
 	var lines := load_template(mock_template, class_info)
 	lines += double_functions(instance, clazz_name, clazz_path, function_doubler, function_excludes)
 	# We disable warning/errors for inferred_declaration

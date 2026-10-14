@@ -73,9 +73,7 @@ func _create_hook_row(hook: GdUnitTestSessionHook) -> Control:
 	# Enable/disable toggle
 	var check: CheckButton = panel.find_child("Enabled", true, false)
 	check.button_pressed = GdUnitTestSessionHookService.is_enabled(hook)
-	check.toggled.connect(func(enabled: bool) -> void:
-		GdUnitTestSessionHookService.instance().enable_hook(hook, enabled)
-	)
+	check.toggled.connect(func(enabled: bool) -> void: GdUnitTestSessionHookService.instance().enable_hook(hook, enabled))
 
 	_hooks_list.add_child(panel)
 	return panel

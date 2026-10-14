@@ -165,12 +165,7 @@ func _validate_callback(predicate: Callable, expected: Variant = null) -> void:
 		#var predicate_name = predicate.get_method()
 		var predicate_name: String = str(predicate).split("::")[1]
 		@warning_ignore("return_value_discarded")
-		report_error(GdAssertMessages.error_interrupted(
-			predicate_name.strip_edges().trim_prefix("cb_"),
-			expected,
-			LocalTime.elapsed(_timeout)
-			)
-		)
+		report_error(GdAssertMessages.error_interrupted(predicate_name.strip_edges().trim_prefix("cb_"), expected, LocalTime.elapsed(_timeout)))
 	else:
 		@warning_ignore("return_value_discarded")
 		report_success()

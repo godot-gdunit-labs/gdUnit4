@@ -2,10 +2,7 @@
 class_name GdObjects
 extends Resource
 
-enum CompareMode {
-	OBJECT_REFERENCE,
-	PARAMETER_DEEP_TEST
-}
+enum CompareMode { OBJECT_REFERENCE, PARAMETER_DEEP_TEST }
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 

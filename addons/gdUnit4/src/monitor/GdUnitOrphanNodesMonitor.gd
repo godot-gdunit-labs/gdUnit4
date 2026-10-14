@@ -54,9 +54,7 @@ func _collect_child_orphan_ids() -> Array[int]:
 func detected_orphans() -> Array[GdUnitOrphanNodeInfo]:
 	if not _orphan_detection_enabled:
 		return []
-	return _collected_orphan_infos.filter(func(info: GdUnitOrphanNodeInfo) -> bool:
-		return info._id in _orphan_ids_at_stop
-	)
+	return _collected_orphan_infos.filter(func(info: GdUnitOrphanNodeInfo) -> bool: return info._id in _orphan_ids_at_stop)
 
 
 func orphans_count() -> int:
@@ -96,12 +94,7 @@ func _collect_orphan_info(orphan_node: Object, script_backtraces: Array[ScriptBa
 				_collected_orphan_infos.append(orphan_info)
 				return
 
-	_collected_orphan_infos.append(
-		GdUnitOrphanNodeInfo.new(
-			orphan_node.get_instance_id(),
-			orphan_node.get_class(),
-			null)
-		)
+	_collected_orphan_infos.append(GdUnitOrphanNodeInfo.new(orphan_node.get_instance_id(), orphan_node.get_class(), null))
 
 
 func _find_orphan_at_node(orphan_node: Object, node: Node) -> GdUnitOrphanNodeInfo:
@@ -129,14 +122,7 @@ func _find_orphan_at_node(orphan_node: Object, node: Node) -> GdUnitOrphanNodeIn
 			if property_as_node == orphan_node:
 				var property_class: String = property["class_name"]
 				var source_line := _find_line_for_property(script, "", property_name)
-				return GdUnitOrphanNodeInfo.new(
-					orphan_node.get_instance_id(),
-					property_class,
-					GdUnitStackTraceElement.new(
-						script.resource_path,
-						source_line,
-						property_name)
-					)
+				return GdUnitOrphanNodeInfo.new(orphan_node.get_instance_id(), property_class, GdUnitStackTraceElement.new(script.resource_path, source_line, property_name))
 
 			# Otherwise we need to search on child node script properties
 			var orphan_info := _find_orphan_at_node(orphan_node, property_as_node)
@@ -173,10 +159,8 @@ func _find_orphan_on_backtraces(orphan_node: Object, script_backtraces: Array[Sc
 						var script: Script = load(source_script)
 						var source_line := _find_line_for_property(script, source_function, variable_name)
 						return GdUnitOrphanNodeInfo.new(
-							orphan_node.get_instance_id(),
-							orphan_node.get_class(),
-							GdUnitStackTraceElement.new(source_script, source_line, variable_name)
-							)
+							orphan_node.get_instance_id(), orphan_node.get_class(), GdUnitStackTraceElement.new(source_script, source_line, variable_name)
+						)
 					var orphan_info := _find_orphan_at_node(orphan_node, node)
 					if orphan_info:
 						return orphan_info
@@ -194,10 +178,8 @@ func _find_orphan_on_backtraces(orphan_node: Object, script_backtraces: Array[Sc
 						return GdUnitOrphanNodeInfo.new(
 							orphan_node.get_instance_id(),
 							orphan_node.get_class(),
-							GdUnitStackTraceElement.new(
-								script_backtrace.get_frame_file(frame),
-								script_backtrace.get_frame_line(frame),
-								member_name))
+							GdUnitStackTraceElement.new(script_backtrace.get_frame_file(frame), script_backtrace.get_frame_line(frame), member_name)
+						)
 					var orphan_info := _find_orphan_at_node(orphan_node, node)
 					if orphan_info:
 						return orphan_info

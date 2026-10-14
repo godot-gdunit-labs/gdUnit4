@@ -59,9 +59,7 @@ var _is_debug := false
 
 
 static func instance() -> GdUnitTestDiscoverGuard:
-	return GdUnitSingleton.instance("GdUnitTestDiscoverGuard", func() -> GdUnitTestDiscoverGuard:
-		return GdUnitTestDiscoverGuard.new()
-	)
+	return GdUnitSingleton.instance("GdUnitTestDiscoverGuard", func() -> GdUnitTestDiscoverGuard: return GdUnitTestDiscoverGuard.new())
 
 
 ## Creates a new guard instance.[br]
@@ -173,9 +171,7 @@ func discover(script: Script, discover_sink: Callable = default_discover_sink) -
 		var source_file := script.resource_path
 		var discovered_tests: Array[GdUnitTestCase] = []
 
-		GdUnitTestDiscoverer.discover_tests(script, func(test_case: GdUnitTestCase) -> void:
-			discovered_tests.append(test_case)
-		)
+		GdUnitTestDiscoverer.discover_tests(script, func(test_case: GdUnitTestCase) -> void: discovered_tests.append(test_case))
 
 		# The suite is never discovered, we add all discovered tests
 		if not _discover_cache.has(source_file):

@@ -11,11 +11,7 @@ extends GdUnitMessageWriter
 ## [br]
 ## Used primarily for console-based test execution and CI/CD environments.
 
-
-enum {
-	COLOR_TABLE,
-	COLOR_RGB
-}
+enum { COLOR_TABLE, COLOR_RGB }
 
 const CSI_BOLD = "[1m"
 const CSI_ITALIC = "[3m"

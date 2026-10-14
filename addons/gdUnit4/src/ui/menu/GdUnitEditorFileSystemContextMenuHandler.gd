@@ -10,16 +10,8 @@ func _init() -> void:
 			return false
 		return GdUnitTestSuiteScanner.is_test_suite(script) == is_ts
 	# setup shortcuts
-	_context_menus.append(GdUnitContextMenuItem.new(
-		GdUnitCommandFileSystemRunTests.ID,
-		"Run Testsuites",
-		is_test_suite.bind(true)
-	))
-	_context_menus.append(GdUnitContextMenuItem.new(
-		GdUnitCommandFileSystemDebugTests.ID,
-		"Debug Testsuites",
-		is_test_suite.bind(true)
-	))
+	_context_menus.append(GdUnitContextMenuItem.new(GdUnitCommandFileSystemRunTests.ID, "Run Testsuites", is_test_suite.bind(true)))
+	_context_menus.append(GdUnitContextMenuItem.new(GdUnitCommandFileSystemDebugTests.ID, "Debug Testsuites", is_test_suite.bind(true)))
 
 
 func _popup_menu(paths: PackedStringArray) -> void:

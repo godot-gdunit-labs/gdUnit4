@@ -66,12 +66,7 @@ func _on_test_event(event: GdUnitEvent) -> void:
 		GdUnitEvent.TESTCASE_AFTER:
 			_reporter.add_test_statistics(event)
 			var test := test_session.find_test_by_id(event.guid())
-			_report_summary.set_counters(test.source_file,
-				test.display_name,
-				event.error_count(),
-				event.failed_count(),
-				event.orphan_nodes(),
-				event.is_skipped(),
-				event.is_flaky(),
-				event.elapsed_time())
+			_report_summary.set_counters(
+				test.source_file, test.display_name, event.error_count(), event.failed_count(), event.orphan_nodes(), event.is_skipped(), event.is_flaky(), event.elapsed_time()
+			)
 			_report_summary.add_reports(test.source_file, test.display_name, event.reports())

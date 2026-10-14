@@ -37,7 +37,7 @@ var _cmd_options := CmdOptions.new([
 			"-rd <directory>",
 			"Specifies the output directory in which the reports are to be written. The default is res://reports/.",
 			TYPE_STRING,
-			true
+			true,
 		)
 	])
 
@@ -81,9 +81,7 @@ func _process(_delta: float) -> bool:
 
 func set_current_report_path() -> void:
 	# scan for latest report directory
-	var iteration := GdUnitFileAccess.find_last_path_index(
-		_report_root_path, GdUnitConstants.REPORT_DIR_PREFIX
-	)
+	var iteration := GdUnitFileAccess.find_last_path_index(_report_root_path, GdUnitConstants.REPORT_DIR_PREFIX)
 	_current_report_path = "%s/%s%d" % [_report_root_path, GdUnitConstants.REPORT_DIR_PREFIX, iteration]
 
 
@@ -113,10 +111,7 @@ func scan_latest_godot_log() -> String:
 func read_log_file_content(log_file: String) -> GdUnitResult:
 	var file := FileAccess.open(log_file, FileAccess.READ)
 	if file == null:
-		return GdUnitResult.error(
-			"Can't find log file '%s'. Error: %s"
-			% [log_file, error_string(FileAccess.get_open_error())]
-		)
+		return GdUnitResult.error("Can't find log file '%s'. Error: %s" % [log_file, error_string(FileAccess.get_open_error())])
 	var content := "<pre>" + file.get_as_text()
 	# patch out console format codes
 	for color_index in range(0, 256):
@@ -134,10 +129,7 @@ func read_log_file_content(log_file: String) -> GdUnitResult:
 func write_report(content: String, godot_log_file: String) -> GdUnitResult:
 	var file := FileAccess.open(get_log_report_html(), FileAccess.WRITE)
 	if file == null:
-		return GdUnitResult.error(
-			"Can't open to write '%s'. Error: %s"
-			% [get_log_report_html(), error_string(FileAccess.get_open_error())]
-		)
+		return GdUnitResult.error("Can't open to write '%s'. Error: %s" % [get_log_report_html(), error_string(FileAccess.get_open_error())])
 	var report_html := LOG_FRAME_TEMPLATE.replace("${content}", content)
 	file.store_string(report_html)
 	_update_index_html(godot_log_file)
@@ -148,10 +140,7 @@ func _update_index_html(godot_log_file: String) -> void:
 	var index_path := "%s/index.html" % _current_report_path
 	var index_file := FileAccess.open(index_path, FileAccess.READ_WRITE)
 	if index_file == null:
-		push_error(
-			"Can't add log path '%s' to `%s`. Error: %s"
-			% [godot_log_file, index_path, error_string(FileAccess.get_open_error())]
-		)
+		push_error("Can't add log path '%s' to `%s`. Error: %s" % [godot_log_file, index_path, error_string(FileAccess.get_open_error())])
 		return
 	var content := index_file.get_as_text()\
 		.replace("${log_report}", get_log_report_html())\

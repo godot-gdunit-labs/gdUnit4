@@ -19,9 +19,8 @@ enum {
 	INIT,
 	RUN,
 	STOP,
-	EXIT
+	EXIT,
 }
-
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
@@ -146,9 +145,8 @@ func init_runner() -> void:
 
 func cleanup_report_history() -> int:
 	return GdUnitFileAccess.delete_path_index_lower_equals_than(
-		report_path.get_base_dir(),
-		GdUnitConstants.REPORT_DIR_PREFIX,
-		current_report_history_index-1-max_report_history)
+		report_path.get_base_dir(), GdUnitConstants.REPORT_DIR_PREFIX, current_report_history_index - 1 - max_report_history
+	)
 
 
 ## Returns the exit code when the test run is finished.[br]

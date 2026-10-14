@@ -25,12 +25,10 @@ static func deserialize(json_value: String) -> Object:
 	var json := JSON.new()
 	var err := json.parse(json_value)
 	if err != OK:
-		push_error("Can't deserialize JSON, error at line %d:\n	error: %s \n	json: '%s'"
-			% [json.get_error_line(), json.get_error_message(), json_value])
+		push_error("Can't deserialize JSON, error at line %d:\n	error: %s \n	json: '%s'" % [json.get_error_line(), json.get_error_message(), json_value])
 		return null
 	var result: Dictionary = json.get_data()
 	if not typeof(result) == TYPE_DICTIONARY:
-		push_error("Can't deserialize JSON. Expecting dictionary, error at line %d:\n	error: %s \n	json: '%s'"
-			% [result.error_line, result.error_string, json_value])
+		push_error("Can't deserialize JSON. Expecting dictionary, error at line %d:\n	error: %s \n	json: '%s'" % [result.error_line, result.error_string, json_value])
 		return null
 	return dict_to_inst(result)

@@ -115,9 +115,7 @@ func _init(test_cases: Array[GdUnitTestCase], session_report_path: String) -> vo
 	# We build a copy to prevent a user is modifing the tests
 	_test_cases = test_cases.duplicate(true)
 	report_path = session_report_path
-	GdUnitSignals.instance().gdunit_event.connect(func(event: GdUnitEvent) -> void:
-		test_event.emit(event)
-	)
+	GdUnitSignals.instance().gdunit_event.connect(func(event: GdUnitEvent) -> void: test_event.emit(event))
 
 
 ## Finds a test case by its unique identifier.[br]

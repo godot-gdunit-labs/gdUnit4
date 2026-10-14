@@ -68,7 +68,7 @@ func save_config(path: String = CONFIG_FILE) -> GdUnitResult:
 		VERSION: CONFIG_VERSION,
 		EXIT_FAIL_FAST: is_fail_fast(),
 		SERVER_PORT: server_port(),
-		TESTS: Array()
+		TESTS: Array(),
 	}
 
 	var tests: Array = to_save.get(TESTS)

@@ -142,10 +142,7 @@ func _contains_exactly(expected: Array, compare_mode: GdObjects.CompareMode) -> 
 		return report_error(GdAssertMessages.error_arr_contains_exactly(current_value, expected_value, [], [], compare_mode))
 	# find the difference
 	@warning_ignore("unsafe_cast")
-	var diffs := _array_div(compare_mode,
-		current_value as Array[Variant],
-		expected_value as Array[Variant],
-		GdObjects.CompareMode.PARAMETER_DEEP_TEST)
+	var diffs := _array_div(compare_mode, current_value as Array[Variant], expected_value as Array[Variant], GdObjects.CompareMode.PARAMETER_DEEP_TEST)
 	var not_expect: Array[Variant] = diffs[0]
 	var not_found: Array[Variant] = diffs[1]
 	return report_error(GdAssertMessages.error_arr_contains_exactly(current_value, expected_value, not_expect, not_found, compare_mode))
@@ -158,8 +155,7 @@ func _contains_exactly_in_any_order(expected: Array, compare_mode: GdObjects.Com
 		return report_error("ERROR: expected value: <%s>\n is not a Array Type!" % GdObjects.typeof_as_string(expected_value))
 
 	if current_value == null:
-		return report_error(GdAssertMessages.error_arr_contains_exactly_in_any_order(current_value, expected_value, [],
-			expected_value, compare_mode))
+		return report_error(GdAssertMessages.error_arr_contains_exactly_in_any_order(current_value, expected_value, [], expected_value, compare_mode))
 	# find the difference
 	@warning_ignore("unsafe_cast")
 	var diffs := _array_div(compare_mode, current_value as Array[Variant], expected_value as Array[Variant], false)
@@ -167,8 +163,7 @@ func _contains_exactly_in_any_order(expected: Array, compare_mode: GdObjects.Com
 	var not_found: Array[Variant] = diffs[1]
 	if not_expect.is_empty() and not_found.is_empty():
 		return report_success()
-	return report_error(GdAssertMessages.error_arr_contains_exactly_in_any_order(current_value, expected_value, not_expect,
-		not_found, compare_mode))
+	return report_error(GdAssertMessages.error_arr_contains_exactly_in_any_order(current_value, expected_value, not_expect, not_found, compare_mode))
 
 
 func _not_contains(expected: Array, compare_mode: GdObjects.CompareMode) -> GdUnitArrayAssert:
@@ -177,8 +172,7 @@ func _not_contains(expected: Array, compare_mode: GdObjects.CompareMode) -> GdUn
 	if not _validate_value_type(expected_value):
 		return report_error("ERROR: expected value: <%s>\n is not a Array Type!" % GdObjects.typeof_as_string(expected_value))
 	if current_value == null:
-		return report_error(GdAssertMessages.error_arr_contains_exactly_in_any_order(current_value, expected_value, [],
-			expected_value, compare_mode))
+		return report_error(GdAssertMessages.error_arr_contains_exactly_in_any_order(current_value, expected_value, [], expected_value, compare_mode))
 	@warning_ignore("unsafe_cast")
 	var diffs := _array_div(compare_mode, current_value as Array[Variant], expected_value as Array[Variant])
 	var found: Array[Variant] = diffs[0]
@@ -390,18 +384,10 @@ func _extract_variadic_value(values: Variant) -> Variant:
 
 
 @warning_ignore("incompatible_ternary")
-func _is_equal(
-	left: Variant,
-	right: Variant,
-	case_sensitive := true,
-	compare_mode := GdObjects.CompareMode.PARAMETER_DEEP_TEST) -> bool:
-
+func _is_equal(left: Variant, right: Variant, case_sensitive := true, compare_mode := GdObjects.CompareMode.PARAMETER_DEEP_TEST) -> bool:
 	@warning_ignore("unsafe_cast")
 	return GdObjects.equals(
-		(left as Array) if GdArrayTools.is_array_type(left) else left,
-		(right as Array) if GdArrayTools.is_array_type(right) else right,
-		case_sensitive,
-		compare_mode
+		(left as Array) if GdArrayTools.is_array_type(left) else left, (right as Array) if GdArrayTools.is_array_type(right) else right, case_sensitive, compare_mode
 	)
 
 

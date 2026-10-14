@@ -204,10 +204,7 @@ static func orphan_detected(orphan_count: int) -> String:
 
 
 static func orphan_node_info(orphan_info: GdUnitOrphanNodeInfo) -> String:
-	var message := "<%s> Id:%s" % [
-		_colored(orphan_info._type, GdUnitEditorColorTheme.engine_type_color),
-		_colored(orphan_info._id, GdUnitEditorColorTheme.engine_type_color)
-	]
+	var message := "<%s> Id:%s" % [_colored(orphan_info._type, GdUnitEditorColorTheme.engine_type_color), _colored(orphan_info._id, GdUnitEditorColorTheme.engine_type_color)]
 	if orphan_info._stack_element == null:
 		message += _warning("\n\tNo source info available")
 	return message
@@ -218,7 +215,7 @@ static func fuzzer_interuped(iterations: int, error: String) -> String:
 		_error("Found an error after"),
 		_colored_value(iterations + 1),
 		_error("test iterations"),
-		error]
+		error,]
 
 
 static func test_timeout(timeout: int) -> String:
@@ -279,8 +276,7 @@ static func error_not_equal(current: Variant, expected: Variant) -> String:
 
 
 static func error_not_equal_case_insensetiv(current: Variant, expected: Variant) -> String:
-	return "%s\n %s\n not equal to (case insensitiv)\n %s" % [
-			_error("Expecting:"), _colored_value(expected), _colored_value(current)]
+	return "%s\n %s\n not equal to (case insensitiv)\n %s" % [_error("Expecting:"), _colored_value(expected), _colored_value(current)]
 
 
 static func error_is_empty(current: Variant) -> String:
@@ -365,11 +361,9 @@ static func error_is_value(operation: int, current: Variant, expected: Variant, 
 		Comparator.GREATER_EQUAL:
 			return "%s\n %s but was %s" % [_error("Expecting to be greater than or equal:"), _colored_value(expected), _colored_value(current)]
 		Comparator.BETWEEN_EQUAL:
-			return "%s\n %s\n in range between\n %s <> %s" % [
-					_error("Expecting:"), _colored_value(current), _colored_value(expected), _colored_value(expected2)]
+			return "%s\n %s\n in range between\n %s <> %s" % [_error("Expecting:"), _colored_value(current), _colored_value(expected), _colored_value(expected2)]
 		Comparator.NOT_BETWEEN_EQUAL:
-			return "%s\n %s\n not in range between\n %s <> %s" % [
-					_error("Expecting:"), _colored_value(current), _colored_value(expected), _colored_value(expected2)]
+			return "%s\n %s\n not in range between\n %s <> %s" % [_error("Expecting:"), _colored_value(current), _colored_value(expected), _colored_value(expected2)]
 	return "TODO create expected message"
 
 
@@ -415,19 +409,13 @@ static func error_has_length(current: Variant, expected: int, compare_operator: 
 	var current_length: Variant = current.length() if current != null else null
 	match compare_operator:
 		Comparator.EQUAL:
-			return "%s\n %s but was %s in\n %s" % [
-					_error("Expecting size:"), _colored_value(expected), _nerror(current_length), _colored_value(current)]
+			return "%s\n %s but was %s in\n %s" % [_error("Expecting size:"), _colored_value(expected), _nerror(current_length), _colored_value(current)]
 		Comparator.LESS_THAN:
-			return "%s\n %s but was %s in\n %s" % [
-					_error("Expecting size to be less than:"), _colored_value(expected), _nerror(current_length), _colored_value(current)]
+			return "%s\n %s but was %s in\n %s" % [_error("Expecting size to be less than:"), _colored_value(expected), _nerror(current_length), _colored_value(current)]
 		Comparator.LESS_EQUAL:
-			return "%s\n %s but was %s in\n %s" % [
-					_error("Expecting size to be less than or equal:"), _colored_value(expected),
-					_nerror(current_length), _colored_value(current)]
+			return "%s\n %s but was %s in\n %s" % [_error("Expecting size to be less than or equal:"), _colored_value(expected), _nerror(current_length), _colored_value(current)]
 		Comparator.GREATER_THAN:
-			return "%s\n %s but was %s in\n %s" % [
-					_error("Expecting size to be greater than:"), _colored_value(expected),
-					_nerror(current_length), _colored_value(current)]
+			return "%s\n %s but was %s in\n %s" % [_error("Expecting size to be greater than:"), _colored_value(expected), _nerror(current_length), _colored_value(current)]
 		Comparator.GREATER_EQUAL:
 			return "%s\n %s but was %s in\n %s" % [
 					_error("Expecting size to be greater than or equal:"), _colored_value(expected),
@@ -440,8 +428,7 @@ static func error_has_length(current: Variant, expected: int, compare_operator: 
 
 static func error_arr_contains(current: Variant, expected: Variant, not_expect: Variant, not_found: Variant, by_reference: bool) -> String:
 	var failure_message := "Expecting contains SAME elements:" if by_reference else "Expecting contains elements:"
-	var error := "%s\n %s\n do contains (in any order)\n %s" % [
-					_error(failure_message), _colored_value(current), _colored_value(expected)]
+	var error := "%s\n %s\n do contains (in any order)\n %s" % [_error(failure_message), _colored_value(current), _colored_value(expected)]
 	if not is_empty(not_expect):
 		error += "\nbut some elements where not expected:\n %s" % _colored_value(not_expect)
 	if not is_empty(not_found):
@@ -463,11 +450,9 @@ static func error_arr_contains_exactly(
 		var arr_current: Array = current
 		var arr_expected: Array = expected
 		var diff := _find_first_diff(arr_current, arr_expected)
-		return "%s\n %s\n do contains (in same order)\n %s\n but has different order %s"  % [
-					_error(failure_message), _colored_value(current), _colored_value(expected), diff]
+		return "%s\n %s\n do contains (in same order)\n %s\n but has different order %s" % [_error(failure_message), _colored_value(current), _colored_value(expected), diff]
 
-	var error := "%s\n %s\n do contains (in same order)\n %s" % [
-					_error(failure_message), _colored_value(current), _colored_value(expected)]
+	var error := "%s\n %s\n do contains (in same order)\n %s" % [_error(failure_message), _colored_value(current), _colored_value(expected)]
 	if not is_empty(not_expect):
 		error += "\nbut some elements where not expected:\n %s" % _colored_value(not_expect)
 	if not is_empty(not_found):
@@ -499,8 +484,7 @@ static func error_arr_contains_exactly_in_any_order(
 
 static func error_arr_not_contains(current: Variant, expected: Variant, found: Variant, compare_mode: GdObjects.CompareMode) -> String:
 	var failure_message := "Expecting:" if compare_mode == GdObjects.CompareMode.PARAMETER_DEEP_TEST else "Expecting SAME:"
-	var error := "%s\n %s\n do not contains\n %s" % [
-					_error(failure_message), _colored_value(current), _colored_value(expected)]
+	var error := "%s\n %s\n do not contains\n %s" % [_error(failure_message), _colored_value(current), _colored_value(expected)]
 	if not is_empty(found):
 		error += "\n but found elements:\n %s" % _colored_value(found)
 	return error
@@ -581,23 +565,18 @@ static func error_interrupted(func_name: String, expected: Variant, elapsed: Str
 
 static func error_wait_signal(signal_name: String, args: Array, elapsed: String) -> String:
 	if args.is_empty():
-		return "%s %s but timed out after %s" % [
-				_error("Expecting emit signal:"), _colored_value(signal_name + "()"), elapsed]
-	return "%s %s but timed out after %s" % [
-			_error("Expecting emit signal:"), _colored_value(signal_name + "(" + str(args) + ")"), elapsed]
+		return "%s %s but timed out after %s" % [_error("Expecting emit signal:"), _colored_value(signal_name + "()"), elapsed]
+	return "%s %s but timed out after %s" % [_error("Expecting emit signal:"), _colored_value(signal_name + "(" + str(args) + ")"), elapsed]
 
 
 static func error_signal_emitted(signal_name: String, args: Array, elapsed: String) -> String:
 	if args.is_empty():
-		return "%s %s but is emitted after %s" % [
-				_error("Expecting do not emit signal:"), _colored_value(signal_name + "()"), elapsed]
-	return "%s %s but is emitted after %s" % [
-			_error("Expecting do not emit signal:"), _colored_value(signal_name + "(" + str(args) + ")"), elapsed]
+		return "%s %s but is emitted after %s" % [_error("Expecting do not emit signal:"), _colored_value(signal_name + "()"), elapsed]
+	return "%s %s but is emitted after %s" % [_error("Expecting do not emit signal:"), _colored_value(signal_name + "(" + str(args) + ")"), elapsed]
 
 
 static func error_await_signal_on_invalid_instance(source: Variant, signal_name: String, args: Array) -> String:
-	return "%s\n await_signal_on(%s, %s, %s)" % [
-			_error("Invalid source! Can't await on signal:"), _colored_value(source), signal_name, args]
+	return "%s\n await_signal_on(%s, %s, %s)" % [_error("Invalid source! Can't await on signal:"), _colored_value(source), signal_name, args]
 
 
 static func result_type(type: int) -> String:
@@ -641,8 +620,7 @@ static func error_validate_interactions(current_interactions: Dictionary, expect
 	var arguments: Array = expected_interactions.keys()[0]
 	var interactions: int = expected_interactions.values()[0]
 	var expected_interaction := _format_arguments(arguments, interactions)
-	return "%s\n%s\n%s\n%s" % [
-			_error("Expecting interaction on:"), expected_interaction, _error("But found interactions on:"), "\n".join(collected_interactions)]
+	return "%s\n%s\n%s\n%s" % [_error("Expecting interaction on:"), expected_interaction, _error("But found interactions on:"), "\n".join(collected_interactions)]
 
 
 static func _format_arguments(args: Array, times: int) -> String:

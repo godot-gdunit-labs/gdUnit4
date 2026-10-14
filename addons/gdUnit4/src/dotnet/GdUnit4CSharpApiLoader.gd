@@ -9,8 +9,7 @@
 ## - Loading the C# wrapper script
 ## - Checking for the GdUnit4Api assembly
 ## - Providing proxy methods to access GdUnit4 functionality in C#
-@static_unload
-class_name GdUnit4CSharpApiLoader
+@static_unload class_name GdUnit4CSharpApiLoader
 extends RefCounted
 
 ## Cached reference to the loaded C# wrapper script

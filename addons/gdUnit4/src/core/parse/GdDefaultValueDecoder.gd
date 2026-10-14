@@ -285,8 +285,5 @@ static func decode_typed(type: int, value: Variant) -> String:
 
 
 static func _get_value_decoder(type: int) -> Callable:
-	var decoder: GdDefaultValueDecoder = instance(
-		"GdUnitDefaultValueDecoders",
-		func() -> GdDefaultValueDecoder:
-			return GdDefaultValueDecoder.new())
+	var decoder: GdDefaultValueDecoder = instance("GdUnitDefaultValueDecoders", func() -> GdDefaultValueDecoder: return GdDefaultValueDecoder.new())
 	return decoder.get_decoder(type)

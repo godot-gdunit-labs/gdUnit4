@@ -29,13 +29,7 @@ func add_testcase_reports(reports: Array[GdUnitReport]) -> void:
 	_failure_reports.append_array(reports)
 
 
-func set_testcase_counters(
-	p_error_count: int,
-	p_failure_count: int,
-	p_orphan_count: int,
-	p_is_skipped: bool,
-	p_is_flaky: bool,
-	p_duration: int) -> void:
+func set_testcase_counters(p_error_count: int, p_failure_count: int, p_orphan_count: int, p_is_skipped: bool, p_is_flaky: bool, p_duration: int) -> void:
 	_error_count = p_error_count
 	_failure_count = p_failure_count
 	_orphan_count = p_orphan_count

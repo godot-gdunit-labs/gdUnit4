@@ -159,10 +159,7 @@ func console_warning(message: String) -> void:
 ## [param path] The path where reports should be written.
 func set_report_dir(path: String) -> void:
 	report_base_path = ProjectSettings.globalize_path(path)
-	console_info(
-		"Set write reports to %s" % report_base_path,
-		Color.DEEP_SKY_BLUE
-	)
+	console_info("Set write reports to %s" % report_base_path, Color.DEEP_SKY_BLUE)
 
 
 ## Sets how many report files to keep.[br]
@@ -171,50 +168,32 @@ func set_report_dir(path: String) -> void:
 func set_report_count(count: String) -> void:
 	var report_count := count.to_int()
 	if report_count < 1:
-		console_error(
-			"Invalid report history count '%s' set back to default %d"
-			% [count, GdUnitConstants.DEFAULT_REPORT_HISTORY_COUNT]
-		)
+		console_error("Invalid report history count '%s' set back to default %d" % [count, GdUnitConstants.DEFAULT_REPORT_HISTORY_COUNT])
 		max_report_history = GdUnitConstants.DEFAULT_REPORT_HISTORY_COUNT
 	else:
-		console_info(
-			"Set report history count to %s" % count,
-			Color.DEEP_SKY_BLUE
-		)
+		console_info("Set report history count to %s" % count, Color.DEEP_SKY_BLUE)
 		max_report_history = report_count
 
 
 ## Disables fail-fast mode to run all tests.[br]
 ## By default tests stop on first failure.
 func disable_fail_fast() -> void:
-	console_info(
-		"Disabled fail fast!",
-		Color.DEEP_SKY_BLUE
-	)
+	console_info("Disabled fail fast!", Color.DEEP_SKY_BLUE)
 	@warning_ignore("unsafe_method_access")
 	_executor.fail_fast(false)
 
 
 func run_self_test() -> void:
-	console_info(
-		"Run GdUnit4 self tests.",
-		Color.DEEP_SKY_BLUE
-	)
+	console_info("Run GdUnit4 self tests.", Color.DEEP_SKY_BLUE)
 	disable_fail_fast()
 
 
 ## Shows GdUnit and Godot version information.
 func show_version() -> void:
-	console_info(
-		"Godot %s" % Engine.get_version_info().get("string") as String,
-		Color.DARK_SALMON
-	)
+	console_info("Godot %s" % Engine.get_version_info().get("string") as String, Color.DARK_SALMON)
 	var config := ConfigFile.new()
 	config.load("addons/gdUnit4/plugin.cfg")
-	console_info(
-		"GdUnit4 %s" % config.get_value("plugin", "version") as String,
-		Color.DARK_SALMON
-	)
+	console_info("GdUnit4 %s" % config.get_value("plugin", "version") as String, Color.DARK_SALMON)
 	quit(RETURN_SUCCESS)
 
 
@@ -236,17 +215,11 @@ func show_options(show_advanced: bool = false) -> void:
 			""".dedent(),
 		Color.DARK_SALMON
 	)
-	console_info(
-		"-- Options ---------------------------------------------------------------------------------------",
-		Color.DARK_SALMON
-	)
+	console_info("-- Options ---------------------------------------------------------------------------------------", Color.DARK_SALMON)
 	for option in _cmd_options.default_options():
 		descripe_option(option)
 	if show_advanced:
-		console_info(
-			"-- Advanced options --------------------------------------------------------------------------",
-			Color.DARK_SALMON
-		)
+		console_info("-- Advanced options --------------------------------------------------------------------------", Color.DARK_SALMON)
 		for option in _cmd_options.advanced_options():
 			descripe_option(option)
 
@@ -255,19 +228,10 @@ func show_options(show_advanced: bool = false) -> void:
 ## [br]
 ## [param cmd_option] The option to describe.
 func descripe_option(cmd_option: CmdOption) -> void:
-	console_info(
-		"  %-40s" % str(cmd_option.commands()),
-		Color.CORNFLOWER_BLUE
-	)
-	console_info(
-		cmd_option.description(),
-		Color.LIGHT_GREEN
-	)
+	console_info("  %-40s" % str(cmd_option.commands()), Color.CORNFLOWER_BLUE)
+	console_info(cmd_option.description(), Color.LIGHT_GREEN)
 	if not cmd_option.help().is_empty():
-		console_info(
-			"%-4s %s" % ["", cmd_option.help()],
-			Color.DARK_TURQUOISE
-		)
+		console_info("%-4s %s" % ["", cmd_option.help()], Color.DARK_TURQUOISE)
 	console_info("")
 
 
@@ -275,10 +239,7 @@ func descripe_option(cmd_option: CmdOption) -> void:
 ## [br]
 ## [param path] Path to the configuration file.
 func load_test_config(path := GdUnitRunnerConfig.CONFIG_FILE) -> void:
-	console_info(
-		"Loading test configuration %s\n" % path,
-		Color.CORNFLOWER_BLUE
-	)
+	console_info("Loading test configuration %s\n" % path, Color.CORNFLOWER_BLUE)
 	_runner_config_file = path
 	_runner_config.load_config(path)
 
@@ -371,9 +332,7 @@ func init_gd_unit() -> void:
 				You can run with '--ignoreHeadlessMode' to swtich off this check.
 				""".dedent()
 			)
-			console_error(
-				"Abnormal exit with %d" % RETURN_ERROR_HEADLESS_NOT_SUPPORTED
-			)
+			console_error("Abnormal exit with %d" % RETURN_ERROR_HEADLESS_NOT_SUPPORTED)
 			quit(RETURN_ERROR_HEADLESS_NOT_SUPPORTED)
 			return
 

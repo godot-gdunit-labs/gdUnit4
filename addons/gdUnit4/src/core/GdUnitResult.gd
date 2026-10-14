@@ -5,7 +5,7 @@ enum {
 	SUCCESS,
 	WARN,
 	ERROR,
-	EMPTY
+	EMPTY,
 }
 
 var _state: int
@@ -92,10 +92,10 @@ static func serialize(result: GdUnitResult) -> Dictionary:
 	if result == null:
 		push_error("Can't serialize a Null object from type GdUnitResult")
 	return {
-		"state" : result._state,
-		"value" : var_to_str(result._value),
-		"warn_msg" : result._warn_message,
-		"err_msg" : result._error_message
+		"state": result._state,
+		"value": var_to_str(result._value),
+		"warn_msg": result._warn_message,
+		"err_msg": result._error_message,
 	}
 
 

@@ -86,18 +86,9 @@ func _init_statistic_panels(state: STATE) -> void:
 	var btn_up: TextureButton = panel.find_child("up")
 	var btn_down: TextureButton = panel.find_child("down")
 	var up_icon := _icon_template.get_theme_icon("up_hover")
-	var texture_normal := ImageTexture.create_from_image(
-		GdUnitUiTools._modulate_image(up_icon.get_image(),
-		Color.GRAY)
-		)
-	var texture_hover := ImageTexture.create_from_image(
-		GdUnitUiTools._modulate_image(up_icon.get_image(),
-		Color.WHITE)
-		)
-	var texture_pressed := ImageTexture.create_from_image(
-		GdUnitUiTools._modulate_image(up_icon.get_image(),
-		Color.SKY_BLUE)
-		)
+	var texture_normal := ImageTexture.create_from_image(GdUnitUiTools._modulate_image(up_icon.get_image(), Color.GRAY))
+	var texture_hover := ImageTexture.create_from_image(GdUnitUiTools._modulate_image(up_icon.get_image(), Color.WHITE))
+	var texture_pressed := ImageTexture.create_from_image(GdUnitUiTools._modulate_image(up_icon.get_image(), Color.SKY_BLUE))
 
 	btn_up.texture_normal = texture_normal
 	btn_up.texture_hover = texture_hover

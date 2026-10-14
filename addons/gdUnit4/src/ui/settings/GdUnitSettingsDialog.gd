@@ -246,8 +246,7 @@ func _on_btn_report_bug_pressed() -> void:
 
 func _on_btn_request_feature_pressed() -> void:
 	@warning_ignore("return_value_discarded")
-	OS.shell_open("https://github.com/MikeSchulze/gdUnit4/issues/new?assignees=MikeSchulze&labels=enhancement&projects="
-		+ "&template=feature_request.md&title=")
+	OS.shell_open("https://github.com/MikeSchulze/gdUnit4/issues/new?assignees=MikeSchulze&labels=enhancement&projects=" + "&template=feature_request.md&title=")
 
 
 func _on_btn_install_examples_pressed() -> void:

@@ -6,12 +6,11 @@ extends Control
 signal test_counters_changed(index: int, total: int, state: GdUnitInspectorTreeConstants.STATE)
 signal tree_item_selected(item: TreeItem)
 
-
 enum GdUnitType {
 	FOLDER,
 	TEST_SUITE,
 	TEST_CASE,
-	TEST_GROUP
+	TEST_GROUP,
 }
 
 const META_GDUNIT_PROGRESS_COUNT_MAX := "gdUnit_progress_count_max"
@@ -675,9 +674,7 @@ func abort_running(items := _tree_root.get_children()) -> void:
 func _on_select_next_item_by_state(item_state: int) -> TreeItem:
 	var current_selected := _tree.get_selected()
 	# If nothing is selected, the first error is selected or the next one in the vicinity of the current selection is found
-	current_selected = (_find_first_item_by_state(_tree_root, item_state)
-		if current_selected == null
-		else _find_item_by_state(current_selected, item_state))
+	current_selected = (_find_first_item_by_state(_tree_root, item_state) if current_selected == null else _find_item_by_state(current_selected, item_state))
 	# If no next failure found, then we try to select first
 	if current_selected == null:
 		current_selected = _find_first_item_by_state(_tree_root, item_state)
@@ -1116,8 +1113,7 @@ func _dump_tree_as_json(dump_name: String) -> void:
 
 func _to_json(parent: TreeItem) -> Dictionary:
 	var item_as_dict := GdObjects.obj2dict(parent)
-	item_as_dict["TreeItem"]["childrens"] = parent.get_children().map(func(item: TreeItem) -> Dictionary:
-			return _to_json(item))
+	item_as_dict["TreeItem"]["childrens"] = parent.get_children().map(func(item: TreeItem) -> Dictionary: return _to_json(item))
 	return item_as_dict
 
 

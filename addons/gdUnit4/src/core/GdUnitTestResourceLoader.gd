@@ -1,10 +1,7 @@
 class_name GdUnitTestResourceLoader
 extends RefCounted
 
-enum {
-	GD_SUITE,
-	CS_SUITE
-}
+enum { GD_SUITE, CS_SUITE }
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
@@ -22,9 +19,7 @@ static func load_test_suite(resource_path: String, script_type := GD_SUITE) -> N
 static func load_tests(resource_path: String) -> Dictionary:
 	var script := load_gd_script(resource_path)
 	var discovered_tests := {}
-	GdUnitTestDiscoverer.discover_tests(script, func(test: GdUnitTestCase) -> void:
-		discovered_tests[test.display_name] = test
-	)
+	GdUnitTestDiscoverer.discover_tests(script, func(test: GdUnitTestCase) -> void: discovered_tests[test.display_name] = test)
 
 	return discovered_tests
 
@@ -32,9 +27,7 @@ static func load_tests(resource_path: String) -> Dictionary:
 static func load_test_suite_gd(resource_path: String) -> GdUnitTestSuite:
 	var script := load_gd_script(resource_path)
 	var discovered_tests: Array[GdUnitTestCase] = []
-	GdUnitTestDiscoverer.discover_tests(script, func(test: GdUnitTestCase) -> void:
-		discovered_tests.append(test)
-	)
+	GdUnitTestDiscoverer.discover_tests(script, func(test: GdUnitTestCase) -> void: discovered_tests.append(test))
 	# complete test suite wiht parsed test cases
 	return GdUnitTestSuiteScanner.new().load_suite(script, discovered_tests)
 

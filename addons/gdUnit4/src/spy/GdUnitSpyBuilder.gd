@@ -52,10 +52,7 @@ static func build(to_spy: Variant, debug_write := false) -> Variant:
 static func get_class_info(clazz: Variant) -> Dictionary:
 	var clazz_path := GdObjects.extract_class_path(clazz)
 	var clazz_name: String = GdObjects.extract_class_name(clazz).value()
-	return {
-		"class_name" : clazz_name,
-		"class_path" : clazz_path
-	}
+	return {"class_name": clazz_name, "class_path": clazz_path}
 
 
 static func spy_on_script(instance: Variant, function_excludes: PackedStringArray, debug_write: bool) -> GDScript:
@@ -72,10 +69,9 @@ static func spy_on_script(instance: Variant, function_excludes: PackedStringArra
 		return null
 
 	@warning_ignore("unsafe_method_access")
-	var spy_template := SPY_TEMPLATE.source_code.format({
-		"instance_id" : abs(instance.get_instance_id()),
-		"gdunit_source_class": clazz_name if clazz_path.is_empty() else clazz_path[0]
-	})
+	var spy_template := SPY_TEMPLATE.source_code.format(
+		{"instance_id": abs(instance.get_instance_id()), "gdunit_source_class": clazz_name if clazz_path.is_empty() else clazz_path[0]}
+	)
 	@warning_ignore("unsafe_cast")
 	var lines := load_template(spy_template, class_info)
 	@warning_ignore("unsafe_cast")

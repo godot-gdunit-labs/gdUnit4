@@ -2,12 +2,7 @@
 class_name GdUnitUiTools
 extends RefCounted
 
-
-enum ImageFlipMode {
-	HORIZONTAL,
-	VERITCAL
-}
-
+enum ImageFlipMode { HORIZONTAL, VERITCAL }
 
 const STATE = GdUnitInspectorTreeConstants.STATE
 

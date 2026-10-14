@@ -1,5 +1,4 @@
 # GdUnit generated TestSuite
-@warning_ignore_start("redundant_await")
 extends GdUnitTestSuite
 
 var tcp_server: GdUnitTcpServer
@@ -45,6 +44,7 @@ func test_receive_single_message(_timeout := 1000) -> void:
 	tcp_client.send(RPCMessage.of("Test Message"))
 
 	# expect the RPCMessage is received and emitted
+	@warning_ignore("redundant_await")
 	await assert_signal(tcp_server).is_emitted("rpc_data", RPCMessage.of("Test Message"))
 
 
@@ -56,8 +56,10 @@ func test_receive_multy_message(_timeout := 1000) -> void:
 	tcp_client.send(RPCMessage.of("Test Message B"))
 
 	# expect the RPCMessage is received and emitted
+	@warning_ignore_start("redundant_await")
 	await assert_signal(tcp_server).is_emitted("rpc_data", RPCMessage.of("Test Message A"))
 	await assert_signal(tcp_server).is_emitted("rpc_data", RPCMessage.of("Test Message B"))
+	@warning_ignore_restore("redundant_await")
 
 
 ## Reproduces GD-1288: a TCP message rarely arrives in one piece, it is split across several
@@ -100,5 +102,6 @@ func test_receive_message_split_across_polls(_timeout := 1000) -> void:
 
 	# the message should still arrive correctly once fully sent - fails on master because the
 	# split desynced the stream and the message never gets reassembled
+	@warning_ignore("redundant_await")
 	await assert_signal(tcp_server).is_emitted("rpc_data", message)
 	raw.disconnect_from_host()

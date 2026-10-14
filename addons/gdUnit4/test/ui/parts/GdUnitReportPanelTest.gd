@@ -1,4 +1,3 @@
-@warning_ignore_start("redundant_await")
 class_name GdUnitReportPanelTest
 extends GdUnitTestSuite
 
@@ -86,6 +85,7 @@ func test_on_meta_clicked_is_called_with_expected_frame_on_click() -> void:
 
 	# show_report adds the label into the panel's scene tree, giving it a valid rect
 	panel_spy.show_report([_build_report_with_frames("test", [frame1])])
+	@warning_ignore("redundant_await")
 	await runner.simulate_frames(2)
 
 	# Simulate left mouse click on frame1
@@ -94,6 +94,7 @@ func test_on_meta_clicked_is_called_with_expected_frame_on_click() -> void:
 	# Line 0 is the report message; line 1 is the first stack trace entry
 	var click_pos := Vector2(label_rect.position.x + 50, label_rect.position.y + label.get_line_offset(1) + 5)
 	runner.set_mouse_position(click_pos)
+	@warning_ignore("redundant_await")
 	await runner.simulate_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 
 	# Verify _on_meta_clicked was invoked with the expected stack frame

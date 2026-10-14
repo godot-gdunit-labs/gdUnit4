@@ -201,10 +201,10 @@ func test_spy_on_inner_class() -> void:
 
 
 func test_spy_on_singleton() -> void:
-	var spy_on_input := func() -> void:
+	assert_error(func () -> void:
 		var input_spy: Variant = spy(Input)
 		assert_object(input_spy).is_null()
-	assert_error(spy_on_input).is_push_error("Spy on a Singleton is not allowed! 'Input'")
+	).is_push_error("Spy on a Singleton is not allowed! 'Input'")
 
 
 func test_example_verify() -> void:

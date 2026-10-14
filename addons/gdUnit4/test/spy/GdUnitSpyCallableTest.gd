@@ -3,7 +3,6 @@ extends GdUnitTestSuite
 
 var _rpc_called: String = ""
 
-
 @rpc("call_local")
 func do_rpc(rpc_name: String, value: Variant) -> void:
 	_rpc_called = rpc_name + str(value)

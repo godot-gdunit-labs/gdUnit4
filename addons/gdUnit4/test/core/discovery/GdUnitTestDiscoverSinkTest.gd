@@ -2,7 +2,6 @@ extends GdUnitTestSuite
 
 # example test discovery sink
 class TestDiscoverSinkReceiver:
-
 	var _discovered_tests: Array[GdUnitTestCase]
 
 	func _init() -> void:

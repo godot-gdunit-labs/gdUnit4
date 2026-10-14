@@ -7,15 +7,12 @@ class HttpResponse:
 	var _http_status: int
 	var _body: PackedByteArray
 
-
 	func _init(http_status: int, body: PackedByteArray) -> void:
 		_http_status = http_status
 		_body = body
 
-
 	func status() -> int:
 		return _http_status
-
 
 	func response() -> Variant:
 		if _http_status != 200:

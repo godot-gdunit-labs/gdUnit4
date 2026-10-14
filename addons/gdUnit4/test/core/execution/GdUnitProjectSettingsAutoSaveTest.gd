@@ -2,7 +2,6 @@
 class_name GdUnitProjectSettingsAutoSaveTest
 extends GdUnitTestSuite
 
-
 const IGNORE := GdUnitSettings.GdScriptWarningMode.IGNORE
 const ERROR := GdUnitSettings.GdScriptWarningMode.ERROR
 

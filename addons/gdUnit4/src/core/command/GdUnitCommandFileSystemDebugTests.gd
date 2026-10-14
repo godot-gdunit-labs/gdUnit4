@@ -1,7 +1,6 @@
 class_name GdUnitCommandFileSystemDebugTests
 extends GdUnitCommandFileSystem
 
-
 const ID := "Debug FileSystem Tests"
 
 

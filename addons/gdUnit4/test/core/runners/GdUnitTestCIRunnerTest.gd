@@ -1,8 +1,6 @@
 extends GdUnitTestSuite
 
-
 const DiscoverExampleTestSuite: GDScript = preload("res://addons/gdUnit4/test/core/discovery/resources/DiscoverExampleTestSuite.gd")
-
 
 var _test_paths: PackedStringArray = []
 

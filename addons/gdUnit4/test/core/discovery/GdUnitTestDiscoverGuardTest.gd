@@ -3,7 +3,6 @@ class_name GdUnitTestDiscoverGuardTest
 extends GdUnitTestSuite
 
 
-
 func test_inital() -> void:
 	var discoverer: GdUnitTestDiscoverGuard = auto_free(GdUnitTestDiscoverGuard.new())
 

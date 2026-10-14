@@ -41,7 +41,6 @@
 class_name GdUnitTestSession
 extends RefCounted
 
-
 ## Emitted when a test execution event occurs.[br]
 ## [br]
 ## [i]This signal forwards events from the global GdUnit event system to session-specific
@@ -57,7 +56,6 @@ extends RefCounted
 ## [param event] The test event containing details about test execution, timing, and results
 @warning_ignore("unused_signal")
 signal test_event(event: GdUnitEvent)
-
 
 ## [b][color=red]@readonly: The report path should not be modified after session creation![/color][/b][br]
 ## The file system path where test reports for this session will be generated.[br]
@@ -91,7 +89,6 @@ signal test_event(event: GdUnitEvent)
 var report_path: String:
 	get:
 		return report_path
-
 
 ## [b][color=red]@readonly: Should not be modified directly during test execution![/color][/b][br]
 ## Collection of test cases to be executed in this session.[br]

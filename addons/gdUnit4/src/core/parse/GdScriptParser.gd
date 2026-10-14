@@ -10,7 +10,6 @@ const TYPE_FUNC := GdObjects.TYPE_FUNC
 const TYPE_FUZZER := GdObjects.TYPE_FUZZER
 const TYPE_ENUM := GdObjects.TYPE_ENUM
 
-
 var _token_not_match := Token.new("")
 var _token_space := SkippableToken.new(" ")
 var _token_tabulator := SkippableToken.new("\t")
@@ -39,7 +38,6 @@ var _token_bracket_square_close := Token.new("]")
 var _token_bracket_curly_open := Token.new("{")
 var _token_bracket_curly_close := Token.new("}")
 var _token_backslash := Token.new("\\")
-
 
 var _operator_add := Operator.new("+")
 var _operator_sub := Operator.new("-")
@@ -150,13 +148,11 @@ class Variable extends Token:
 	var _typed_value: Variant
 	var _type: int = TYPE_NIL
 
-
 	func _init(p_value: String) -> void:
 		super(p_value)
 		_type = _scan_type(p_value)
 		_plain_value = p_value
 		_typed_value = _cast_to_type(p_value, _type)
-
 
 	func _scan_type(p_value: String) -> int:
 		if p_value.begins_with("\"") and p_value.ends_with("\""):
@@ -172,7 +168,6 @@ class Variable extends Token:
 			return TYPE_INT
 		return TYPE_OBJECT
 
-
 	func _cast_to_type(p_value: String, p_type: int) -> Variant:
 		match p_type:
 			TYPE_STRING:
@@ -183,22 +178,17 @@ class Variable extends Token:
 				return p_value.to_float()
 		return p_value
 
-
 	func is_variable() -> bool:
 		return true
-
 
 	func type() -> int:
 		return _type
 
-
 	func value() -> Variant:
 		return _typed_value
 
-
 	func plain_value() -> String:
 		return _plain_value
-
 
 	func _to_string() -> String:
 		return "Variable{%s: %s : '%s'}" % [_plain_value, GdObjects.type_as_string(_type), _token]
@@ -209,12 +199,10 @@ class RegExToken extends Token:
 	var _extract_group_index: int
 	var _value := ""
 
-
 	func _init(token: String, regex: RegEx, extract_group_index: int = -1) -> void:
 		super(token, false)
 		_regex = regex
 		_extract_group_index = extract_group_index
-
 
 	func match(input: String, pos: int) -> bool:
 		var matching := _regex.search(input, pos)
@@ -224,7 +212,6 @@ class RegExToken extends Token:
 			_value = matching.get_string(_extract_group_index)
 		_consumed = matching.get_end() - matching.get_start()
 		return true
-
 
 	func value() -> String:
 		return _value
@@ -237,14 +224,11 @@ class FuzzerToken extends RegExToken:
 	func _init(regex: RegEx) -> void:
 		super("fuzzer", regex, 1)
 
-
 	func name() -> String:
 		return value()
 
-
 	func type() -> int:
 		return GdObjects.TYPE_FUZZER
-
 
 	func _to_string() -> String:
 		return "FuzzerToken{%s: '%s'}" % [value(), _token]
@@ -252,7 +236,6 @@ class FuzzerToken extends RegExToken:
 
 class TokenInnerClass extends RegExToken:
 	var _content := PackedStringArray()
-
 
 	static func _strip_leading_spaces(input: String) -> String:
 		var characters := input.to_utf8_buffer()
@@ -262,18 +245,14 @@ class TokenInnerClass extends RegExToken:
 			characters.remove_at(0)
 		return characters.get_string_from_utf8()
 
-
 	static func _consumed_bytes(row: String) -> int:
 		return row.replace(" ", "").replace("	", "").length()
-
 
 	func _init(token: String, p_regex: RegEx, extract_group_index: int = -1) -> void:
 		super(token, p_regex, extract_group_index)
 
-
 	func is_class_name(clazz_name: String) -> bool:
 		return value() == clazz_name
-
 
 	func content() -> PackedStringArray:
 		return _content
@@ -303,10 +282,8 @@ class TokenInnerClass extends RegExToken:
 		_consumed += TokenInnerClass._consumed_bytes("".join(_content))
 	@warning_ignore_restore("return_value_discarded")
 
-
 	func _to_string() -> String:
 		return "TokenInnerClass{%s}" % [value()]
-
 
 
 func get_token(input: String, current_index: int) -> Token:
@@ -319,7 +296,6 @@ func get_token(input: String, current_index: int) -> Token:
 func next_token(input: String, current_index: int, ignore_tokens: Array[Token] = []) -> Token:
 	var token := _token_not_match
 	for t: Token in _tokens.filter(func(t: Token) -> bool: return not ignore_tokens.has(t)):
-
 		if t.match(input, current_index):
 			token = t
 			break
@@ -421,7 +397,6 @@ func _parse_function_arguments(input: String) -> Array[Dictionary]:
 	var token: Token = null
 	var bracket := 0
 	var in_function := false
-
 
 	while current_index < len(input):
 		token = next_token(input, current_index)

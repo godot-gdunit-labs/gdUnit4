@@ -2,7 +2,6 @@
 class_name GdUnitScriptEditorControls
 extends RefCounted
 
-
 const FILE_CLOSE := 1
 const FILE_CLOSE_ALL := 2
 const FILE_SAVE := 3

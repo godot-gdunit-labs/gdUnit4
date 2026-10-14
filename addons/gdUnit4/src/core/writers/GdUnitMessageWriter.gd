@@ -23,7 +23,6 @@ extends RefCounted
 ## writer.color(Color.GREEN).align(Align.RIGHT).print_at("Success", 80)
 ## [/codeblock]
 
-
 ## Represents special text effects that can be applied to the output
 enum Effect {
 	## No special effect applied
@@ -31,7 +30,6 @@ enum Effect {
 	## Applies a wave animation to the text
 	WAVE
 }
-
 
 ## Controls text alignment at the specified cursor position
 enum Align {
@@ -41,14 +39,12 @@ enum Align {
 	RIGHT
 }
 
-
 ## Text style flag for bold formatting
 const BOLD = 0x1
 ## Text style flag for italic formatting
 const ITALIC = 0x2
 ## Text style flag for underline formatting
 const UNDERLINE = 0x4
-
 
 ## The current text color to be used for the next output operation
 var _current_color := Color.WHITE
@@ -187,7 +183,6 @@ func print_stack_trace(stack_trace: GdUnitStackTrace) -> void:
 ## [param current_indent] The indentation level.
 @abstract func _print_stack_trace(stack_trace: GdUnitStackTrace, current_indent: int) -> void
 
-
 ## Internal implementation of print_message.[br]
 ## [br]
 ## To be overridden by concrete formatters.[br]
@@ -198,7 +193,6 @@ func print_stack_trace(stack_trace: GdUnitStackTrace) -> void:
 ## [param _flags] The style flags to apply.
 @abstract func _print_message(_message: String, _color: Color, _indent: int, _flags: int) -> void
 
-
 ## Internal implementation of println_message.[br]
 ## [br]
 ## To be overridden by concrete formatters.[br]
@@ -208,7 +202,6 @@ func print_stack_trace(stack_trace: GdUnitStackTrace) -> void:
 ## [param _indent] The indentation level.[br]
 ## [param _flags] The style flags to apply.
 @abstract func _println_message(_message: String, _color: Color, _indent: int, _flags: int) -> void
-
 
 ## Internal implementation of print_at.[br]
 ## [br]
@@ -221,7 +214,6 @@ func print_stack_trace(stack_trace: GdUnitStackTrace) -> void:
 ## [param _align] The text alignment.[br]
 ## [param _flags] The style flags to apply.
 @abstract func _print_at(_message: String, _cursor_pos: int, _color: Color, _effect: GdUnitMessageWriter.Effect, _align: Align, _flags: int) -> void
-
 
 ## Clears all output content.[br]
 ## [br]

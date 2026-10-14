@@ -1,7 +1,6 @@
 class_name CmdOptions
 extends RefCounted
 
-
 var _default_options: Array[CmdOption]
 var _advanced_options: Array[CmdOption]
 

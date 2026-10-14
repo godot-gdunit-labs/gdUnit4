@@ -3,7 +3,6 @@
 class_name CmdCommandHandlerTest
 extends GdUnitTestSuite
 
-
 var _cmd_options: CmdOptions
 var _cmd_instance: TestCommands
 

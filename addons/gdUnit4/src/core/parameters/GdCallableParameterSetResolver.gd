@@ -1,7 +1,6 @@
 class_name GdCallableParameterSetResolver
 extends GdParameterSetResolver
 
-
 var _expression: String
 var _parameters: Array[Array]
 

@@ -1,7 +1,6 @@
 class_name GdUnitTestReporter
 extends RefCounted
 
-
 var _statistics := {}
 var _summary := {}
 

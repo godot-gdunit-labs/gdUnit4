@@ -2,30 +2,23 @@
 @abstract class_name GdUnitSignalAssert
 extends GdUnitAssert
 
-
 ## Verifies that the current value is null.
 @abstract func is_null() -> GdUnitSignalAssert
-
 
 ## Verifies that the current value is not null.
 @abstract func is_not_null() -> GdUnitSignalAssert
 
-
 ## Verifies that the current value is equal to the given one.
 @abstract func is_equal(expected: Variant) -> GdUnitSignalAssert
-
 
 ## Verifies that the current value is not equal to expected one.
 @abstract func is_not_equal(expected: Variant) -> GdUnitSignalAssert
 
-
 ## Overrides the default failure message by given custom message.
 @abstract func override_failure_message(message: String) -> GdUnitSignalAssert
 
-
 ## Appends a custom message to the failure message.
 @abstract func append_failure_message(message: String) -> GdUnitSignalAssert
-
 
 ## Verifies that the specified signal is emitted with the expected arguments.[br]
 ##
@@ -69,7 +62,6 @@ extends GdUnitAssert
 ## The assertion fails if the signal is not emitted within the timeout period.
 @abstract func is_emitted(signal_name: Variant, ...signal_args: Array) -> GdUnitSignalAssert
 
-
 ## Verifies that the specified signal is NOT emitted with the expected arguments.[br]
 ##
 ## This assertion waits for a specified time period and validates that a signal
@@ -111,7 +103,6 @@ extends GdUnitAssert
 ## The assertion fails if the signal IS emitted with the specified arguments within the timeout period.
 @abstract func is_not_emitted(signal_name: Variant, ...signal_args: Array) -> GdUnitSignalAssert
 
-
 ## Verifies that the specified signal exists on the emitter object.[br]
 ##
 ## This assertion checks if a signal is defined on the object under test,
@@ -147,7 +138,6 @@ extends GdUnitAssert
 ## [b]Note:[/b] This only checks signal definition, not emission.[br]
 ## The assertion fails if the signal is not defined on the object.
 @abstract func is_signal_exists(signal_name: Variant) -> GdUnitSignalAssert
-
 
 ## Sets the assert signal timeout in ms, if the time over a failure is reported.[br]
 ## Example:

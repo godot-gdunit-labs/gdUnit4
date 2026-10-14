@@ -34,7 +34,6 @@ func test_stack_trace_returns_trace_from_error() -> void:
 
 #endregion
 
-
 #region serialize / deserialize
 
 func test_serialize_report_contains_all_base_fields() -> void:

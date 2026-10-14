@@ -1,7 +1,6 @@
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
 
-
 var file_to_save: String
 var _test_paths: PackedStringArray = []
 

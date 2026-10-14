@@ -3,7 +3,6 @@
 class_name GdUnitTestSuiteAfterStage
 extends IGdUnitExecutionStage
 
-
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
 

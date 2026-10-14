@@ -107,7 +107,6 @@ func fire_test_suite_skipped(context: GdUnitExecutionContext) -> void:
 			# use skip count 0 because we counted it over the complete test suite
 			fire_test_skipped(test_case_context, 0)
 
-
 	var statistics := {
 		GdUnitEvent.ORPHAN_NODES: 0,
 		GdUnitEvent.ELAPSED_TIME: 0,

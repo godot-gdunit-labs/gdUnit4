@@ -1,7 +1,6 @@
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
 
-
 var _x := 42
 var _obj: Node2D
 var _color := Color.RED
@@ -9,7 +8,6 @@ var _test_set_a := ["test_8", Color(1, 1, 1), Color(.1, .1, .1)]
 
 
 class TestObj:
-
 	func _init() -> void:
 		pass
 

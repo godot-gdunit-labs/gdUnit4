@@ -2,7 +2,6 @@
 class_name GdUnitAssertions
 extends RefCounted
 
-
 @warning_ignore("return_value_discarded")
 func _init() -> void:
 	# preload all gdunit assertions to speedup testsuite loading time

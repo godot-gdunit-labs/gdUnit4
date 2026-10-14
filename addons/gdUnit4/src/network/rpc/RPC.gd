@@ -1,7 +1,6 @@
 class_name RPC
 extends RefCounted
 
-
 var _data: Dictionary = {}
 
 

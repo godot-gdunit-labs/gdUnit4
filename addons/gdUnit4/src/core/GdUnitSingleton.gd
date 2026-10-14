@@ -7,7 +7,6 @@
 class_name GdUnitSingleton
 extends Object
 
-
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 const MEATA_KEY := "GdUnitSingletons"
 

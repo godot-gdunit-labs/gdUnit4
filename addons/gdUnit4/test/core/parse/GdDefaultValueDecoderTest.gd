@@ -2,7 +2,6 @@
 class_name GdDefaultValueDecoderTest
 extends GdUnitTestSuite
 
-
 var _tested_types := {}
 
 

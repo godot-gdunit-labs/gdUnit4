@@ -140,6 +140,5 @@ func _finalize_parameter_set(parameters: Array) -> Array:
 ## Returns the resolved parameter values for the given test iteration index.
 @abstract func get_parameters(instance: Node, index: int) -> Array
 
-
 ## Returns the total number of test iterations this resolver provides.
 @abstract func get_max_index() -> int

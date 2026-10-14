@@ -2,7 +2,6 @@
 class_name GdUnitHtmlReportWriterTest
 extends GdUnitTestSuite
 
-
 const SNAPSHOT_DIR := "res://addons/gdUnit4/test/reporters/html/resources"
 
 var _report_dir: String

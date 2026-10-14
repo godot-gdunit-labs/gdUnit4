@@ -4,7 +4,6 @@
 class_name GdUnitTestSuiteTemplateTest
 extends GdUnitTestSuite
 
-
 const CUSTOM_TEMPLATE = """
 	# GdUnit generated TestSuite
 	class_name ${suite_class_name}

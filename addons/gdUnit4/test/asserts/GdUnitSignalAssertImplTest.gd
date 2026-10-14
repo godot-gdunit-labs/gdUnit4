@@ -257,10 +257,8 @@ class MyEmitter extends Node:
 	signal my_signal_a
 	signal my_signal_b(value: String)
 
-
 	func do_emit_a() -> void:
 		my_signal_a.emit()
-
 
 	func do_emit_b() -> void:
 		my_signal_b.emit("foo")
@@ -299,7 +297,6 @@ class ExampleResource extends Resource:
 		set(new_value):
 			title = new_value
 			changed.emit()
-
 
 	func change_title(p_title: String) -> void:
 		title = p_title

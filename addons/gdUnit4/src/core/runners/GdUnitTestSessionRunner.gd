@@ -13,7 +13,6 @@ extends Node
 ## - [b]GdUnitCLRunner[/b]: A command line interface runner, writes test reports to file[br]
 ## The test runner runs checked default in fail-fast mode, it stops checked first test failure.
 
-
 ## Runner state machine
 enum {
 	READY,
@@ -37,18 +36,15 @@ const RETURN_WARNING = 101
 ## Specifies the Node name under which the runner is registered
 const GDUNIT_RUNNER = GdUnitSettings.GDUNIT_RUNNER
 
-
 ## Configured report base path (can be set on CI test runner)
 var report_base_path: String = GdUnitFileAccess.current_dir() + "reports":
 	get:
 		return report_base_path
 
-
 ## Current session report path
 var report_path: String:
 	get:
 		return "%s/%s%d" % [report_base_path, GdUnitConstants.REPORT_DIR_PREFIX, current_report_history_index]
-
 
 ## Current report history index, if max_report_history > 1 we scan for the next index over the existing reports
 var current_report_history_index: int:
@@ -57,14 +53,12 @@ var current_report_history_index: int:
 			return GdUnitFileAccess.find_last_path_index(report_base_path, GdUnitConstants.REPORT_DIR_PREFIX) + 1
 		return 1
 
-
 ## Controls how many report historys will be hold
 var max_report_history: int = GdUnitConstants.DEFAULT_REPORT_HISTORY_COUNT:
 	get:
 		return max_report_history
 	set(value):
 		max_report_history = value
-
 
 ## The current runner configuration
 @warning_ignore("unused_private_class_variable")

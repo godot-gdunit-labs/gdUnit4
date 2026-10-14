@@ -2,7 +2,6 @@
 class_name GdUnitTestCaseSingleExecutionStage
 extends IGdUnitExecutionStage
 
-
 var _stage_before: IGdUnitExecutionStage = GdUnitTestCaseBeforeStage.new()
 var _stage_after: IGdUnitExecutionStage = GdUnitTestCaseAfterStage.new()
 var _stage_test: IGdUnitExecutionStage = GdUnitTestCaseSingleTestStage.new()

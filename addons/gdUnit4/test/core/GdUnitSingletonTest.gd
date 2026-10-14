@@ -1,7 +1,6 @@
 class_name GdUnitSingletonTest
 extends GdUnitTestSuite
 
-
 static var _instance_called := 0
 
 class ExampleSingletonImplementaion extends Object:

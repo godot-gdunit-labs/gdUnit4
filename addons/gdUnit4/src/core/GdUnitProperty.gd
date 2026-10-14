@@ -1,7 +1,6 @@
 class_name GdUnitProperty
 extends RefCounted
 
-
 var _name: String
 var _help: String
 var _type: int

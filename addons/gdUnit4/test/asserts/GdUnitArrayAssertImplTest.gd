@@ -1128,12 +1128,10 @@ class ExampleTestClass extends RefCounted:
 	var _childs := Array()
 	var _parent: RefCounted = null
 
-
 	func add_child(child: ExampleTestClass) -> ExampleTestClass:
 		_childs.append(child)
 		child._parent = self
 		return self
-
 
 	func dispose() -> void:
 		_parent = null

@@ -1,7 +1,6 @@
 class_name GdUnitTestCaseReport
 extends GdUnitReportSummary
 
-
 var _suite_name: String
 var _failure_reports: Array[GdUnitReport] = []
 

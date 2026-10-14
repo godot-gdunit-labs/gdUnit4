@@ -1,7 +1,6 @@
 @tool
 extends ProgressBar
 
-
 var _state: GdUnitInspectorTreeConstants.STATE
 
 @onready var progress_counter: Label = %progess_counter

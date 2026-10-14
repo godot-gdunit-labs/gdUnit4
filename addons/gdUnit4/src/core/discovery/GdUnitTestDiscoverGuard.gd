@@ -37,14 +37,11 @@
 class_name GdUnitTestDiscoverGuard
 extends Object
 
-
-
 ## Maps source files to their discovered test cases.[br]
 ## [br]
 ## Key: Test suite source file path[br]
 ## Value: Array of [class GdUnitTestCase] instances
 var _discover_cache := {}
-
 
 ## Tracks discovered test changes for debug purposes.[br]
 ## [br]
@@ -53,7 +50,6 @@ var _discover_cache := {}
 ## - deleted_tests: Tests that were removed[br]
 ## - added_tests: New tests that were discovered
 var _discovered_changes := {}
-
 
 ## Controls test change debug tracking.[br]
 ## [br]

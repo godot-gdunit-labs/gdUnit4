@@ -17,7 +17,6 @@ class GdUnitMockDoublerState:
 	var return_values := Dictionary()
 	var return_value: Variant = null
 
-
 	func _init(mode := GdUnitMock.RETURN_DEFAULTS) -> void:
 		working_mode = mode
 

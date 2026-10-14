@@ -3,7 +3,6 @@
 class_name GdUnitTestCaseAfterStage
 extends IGdUnitExecutionStage
 
-
 var _call_stage: bool
 
 

@@ -11,7 +11,6 @@
 class_name GdUnitProjectSettingsSnapshot
 extends RefCounted
 
-
 var _snapshot: Dictionary = {}
 
 

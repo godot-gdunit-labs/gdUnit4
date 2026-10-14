@@ -11,7 +11,6 @@ enum ImageFlipMode {
 
 const STATE = GdUnitInspectorTreeConstants.STATE
 
-
 static var _spinner: AnimatedTexture
 static var icon_cache: Dictionary[STATE, Texture2D]
 

@@ -2,7 +2,6 @@
 class_name GdUnitTestSuiteTest
 extends GdUnitTestSuite
 
-
 var _events: Array[GdUnitEvent] = []
 var _retry_count := 0
 var _test_unknown_argument_in_test_case_is_called := false

@@ -2,14 +2,12 @@
 class_name GdUnitInspectorContextMenu
 extends PopupMenu
 
-
 const CONTEXT_MENU_RUN_ID = 0
 const CONTEXT_MENU_DEBUG_ID = 1
 const CONTEXT_MENU_RERUN_UNTIL_ID = 2
 # id 3 is the seperator
 const CONTEXT_MENU_COLLAPSE_ALL = 4
 const CONTEXT_MENU_EXPAND_ALL = 5
-
 
 var command_handler: GdUnitCommandHandler
 

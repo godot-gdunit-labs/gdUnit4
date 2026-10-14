@@ -3,7 +3,6 @@
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
 
-
 var _runner: GdUnitSceneRunner
 var _scene_spy: Node
 

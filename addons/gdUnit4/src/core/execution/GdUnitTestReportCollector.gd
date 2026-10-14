@@ -2,7 +2,6 @@
 class_name GdUnitTestReportCollector
 extends RefCounted
 
-
 var _reports: Array[GdUnitReport] = []
 
 

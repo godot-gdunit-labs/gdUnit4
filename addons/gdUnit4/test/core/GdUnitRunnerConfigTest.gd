@@ -56,7 +56,6 @@ func test_save_load() -> void:
 
 
 func test_add_test_cases() -> void:
-
 	var config := GdUnitRunnerConfig.new()
 	# add some dummy conf
 	config.set_server_port(1000)

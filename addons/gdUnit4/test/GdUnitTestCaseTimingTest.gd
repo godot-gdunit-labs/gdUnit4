@@ -12,7 +12,6 @@ class TestCaseStatistics:
 	var _test_before_calls: int
 	var _test_after_calls: int
 
-
 	func _init(before_calls := 0, after_calls := 0) -> void:
 		_test_before_calls = before_calls
 		_test_after_calls = after_calls

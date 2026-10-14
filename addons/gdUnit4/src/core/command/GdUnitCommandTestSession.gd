@@ -1,7 +1,6 @@
 @abstract class_name GdUnitCommandTestSession
 extends GdUnitBaseCommand
 
-
 var _current_runner_process_id: int
 var _is_debug: bool
 var _is_fail_fast: bool

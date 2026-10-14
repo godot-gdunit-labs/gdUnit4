@@ -10,7 +10,6 @@
 
 class_name CallableDoubler
 
-
 const DOUBLER_SCRIPT: Script = preload("res://addons/gdUnit4/src/doubler/CallableDoubler.gd")
 
 var _cb: Callable
@@ -76,7 +75,6 @@ func call(...varargs: Array) -> Variant:
 # Is not supported, see class description
 #func call_deferred(...varargs: Array) -> void:
 #	return _cb.call_deferred(varargs)
-
 
 # Is not supported, see class description
 #func callv(arguments: Array) -> Variant:

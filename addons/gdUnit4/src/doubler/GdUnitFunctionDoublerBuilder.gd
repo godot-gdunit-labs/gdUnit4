@@ -52,7 +52,6 @@ const DEFAULT_TYPED_RETURN_VALUES := {
 	GdObjects.TYPE_ENUM: "0"
 }
 
-
 # @GlobalScript enums
 # needs to manually map because of https://github.com/godotengine/godot/issues/73835
 const DEFAULT_ENUM_RETURN_VALUES = {
@@ -81,7 +80,6 @@ const DEFAULT_ENUM_RETURN_VALUES = {
 	"Vector4.Axis": "Vector4.AXIS_X",
 	"Vector4i.Axis": "Vector4i.AXIS_X",
 }
-
 
 var fd: GdFunctionDescriptor
 var func_args: Array

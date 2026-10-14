@@ -1,8 +1,6 @@
 extends GdUnitTestSuite
 
-
 const GdUnitInspectorProgressBar := preload("res://addons/gdUnit4/src/ui/parts/GdUnitInspectorProgressBar.gd")
-
 
 var _progress: GdUnitInspectorProgressBar
 var _progress_counter: Label

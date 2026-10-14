@@ -1,7 +1,6 @@
 class_name GdUnitShortcut
 extends RefCounted
 
-
 enum ShortCut {
 	NONE,
 	RUN_TESTS_OVERALL,
@@ -43,7 +42,6 @@ const DEFAULTS_WINDOWS := {
 	ShortCut.RERUN_TESTS_UNTIL_FAILURE: [Key.KEY_CTRL, Key.KEY_ALT, Key.KEY_F5],
 	ShortCut.CREATE_TEST: [Key.KEY_CTRL, Key.KEY_ALT, Key.KEY_F10],
 }
-
 
 const SETTINGS_MAPPING: Dictionary[ShortCut, String] = {
 	ShortCut.RUN_TESTCASE: GdUnitSettings.SHORTCUT_EDITOR_RUN_TEST,

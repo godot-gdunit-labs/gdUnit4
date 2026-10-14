@@ -2,7 +2,6 @@
 class_name GdUnitSettings
 extends RefCounted
 
-
 enum GdScriptWarningMode {
 	IGNORE = 0,
 	WARN = 1,
@@ -19,7 +18,6 @@ enum NamingConventions {
 	SNAKE_CASE,
 	PASCAL_CASE,
 }
-
 
 const GDUNIT_RUNNER = "GdUnitRunner"
 
@@ -43,7 +41,6 @@ const TEST_FLAKY_CHECK = GROUP_TEST + "/flaky_check_enable"
 const TEST_FLAKY_MAX_RETRIES = GROUP_TEST + "/flaky_max_retries"
 const TEST_RERUN_UNTIL_FAILURE_RETRIES = GROUP_TEST + "/rerun_until_failure_retries"
 const TEST_PROJECT_SETTINGS_AUTO_SAVE = GROUP_TEST + "/project_settings_auto_save"
-
 
 # Report Setiings
 const REPORT_SETTINGS = MAIN_CATEGORY + "/report"
@@ -72,14 +69,12 @@ const TEMPLATES_TS = TEMPLATES + "/testsuite"
 const TEMPLATE_TS_GD = TEMPLATES_TS + "/GDScript"
 const TEMPLATE_TS_CS = TEMPLATES_TS + "/CSharpScript"
 
-
 # UI Setiings
 const UI_SETTINGS = MAIN_CATEGORY + "/ui"
 const GROUP_UI_INSPECTOR = UI_SETTINGS + "/inspector"
 const INSPECTOR_NODE_COLLAPSE = GROUP_UI_INSPECTOR + "/node_collapse"
 const INSPECTOR_TREE_VIEW_MODE = GROUP_UI_INSPECTOR + "/tree_view_mode"
 const INSPECTOR_TREE_SORT_MODE = GROUP_UI_INSPECTOR + "/tree_sort_mode"
-
 
 # Shortcut Setiings
 const SHORTCUT_SETTINGS = MAIN_CATEGORY + "/Shortcuts"
@@ -99,14 +94,12 @@ const GROUP_SHORTCUT_FILESYSTEM = SHORTCUT_SETTINGS + "/filesystem"
 const SHORTCUT_FILESYSTEM_RUN_TEST = GROUP_SHORTCUT_FILESYSTEM + "/run_test"
 const SHORTCUT_FILESYSTEM_RUN_TEST_DEBUG = GROUP_SHORTCUT_FILESYSTEM + "/run_test_debug"
 
-
 # Toolbar Setiings
 const GROUP_UI_TOOLBAR = UI_SETTINGS + "/toolbar"
 const INSPECTOR_TOOLBAR_BUTTON_RUN_OVERALL = GROUP_UI_TOOLBAR + "/run_overall"
 
 # Feature flags
 const GROUP_FEATURE = MAIN_CATEGORY + "/feature"
-
 
 # defaults
 # server connection timeout in minutes

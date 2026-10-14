@@ -1,7 +1,6 @@
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
 
-
 const PARAMETER_SET_EXAMPLE = """[
 		[1, "simple double-quoted string"],
 		[2, 'simple single-quoted string'],

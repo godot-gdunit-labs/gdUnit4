@@ -13,20 +13,16 @@ class TestNode extends Resource:
 		if _parent:
 			_parent._children.append(self)
 
-
 	func _notification(what: int) -> void:
 		if what == NOTIFICATION_PREDELETE:
 			_parent = null
 			_children.clear()
 
-
 	func get_parent() -> TestNode:
 		return _parent
 
-
 	func get_children() -> Array:
 		return _children
-
 
 
 func test_extract_value_success() -> void:

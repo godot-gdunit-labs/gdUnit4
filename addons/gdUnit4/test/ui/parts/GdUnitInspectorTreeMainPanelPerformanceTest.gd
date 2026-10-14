@@ -2,7 +2,6 @@
 class_name GdUnitInspectorTreeMainPanelPerformanceTest
 extends GdUnitTestSuite
 
-
 # this test-suite contains only empty test to run as performance indicator
 
 

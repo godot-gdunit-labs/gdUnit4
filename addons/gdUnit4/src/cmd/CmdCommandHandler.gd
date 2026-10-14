@@ -11,7 +11,6 @@ var _cmd_options: CmdOptions
 var _command_cbs: Dictionary
 
 
-
 func _init(cmd_options: CmdOptions) -> void:
 	_cmd_options = cmd_options
 

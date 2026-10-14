@@ -1,7 +1,6 @@
 class_name GdUnitArrayAssertImpl
 extends GdUnitArrayAssert
 
-
 var _base: GdUnitAssertImpl
 var _current_value_provider: ValueProvider
 var _type_check: bool

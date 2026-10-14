@@ -3,7 +3,6 @@ class_name GdUnitFuncAssertImplTest
 extends GdUnitTestSuite
 @warning_ignore_start("redundant_await")
 
-
 const GdUnitTools = preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
 
@@ -52,7 +51,6 @@ class TestValueProvider:
 
 
 class ValueProvidersWithArguments:
-
 	func is_type(_type: int) -> bool:
 		return true
 

@@ -52,12 +52,10 @@
 class_name GdUnitTestSessionHook
 extends RefCounted
 
-
 ## The display name of this hook.
 var name: String:
 	get:
 		return name
-
 
 ## A detailed description of what this hook does.
 var description: String:

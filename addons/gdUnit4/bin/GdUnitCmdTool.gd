@@ -1,7 +1,6 @@
 #!/usr/bin/env -S godot -s
 extends SceneTree
 
-
 var _cli_runner: GdUnitTestCIRunner
 
 

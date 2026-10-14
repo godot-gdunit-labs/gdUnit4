@@ -21,12 +21,10 @@ const EXCLUDE_FONT_SIZE := "\b(?!(?:(font_size))\b)"
 var md_replace_patterns := [
 	# comments
 	[regex("(?m)^\\n?\\s*<!--[\\s\\S]*?-->\\s*\\n?"), ""],
-
 	# horizontal rules
 	[regex("(?m)^[ ]{0,3}---$"), HORIZONTAL_RULE],
 	[regex("(?m)^[ ]{0,3}___$"), HORIZONTAL_RULE],
 	[regex("(?m)^[ ]{0,3}\\*\\*\\*$"), HORIZONTAL_RULE],
-
 	# headers
 	[regex("(?m)^###### (.*)"), HEADER_RULE % FONT_H6],
 	[regex("(?m)^##### (.*)"), HEADER_RULE % FONT_H5],
@@ -52,22 +50,18 @@ var md_replace_patterns := [
 
 	# asterics
 	#[regex("(\\*)"), "xxx$1xxx"],
-
 	# extract/compile image references
 	[regex("!\\[(.*?)\\]\\[(.*?)\\]"), process_image_references],
 	# extract images with path and optional tool tip
 	[regex("!\\[(.*?)\\]\\((.*?)(( )+(.*?))?\\)"), process_image],
-
 	# links
 	[regex("([!]|)\\[(.+)\\]\\(([^ ]+?)\\)"),  "[url={\"url\":\"$3\"}]$2[/url]"],
 	# links with tool tip
 	[regex("([!]|)\\[(.+)\\]\\(([^ ]+?)( \"(.+)\")?\\)"),  "[url={\"url\":\"$3\", \"tool_tip\":\"$5\"}]$2[/url]"],
 	# links to github, as shorted link
 	[regex("(https://github.*/?/(\\S+))"), '[url={"url":"$1", "tool_tip":"$1"}]#$2[/url]'],
-
 	# embeded text
 	[regex("(?m)^[ ]{0,3}>(.*?)$"), "[img=50x14]res://addons/gdUnit4/src/update/assets/embedded.png[/img][i]$1[/i]"],
-
 	# italic + bold font
 	[regex("[_]{3}(.*?)[_]{3}"), "[i][b]$1[/b][/i]"],
 	[regex("[\\*]{3}(.*?)[\\*]{3}"), "[i][b]$1[/b][/i]"],
@@ -79,12 +73,10 @@ var md_replace_patterns := [
 	[regex("<i>(.*?)<\\/i>"), "[i]$1[/i]"],
 	[regex(EXCLUDE_FONT_SIZE + "_(.*?)_"), "[i]$1[/i]"],
 	[regex("\\*(.*?)\\*"), "[i]$1[/i]"],
-
 	# strikethrough font
 	[regex("<s>(.*?)</s>"), "[s]$1[/s]"],
 	[regex("~~(.*?)~~"), "[s]$1[/s]"],
 	[regex("~(.*?)~"), "[s]$1[/s]"],
-
 	# handling lists
 	# using an image for dots
 	[regex("(?m)^[ ]{0,1}[*\\-+] (.*)$"), list_replace(0)],
@@ -92,7 +84,6 @@ var md_replace_patterns := [
 	[regex("(?m)^[ ]{4,5}[*\\-+] (.*)$"), list_replace(2)],
 	[regex("(?m)^[ ]{6,7}[*\\-+] (.*)$"), list_replace(3)],
 	[regex("(?m)^[ ]{8,9}[*\\-+] (.*)$"), list_replace(4)],
-
 	# code
 	[regex("``([\\s\\S]*?)``"), code_block("$1")],
 	[regex("`([\\s\\S]*?)`{1,2}"), code_block("$1")],
@@ -222,13 +213,11 @@ class GdUnitMDReaderTable:
 	class Row:
 		var _cells := PackedStringArray()
 
-
 		func _init(cells: PackedStringArray, columns: int) -> void:
 			_cells = cells
 			for i in range(_cells.size(), columns):
 				@warning_ignore("return_value_discarded")
 				_cells.append("")
-
 
 		func to_bbcode(cell_sizes: PackedInt32Array, bold: bool) -> String:
 			var cells := PackedStringArray()
@@ -242,17 +231,14 @@ class GdUnitMDReaderTable:
 				cells.append("[cell]%s[/cell]" % cell)
 			return "|".join(cells)
 
-
 		func create_line(length: int) -> String:
 			var line := ""
 			for i in length:
 				line += "-"
 			return line
 
-
 	func _init(columns: int) -> void:
 		_columns = columns
-
 
 	func parse_row(line: String) -> bool:
 		# is line containing cells?
@@ -260,7 +246,6 @@ class GdUnitMDReaderTable:
 			return false
 		_rows.append(Row.new(line.split("|"), _columns))
 		return true
-
 
 	func calculate_max_cell_sizes() -> PackedInt32Array:
 		var cells_size := PackedInt32Array()
@@ -276,7 +261,6 @@ class GdUnitMDReaderTable:
 				if size > cell_size:
 					cells_size[cell_index] = size
 		return cells_size
-
 
 	@warning_ignore("return_value_discarded")
 	func to_bbcode() -> PackedStringArray:

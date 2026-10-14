@@ -976,7 +976,6 @@ func _find_highest_state(item: TreeItem) -> STATE:
 	return state
 
 
-
 func get_icon_by_file_type(path: String) -> Texture2D:
 	if path.get_extension() == "gd":
 		return _icon_gd_script

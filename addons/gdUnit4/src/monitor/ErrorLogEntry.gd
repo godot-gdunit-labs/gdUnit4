@@ -11,7 +11,6 @@ enum TYPE {
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
-
 var _type: TYPE
 var _line: int
 var _message: String

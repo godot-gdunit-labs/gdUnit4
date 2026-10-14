@@ -1,7 +1,6 @@
 @abstract class_name GdUnitBaseCommand
 extends Node
 
-
 var id: String
 var icon: Texture2D
 var shortcut: Shortcut = null

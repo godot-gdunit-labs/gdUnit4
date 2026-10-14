@@ -3,7 +3,6 @@
 class_name GdUnitStackTraceElement
 extends RefCounted
 
-
 ## The resource path of the source file (e.g. [code]res://addons/my_plugin/foo.gd[/code]).
 var _source: String
 ## The line number within [member _source].

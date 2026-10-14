@@ -1,6 +1,5 @@
 class_name GdUnitContextMenuItem
 
-
 var command_id: String:
 	set(value):
 		command_id = value

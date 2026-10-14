@@ -1,7 +1,6 @@
 class_name GdUnitOrphanNodeInfo
 extends RefCounted
 
-
 var _id: int
 var _type: String
 var _stack_element: GdUnitStackTraceElement

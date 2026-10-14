@@ -2,10 +2,8 @@
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
 
-
 const DATA1 := ["aa"]
 const DATA2 := ["bb"]
-
 
 var example_parameters := [
 	"[auto_free(Node.new()), Node]",
@@ -32,7 +30,6 @@ func parameters_as_array(index: int, arg1: String, arg2: String) -> Array[Varian
 	return [index, arg1, arg2]
 
 class TestObj:
-
 	func _init() -> void:
 		pass
 
@@ -410,7 +407,6 @@ func test_resolve_parameters_with_array_types() -> void:
 	var params := _resolve_parameters("using_array_types_paramater")
 
 	prints(params)
-
 
 
 func test_resolve_parameters_with_typed_array() -> void:

@@ -1,7 +1,6 @@
 class_name GdBuiltinConstants
 extends RefCounted
 
-
 ## Built-in Variant types that expose named constants via static member access (e.g. `Vector2.ONE`,
 ## `Color.RED`). This gate is what keeps resolution silent: only tokens whose type is listed here are
 ## compiled, so arbitrary `Identifier.UPPER` matches (enum refs, text) never reach the parser.

@@ -14,12 +14,9 @@ const CONFIG_FILE = "res://addons/gdUnit4/GdUnitRunner.cfg"
 var _config := {
 		VERSION: CONFIG_VERSION,
 		# a set of directories or testsuite paths as key and a optional set of testcases as values
-
 		TESTS: Array([], TYPE_OBJECT, "RefCounted", GdUnitTestCase),
-
 		# the port of running test server for this session
 		SERVER_PORT: -1,
-
 		# Exit on first failure
 		EXIT_FAIL_FAST: false
 	}
@@ -103,7 +100,6 @@ func load_config(path: String = CONFIG_FILE) -> GdUnitResult:
 		var tests_as_json: Array = config.get(TESTS, default)
 		_config = config
 		_config[TESTS] = convert_test_json_to_test_cases(tests_as_json)
-
 
 		fix_value_types()
 	return GdUnitResult.success(path)

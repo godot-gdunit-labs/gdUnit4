@@ -1,7 +1,6 @@
 class_name GdUnitOrphanNodesMonitor
 extends GdUnitMonitor
 
-
 var _child_monitors: Array[GdUnitOrphanNodesMonitor] = []
 var _orphan_detection_enabled: bool
 var _initial_orphans: Array[int] = []

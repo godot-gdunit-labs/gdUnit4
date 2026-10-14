@@ -1,7 +1,6 @@
 class_name CmdOption
 extends RefCounted
 
-
 var _commands: PackedStringArray
 var _help: String
 var _description: String

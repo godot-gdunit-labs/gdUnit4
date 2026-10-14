@@ -2,7 +2,6 @@
 class_name GdUnitCommandTestSessionTest
 extends GdUnitTestSuite
 
-
 var _command: GdUnitCommandTestSession
 
 class TestGdUnitCommandTestSession extends GdUnitCommandTestSession:

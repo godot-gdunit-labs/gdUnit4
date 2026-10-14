@@ -1,6 +1,5 @@
 extends RefCounted
 
-
 static var _richtext_normalize: RegEx
 
 
@@ -125,7 +124,6 @@ static func dispose_all(use_call_deferred: bool = false) -> void:
 static func release_double(instance: Object) -> void:
 	if instance.has_method("__release_double"):
 		instance.call("__release_double")
-
 
 
 static func find_test_case(test_suite: Node, test_case_name: String, index := -1) -> GdUnitTestCaseImpl:

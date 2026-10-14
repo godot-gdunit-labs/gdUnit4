@@ -1,7 +1,6 @@
 class_name GdUnitCommandScriptEditorCreateTest
 extends GdUnitBaseCommand
 
-
 const ID := "Create Test"
 
 

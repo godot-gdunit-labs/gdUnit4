@@ -4,7 +4,6 @@
 class_name GdUnitGUID
 extends RefCounted
 
-
 ## The internal string representation of the GUID.
 ## Generated using Godot's ResourceUID system when no existing GUID is provided.
 var _guid: String

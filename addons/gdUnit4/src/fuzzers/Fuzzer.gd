@@ -31,7 +31,6 @@ var _iteration_index := 0
 ## Maximum number of iterations to run for this fuzzer.
 var _iteration_limit := ITERATION_DEFAULT_COUNT
 
-
 ## Generates the next fuzz value.[br]
 ##
 ## This abstract method must be implemented by derived classes to provide

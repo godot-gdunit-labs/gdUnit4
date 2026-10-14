@@ -5,7 +5,6 @@ var _client_id: int
 
 @onready var _server: GdUnitTcpServer = $TcpServer
 
-
 @warning_ignore("return_value_discarded")
 func _ready() -> void:
 	var result := _server.start()

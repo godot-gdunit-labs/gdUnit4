@@ -20,7 +20,6 @@
 class_name IntFuzzer
 extends Fuzzer
 
-
 ## Generates any integer within the range.
 enum {
 	NORMAL, ## Generate any integer within the specified range.

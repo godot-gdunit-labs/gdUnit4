@@ -1,7 +1,6 @@
 class_name GdAssertMessages
 extends Resource
 
-
 const SUB_COLOR := Color(1, 0, 0, .15)
 const ADD_COLOR := Color(0, 1, 0, .15)
 
@@ -153,7 +152,6 @@ static func _colored_value(value: Variant) -> String:
 			if GdArrayTools.is_array_type(value):
 				return "'[color=%s]%s[/color]'" % [_value_color, _typed_value(value)]
 			return "'[color=%s]%s[/color]'" % [_value_color, value]
-
 
 
 static func _index_report_as_table(index_reports: Array) -> String:

@@ -2,7 +2,6 @@
 class_name GdUnitConsoleTestReporterTest
 extends GdUnitTestSuite
 
-
 var reporter := GdUnitConsoleTestReporter.new(GdUnitCSIMessageWriter.new())
 
 
@@ -102,14 +101,11 @@ func _run_suite(test_statistics: Dictionary, suite_statistics: Dictionary) -> Ar
 class TestMessageWriter extends GdUnitMessageWriter:
 	var printed_at: Array[String] = []
 
-
 	func _print_stack_trace(_stack_trace: GdUnitStackTrace, _indent: int) -> void:
 		pass
 
-
 	func _print_message(_message: String, _color: Color, _indent: int, _flags: int) -> void:
 		pass
-
 
 	func _println_message(_message: String, _color: Color, _indent: int, _flags: int) -> void:
 		pass
@@ -124,7 +120,6 @@ class TestMessageWriter extends GdUnitMessageWriter:
 		_flags: int
 	) -> void:
 		printed_at.append(message)
-
 
 	func clear() -> void:
 		printed_at.clear()

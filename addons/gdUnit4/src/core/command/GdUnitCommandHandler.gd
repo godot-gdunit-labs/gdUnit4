@@ -1,7 +1,6 @@
 class_name GdUnitCommandHandler
 extends Node
 
-
 var _commnand_mappings: Dictionary[String, GdUnitBaseCommand] = {}
 var _running_command: GdUnitBaseCommand = null
 var _wait_time := 0.0

@@ -1,7 +1,6 @@
 class_name GdUnitReportPanelTest
 extends GdUnitTestSuite
 
-
 var _panel: GdUnitReportPanel
 
 

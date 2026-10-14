@@ -1,7 +1,6 @@
 @tool
 class_name GdUnitConsoleTestReporter
 
-
 var test_session: GdUnitTestSession:
 	get:
 		return test_session
@@ -13,7 +12,6 @@ var test_session: GdUnitTestSession:
 		test_session = value
 		if test_session != null:
 			test_session.test_event.connect(on_gdunit_event)
-
 
 var _writer: GdUnitMessageWriter
 var _reporter: GdUnitTestReporter = GdUnitTestReporter.new()
@@ -157,7 +155,6 @@ func _print_failure_report(reports: Array[GdUnitReport]) -> void:
 				.print_stack_trace(report.stack_trace())
 			_writer.indent(-1)
 	_writer.indent(-1)
-
 
 	if not reports.is_empty():
 		println_message("")

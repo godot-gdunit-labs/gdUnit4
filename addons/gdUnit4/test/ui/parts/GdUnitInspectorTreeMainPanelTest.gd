@@ -10,7 +10,6 @@ const FAILED := GdUnitInspectorTreeMainPanel.STATE.FAILED
 const ERROR := GdUnitInspectorTreeMainPanel.STATE.ERROR
 const FLAKY := GdUnitInspectorTreeMainPanel.STATE.FLAKY
 
-
 const META_SCRIPT_PATH := "script_path"
 
 var suite_a_item: TreeItem
@@ -20,7 +19,6 @@ var suite_c_item: TreeItem
 var discovered_tests_suite_a := {}
 var discovered_tests_suite_b := {}
 var discovered_tests_suite_c := {}
-
 
 var _inspector: GdUnitInspectorTreeMainPanel
 
@@ -92,7 +90,6 @@ func set_test_state(test_cases: Array[GdUnitTestCase], state: GdUnitInspectorTre
 				_inspector.add_report(item, GdUnitReport.new().create(GdUnitReport.FAILURE, 42, "an failure"))
 			FLAKY:
 				_inspector.set_state_flaky(item, test_event)
-
 
 	#		_inspector.set_state_succeded(item)
 
@@ -326,7 +323,6 @@ func test_suite_text_shows_amount_of_cases() -> void:
 
 
 func test_suite_text_responds_to_test_case_events() -> void:
-
 	var test_aa: GdUnitTestCase = discovered_tests_suite_a["test_aa"]
 	var test_ab: GdUnitTestCase = discovered_tests_suite_a["test_ab"]
 	var test_ac: GdUnitTestCase = discovered_tests_suite_a["test_ac"]

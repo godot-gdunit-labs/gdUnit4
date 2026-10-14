@@ -1,7 +1,6 @@
 class_name GdUnitReportWriterIntegrationTest
 extends GdUnitTestSuite
 
-
 const RESOURCE_REPORTS := "res://addons/gdUnit4/test/reporters/resources/"
 const RESOURCE_SUITES := "res://addons/gdUnit4/test/reporters/resources/suites/folder with spaces/"
 

@@ -6,7 +6,6 @@ extends GdUnitTestSuite
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
-
 var _example_source_gd: String
 
 

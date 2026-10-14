@@ -1,7 +1,6 @@
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
 
-
 var tcp_server: GdUnitTcpServer
 var tcp_client: GdUnitTcpClient
 var server_port: int

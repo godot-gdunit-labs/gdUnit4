@@ -5,7 +5,6 @@ extends GdUnitTcpNode
 signal connection_succeeded(message: String)
 signal connection_failed(message: String)
 
-
 var _client_name: String
 var _debug := false
 var _host: String

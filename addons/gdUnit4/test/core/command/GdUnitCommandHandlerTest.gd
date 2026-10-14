@@ -2,7 +2,6 @@
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
 
-
 var _handler: GdUnitCommandHandler
 
 

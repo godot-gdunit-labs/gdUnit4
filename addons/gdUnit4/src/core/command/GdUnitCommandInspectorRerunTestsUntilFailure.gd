@@ -8,7 +8,6 @@ signal session_closed()
 const GdUnitInspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/GdUnitInspectorTreeMainPanel.gd")
 const ID := "Rerun Inspector Tests Until Failure"
 
-
 var saved_flaky_settings: bool
 var force_stop := false
 var _current_execution_count := 0

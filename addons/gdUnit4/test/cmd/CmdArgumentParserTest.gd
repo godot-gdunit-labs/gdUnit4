@@ -2,7 +2,6 @@
 class_name CmdArgumentParserTest
 extends GdUnitTestSuite
 
-
 var option_a := CmdOption.new("-a", "some help text a", "some description a")
 var option_f := CmdOption.new("-f, --foo", "some help text foo", "some description foo")
 var option_b := CmdOption.new("-b, --bar", "-b <value>", "comand with required argument", TYPE_STRING)

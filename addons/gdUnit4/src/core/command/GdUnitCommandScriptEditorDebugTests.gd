@@ -1,7 +1,6 @@
 class_name GdUnitCommandScriptEditorDebugTests
 extends GdUnitCommandScriptEditor
 
-
 const ID := "Debug ScriptEditor Tests"
 
 

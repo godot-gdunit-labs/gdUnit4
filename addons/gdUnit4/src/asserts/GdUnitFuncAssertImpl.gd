@@ -1,9 +1,7 @@
 extends GdUnitFuncAssert
 
-
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 const DEFAULT_TIMEOUT := 2000
-
 
 var _current_value_provider: ValueProvider
 var _custom_failure_message: String = ""

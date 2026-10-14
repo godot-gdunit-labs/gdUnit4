@@ -111,7 +111,6 @@ func show_update() -> void:
 	_update_button.set_disabled(false)
 
 
-
 func extract_zip_url(response: GdUnitUpdateClient.HttpResponse) -> String:
 	var body: Array = response.response()
 	return body[0]["zipball_url"]

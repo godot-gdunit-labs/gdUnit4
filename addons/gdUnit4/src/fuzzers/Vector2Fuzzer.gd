@@ -17,7 +17,6 @@
 class_name Vector2Fuzzer
 extends Fuzzer
 
-
 ## Minimum bounds for the generated vectors (inclusive for both x and y).
 var _from: Vector2
 ## Maximum bounds for the generated vectors (inclusive for both x and y).

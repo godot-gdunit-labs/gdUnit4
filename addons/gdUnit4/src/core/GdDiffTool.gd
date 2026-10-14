@@ -7,7 +7,6 @@
 class_name GdDiffTool
 extends RefCounted
 
-
 ## Lower bound for the edit cost a single search accepts before it settles for the furthest reaching path (xdiff XDL_MAX_COST_MIN).
 ## The diff is minimal as long as the cost stays below this limit, otherwise it is only a good approximation.
 const MIN_COST_LIMIT := 256
@@ -278,7 +277,6 @@ static func diff(current: String, expected: String) -> Array[Hunk]:
 		else:
 			break
 	return hunks
-
 
 
 # prototype

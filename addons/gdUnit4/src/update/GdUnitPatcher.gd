@@ -1,7 +1,6 @@
 class_name GdUnitPatcher
 extends RefCounted
 
-
 const _BASE_DIR := "res://addons/gdUnit4/src/update/patches/"
 
 var _patches := Dictionary()

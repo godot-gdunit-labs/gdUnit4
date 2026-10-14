@@ -1,7 +1,6 @@
 @tool
 extends ScrollContainer
 
-
 var selected_style := StyleBoxFlat.new()
 var _selected_row: Control = null
 

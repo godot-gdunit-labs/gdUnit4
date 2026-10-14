@@ -1,7 +1,6 @@
 ## The executor to run a test-suite
 class_name GdUnitTestSuiteExecutor
 
-
 # preload all asserts here
 @warning_ignore("unused_private_class_variable")
 var _assertions := GdUnitAssertions.new()

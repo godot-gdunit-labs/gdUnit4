@@ -2,7 +2,6 @@
 class_name GdUnitSettingsTest
 extends GdUnitTestSuite
 
-
 const IGNORE := GdUnitSettings.GdScriptWarningMode.IGNORE
 const WARN := GdUnitSettings.GdScriptWarningMode.WARN
 const ERROR := GdUnitSettings.GdScriptWarningMode.ERROR

@@ -2,7 +2,6 @@
 class_name GdUnitPatcherTest
 extends GdUnitTestSuite
 
-
 const _PATCHES := "res://addons/gdUnit4/test/update/resources/patches/"
 
 var _patcher: GdUnitPatcher

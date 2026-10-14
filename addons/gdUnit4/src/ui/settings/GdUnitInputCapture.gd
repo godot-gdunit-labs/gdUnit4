@@ -4,7 +4,6 @@ extends Control
 
 signal input_completed(input_event: InputEventKey)
 
-
 var _tween: Tween
 var _input_event: InputEventKey
 

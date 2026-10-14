@@ -2,10 +2,8 @@
 class_name GdUnitTestCaseExecutionStage
 extends IGdUnitExecutionStage
 
-
 var _stage_single_test: IGdUnitExecutionStage = GdUnitTestCaseSingleExecutionStage.new()
 var _stage_fuzzer_test: IGdUnitExecutionStage = GdUnitTestCaseFuzzedExecutionStage.new()
-
 
 ## Executes the test case 'test_<name>()'.[br]
 ## It executes synchronized following stages[br]

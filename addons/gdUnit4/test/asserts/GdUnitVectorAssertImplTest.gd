@@ -2,7 +2,6 @@
 class_name GdUnitVectorAssertImplTest
 extends GdUnitTestSuite
 
-
 var _test_seta := [
 	[null],
 	[Vector2.ONE],

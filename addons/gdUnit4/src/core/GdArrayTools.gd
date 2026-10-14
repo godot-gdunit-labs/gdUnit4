@@ -2,7 +2,6 @@
 class_name GdArrayTools
 extends RefCounted
 
-
 const MAX_ELEMENTS := 32
 const ARRAY_TYPES := [
 	TYPE_ARRAY,

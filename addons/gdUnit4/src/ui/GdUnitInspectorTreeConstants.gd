@@ -1,7 +1,6 @@
 class_name GdUnitInspectorTreeConstants
 extends RefCounted
 
-
 # the inspector panel presantation
 enum TreeViewMode {
 	TREE,

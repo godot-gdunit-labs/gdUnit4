@@ -1,7 +1,6 @@
 class_name GdClassDescriptor
 extends RefCounted
 
-
 var _name: String
 var _is_inner_class: bool
 var _functions: Array[GdFunctionDescriptor]

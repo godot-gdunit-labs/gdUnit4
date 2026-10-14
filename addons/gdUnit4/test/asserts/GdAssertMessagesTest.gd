@@ -1,7 +1,6 @@
 class_name GdAssertMessagesTest
 extends GdUnitTestSuite
 
-
 const SUB := "[bgcolor=#ff000026][color=white]%s[/color][/bgcolor]"
 const ADD := "[bgcolor=#00ff0026][color=white]%s[/color][/bgcolor]"
 

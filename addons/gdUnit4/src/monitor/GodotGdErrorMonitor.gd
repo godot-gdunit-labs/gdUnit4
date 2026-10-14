@@ -1,7 +1,6 @@
 class_name GodotGdErrorMonitor
 extends GdUnitMonitor
 
-
 var _logger: GdUnitLogger
 
 
@@ -11,19 +10,16 @@ class GdUnitLogger extends Logger:
 	var _is_report_script_errors: bool
 	var _is_registered := false
 
-
 	func _init(is_report_push_errors: bool, is_report_script_errors: bool) -> void:
 		_is_report_push_errors = is_report_push_errors
 		_is_report_script_errors = is_report_script_errors
 		OS.add_logger(self)
 		_is_registered = true
 
-
 	func dispose() -> void:
 		if _is_registered:
 			OS.remove_logger(self)
 			_is_registered = false
-
 
 	func entries() -> Array[ErrorLogEntry]:
 		return _entries
@@ -33,7 +29,6 @@ class GdUnitLogger extends Logger:
 			if entry._type == log_entry._type and entry._message == log_entry._message:
 				_entries.erase(entry)
 				return
-
 
 	func _log_error(
 		_function: String,
@@ -45,7 +40,6 @@ class GdUnitLogger extends Logger:
 		error_type: int,
 		script_backtraces: Array[ScriptBacktrace]
 		) -> void:
-
 		var stack_trace := GdUnitStackTrace.from_script_backtraces(script_backtraces)
 		if stack_trace.get_frames().size() == 0:
 			stack_trace = GdUnitStackTrace.new([
@@ -72,9 +66,6 @@ class GdUnitLogger extends Logger:
 
 	func _log_message(_message: String, _error: bool) -> void:
 		pass
-
-
-
 
 
 func _init() -> void:

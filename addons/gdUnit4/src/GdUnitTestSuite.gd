@@ -23,7 +23,6 @@ const CALL_REAL_FUNC = GdUnitMock.CALL_REAL_FUNC
 ## builds full deep mocked object
 const RETURN_DEEP_STUB = GdUnitMock.RETURN_DEEP_STUB
 
-
 ### internal runtime variables that must not be overwritten!!!
 # gdlint: disable=class-variable-name
 @warning_ignore("unused_private_class_variable")

@@ -1,6 +1,5 @@
 extends GdUnitTestSuite
 
-
 @warning_ignore("unsafe_method_access")
 func test_load_performance() -> void:
 	var time := LocalTime.now()

@@ -47,7 +47,6 @@ const TABLE_RECORD_PATH = """
 								</tr>
 """
 
-
 const TABLE_REPORT_TESTSUITE = """
 								<tr class="${report_state}">
 									<td>TestSuite hooks</td>
@@ -61,7 +60,6 @@ ${failure-report}
 									</td>
 								</tr>
 """
-
 
 const TABLE_RECORD_TESTCASE = """
 								<tr class="testcase-group">
@@ -77,7 +75,6 @@ ${failure-report}
 									</td>
 								</tr>
 """
-
 
 const TABLE_BY_PATHS = "${report_table_paths}"
 const TABLE_BY_TESTSUITES = "${report_table_testsuites}"
@@ -97,7 +94,6 @@ const ORPHAN_COUNT = "${orphan_count}"
 const DURATION = "${duration}"
 const FAILURE_REPORT = "${failure-report}"
 const SUCCESS_PERCENT = "${success_percent}"
-
 
 const QUICK_STATE_SKIPPED = "${skipped-percent}"
 const QUICK_STATE_PASSED = "${passed-percent}"
@@ -182,7 +178,6 @@ static func calculate_percentage(p_test_count: int, count: int) -> String:
 	if count <= 0:
 		return "0%"
 	return "%d" % ((0 if count < 0 else count) * 100.0 / p_test_count) + "%"
-
 
 
 static func create_suite_record(report_link: String, report: GdUnitTestSuiteReport) -> String:

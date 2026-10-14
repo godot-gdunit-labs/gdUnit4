@@ -1,7 +1,6 @@
 @tool
 extends Control
 
-
 const GdUnitInspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/GdUnitInspectorTreeMainPanel.gd")
 
 var inspector: GdUnitInspectorTreeMainPanel

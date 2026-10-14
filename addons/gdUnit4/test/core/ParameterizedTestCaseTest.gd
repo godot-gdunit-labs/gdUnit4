@@ -71,7 +71,6 @@ var _expected_tests := {
 	]
 }
 
-
 var _test_node_before: Node
 var _test_node_before_test: Node
 var _test_set := [

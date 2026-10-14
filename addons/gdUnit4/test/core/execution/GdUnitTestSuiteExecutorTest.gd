@@ -5,7 +5,6 @@ extends GdUnitTestSuite
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
-
 const SUCCEEDED = true
 const FAILED = false
 const SKIPPED = true
@@ -60,7 +59,6 @@ func run_tests(tests: Array[GdUnitTestCase], settings := {}) -> Array[GdUnitEven
 		# restore settings
 		for key: String in saves_settings.keys():
 			ProjectSettings.set_setting(key, saves_settings[key])
-
 	)
 	return _collected_events
 

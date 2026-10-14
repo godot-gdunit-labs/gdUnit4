@@ -2,7 +2,6 @@
 class_name GdUnitExpressionsTest
 extends GdUnitTestSuite
 
-
 const TestFuzzers := preload("res://addons/gdUnit4/test/fuzzers/TestFuzzers.gd")
 
 

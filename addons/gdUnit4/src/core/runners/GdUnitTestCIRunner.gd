@@ -203,7 +203,6 @@ func run_self_test() -> void:
 	disable_fail_fast()
 
 
-
 ## Shows GdUnit and Godot version information.
 func show_version() -> void:
 	console_info(
@@ -434,7 +433,6 @@ func skip_test_suites(paths: PackedStringArray) -> void:
 
 func is_skipped(test: GdUnitTestCase) -> bool:
 	for skipped_info in _excluded_tests:
-
 		# is suite skipped by full path or suite name
 		if skipped_info == test.suite_name or test.source_file.contains(skipped_info):
 			return true

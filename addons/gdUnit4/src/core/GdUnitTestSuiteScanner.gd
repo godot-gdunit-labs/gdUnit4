@@ -8,7 +8,6 @@ func test_${func_name}() -> void:
 	assert_not_yet_implemented()
 """
 
-
 # we exclude the gdunit source directorys by default
 const EXCLUDE_SCAN_DIRECTORIES = [
 	"res://addons/gdUnit4/bin",
@@ -20,7 +19,6 @@ const ARGUMENT_TIMEOUT := "timeout"
 const ARGUMENT_SKIP := "do_skip"
 const ARGUMENT_SKIP_REASON := "skip_reason"
 const ARGUMENT_PARAMETER_SET := "test_parameters"
-
 
 var _script_parser := GdScriptParser.new()
 var _included_resources: PackedStringArray = []

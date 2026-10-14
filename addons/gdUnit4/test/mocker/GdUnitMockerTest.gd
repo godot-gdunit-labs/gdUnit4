@@ -3,9 +3,7 @@
 class_name GdUnitMockerTest
 extends GdUnitTestSuite
 
-
 const TEST_SCENE := preload("res://addons/gdUnit4/test/mocker/resources/scenes/TestScene.tscn")
-
 
 var resource_path := "res://addons/gdUnit4/test/mocker/resources/"
 var _test_signal_args := Array()

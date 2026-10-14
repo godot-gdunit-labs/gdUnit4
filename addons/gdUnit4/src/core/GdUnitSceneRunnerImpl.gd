@@ -3,7 +3,6 @@
 class_name GdUnitSceneRunnerImpl
 extends GdUnitSceneRunner
 
-
 # mapping of mouse buttons and his masks
 const MAP_MOUSE_BUTTON_MASKS := {
 	MOUSE_BUTTON_LEFT: MOUSE_BUTTON_MASK_LEFT,

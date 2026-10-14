@@ -7,7 +7,6 @@ const TAG_AUTO_FREE = "GdUnit4_marked_auto_free"
 const GdUnitTools = preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 const _SHOW_DEBUG := false
 
-
 var _store: Array[Variant] = []
 # enable for debugging purposes
 var _is_stdout_verbose := false

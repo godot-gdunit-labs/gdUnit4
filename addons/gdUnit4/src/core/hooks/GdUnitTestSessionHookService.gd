@@ -1,13 +1,11 @@
 class_name GdUnitTestSessionHookService
 extends Object
 
-
 var enigne_hooks: Array[GdUnitTestSessionHook] = []:
 	get:
 		return enigne_hooks
 	set(value):
 		enigne_hooks.append(value)
-
 
 var _save_settings: bool = false
 

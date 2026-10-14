@@ -15,7 +15,6 @@ signal select_orphan_prevous()
 @warning_ignore("unused_signal")
 signal tree_view_mode_changed(flat: bool)
 
-
 const STATE = GdUnitInspectorTreeConstants.STATE
 
 var total_failed := 0
@@ -43,7 +42,6 @@ var _timer: LocalTime
 @onready var _button_view_mode: MenuButton = %btn_tree_mode
 @onready var _button_sort_mode: MenuButton = %btn_tree_sort
 @onready var _icon_template: SpinBox = %icon_template
-
 
 @warning_ignore("return_value_discarded")
 func _ready() -> void:

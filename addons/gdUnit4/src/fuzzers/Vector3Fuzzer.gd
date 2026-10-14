@@ -18,7 +18,6 @@
 class_name Vector3Fuzzer
 extends Fuzzer
 
-
 ## Minimum bounds for the generated vectors (inclusive for x, y, and z).
 var _from: Vector3
 ## Maximum bounds for the generated vectors (inclusive for x, y, and z).

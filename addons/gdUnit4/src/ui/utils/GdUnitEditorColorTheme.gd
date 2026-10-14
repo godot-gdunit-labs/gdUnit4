@@ -5,7 +5,6 @@
 class_name GdUnitEditorColorTheme
 extends Node
 
-
 # Literal value of EditorSettings.NOTIFICATION_EDITOR_SETTINGS_CHANGED.
 # The editor classes must not be referenced by name anywhere in this script:
 # they do not exist in template builds (exported games, CLI runners), where a

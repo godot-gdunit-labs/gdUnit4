@@ -9,7 +9,6 @@ enum CompareMode {
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
-
 # introduced with Godot 4.3.beta1
 const TYPE_VOID = 1000
 const TYPE_VARARG = 1001
@@ -21,7 +20,6 @@ const TYPE_NODE = 2001
 const TYPE_CONTROL = 2002
 const TYPE_CANVAS = 2003
 const TYPE_ENUM = 2004
-
 
 const TYPE_AS_STRING_MAPPINGS := {
 	TYPE_NIL: "null",

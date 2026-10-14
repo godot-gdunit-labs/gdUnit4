@@ -23,7 +23,6 @@ var _bound_input_values: Array[Array] = []
 var _source_path := ""
 var _function_name := ""
 
-
 static var _native_class_mapping: Dictionary[String, Variant] = {}
 static var _user_class_paths: Dictionary[String, String] = {}
 static var _resolved_user_classes: Dictionary[String, Variant] = {}

@@ -2,7 +2,6 @@
 class_name GdFunctionDescriptorTest
 extends GdUnitTestSuite
 
-
 const RETURN_TYPE_VARIANTS_SOURCE := """
 	enum MyEnum { A, B }
 

@@ -1,6 +1,5 @@
 extends GdUnitTestSuite
 
-
 var test_retries := {
 	"test_flaky_success": 0,
 	"test_flaky_fail": 0,

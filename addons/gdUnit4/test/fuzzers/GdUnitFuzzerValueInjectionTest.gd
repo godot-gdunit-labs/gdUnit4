@@ -11,7 +11,6 @@ var _fuzzer_instance_before: Fuzzer = null
 class TestFuzzer extends Fuzzer:
 	var _data := [0, 1, 2, 3, 4, 5, 6, 23, 8, 9]
 
-
 	func next_value() -> int:
 		return _data.pop_front()
 

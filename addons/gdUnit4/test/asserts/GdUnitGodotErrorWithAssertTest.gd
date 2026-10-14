@@ -1,6 +1,5 @@
 extends GdUnitTestSuite
 
-
 var _catched_events: Array[GdUnitEvent] = []
 
 

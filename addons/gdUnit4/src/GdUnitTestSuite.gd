@@ -65,9 +65,7 @@ func __gdunit_argument_matchers() -> GDScript:
 
 func __gdunit_object_interactions() -> GDScript:
 	return __lazy_load("res://addons/gdUnit4/src/doubler/GdUnitObjectInteractions.gd")
-
-
-# gdlint: enable=function-name
+	# gdlint: enable=function-name
 
 
 ## This function is called before a test suite starts[br]
@@ -637,9 +635,7 @@ func assert_that(current: Variant) -> GdUnitAssert:
 			return assert_object(current)
 		_:
 			return __gdunit_assert().new(current)
-
-
-# gdlint: enable=max-returns
+	# gdlint: enable=max-returns
 
 
 ## An assertion tool to verify boolean values.

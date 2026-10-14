@@ -192,9 +192,7 @@ func _on_type_vector(value: Variant, type: int) -> String:
 				return "Vector4i()"
 			return "Vector4i%s" % value
 	return "unknown vector type %d" % type
-
-
-# gdlint: enable=max-returns
+	# gdlint: enable=max-returns
 
 
 func _on_type_transform2d(transform: Transform2D) -> String:

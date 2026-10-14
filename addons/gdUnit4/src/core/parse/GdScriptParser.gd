@@ -351,9 +351,7 @@ func is_allowed_character(input: String) -> bool:
 	if code_point == 34 or code_point == 39:
 		return true
 	return false
-
-
-# gdlint: enable=max-returns
+	# gdlint: enable=max-returns
 
 
 func parse_return_token(input: String) -> Variable:

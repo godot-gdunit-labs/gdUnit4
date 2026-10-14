@@ -257,11 +257,10 @@ class TokenInnerClass extends RegExToken:
 	func content() -> PackedStringArray:
 		return _content
 
-
-	@warning_ignore_start("return_value_discarded")
 	func parse(source_rows: PackedStringArray, offset: int) -> void:
 		# add class signature
 		_content.clear()
+		@warning_ignore_start("return_value_discarded")
 		_content.append(source_rows[offset])
 		# parse class content
 		for row_index in range(offset + 1, source_rows.size()):
@@ -279,9 +278,8 @@ class TokenInnerClass extends RegExToken:
 					_content.append(source_row)
 				continue
 			break
+		@warning_ignore_restore("return_value_discarded")
 		_consumed += TokenInnerClass._consumed_bytes("".join(_content))
-
-	@warning_ignore_restore("return_value_discarded")
 
 	func _to_string() -> String:
 		return "TokenInnerClass{%s}" % [value()]

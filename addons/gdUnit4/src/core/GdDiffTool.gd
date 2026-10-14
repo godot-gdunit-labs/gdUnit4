@@ -49,21 +49,19 @@ class MyersSearch:
 	var _cost_limit: int
 	var _work_left: int = MAX_WORK
 
-	@warning_ignore_start("return_value_discarded")
-
 	func _init(a: PackedInt32Array, b: PackedInt32Array) -> void:
 		_a = a
 		_b = b
+		@warning_ignore_start("return_value_discarded")
 		changed_a.resize(a.size())
 		changed_b.resize(b.size())
 		# one slot per diagonal (-b.size() .. a.size()) plus the two border slots of the search
 		var diagonals: int = a.size() + b.size() + 3
 		_kv_forward.resize(diagonals)
 		_kv_backward.resize(diagonals)
+		@warning_ignore_restore("return_value_discarded")
 		_kv_offset = b.size() + 1
 		_cost_limit = maxi(MIN_COST_LIMIT, _bogo_sqrt(diagonals))
-
-	@warning_ignore_restore("return_value_discarded")
 
 	func run() -> void:
 		# explicit stack instead of recursion, the first half is processed first

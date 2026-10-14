@@ -1,3 +1,4 @@
+@warning_ignore_start("redundant_await")
 class_name GdUnitReportPanelTest
 extends GdUnitTestSuite
 
@@ -74,9 +75,6 @@ func test_meta_clicked_signal_is_connected_when_stack_trace_has_frames() -> void
 	assert_bool(label.meta_clicked.is_connected(_panel._on_meta_clicked)).is_true()
 
 
-@warning_ignore_start("redundant_await")
-
-
 func test_on_meta_clicked_is_called_with_expected_frame_on_click() -> void:
 	# Use a real source path so GdUnitScriptEditorControls.edit_script can load() the script
 	var frame1 := GdUnitStackTraceElement.new(
@@ -103,7 +101,6 @@ func test_on_meta_clicked_is_called_with_expected_frame_on_click() -> void:
 	verify(panel_spy)._on_meta_clicked(frame1)
 
 
-@warning_ignore_restore("redundant_await")
 #endregion
 
 

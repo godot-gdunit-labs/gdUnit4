@@ -97,9 +97,7 @@ func test_is_inheriting() -> void:
 	).is_failed().has_message("Expected type to inherit from <Node3D>")
 
 	# using not Object type
-	assert_failure(func() -> void:
-		assert_object([]).is_inheriting(Node)
-	).is_failed().has_message("Expected '[]' to inherit from at least Object.")
+	assert_failure(func() -> void: assert_object([]).is_inheriting(Node)).is_failed().has_message("Expected '[]' to inherit from at least Object.")
 
 
 func test_is_not_inheriting() -> void:
@@ -114,9 +112,8 @@ func test_is_not_inheriting() -> void:
 			.is_not_inheriting(Container)
 	).is_failed().has_message("Expected type to not inherit from <Container>")
 	# using not Object type
-	assert_failure(func() -> void:
-		assert_object([]).is_not_inheriting(Node)
-	).is_failed().has_message("Expected '[]' to inherit from at least Object.")
+	assert_failure(func() -> void: assert_object([]).is_not_inheriting(Node)).is_failed().has_message("Expected '[]' to inherit from at least Object.")
+
 
 func test_is_null() -> void:
 	assert_object(null).is_null()

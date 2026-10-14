@@ -22,11 +22,7 @@ func catch_test_events(event: GdUnitEvent) -> void:
 	_catched_events.append(event)
 
 
-func before(
-	_do_skip := Engine.is_embedded_in_editor() or OS.is_debug_build(),
-	_skip_reason  := "Is skipped because the test will holt on script error in debug mode"
-	) -> void:
-
+func before(_do_skip := Engine.is_embedded_in_editor() or OS.is_debug_build(), _skip_reason := "Is skipped because the test will holt on script error in debug mode") -> void:
 	GdUnitSignals.instance().gdunit_event.connect(catch_test_events)
 
 

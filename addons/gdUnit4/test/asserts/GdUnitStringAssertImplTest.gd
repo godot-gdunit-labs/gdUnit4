@@ -547,6 +547,5 @@ func test_is_equal_large_text_highlights_two_inserted_values() -> void:
 
 	# the inserted values are missing in the current value, shown as separate marked blocks at the insert positions
 	var missing := "[bgcolor=#ff000026][color=white]%s[/color][/bgcolor]"
-	assert_str(colored).is_equal(
-		current.substr(0, pos1) + missing % "ERROR_042" + current.substr(pos1, pos2 - pos1) + missing % "#PATCH#" + current.substr(pos2))
+	assert_str(colored).is_equal(current.substr(0, pos1) + missing % "ERROR_042" + current.substr(pos1, pos2 - pos1) + missing % "#PATCH#" + current.substr(pos2))
 #endregion

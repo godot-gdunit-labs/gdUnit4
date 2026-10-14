@@ -74,9 +74,7 @@ func test_signal_is_emitted_by_signal_type() -> void:
 
 
 func test_signal_is_emitted_by_invalid_type() -> void:
-	(
-		await assert_failure_await(func() -> void: await assert_signal(signal_emitter).is_emitted(10))
-	).has_message("Invalid signal_name: expected String or Signal, but is 'int'")
+	(await assert_failure_await(func() -> void: await assert_signal(signal_emitter).is_emitted(10))).has_message("Invalid signal_name: expected String or Signal, but is 'int'")
 
 
 func test_signal_is_emitted_without_args() -> void:

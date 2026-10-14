@@ -8,14 +8,14 @@ const NO_ORPHAN_DETAILS := "⚠️No details available. Run tests in debug mode 
 
 # Dictionary of control characters and their readable representations
 const CONTROL_CHARS = {
-	"\n": "<LF>",   # Line Feed
-	"\r": "<CR>",   # Carriage Return
+	"\n": "<LF>",  # Line Feed
+	"\r": "<CR>",  # Carriage Return
 	"\t": "<TAB>",  # Tab
-	"\b": "<BS>",   # Backspace
-	"\f": "<FF>",   # Form Feed
-	"\v": "<VT>",   # Vertical Tab
+	"\b": "<BS>",  # Backspace
+	"\f": "<FF>",  # Form Feed
+	"\v": "<VT>",  # Vertical Tab
 	"\a": "<BEL>",  # Bell
-	"": "<ESC>"   # Escape
+	"": "<ESC>",  # Escape
 }
 
 

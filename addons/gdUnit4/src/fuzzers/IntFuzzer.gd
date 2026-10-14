@@ -22,9 +22,9 @@ extends Fuzzer
 
 ## Generates any integer within the range.
 enum {
-	NORMAL, ## Generate any integer within the specified range.
-	EVEN,   ## Generate only even integers within the specified range.
-	ODD     ## Generate only odd integers within the specified range.
+	NORMAL,  ## Generate any integer within the specified range.
+	EVEN,  ## Generate only even integers within the specified range.
+	ODD,  ## Generate only odd integers within the specified range.
 }
 
 

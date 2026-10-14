@@ -58,18 +58,23 @@ func setup_test_env() -> void:
 	var suite_b := GdUnitTestResourceLoader.load_gd_script("res://addons/gdUnit4/test/ui/parts/resources/foo/ExampleTestSuiteB.resource", true)
 	var suite_c := GdUnitTestResourceLoader.load_gd_script("res://addons/gdUnit4/test/ui/parts/resources/foo/ExampleTestSuiteC.resource", true)
 
-
-	GdUnitTestDiscoverer.discover_tests(suite_a, func(discover_test: GdUnitTestCase) -> void:
-		discover_sink(discover_test)
-		discovered_tests_suite_a[discover_test.test_name] = discover_test
+	GdUnitTestDiscoverer.discover_tests(
+		suite_a,
+		func(discover_test: GdUnitTestCase) -> void:
+			discover_sink(discover_test)
+			discovered_tests_suite_a[discover_test.test_name] = discover_test
 	)
-	GdUnitTestDiscoverer.discover_tests(suite_b, func(discover_test: GdUnitTestCase) -> void:
-		discover_sink(discover_test)
-		discovered_tests_suite_b[discover_test.test_name] = discover_test
+	GdUnitTestDiscoverer.discover_tests(
+		suite_b,
+		func(discover_test: GdUnitTestCase) -> void:
+			discover_sink(discover_test)
+			discovered_tests_suite_b[discover_test.test_name] = discover_test
 	)
-	GdUnitTestDiscoverer.discover_tests(suite_c, func(discover_test: GdUnitTestCase) -> void:
-		discover_sink(discover_test)
-		discovered_tests_suite_c[discover_test.test_name] = discover_test
+	GdUnitTestDiscoverer.discover_tests(
+		suite_c,
+		func(discover_test: GdUnitTestCase) -> void:
+			discover_sink(discover_test)
+			discovered_tests_suite_c[discover_test.test_name] = discover_test
 	)
 
 	suite_a_item = _inspector._find_tree_item_by_test_suite(_inspector._tree_root, suite_a.resource_path, "ExampleTestSuiteA")
@@ -104,9 +109,11 @@ func get_item_state(parent: TreeItem, item_name: String = "") -> int:
 func test_find_item_by_id() -> void:
 	var suite_script := GdUnitTestResourceLoader.load_gd_script("res://addons/gdUnit4/test/ui/parts/resources/bar/ExampleTestSuiteA.resource", true)
 	var discovered_tests := {}
-	GdUnitTestDiscoverer.discover_tests(suite_script, func(discover_test: GdUnitTestCase) -> void:
-		discover_sink(discover_test)
-		discovered_tests[discover_test.test_name] = discover_test
+	GdUnitTestDiscoverer.discover_tests(
+		suite_script,
+		func(discover_test: GdUnitTestCase) -> void:
+			discover_sink(discover_test)
+			discovered_tests[discover_test.test_name] = discover_test
 	)
 	var test_aa: GdUnitTestCase = discovered_tests["test_aa"]
 	var item := _inspector._find_tree_item_by_id(_inspector._tree_root, test_aa.guid)
@@ -117,9 +124,11 @@ func test_find_item_by_id() -> void:
 func test_find_item_by_id_gd809() -> void:
 	var suite_script := GdUnitTestResourceLoader.load_gd_script("res://addons/gdUnit4/test/ui/parts/resources/gd_809/test_example.resource")
 	var discovered_tests := {}
-	GdUnitTestDiscoverer.discover_tests(suite_script, func(discover_test: GdUnitTestCase) -> void:
-		discover_sink(discover_test)
-		discovered_tests[discover_test.test_name] = discover_test
+	GdUnitTestDiscoverer.discover_tests(
+		suite_script,
+		func(discover_test: GdUnitTestCase) -> void:
+			discover_sink(discover_test)
+			discovered_tests[discover_test.test_name] = discover_test
 	)
 	assert_dict(discovered_tests).contains_keys(["test_example", "test_example_b"])
 	var test_aa: GdUnitTestCase = discovered_tests["test_example"]
@@ -131,9 +140,11 @@ func test_find_item_by_id_gd809() -> void:
 func test_find_item_by_path_gd809() -> void:
 	var suite_script := GdUnitTestResourceLoader.load_gd_script("res://addons/gdUnit4/test/ui/parts/resources/gd_809/test_example.resource")
 	var discovered_tests := {}
-	GdUnitTestDiscoverer.discover_tests(suite_script, func(discover_test: GdUnitTestCase) -> void:
-		discover_sink(discover_test)
-		discovered_tests[discover_test.test_name] = discover_test
+	GdUnitTestDiscoverer.discover_tests(
+		suite_script,
+		func(discover_test: GdUnitTestCase) -> void:
+			discover_sink(discover_test)
+			discovered_tests[discover_test.test_name] = discover_test
 	)
 	assert_dict(discovered_tests).contains_keys(["test_example", "test_example_b"])
 	var test_example: GdUnitTestCase = discovered_tests["test_example"]
@@ -354,9 +365,11 @@ func test_update_test_case_on_multiple_test_suite_with_same_name() -> void:
 	# add a second test suite where has same name as suite_a_item
 	var suite_script := GdUnitTestResourceLoader.load_gd_script("res://addons/gdUnit4/test/ui/parts/resources/bar/ExampleTestSuiteA.resource", true)
 	var discovered_tests := {}
-	GdUnitTestDiscoverer.discover_tests(suite_script, func(discover_test: GdUnitTestCase) -> void:
-		discover_sink(discover_test)
-		discovered_tests[discover_test.test_name] = discover_test
+	GdUnitTestDiscoverer.discover_tests(
+		suite_script,
+		func(discover_test: GdUnitTestCase) -> void:
+			discover_sink(discover_test)
+			discovered_tests[discover_test.test_name] = discover_test
 	)
 	var suite_item := _inspector._find_tree_item_by_test_suite(_inspector._tree_root, suite_script.resource_path, "ExampleTestSuiteA")
 	assert_object(suite_item).is_not_same(suite_a_item)
@@ -397,9 +410,11 @@ func test_update_test_case_on_multiple_test_suite_with_same_name() -> void:
 func test_update_icon_state() -> void:
 	var suite_script := GdUnitTestResourceLoader.load_gd_script("res://addons/gdUnit4/test/core/execution/resources/orphans/TestSuiteFailAndOrpahnsDetected.gd", true)
 	var discovered_tests := {}
-	GdUnitTestDiscoverer.discover_tests(suite_script, func(discover_test: GdUnitTestCase) -> void:
-		discover_sink(discover_test)
-		discovered_tests[discover_test.test_name] = discover_test
+	GdUnitTestDiscoverer.discover_tests(
+		suite_script,
+		func(discover_test: GdUnitTestCase) -> void:
+			discover_sink(discover_test)
+			discovered_tests[discover_test.test_name] = discover_test
 	)
 	var suite_script_path := suite_script.resource_path
 	var suite_name := "TestSuiteFailAndOrpahnsDetected"
@@ -620,9 +635,11 @@ func test_add_parameterized_test_case() -> void:
 func test_collect_test_cases() -> void:
 	var script := load_non_cached("res://addons/gdUnit4/test/core/discovery/resources/DiscoverExampleTestSuite.gd")
 	var tests_by_id := {}
-	GdUnitTestDiscoverer.discover_tests(script, func(test_to_discover: GdUnitTestCase) -> void:
-		discover_sink(test_to_discover)
-		tests_by_id[test_to_discover.display_name] = test_to_discover
+	GdUnitTestDiscoverer.discover_tests(
+		script,
+		func(test_to_discover: GdUnitTestCase) -> void:
+			discover_sink(test_to_discover)
+			tests_by_id[test_to_discover.display_name] = test_to_discover
 	)
 
 	var test_case1: GdUnitTestCase = tests_by_id["test_case1"]
@@ -660,9 +677,11 @@ func test_collect_test_cases_gd_872(_do_skip := not GdUnit4CSharpApiLoader.is_ap
 	var resource_path := "res://addons/gdUnit4/test/ui/parts/resources/gd_872/"
 	for suite_path: String in ["ATests.cs", "AZTests.cs"]:
 		var script := cs_load_non_cached(resource_path + suite_path)
-		GdUnitTestDiscoverer.discover_tests(script, func(test_to_discover: GdUnitTestCase) -> void:
-			discover_sink(test_to_discover)
-			tests_by_id[test_to_discover.fully_qualified_name] = test_to_discover
+		GdUnitTestDiscoverer.discover_tests(
+			script,
+			func(test_to_discover: GdUnitTestCase) -> void:
+				discover_sink(test_to_discover)
+				tests_by_id[test_to_discover.fully_qualified_name] = test_to_discover
 		)
 	# Validate if all tests discovered first
 	assert_dict(tests_by_id)\

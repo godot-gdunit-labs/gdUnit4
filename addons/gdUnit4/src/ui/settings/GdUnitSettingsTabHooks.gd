@@ -49,11 +49,12 @@ func _create_hook_row(hook: GdUnitTestSessionHook) -> Control:
 	panel.set_meta("hook", hook)
 	panel.tooltip_text = "System hook - (Read-only)" if is_system else "User hook"
 	panel.focus_entered.connect(_select_row.bind(panel))
-	panel.gui_input.connect(func(event: InputEvent) -> void:
-		@warning_ignore("unsafe_property_access")
-		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-			_select_row(panel)
-			panel.accept_event()
+	panel.gui_input.connect(
+		func(event: InputEvent) -> void:
+			@warning_ignore("unsafe_property_access")
+			if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+				_select_row(panel)
+				panel.accept_event()
 	)
 
 	# Left color indicator border

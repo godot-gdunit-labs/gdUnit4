@@ -72,9 +72,10 @@ func _init(p_scene: Variant, p_verbose: bool, p_hide_push_errors := false) -> vo
 	Engine.set_meta("GdUnitSceneRunner", self)
 	# do finally reset all open input events when the scene is removed
 	@warning_ignore("return_value_discarded")
-	_scene_tree().root.child_exiting_tree.connect(func f(child: Node) -> void:
-		if child == _current_scene:
-			_reset_input_to_default()
+	_scene_tree().root.child_exiting_tree.connect(
+		func f(child: Node) -> void:
+			if child == _current_scene:
+				_reset_input_to_default()
 	)
 	_simulate_start_time = LocalTime.now()
 	# we need to set inital a valid window otherwise the warp_mouse() is not handled

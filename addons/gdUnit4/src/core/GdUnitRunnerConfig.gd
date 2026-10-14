@@ -108,13 +108,14 @@ func load_config(path: String = CONFIG_FILE) -> GdUnitResult:
 func convert_test_json_to_test_cases(jsons: Array) -> Array[GdUnitTestCase]:
 	if jsons.is_empty():
 		return []
-	var tests := jsons.map(func(d: Dictionary) -> GdUnitTestCase:
-		var test: GdUnitTestCase = dict_to_inst(d)
-		# we need o covert manually to the corect type becaus JSON do not handle typed values
-		test.guid = GdUnitGUID.new(str(d["guid"]))
-		test.attribute_index = test.attribute_index as int
-		test.line_number = test.line_number as int
-		return test
+	var tests := jsons.map(
+		func(d: Dictionary) -> GdUnitTestCase:
+			var test: GdUnitTestCase = dict_to_inst(d)
+			# we need o covert manually to the corect type becaus JSON do not handle typed values
+			test.guid = GdUnitGUID.new(str(d["guid"]))
+			test.attribute_index = test.attribute_index as int
+			test.line_number = test.line_number as int
+			return test
 	)
 	return Array(tests, TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 

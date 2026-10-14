@@ -66,19 +66,21 @@ func _on_test_event(event: GdUnitEvent) -> void:
 
 
 func run_tests(tests: Array[GdUnitTestCase], settings := {}) -> void:
-	await GdUnitThreadManager.run("test_executor_%d" % randi(), func() -> void:
-		var executor := GdUnitTestSuiteExecutor.new(true)
+	await GdUnitThreadManager.run(
+		"test_executor_%d" % randi(),
+		func() -> void:
+			var executor := GdUnitTestSuiteExecutor.new(true)
 
-		var saves_settings := {}
-		for key: String in settings.keys():
-			saves_settings[key] = ProjectSettings.get_setting(key)
-			ProjectSettings.set_setting(key, settings[key])
+			var saves_settings := {}
+			for key: String in settings.keys():
+				saves_settings[key] = ProjectSettings.get_setting(key)
+				ProjectSettings.set_setting(key, settings[key])
 
-		await (Engine.get_main_loop() as SceneTree).process_frame
-		await executor.run_and_wait(tests)
+			await (Engine.get_main_loop() as SceneTree).process_frame
+			await executor.run_and_wait(tests)
 
-		for key: String in saves_settings.keys():
-			ProjectSettings.set_setting(key, saves_settings[key])
+			for key: String in saves_settings.keys():
+				ProjectSettings.set_setting(key, saves_settings[key])
 	)
 
 

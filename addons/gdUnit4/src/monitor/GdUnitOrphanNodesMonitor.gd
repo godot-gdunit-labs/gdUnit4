@@ -33,12 +33,13 @@ func stop() -> void:
 	if not _orphan_detection_enabled:
 		return
 	# Collect only new detected orphan id's, we want only to collect orphans between start and stop time
-	_orphan_ids_at_stop = _get_orphan_node_ids().filter(func(element: int) -> bool:
-		# Excluding sub monitores orphans
-		if _collect_child_orphan_ids().has(element):
-			return false
-		# Excluding orphans at start
-		return not _orphan_ids_at_start.has(element) and not _initial_orphans.has(element)
+	_orphan_ids_at_stop = _get_orphan_node_ids().filter(
+		func(element: int) -> bool:
+			# Excluding sub monitores orphans
+			if _collect_child_orphan_ids().has(element):
+				return false
+			# Excluding orphans at start
+			return not _orphan_ids_at_start.has(element) and not _initial_orphans.has(element)
 	)
 
 
@@ -228,9 +229,10 @@ static func _get_orphan_node_ids() -> Array[int]:
 	@warning_ignore("unsafe_property_access", "unsafe_method_access")
 	var ids: Array[int] = Engine.get_main_loop().root.get_orphan_node_ids()
 	# a node queued for deletion, or inside a subtree queued for deletion, is guaranteed to be freed, it is never a leak
-	return ids.filter(func(node_id: int) -> bool:
-		var node := instance_from_id(node_id) as Node
-		return node == null or not _is_node_or_ancestor_queued_for_deletion(node)
+	return ids.filter(
+		func(node_id: int) -> bool:
+			var node := instance_from_id(node_id) as Node
+			return node == null or not _is_node_or_ancestor_queued_for_deletion(node)
 	)
 
 

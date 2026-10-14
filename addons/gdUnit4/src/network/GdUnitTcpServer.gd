@@ -38,11 +38,13 @@ class TcpConnection extends GdUnitTcpNode:
 	func _process(_delta: float) -> void:
 		if _stream == null or _stream.get_status() != StreamPeerTCP.STATUS_CONNECTED:
 			return
-		receive_packages(_stream, func(rpc_data: RPC) -> void:
-			server().rpc_data.emit(rpc_data)
-			# is client disconnecting we close the server after a timeout of 1 second
-			if rpc_data is RPCClientDisconnect:
-				close()
+		receive_packages(
+			_stream,
+			func(rpc_data: RPC) -> void:
+				server().rpc_data.emit(rpc_data)
+				# is client disconnecting we close the server after a timeout of 1 second
+				if rpc_data is RPCClientDisconnect:
+					close()
 		)
 
 	func disconnect_from_server() -> void:
@@ -57,10 +59,11 @@ class TcpConnection extends GdUnitTcpNode:
 
 func _init(server_name := "GdUnit4 TCP Server") -> void:
 	_server_name = server_name
-	GdUnitSignals.instance().gdunit_test_session_terminate.connect(func() -> void:
-		for connection in get_children():
-			if connection is TcpConnection:
-				(connection as TcpConnection).disconnect_from_server()
+	GdUnitSignals.instance().gdunit_test_session_terminate.connect(
+		func() -> void:
+			for connection in get_children():
+				if connection is TcpConnection:
+					(connection as TcpConnection).disconnect_from_server()
 	)
 
 

@@ -51,22 +51,23 @@ func build_constructor_arguments(parameter_map: Dictionary, expression: String) 
 	if extracted_arguments.is_empty():
 		return []
 	var arguments: Array = extracted_arguments.split(",")
-	return arguments.map(func(argument: String) -> Variant:
-		var value := argument.strip_edges()
+	return arguments.map(
+		func(argument: String) -> Variant:
+			var value := argument.strip_edges()
 
-		# is argument an constant value
-		if parameter_map.has(value):
-			return parameter_map[value]
-		# is typed named value like Vector3.ONE
-		for type:int in GdObjects.TYPE_AS_STRING_MAPPINGS:
-			var type_as_string:String = GdObjects.TYPE_AS_STRING_MAPPINGS[type]
-			if value.begins_with(type_as_string):
-				return type_convert(value, type)
-		# is value a string
-		if value.begins_with("'") or value.begins_with('"'):
-			return value.trim_prefix("'").trim_suffix("'").trim_prefix('"').trim_suffix('"')
-		# fallback to default value converting
-		return str_to_var(value)
+			# is argument an constant value
+			if parameter_map.has(value):
+				return parameter_map[value]
+			# is typed named value like Vector3.ONE
+			for type: int in GdObjects.TYPE_AS_STRING_MAPPINGS:
+				var type_as_string: String = GdObjects.TYPE_AS_STRING_MAPPINGS[type]
+				if value.begins_with(type_as_string):
+					return type_convert(value, type)
+			# is value a string
+			if value.begins_with("'") or value.begins_with('"'):
+				return value.trim_prefix("'").trim_suffix("'").trim_prefix('"').trim_suffix('"')
+			# fallback to default value converting
+			return str_to_var(value)
 	)
 
 

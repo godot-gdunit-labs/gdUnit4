@@ -11,16 +11,18 @@ var _save_settings: bool = false
 
 
 static func instance() -> GdUnitTestSessionHookService:
-	return GdUnitSingleton.instance("GdUnitTestSessionHookService", func()->GdUnitTestSessionHookService:
-		GdUnitSignals.instance().gdunit_message.emit("Installing GdUnit4 session system hooks.")
-		var service := GdUnitTestSessionHookService.new()
-		# Register default system hooks here
-		service._save_settings = false
-		service.register(GdUnitHtmlReporterTestSessionHook.new())
-		service.register(GdUnitXMLReporterTestSessionHook.new())
-		service.load_hook_settings()
-		service._save_settings = true
-		return service
+	return GdUnitSingleton.instance(
+		"GdUnitTestSessionHookService",
+		func() -> GdUnitTestSessionHookService:
+			GdUnitSignals.instance().gdunit_message.emit("Installing GdUnit4 session system hooks.")
+			var service := GdUnitTestSessionHookService.new()
+			# Register default system hooks here
+			service._save_settings = false
+			service.register(GdUnitHtmlReporterTestSessionHook.new())
+			service.register(GdUnitXMLReporterTestSessionHook.new())
+			service.load_hook_settings()
+			service._save_settings = true
+			return service
 	)
 
 

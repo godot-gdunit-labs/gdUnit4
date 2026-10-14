@@ -44,23 +44,25 @@ func flating_message(message: String) -> String:
 
 func run_tests(tests: Array[GdUnitTestCase], settings := {}) -> Array[GdUnitEvent]:
 	# run in a separate context to not affect the current test run
-	await GdUnitThreadManager.run("test_executor_%d" % randi(), func() -> void:
-		var executor := GdUnitTestSuiteExecutor.new(true)
+	await GdUnitThreadManager.run(
+		"test_executor_%d" % randi(),
+		func() -> void:
+			var executor := GdUnitTestSuiteExecutor.new(true)
 
-		# apply custom run settints
-		var saves_settings := {}
-		for key: String in settings.keys():
-			saves_settings[key] =  ProjectSettings.get_setting(key)
-			ProjectSettings.set_setting(key, settings[key])
+			# apply custom run settints
+			var saves_settings := {}
+			for key: String in settings.keys():
+				saves_settings[key] = ProjectSettings.get_setting(key)
+				ProjectSettings.set_setting(key, settings[key])
 
-		# sync to main thread
-		await get_tree().process_frame
-		# execute all tests
-		await executor.run_and_wait(tests)
+			# sync to main thread
+			await get_tree().process_frame
+			# execute all tests
+			await executor.run_and_wait(tests)
 
-		# restore settings
-		for key: String in saves_settings.keys():
-			ProjectSettings.set_setting(key, saves_settings[key])
+			# restore settings
+			for key: String in saves_settings.keys():
+				ProjectSettings.set_setting(key, saves_settings[key])
 	)
 	return _collected_events
 
@@ -85,15 +87,17 @@ func assert_event_list(events: Array[GdUnitEvent], suite_name: String, test_case
 
 
 func assert_test_counters(events: Array[GdUnitEvent]) -> GdUnitArrayAssert:
-	var filtered_events := events.filter(func(event: GdUnitEvent) -> bool:
-		return event.type() in [GdUnitEvent.TESTSUITE_BEFORE, GdUnitEvent.TESTSUITE_AFTER, GdUnitEvent.TESTCASE_BEFORE, GdUnitEvent.TESTCASE_AFTER]
+	var filtered_events := events.filter(
+		func(event: GdUnitEvent) -> bool:
+			return event.type() in [GdUnitEvent.TESTSUITE_BEFORE, GdUnitEvent.TESTSUITE_AFTER, GdUnitEvent.TESTCASE_BEFORE, GdUnitEvent.TESTCASE_AFTER]
 	)
 	return assert_array(filtered_events).extractv(extr("guid"), extr("type"), extr("error_count"), extr("failed_count"), extr("orphan_nodes"))
 
 
 func assert_event_states(events: Array[GdUnitEvent]) -> GdUnitArrayAssert:
-	var filtered_events := events.filter(func(event: GdUnitEvent) -> bool:
-		return event.type() in [GdUnitEvent.TESTSUITE_BEFORE, GdUnitEvent.TESTSUITE_AFTER, GdUnitEvent.TESTCASE_BEFORE, GdUnitEvent.TESTCASE_AFTER]
+	var filtered_events := events.filter(
+		func(event: GdUnitEvent) -> bool:
+			return event.type() in [GdUnitEvent.TESTSUITE_BEFORE, GdUnitEvent.TESTSUITE_AFTER, GdUnitEvent.TESTCASE_BEFORE, GdUnitEvent.TESTCASE_AFTER]
 	)
 	return assert_array(filtered_events).extractv(extr("guid"), extr("is_success"), extr("is_skipped"), extr("is_warning"), extr("is_failed"), extr("is_error"))
 

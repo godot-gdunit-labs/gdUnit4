@@ -7,9 +7,11 @@ static var _instance_called := 0
 class ExampleSingletonImplementaion extends Object:
 
 	static func instance() -> ExampleSingletonImplementaion:
-		return GdUnitSingleton.instance("ExampleSingletonImplementaion", func() -> ExampleSingletonImplementaion:
-			GdUnitSingletonTest._instance_called += 1
-			return ExampleSingletonImplementaion.new()
+		return GdUnitSingleton.instance(
+			"ExampleSingletonImplementaion",
+			func() -> ExampleSingletonImplementaion:
+				GdUnitSingletonTest._instance_called += 1
+				return ExampleSingletonImplementaion.new()
 		)
 
 

@@ -46,13 +46,15 @@ func test_save_restore_isolates_setting_change() -> void:
 # Runs a suite through the real executor in an isolated thread context with a chosen
 # auto-save flag, so the execution stages decide whether to snapshot the settings.
 func run_isolated(tests: Array[GdUnitTestCase], auto_save: bool) -> void:
-	await GdUnitThreadManager.run("auto_save_probe_%d" % randi(), func() -> void:
-		var previous: Variant = ProjectSettings.get_setting(GdUnitSettings.TEST_PROJECT_SETTINGS_AUTO_SAVE, true)
-		ProjectSettings.set_setting(GdUnitSettings.TEST_PROJECT_SETTINGS_AUTO_SAVE, auto_save)
-		var executor := GdUnitTestSuiteExecutor.new(true)
-		await get_tree().process_frame
-		await executor.run_and_wait(tests)
-		ProjectSettings.set_setting(GdUnitSettings.TEST_PROJECT_SETTINGS_AUTO_SAVE, previous)
+	await GdUnitThreadManager.run(
+		"auto_save_probe_%d" % randi(),
+		func() -> void:
+			var previous: Variant = ProjectSettings.get_setting(GdUnitSettings.TEST_PROJECT_SETTINGS_AUTO_SAVE, true)
+			ProjectSettings.set_setting(GdUnitSettings.TEST_PROJECT_SETTINGS_AUTO_SAVE, auto_save)
+			var executor := GdUnitTestSuiteExecutor.new(true)
+			await get_tree().process_frame
+			await executor.run_and_wait(tests)
+			ProjectSettings.set_setting(GdUnitSettings.TEST_PROJECT_SETTINGS_AUTO_SAVE, previous)
 	)
 
 

@@ -103,12 +103,28 @@ func is_not_equal(expected: Variant) -> GdUnitFuncAssert:
 
 # we need actually to define this Callable as functions otherwise we results into leaked scripts here
 # this is actually a Godot bug and needs this kind of workaround
-func cb_is_null(c: Variant, _e: Variant) -> bool: return c == null
-func cb_is_not_null(c: Variant, _e: Variant) -> bool: return c != null
-func cb_is_false(c: Variant, _e: Variant) -> bool: return c == false
-func cb_is_true(c: Variant, _e: Variant) -> bool: return c == true
-func cb_is_equal(c: Variant, e: Variant) -> bool: return GdObjects.equals(c,e)
-func cb_is_not_equal(c: Variant, e: Variant) -> bool: return not GdObjects.equals(c, e)
+func cb_is_null(c: Variant, _e: Variant) -> bool:
+	return c == null
+
+
+func cb_is_not_null(c: Variant, _e: Variant) -> bool:
+	return c != null
+
+
+func cb_is_false(c: Variant, _e: Variant) -> bool:
+	return c == false
+
+
+func cb_is_true(c: Variant, _e: Variant) -> bool:
+	return c == true
+
+
+func cb_is_equal(c: Variant, e: Variant) -> bool:
+	return GdObjects.equals(c, e)
+
+
+func cb_is_not_equal(c: Variant, e: Variant) -> bool:
+	return not GdObjects.equals(c, e)
 
 
 func do_interrupt() -> void:

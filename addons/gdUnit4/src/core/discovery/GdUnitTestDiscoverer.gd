@@ -10,34 +10,37 @@ static func run() -> Array[GdUnitTestCase]:
 	# We run the test discovery in an extra thread so that the main thread is not blocked
 	var t := Thread.new()
 	@warning_ignore("return_value_discarded")
-	t.start(func () -> Array[GdUnitTestCase]:
-		# Loading previous test session
-		var runner_config := GdUnitRunnerConfig.new()
-		runner_config.load_config()
-		var recovered_tests := runner_config.test_cases()
-		var test_suite_directories := scan_all_test_directories(GdUnitSettings.test_root_folder())
-		var scanner := GdUnitTestSuiteScanner.new()
+	t.start(
+		func() -> Array[GdUnitTestCase]:
+			# Loading previous test session
+			var runner_config := GdUnitRunnerConfig.new()
+			runner_config.load_config()
+			var recovered_tests := runner_config.test_cases()
+			var test_suite_directories := scan_all_test_directories(GdUnitSettings.test_root_folder())
+			var scanner := GdUnitTestSuiteScanner.new()
 
-		var collected_tests: Array[GdUnitTestCase] = []
-		var collected_test_suites: Array[Script] = []
-		# collect test suites
-		for test_suite_dir in test_suite_directories:
-			collected_test_suites.append_array(scanner.scan_directory(test_suite_dir))
+			var collected_tests: Array[GdUnitTestCase] = []
+			var collected_test_suites: Array[Script] = []
+			# collect test suites
+			for test_suite_dir in test_suite_directories:
+				collected_test_suites.append_array(scanner.scan_directory(test_suite_dir))
 
-		# Do sync the main thread before emit the discovered test suites to the inspector
-		await (Engine.get_main_loop() as SceneTree).process_frame
-		for test_suites_script in collected_test_suites:
-			discover_tests(test_suites_script, func(test_case: GdUnitTestCase) -> void:
-				# Sync test uid from last test session
-				recover_test_guid(test_case, recovered_tests)
-				collected_tests.append(test_case)
-				GdUnitTestDiscoverSink.discover(test_case)
-			)
+			# Do sync the main thread before emit the discovered test suites to the inspector
+			await (Engine.get_main_loop() as SceneTree).process_frame
+			for test_suites_script in collected_test_suites:
+				discover_tests(
+					test_suites_script,
+					func(test_case: GdUnitTestCase) -> void:
+						# Sync test uid from last test session
+						recover_test_guid(test_case, recovered_tests)
+						collected_tests.append(test_case)
+						GdUnitTestDiscoverSink.discover(test_case)
+				)
 
-		console_log_discover_results(collected_tests)
-		if !recovered_tests.is_empty():
-			console_log("Recovered last test session successfully, %d tests restored." % recovered_tests.size(), true)
-		return collected_tests
+			console_log_discover_results(collected_tests)
+			if !recovered_tests.is_empty():
+				console_log("Recovered last test session successfully, %d tests restored." % recovered_tests.size(), true)
+			return collected_tests
 	)
 	# wait unblocked to the tread is finished
 	while t.is_alive():
@@ -69,15 +72,16 @@ static func restore_last_session() -> void:
 
 	# We run the test session restoring in an extra thread so that the main thread is not blocked
 	var t := Thread.new()
-	t.start(func () -> void:
-		# Do sync the main thread before emit the discovered test suites to the inspector
-		await (Engine.get_main_loop() as SceneTree).process_frame
-		console_log("Recovering last test session ..", true)
-		GdUnitSignals.instance().gdunit_event.emit(GdUnitEventTestDiscoverStart.new())
-		for test_case in test_cases:
-			GdUnitTestDiscoverSink.discover(test_case)
-		GdUnitSignals.instance().gdunit_event.emit(GdUnitEventTestDiscoverEnd.new(0, 0))
-		console_log("Recovered last test session successfully, %d tests restored." % test_cases.size(), true)
+	t.start(
+		func() -> void:
+			# Do sync the main thread before emit the discovered test suites to the inspector
+			await (Engine.get_main_loop() as SceneTree).process_frame
+			console_log("Recovering last test session ..", true)
+			GdUnitSignals.instance().gdunit_event.emit(GdUnitEventTestDiscoverStart.new())
+			for test_case in test_cases:
+				GdUnitTestDiscoverSink.discover(test_case)
+			GdUnitSignals.instance().gdunit_event.emit(GdUnitEventTestDiscoverEnd.new(0, 0))
+			console_log("Recovered last test session successfully, %d tests restored." % test_cases.size(), true)
 	)
 	t.wait_to_finish()
 

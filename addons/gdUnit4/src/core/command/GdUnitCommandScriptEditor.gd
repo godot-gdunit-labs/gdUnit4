@@ -28,10 +28,12 @@ func _collect_tests(script: Script, tests: PackedStringArray) -> Array[GdUnitTes
 	# Update test discovery
 	var tests_to_execute: Array[GdUnitTestCase] = []
 	GdUnitSignals.instance().gdunit_event.emit(GdUnitEventTestDiscoverStart.new())
-	GdUnitTestDiscoverer.discover_tests(script, func(test: GdUnitTestCase) -> void:
-		if tests.is_empty() or tests.has(test.test_name):
-			tests_to_execute.append(test)
-			GdUnitTestDiscoverSink.discover(test)
+	GdUnitTestDiscoverer.discover_tests(
+		script,
+		func(test: GdUnitTestCase) -> void:
+			if tests.is_empty() or tests.has(test.test_name):
+				tests_to_execute.append(test)
+				GdUnitTestDiscoverSink.discover(test)
 	)
 	GdUnitSignals.instance().gdunit_event.emit(GdUnitEventTestDiscoverEnd.new(0, 0))
 	GdUnitTestDiscoverer.console_log_discover_results(tests_to_execute)

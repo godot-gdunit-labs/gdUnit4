@@ -40,10 +40,12 @@ func test_discover_new_suite_gdscript() -> void:
 	# simulate discovery of a new test suite
 	var discovered_tests: Array[GdUnitTestCase] = []
 	# we overwrite the default discover sync to catch the tests and not emit `gdunit_test_discovered`
-	await discoverer.discover(script, func(test_case: GdUnitTestCase) -> void:
-		discovered_tests.append(test_case)
-		# we need to manual update the cache here, this is normal made by gdunit_test_discovered signal
-		discoverer.sync_test_added(test_case)
+	await discoverer.discover(
+		script,
+		func(test_case: GdUnitTestCase) -> void:
+			discovered_tests.append(test_case)
+			# we need to manual update the cache here, this is normal made by gdunit_test_discovered signal
+			discoverer.sync_test_added(test_case)
 	)
 
 	# verify the all tests are discovered
@@ -77,13 +79,15 @@ func test_discover_deleted_test_gdscript() -> void:
 	var expected_deleted_tests: Array[GdUnitTestCase] = []
 	# simulate initial discovery of a new test suite
 	# we overwrite the default discover sync to catch the tests and not emit `gdunit_test_discovered`
-	await discoverer.discover(script, func(test_case: GdUnitTestCase) -> void:
-		# we need to manual update the cache here, this is normal made by gdunit_test_discovered signal
-		discoverer.sync_test_added(test_case)
-		discovered_tests.append(test_case)
-		# we save the tests for later verify to delete
-		if test_case.test_name in ["test_case1", "test_case2"]:
-			expected_deleted_tests.append(test_case)
+	await discoverer.discover(
+		script,
+		func(test_case: GdUnitTestCase) -> void:
+			# we need to manual update the cache here, this is normal made by gdunit_test_discovered signal
+			discoverer.sync_test_added(test_case)
+			discovered_tests.append(test_case)
+			# we save the tests for later verify to delete
+			if test_case.test_name in ["test_case1", "test_case2"]:
+				expected_deleted_tests.append(test_case)
 	)
 	# verify the expected tests are collected
 	assert_array(expected_deleted_tests).has_size(2)
@@ -94,9 +98,11 @@ func test_discover_deleted_test_gdscript() -> void:
 	assert_int(script.reload(true)).is_equal(OK)
 
 	# calling the discover like when a script change is emited by a save action
-	await discoverer.discover(script, func(test_case: GdUnitTestCase) -> void:
-		# we need to manual update the cache here, this is normal made by gdunit_test_discovered signal
-		discoverer.sync_test_added(test_case)
+	await discoverer.discover(
+		script,
+		func(test_case: GdUnitTestCase) -> void:
+			# we need to manual update the cache here, this is normal made by gdunit_test_discovered signal
+			discoverer.sync_test_added(test_case)
 	)
 
 	# verify discovery detects the two deleted tests
@@ -132,10 +138,12 @@ func test_discover_added_test_gdscript() -> void:
 	var discovered_tests: Array[GdUnitTestCase] = []
 	# simulate initial discovery of a new test suite
 	# we overwrite the default discover sync to catch the tests and not emit `gdunit_test_discovered`
-	await discoverer.discover(script, func(test_case: GdUnitTestCase) -> void:
-		# we need to manual update the cache here, this is normal made by gdunit_test_discovered signal
-		discoverer.sync_test_added(test_case)
-		discovered_tests.append(test_case)
+	await discoverer.discover(
+		script,
+		func(test_case: GdUnitTestCase) -> void:
+			# we need to manual update the cache here, this is normal made by gdunit_test_discovered signal
+			discoverer.sync_test_added(test_case)
+			discovered_tests.append(test_case)
 	)
 
 	# we simmulate adding two new tests
@@ -151,10 +159,12 @@ func test_discover_added_test_gdscript() -> void:
 
 	var expected_added_tests: Array[GdUnitTestCase] = []
 	# calling the discover like when a script change is emited by a save action
-	await discoverer.discover(script, func(test_case: GdUnitTestCase) -> void:
-		# we need to manual update the cache here, this is normal made by gdunit_test_discovered signal
-		discoverer.sync_test_added(test_case)
-		expected_added_tests.append(test_case)
+	await discoverer.discover(
+		script,
+		func(test_case: GdUnitTestCase) -> void:
+			# we need to manual update the cache here, this is normal made by gdunit_test_discovered signal
+			discoverer.sync_test_added(test_case)
+			expected_added_tests.append(test_case)
 	)
 	# verify the expected tests are collected
 	assert_array(expected_added_tests).has_size(2)
@@ -197,13 +207,15 @@ func test_discover_renamed_test_gdscript() -> void:
 	var expected_renamed_tests: Array[GdUnitTestCase] = []
 	# simulate initial discovery of a new test suite
 	# we overwrite the default discover sync to catch the tests and not emit `gdunit_test_discovered`
-	await discoverer.discover(script, func(test_case: GdUnitTestCase) -> void:
-		# we need to manual update the cache here, this is normal made by gdunit_test_discovered signal
-		discoverer.sync_test_added(test_case)
-		discovered_tests.append(test_case)
-		# we save the tests for later verify as renemaed
-		if test_case.test_name in ["test_case1", "test_case2"]:
-			expected_renamed_tests.append(test_case)
+	await discoverer.discover(
+		script,
+		func(test_case: GdUnitTestCase) -> void:
+			# we need to manual update the cache here, this is normal made by gdunit_test_discovered signal
+			discoverer.sync_test_added(test_case)
+			discovered_tests.append(test_case)
+			# we save the tests for later verify as renemaed
+			if test_case.test_name in ["test_case1", "test_case2"]:
+				expected_renamed_tests.append(test_case)
 	)
 	# verify the expected tests are collected
 	assert_array(expected_renamed_tests).has_size(2)
@@ -213,9 +225,11 @@ func test_discover_renamed_test_gdscript() -> void:
 	assert_int(script.reload(true)).is_equal(OK)
 
 	# calling the discover like when a script change is emited by a save action
-	await discoverer.discover(script, func(test_case: GdUnitTestCase) -> void:
-		# we need to manual update the cache here, this is normal made by gdunit_test_discovered signal
-		discoverer.sync_test_added(test_case)
+	await discoverer.discover(
+		script,
+		func(test_case: GdUnitTestCase) -> void:
+			# we need to manual update the cache here, this is normal made by gdunit_test_discovered signal
+			discoverer.sync_test_added(test_case)
 	)
 
 	# verify discovery detects the two deleted tests
@@ -254,13 +268,15 @@ func test_discover_moved_test_gdscript() -> void:
 	var expected_renamed_tests: Array[GdUnitTestCase] = []
 	# simulate initial discovery of a new test suite
 	# we overwrite the default discover sync to catch the tests and not emit `gdunit_test_discovered`
-	await discoverer.discover(script, func(test_case: GdUnitTestCase) -> void:
-		# we need to manual update the cache here, this is normal made by gdunit_test_discovered signal
-		discoverer.sync_test_added(test_case)
-		discovered_tests.append(test_case)
-		# we save the tests for later verify as renemaed
-		if test_case.test_name in ["test_parameterized_static_external", "test_parameterized_dynamic"]:
-			expected_renamed_tests.append(test_case)
+	await discoverer.discover(
+		script,
+		func(test_case: GdUnitTestCase) -> void:
+			# we need to manual update the cache here, this is normal made by gdunit_test_discovered signal
+			discoverer.sync_test_added(test_case)
+			discovered_tests.append(test_case)
+			# we save the tests for later verify as renemaed
+			if test_case.test_name in ["test_parameterized_static_external", "test_parameterized_dynamic"]:
+				expected_renamed_tests.append(test_case)
 	)
 	# verify the expected tests are collected (2 test each with a dataset of 3 == 6)
 	assert_array(expected_renamed_tests).extractv(extr("test_name"), extr("attribute_index"), extr("line_number"))\
@@ -279,9 +295,11 @@ func test_discover_moved_test_gdscript() -> void:
 	assert_int(script.reload(true)).is_equal(OK)
 
 	# calling the discover like when a script change is emited by a save action
-	await discoverer.discover(script, func(test_case: GdUnitTestCase) -> void:
-		# we need to manual update the cache here, this is normal made by gdunit_test_discovered signal
-		discoverer.sync_test_added(test_case)
+	await discoverer.discover(
+		script,
+		func(test_case: GdUnitTestCase) -> void:
+			# we need to manual update the cache here, this is normal made by gdunit_test_discovered signal
+			discoverer.sync_test_added(test_case)
 	)
 
 	# verify discovery detects the moved tests by two lines
@@ -327,10 +345,12 @@ func test_discover_on_csharp_script(_do_skip := !GdUnit4CSharpApiLoader.is_api_l
 	var script := load_non_cached("res://addons/gdUnit4/test/core/discovery/resources/DiscoverExampleTestSuite.cs")
 	# simulate initial discovery of a new test suite
 	# we overwrite the default discover sync to catch the tests and not emit `gdunit_test_discovered`
-	await discoverer.discover(script, func(test_case: GdUnitTestCase) -> void:
-		# we need to manual update the cache here, this is normal made by gdunit_test_discovered signal
-		discoverer.sync_test_added(test_case)
-		discovered_tests.append(test_case)
+	await discoverer.discover(
+		script,
+		func(test_case: GdUnitTestCase) -> void:
+			# we need to manual update the cache here, this is normal made by gdunit_test_discovered signal
+			discoverer.sync_test_added(test_case)
+			discovered_tests.append(test_case)
 	)
 
 	assert_array(discovered_tests)\

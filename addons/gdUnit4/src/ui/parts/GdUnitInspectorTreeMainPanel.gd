@@ -1160,7 +1160,7 @@ func _on_tree_item_mouse_selected(mouse_position: Vector2, mouse_button_index: i
 		_context_menu.popup()
 
 
-func _on_Tree_item_selected() -> void:  # gdstyle:ignore=naming/function-name-snake-case
+func _on_tree_item_selected() -> void:
 	_current_selected_item = _tree.get_selected()
 	var reports := get_item_reports(_current_selected_item)
 	_report_panel.show_report(reports)
@@ -1168,7 +1168,7 @@ func _on_Tree_item_selected() -> void:  # gdstyle:ignore=naming/function-name-sn
 
 
 # Opens the test suite
-func _on_Tree_item_activated() -> void:  # gdstyle:ignore=naming/function-name-snake-case
+func _on_tree_item_activated() -> void:
 	var selected_item := _tree.get_selected()
 	var line_number := get_item_test_line_number(selected_item)
 	if line_number != -1:

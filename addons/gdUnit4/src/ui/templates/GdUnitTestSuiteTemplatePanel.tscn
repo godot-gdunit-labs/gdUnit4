@@ -120,8 +120,8 @@ context_menu_enabled = false
 shortcut_keys_enabled = false
 virtual_keyboard_enabled = false
 
-[connection signal="text_changed" from="VBoxContainer/EdiorLayout/Editor" to="." method="_on_Editor_text_changed"]
-[connection signal="pressed" from="VBoxContainer/EdiorLayout/Editor/MarginContainer/HBoxContainer/Tags" to="." method="_on_Tags_pressed"]
-[connection signal="item_selected" from="VBoxContainer/EdiorLayout/Editor/MarginContainer/HBoxContainer/SelectType" to="." method="_on_SelectType_item_selected"]
-[connection signal="pressed" from="VBoxContainer/Panel/HBoxContainer/Restore" to="." method="_on_Restore_pressed"]
-[connection signal="pressed" from="VBoxContainer/Panel/HBoxContainer/Save" to="." method="_on_Save_pressed"]
+[connection signal="text_changed" from="VBoxContainer/EdiorLayout/Editor" to="." method="_on_editor_text_changed"]
+[connection signal="pressed" from="VBoxContainer/EdiorLayout/Editor/MarginContainer/HBoxContainer/Tags" to="." method="_on_tags_pressed"]
+[connection signal="item_selected" from="VBoxContainer/EdiorLayout/Editor/MarginContainer/HBoxContainer/SelectType" to="." method="_on_select_type_item_selected"]
+[connection signal="pressed" from="VBoxContainer/Panel/HBoxContainer/Restore" to="." method="_on_restore_pressed"]
+[connection signal="pressed" from="VBoxContainer/Panel/HBoxContainer/Save" to="." method="_on_save_pressed"]

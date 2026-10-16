@@ -128,6 +128,6 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 40)
 layout_mode = 2
 
-[connection signal="item_activated" from="split/Panel/Tree" to="." method="_on_Tree_item_activated"]
+[connection signal="item_activated" from="split/Panel/Tree" to="." method="_on_tree_item_activated"]
 [connection signal="item_mouse_selected" from="split/Panel/Tree" to="." method="_on_tree_item_mouse_selected"]
-[connection signal="item_selected" from="split/Panel/Tree" to="." method="_on_Tree_item_selected"]
+[connection signal="item_selected" from="split/Panel/Tree" to="." method="_on_tree_item_selected"]

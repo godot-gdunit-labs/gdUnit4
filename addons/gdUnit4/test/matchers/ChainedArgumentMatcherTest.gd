@@ -5,7 +5,7 @@ extends GdUnitTestSuite
 
 func test_is_match_one_arg() -> void:
 	var matchers := [
-		EqualsArgumentMatcher.new("foo")
+		EqualsArgumentMatcher.new("foo"),
 	]
 	var matcher := ChainedArgumentMatcher.new(matchers)
 
@@ -16,7 +16,7 @@ func test_is_match_one_arg() -> void:
 func test_is_match_two_arg() -> void:
 	var matchers := [
 		EqualsArgumentMatcher.new("foo"),
-		EqualsArgumentMatcher.new("value1")
+		EqualsArgumentMatcher.new("value1"),
 	]
 	var matcher := ChainedArgumentMatcher.new(matchers)
 
@@ -27,7 +27,7 @@ func test_is_match_two_arg() -> void:
 
 func test_is_match_different_arg_and_matcher() -> void:
 	var matchers := [
-		EqualsArgumentMatcher.new("foo")
+		EqualsArgumentMatcher.new("foo"),
 	]
 	var matcher := ChainedArgumentMatcher.new(matchers)
 	assert_bool(matcher.is_match(["foo", "value"])).is_false()

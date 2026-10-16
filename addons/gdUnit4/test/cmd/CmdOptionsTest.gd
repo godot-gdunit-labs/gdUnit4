@@ -6,7 +6,6 @@ var option_a := CmdOption.new("-a", "some help text a", "some description a")
 var option_f := CmdOption.new("-f, --foo", "some help text foo", "some description foo")
 var option_b := CmdOption.new("-b, --bar", "some help text bar", "some description bar")
 var option_x := CmdOption.new("-x", "some help text x", "some description x")
-
 var _cmd_options: CmdOptions
 
 

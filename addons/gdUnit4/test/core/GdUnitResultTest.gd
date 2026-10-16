@@ -5,8 +5,8 @@ extends GdUnitTestSuite
 
 func test_serde() -> void:
 	var value := {
-		"info" : "test",
-		"meta" : 42
+		"info": "test",
+		"meta": 42,
 	}
 	var source := GdUnitResult.success(value)
 	var serialized_result := GdUnitResult.serialize(source)

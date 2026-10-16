@@ -76,10 +76,10 @@ func test_equals_array() -> void:
 func test_equals_dictionary() -> void:
 	var a := {}
 	var b := {}
-	var c := {"a": "foo"}
-	var d := {"a": "foo"}
-	var e1 := {"a": "foo", "b": "bar"}
-	var e2 := {"b": "bar", "a": "foo"}
+	var c := { "a": "foo" }
+	var d := { "a": "foo" }
+	var e1 := { "a": "foo", "b": "bar" }
+	var e2 := { "b": "bar", "a": "foo" }
 
 	assert_bool(GdObjects.equals(a, a)).is_true()
 	assert_bool(GdObjects.equals(a, b)).is_true()
@@ -97,23 +97,6 @@ func test_equals_dictionary() -> void:
 	assert_bool(GdObjects.equals(e1, a)).is_false()
 	assert_bool(GdObjects.equals(c, e1)).is_false()
 	assert_bool(GdObjects.equals(e1, c)).is_false()
-
-
-class TestClass extends Resource:
-
-	enum {
-		A,
-		B
-	}
-
-	var _a: int
-	var _b: String
-	var _c: Array
-
-	func _init(a: int = 0, b: String = "", c: Array = []) -> void:
-		_a = a
-		_b = b
-		_c = c
 
 
 func test_equals_class() -> void:
@@ -167,10 +150,6 @@ func test_is_primitive_type() -> void:
 	assert_bool(GdObjects.is_primitive_type(0.1)).is_true()
 	assert_bool(GdObjects.is_primitive_type("")).is_true()
 	assert_bool(GdObjects.is_primitive_type(Vector2.ONE)).is_false()
-
-
-class TestClassForIsType:
-	var x: int
 
 
 func test_is_type() -> void:
@@ -519,16 +498,37 @@ func test_is_snake_case() -> void:
 	assert_bool(GdObjects.is_snake_case("my_class_nameTest")).is_false()
 
 
-class ObjectWithSceneReferece:
-	var _node: Node
-
-	func _init(node: Node) -> void:
-		_node = node
-
-
 func test_is_equal_on_scene_embedded_script() -> void:
 	@warning_ignore("unsafe_method_access")
 	var node: Node = auto_free(load("res://addons/gdUnit4/test/core/resources/scenes/SceneWithEmbeddedScript.tscn").instantiate())
 
 	GdObjects.equals(ObjectWithSceneReferece.new(node), ObjectWithSceneReferece.new(node), false)
 	assert_object(ObjectWithSceneReferece.new(node)).is_equal(ObjectWithSceneReferece.new(node))
+
+
+class TestClass extends Resource:
+
+	enum {
+		A,
+		B,
+	}
+
+	var _a: int
+	var _b: String
+	var _c: Array
+
+	func _init(a: int = 0, b: String = "", c: Array = []) -> void:
+		_a = a
+		_b = b
+		_c = c
+
+
+class TestClassForIsType:
+	var x: int
+
+
+class ObjectWithSceneReferece:
+	var _node: Node
+
+	func _init(node: Node) -> void:
+		_node = node

@@ -23,7 +23,7 @@ const EXCLUDED_CLASSES = [
 	"AnimationNodeEndState",
 	# Godot-4-4_dev7 get_class issues
 	"UPNPDevice",
-	"UPNP"
+	"UPNP",
 ]
 
 var class_names: Array[String] = []

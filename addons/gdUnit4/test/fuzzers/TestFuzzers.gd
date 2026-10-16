@@ -4,6 +4,18 @@ const MIN_VALUE := -10
 const MAX_VALUE := 22
 
 
+func min_value() -> int:
+	return MIN_VALUE
+
+
+func get_fuzzer() -> Fuzzer:
+	return Fuzzers.rangei(min_value(), NestedFuzzer._s_max_value())
+
+
+func non_fuzzer() -> Resource:
+	return Image.new()
+
+
 class NestedFuzzer extends Fuzzer:
 
 	func _init() -> void:
@@ -25,15 +37,3 @@ class NestedFuzzerWithArgs extends Fuzzer:
 
 	func next_value() -> Variant:
 		return _value
-
-
-func min_value() -> int:
-	return MIN_VALUE
-
-
-func get_fuzzer() -> Fuzzer:
-	return Fuzzers.rangei(min_value(), NestedFuzzer._s_max_value())
-
-
-func non_fuzzer() -> Resource:
-	return Image.new()

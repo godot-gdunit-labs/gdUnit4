@@ -7,30 +7,12 @@ var _cmd_options: CmdOptions
 var _cmd_instance: TestCommands
 
 
-# small example of command class
-class TestCommands:
-	func cmd_no_arg() -> String:
-		return ""
-
-	func cmd_foo() -> String:
-		return "cmd_foo"
-
-	func cmd_arg(value: String) -> String:
-		return value
-
-	func cmd_args(values: PackedStringArray) -> Array:
-		return values
-
-	func cmd_x() -> String:
-		return "cmd_x"
-
-
 func before() -> void:
 	# setup command options
 	_cmd_options = CmdOptions.new([
 		CmdOption.new("-a", "some help text a", "some description a"),
 		CmdOption.new("-f, --foo", "some help text foo", "some description foo"),
-		CmdOption.new("-arg, --arg", "some help text bar", "some description bar")
+		CmdOption.new("-arg, --arg", "some help text bar", "some description bar"),
 	],
 	# advnaced options
 	[
@@ -157,3 +139,21 @@ func test_execute_commands_with_cb_registered() -> void:
 	verify(cmd_spy).cmd_arg("some_value")
 	verify(cmd_spy).cmd_args(PackedStringArray(["value1", "value2"]))
 	verify_no_more_interactions(cmd_spy)
+
+
+# small example of command class
+class TestCommands:
+	func cmd_no_arg() -> String:
+		return ""
+
+	func cmd_foo() -> String:
+		return "cmd_foo"
+
+	func cmd_arg(value: String) -> String:
+		return value
+
+	func cmd_args(values: PackedStringArray) -> Array:
+		return values
+
+	func cmd_x() -> String:
+		return "cmd_x"

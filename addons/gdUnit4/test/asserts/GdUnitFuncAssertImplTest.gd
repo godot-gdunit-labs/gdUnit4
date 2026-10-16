@@ -1,115 +1,9 @@
 # GdUnit generated TestSuite
 class_name GdUnitFuncAssertImplTest
 extends GdUnitTestSuite
+
 @warning_ignore_start("redundant_await")
-
 const GdUnitTools = preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
-
-
-class TestValueProvider:
-	var _max_iterations: int
-	var _current_itteration := 0
-
-	func _init(iterations := 0) -> void:
-		_max_iterations = iterations
-
-	func bool_value() -> bool:
-		_current_itteration += 1
-		if _current_itteration == _max_iterations:
-			return true
-		return false
-
-	func int_value() -> int:
-		return 0
-
-	func float_value() -> float:
-		return 0.0
-
-	func string_value() -> String:
-		return "value"
-
-	func object_value() -> Object:
-		return Resource.new()
-
-	func array_value() -> Array:
-		return []
-
-	func dict_value() -> Dictionary:
-		return {}
-
-	func vec2_value() -> Vector2:
-		return Vector2.ONE
-
-	func vec3_value() -> Vector3:
-		return Vector3.ONE
-
-	func no_value() -> void:
-		pass
-
-	func unknown_value() -> Vector3:
-		return Vector3.ONE
-
-
-class ValueProvidersWithArguments:
-	func is_type(_type: int) -> bool:
-		return true
-
-	func get_index(_instance: Object, _name: String) -> int:
-		return 1
-
-	func get_index2(_instance: Object, _name: String, _recursive := false) -> int:
-		return 1
-
-
-class TestIterativeValueProvider:
-	var _max_iterations: int
-	var _current_itteration := 0
-	var _inital_value: Variant
-	var _final_value: Variant
-
-	func _init(inital_value: Variant, iterations: int, final_value: Variant) -> void:
-		_max_iterations = iterations
-		_inital_value = inital_value
-		_final_value = final_value
-
-	func bool_value() -> bool:
-		_current_itteration += 1
-		if _current_itteration >= _max_iterations:
-			return _final_value
-		return _inital_value
-
-	func int_value() -> int:
-		_current_itteration += 1
-		if _current_itteration >= _max_iterations:
-			return _final_value
-		return _inital_value
-
-	func obj_value() -> Variant:
-		_current_itteration += 1
-		if _current_itteration >= _max_iterations:
-			return _final_value
-		return _inital_value
-
-	func has_type(type: int, _recursive: bool = true) -> int:
-		_current_itteration += 1
-		#await (Engine.get_main_loop() as SceneTree).idle_frame
-		if type == _current_itteration:
-			return _final_value
-		return _inital_value
-
-	func await_value() -> int:
-		_current_itteration += 1
-		await (Engine.get_main_loop() as SceneTree).process_frame
-		prints("yielded_value", _current_itteration)
-		if _current_itteration >= _max_iterations:
-			return _final_value
-		return _inital_value
-
-	func reset() -> void:
-		_current_itteration = 0
-
-	func iteration() -> int:
-		return _current_itteration
 
 
 func test_is_null(_timeout := 2000) -> void:
@@ -346,3 +240,109 @@ func test_invalid_function(_timeout := 100) -> void:
 		.wait_until(1000)\
 		.is_equal(42))
 	).starts_with_message("The function 'invalid_func_name' do not exists checked instance")
+
+
+class TestValueProvider:
+	var _max_iterations: int
+	var _current_itteration := 0
+
+	func _init(iterations := 0) -> void:
+		_max_iterations = iterations
+
+	func bool_value() -> bool:
+		_current_itteration += 1
+		if _current_itteration == _max_iterations:
+			return true
+		return false
+
+	func int_value() -> int:
+		return 0
+
+	func float_value() -> float:
+		return 0.0
+
+	func string_value() -> String:
+		return "value"
+
+	func object_value() -> Object:
+		return Resource.new()
+
+	func array_value() -> Array:
+		return []
+
+	func dict_value() -> Dictionary:
+		return {}
+
+	func vec2_value() -> Vector2:
+		return Vector2.ONE
+
+	func vec3_value() -> Vector3:
+		return Vector3.ONE
+
+	func no_value() -> void:
+		pass
+
+	func unknown_value() -> Vector3:
+		return Vector3.ONE
+
+
+class ValueProvidersWithArguments:
+	func is_type(_type: int) -> bool:
+		return true
+
+	func get_index(_instance: Object, _name: String) -> int:
+		return 1
+
+	func get_index2(_instance: Object, _name: String, _recursive := false) -> int:
+		return 1
+
+
+class TestIterativeValueProvider:
+	var _max_iterations: int
+	var _current_itteration := 0
+	var _inital_value: Variant
+	var _final_value: Variant
+
+	func _init(inital_value: Variant, iterations: int, final_value: Variant) -> void:
+		_max_iterations = iterations
+		_inital_value = inital_value
+		_final_value = final_value
+
+	func bool_value() -> bool:
+		_current_itteration += 1
+		if _current_itteration >= _max_iterations:
+			return _final_value
+		return _inital_value
+
+	func int_value() -> int:
+		_current_itteration += 1
+		if _current_itteration >= _max_iterations:
+			return _final_value
+		return _inital_value
+
+	func obj_value() -> Variant:
+		_current_itteration += 1
+		if _current_itteration >= _max_iterations:
+			return _final_value
+		return _inital_value
+
+	func has_type(type: int, _recursive: bool = true) -> int:
+		_current_itteration += 1
+		#await (Engine.get_main_loop() as SceneTree).idle_frame
+		if type == _current_itteration:
+			return _final_value
+		return _inital_value
+
+	func await_value() -> int:
+		_current_itteration += 1
+		await (Engine.get_main_loop() as SceneTree).process_frame
+		prints("yielded_value", _current_itteration)
+		if _current_itteration >= _max_iterations:
+			return _final_value
+		return _inital_value
+
+	func reset() -> void:
+		_current_itteration = 0
+
+	func iteration() -> int:
+		return _current_itteration

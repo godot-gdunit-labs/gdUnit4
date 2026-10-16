@@ -28,17 +28,17 @@ func test_collect_patch_versions_current_eq_latest_version() -> void:
 
 func test_collect_patch_versions_current_lower_latest_version() -> void:
 	# using one version lower than highst available patch
-	assert_array(_patcher._collect_patch_versions(_PATCHES, GdUnit4Version.new(0,9,9)))\
+	assert_array(_patcher._collect_patch_versions(_PATCHES, GdUnit4Version.new(0, 9, 9)))\
 		.contains_exactly(["res://addons/gdUnit4/test/update/resources/patches/v1.1.4"])
 
 	# using two versions lower than highst available patch
-	assert_array(_patcher._collect_patch_versions(_PATCHES, GdUnit4Version.new(0,9,8)))\
+	assert_array(_patcher._collect_patch_versions(_PATCHES, GdUnit4Version.new(0, 9, 8)))\
 		.contains_exactly([
 			"res://addons/gdUnit4/test/update/resources/patches/v0.9.9",
 			"res://addons/gdUnit4/test/update/resources/patches/v1.1.4"])
 
 	# using three versions lower than highst available patch
-	assert_array(_patcher._collect_patch_versions(_PATCHES, GdUnit4Version.new(0,9,5)))\
+	assert_array(_patcher._collect_patch_versions(_PATCHES, GdUnit4Version.new(0, 9, 5)))\
 		.contains_exactly([
 			"res://addons/gdUnit4/test/update/resources/patches/v0.9.6",
 			"res://addons/gdUnit4/test/update/resources/patches/v0.9.9",

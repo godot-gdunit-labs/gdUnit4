@@ -938,56 +938,6 @@ func test_extract() -> void:
 			.dedent().trim_prefix("\n"))
 
 
-class TestObj:
-	var _name: String
-	var _value: Variant
-	var _x: Variant
-
-	func _init(name: String, value: Variant, x: Variant = null) -> void:
-		_name = name
-		_value = value
-		_x = x
-
-	func get_name() -> String:
-		return _name
-
-	func get_value() -> Variant:
-		return _value
-
-	func get_x() -> Variant:
-		return _x
-
-	func get_x1() -> String:
-		return "x1"
-
-	func get_x2() -> String:
-		return "x2"
-
-	func get_x3() -> String:
-		return "x3"
-
-	func get_x4() -> String:
-		return "x4"
-
-	func get_x5() -> String:
-		return "x5"
-
-	func get_x6() -> String:
-		return "x6"
-
-	func get_x7() -> String:
-		return "x7"
-
-	func get_x8() -> String:
-		return "x8"
-
-	func get_x9() -> String:
-		return "x9"
-
-	func _to_string() -> String:
-		return "class:" + _name
-
-
 func test_extractv() -> void:
 	# single extract
 	assert_array([1, false, 3.14, null, Color.ALICE_BLUE])\
@@ -1124,20 +1074,6 @@ func test_is_failure() -> void:
 	assert_bool(true).override_failure_message("This line shold never be called").is_false()
 
 
-class ExampleTestClass extends RefCounted:
-	var _childs := Array()
-	var _parent: RefCounted = null
-
-	func add_child(child: ExampleTestClass) -> ExampleTestClass:
-		_childs.append(child)
-		child._parent = self
-		return self
-
-	func dispose() -> void:
-		_parent = null
-		_childs.clear()
-
-
 func test_contains_exactly_stuck() -> void:
 	var example_a := ExampleTestClass.new()\
 		.add_child(ExampleTestClass.new())\
@@ -1152,3 +1088,67 @@ func test_contains_exactly_stuck() -> void:
 	# manual free because of cross references
 	example_a.dispose()
 	example_b.dispose()
+
+
+class TestObj:
+	var _name: String
+	var _value: Variant
+	var _x: Variant
+
+	func _init(name: String, value: Variant, x: Variant = null) -> void:
+		_name = name
+		_value = value
+		_x = x
+
+	func get_name() -> String:
+		return _name
+
+	func get_value() -> Variant:
+		return _value
+
+	func get_x() -> Variant:
+		return _x
+
+	func get_x1() -> String:
+		return "x1"
+
+	func get_x2() -> String:
+		return "x2"
+
+	func get_x3() -> String:
+		return "x3"
+
+	func get_x4() -> String:
+		return "x4"
+
+	func get_x5() -> String:
+		return "x5"
+
+	func get_x6() -> String:
+		return "x6"
+
+	func get_x7() -> String:
+		return "x7"
+
+	func get_x8() -> String:
+		return "x8"
+
+	func get_x9() -> String:
+		return "x9"
+
+	func _to_string() -> String:
+		return "class:" + _name
+
+
+class ExampleTestClass extends RefCounted:
+	var _childs := Array()
+	var _parent: RefCounted = null
+
+	func add_child(child: ExampleTestClass) -> ExampleTestClass:
+		_childs.append(child)
+		child._parent = self
+		return self
+
+	func dispose() -> void:
+		_parent = null
+		_childs.clear()

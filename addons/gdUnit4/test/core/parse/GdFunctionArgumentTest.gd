@@ -64,7 +64,7 @@ func test_parse_parameter_single_row_array() -> void:
 		"""[6, 'flowchart TD\nid((This is a circular node))']""",
 		"""[7, 'flowchart TD\nid>This is a flag shaped node]']""",
 		"""[8, 'flowchart TD\nid{"This is a rhombus node"}']""",
-		"""[9, \"\"\"\nflowchart TD\nid{"This is a  rhombus node"}\n\"\"\"]"""
+		"""[9, \"\"\"\nflowchart TD\nid{"This is a  rhombus node"}\n\"\"\"]""",
 		]
 	)
 
@@ -89,7 +89,7 @@ func test_parse_parameter_multi_row_arrays() -> void:
 	assert_array(fa.parameter_sets()).contains_exactly([
 		"""["test_a", null, "LOG", {}]""",
 		"""["test_b", Node2D, null, {Node2D: "ER,ROR"}]""",
-		"""["test_c", Node2D, "LOG", {Node2D: "LOG"}]"""
+		"""["test_c", Node2D, "LOG", {Node2D: "LOG"}]""",
 		]
 	)
 
@@ -116,7 +116,7 @@ func test_parse_parameter_bad_formatted() -> void:
 	assert_array(fa.parameter_sets()).contains_exactly([
 		"""["test_a", null, "LOG", {}]""",
 		"""["test_b", Node2D, null, {Node2D: "ER,ROR"}]""",
-		"""["test_c", Node2D, "LOG", {Node2D: "LOG 1"}]"""
+		"""["test_c", Node2D, "LOG", {Node2D: "LOG 1"}]""",
 		]
 	)
 
@@ -132,7 +132,7 @@ func test_parse_argument_ends_with_additional_comma() -> void:
 	assert_array(fa.parameter_sets()).contains_exactly([
 		"""[true, 'bool']""",
 		"""[42, 'int']""",
-		"""['foo', 'String']"""
+		"""['foo', 'String']""",
 		]
 	)
 
@@ -177,7 +177,7 @@ func test_parse_parameter_array_literal_with_callable_call() -> void:
 			]"""
 	var fa := GdFunctionArgument.new("test_parameters", TYPE_STRING, test_parameters)
 	assert_array(fa.parameter_sets()).contains_exactly([
-		"""parameters_as_array("abc", "d,ef", "foo()")"""
+		"""parameters_as_array("abc", "d,ef", "foo()")""",
 		]
 	)
 
@@ -187,7 +187,7 @@ func test_parse_parameter_array_literal_with_multiple_callable_calls() -> void:
 	var fa := GdFunctionArgument.new("test_parameters", TYPE_STRING, test_parameters)
 	assert_array(fa.parameter_sets()).contains_exactly([
 		"""parameters_as_array("abc", "d,ef")""",
-		"""parameters_as_array("x", "y,z")"""
+		"""parameters_as_array("x", "y,z")""",
 		]
 	)
 
@@ -200,7 +200,7 @@ func test_parse_parameter_array_literal_with_escaped_quotes() -> void:
 	var fa := GdFunctionArgument.new("test_parameters", TYPE_STRING, test_parameters)
 	assert_array(fa.parameter_sets()).contains_exactly([
 		"""parameters_as_array(2, 'y"yy', "d\\"ef")""",
-		"""parameters_as_array(3, "z'zz", 'd\\'ef')"""
+		"""parameters_as_array(3, "z'zz", 'd\\'ef')""",
 		]
 	)
 
@@ -227,7 +227,7 @@ func test_parse_parameter_set() -> void:
 		"""[17, "tab\there and\there"]""",
 		"""[18, "badly formatted element", true, 42]""",
 		"""[19, \"\"\"second\ntriple\nquoted\"\"\", false]""",
-		"""[20, {Node2D: "ER,ROR"}, ["a", "b"]]"""
+		"""[20, {Node2D: "ER,ROR"}, ["a", "b"]]""",
 	])
 
 
@@ -235,7 +235,7 @@ func test_parse_parameter_set() -> void:
 
 
 func test_parse_parameters_performance() -> void:
-	const ITERATIONS := 10000
+	const ITERATIONS := 10_000
 
 	var t0 := Time.get_ticks_usec()
 	for _i in ITERATIONS:

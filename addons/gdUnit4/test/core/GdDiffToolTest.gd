@@ -119,26 +119,26 @@ func test_diff_rebuilds_expected_on_similar_values() -> void:
 #region large values GD-1327
 func test_diff_large_similar_values() -> void:
 	# the common prefix and suffix is cut off, a single change in a huge value is cheap
-	var value := "abcdefghij".repeat(13200)
-	var expected := value.substr(0, 60000) + "XYZ" + value.substr(60000)
+	var value := "abcdefghij".repeat(13_200)
+	var expected := value.substr(0, 60_000) + "XYZ" + value.substr(60_000)
 
-	assert_array(_as_arrays(GdDiffTool.diff(value, expected))).is_equal([[60000, 0, 60000, 3]])
-	assert_array(_as_arrays(GdDiffTool.diff(expected, value))).is_equal([[60000, 3, 60000, 0]])
+	assert_array(_as_arrays(GdDiffTool.diff(value, expected))).is_equal([[60_000, 0, 60_000, 3]])
+	assert_array(_as_arrays(GdDiffTool.diff(expected, value))).is_equal([[60_000, 3, 60_000, 0]])
 
 
 func test_diff_large_value_with_appended_character() -> void:
-	var value := "a".repeat(131072)
+	var value := "a".repeat(131_072)
 
-	assert_array(_as_arrays(GdDiffTool.diff(value, value + "x"))).is_equal([[131072, 0, 131072, 1]])
+	assert_array(_as_arrays(GdDiffTool.diff(value, value + "x"))).is_equal([[131_072, 0, 131_072, 1]])
 
 
 func test_diff_large_different_values() -> void:
 	# GD-1327: large values without any match used to run out of memory (quadratic growth of the edit trace),
 	# now the work is bounded and the unmatched regions are reported as changed
-	var value := "a".repeat(131072)
-	var expected := "b".repeat(131072)
+	var value := "a".repeat(131_072)
+	var expected := "b".repeat(131_072)
 
-	assert_array(_as_arrays(GdDiffTool.diff(value, expected))).is_equal([[0, 131072, 0, 131072]])
+	assert_array(_as_arrays(GdDiffTool.diff(value, expected))).is_equal([[0, 131_072, 0, 131_072]])
 
 
 func test_diff_large_random_values() -> void:
@@ -147,7 +147,7 @@ func test_diff_large_random_values() -> void:
 	rng.seed = 1327
 	var current := ""
 	var expected := ""
-	for i in 20000:
+	for i in 20_000:
 		current += char(97 + rng.randi_range(0, 3))
 		expected += char(97 + rng.randi_range(0, 3))
 
@@ -175,7 +175,7 @@ func _random_text(length: int, seed_value: int) -> String:
 
 func test_diff_large_value_with_few_changes() -> void:
 	# the edit cost stays below the limit (MIN_COST_LIMIT), the diff is minimal
-	var current := _random_text(50000, 7)
+	var current := _random_text(50_000, 7)
 	var expected := _replace_every(current, 500)
 
 	var hunks := GdDiffTool.diff(current, expected)
@@ -190,7 +190,7 @@ func test_diff_large_value_with_few_changes() -> void:
 
 func test_diff_large_value_with_many_changes() -> void:
 	# the edit cost exceeds the limit, the diff is no longer minimal but still valid
-	var current := _random_text(50000, 7)
+	var current := _random_text(50_000, 7)
 	var expected := _replace_every(current, 100)
 
 	var hunks := GdDiffTool.diff(current, expected)

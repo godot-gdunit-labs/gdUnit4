@@ -5,16 +5,6 @@ extends GdUnitTestSuite
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
 
-class InnerTestNodeClass extends Node:
-	# gdlint: ignore=unnecessary-pass
-	pass
-
-
-class InnerTestRefCountedClass extends RefCounted:
-	# gdlint: ignore=unnecessary-pass
-	pass
-
-
 func test_free_instance() -> void:
 	# on valid instances
 	assert_bool(await GdUnitTools.free_instance(RefCounted.new())).is_true()
@@ -47,3 +37,13 @@ func test_richtext_normalize() -> void:
 			must be empty but was
 		'after'
 		""")
+
+
+class InnerTestNodeClass extends Node:
+	# gdlint: ignore=unnecessary-pass
+	pass
+
+
+class InnerTestRefCountedClass extends RefCounted:
+	# gdlint: ignore=unnecessary-pass
+	pass

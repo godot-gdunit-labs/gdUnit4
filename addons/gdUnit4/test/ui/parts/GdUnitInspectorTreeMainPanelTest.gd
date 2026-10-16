@@ -5,21 +5,17 @@ extends GdUnitTestSuite
 
 # TestSuite generated from
 const GdUnitInspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/GdUnitInspectorTreeMainPanel.gd")
-
 const FAILED := GdUnitInspectorTreeMainPanel.STATE.FAILED
 const ERROR := GdUnitInspectorTreeMainPanel.STATE.ERROR
 const FLAKY := GdUnitInspectorTreeMainPanel.STATE.FLAKY
-
 const META_SCRIPT_PATH := "script_path"
 
 var suite_a_item: TreeItem
 var suite_b_item: TreeItem
 var suite_c_item: TreeItem
-
 var discovered_tests_suite_a := {}
 var discovered_tests_suite_b := {}
 var discovered_tests_suite_c := {}
-
 var _inspector: GdUnitInspectorTreeMainPanel
 
 
@@ -343,15 +339,15 @@ func test_suite_text_responds_to_test_case_events() -> void:
 	_inspector._on_gdunit_event(success_aa)
 	assert_str(suite_a_item.get_text(0)).is_equal("(1/5) ExampleTestSuiteA")
 
-	var error_ad := GdUnitEvent.new().test_after(test_ad.guid, "test_ad", {GdUnitEvent.ERRORS: true})
+	var error_ad := GdUnitEvent.new().test_after(test_ad.guid, "test_ad", { GdUnitEvent.ERRORS: true })
 	_inspector._on_gdunit_event(error_ad)
 	assert_str(suite_a_item.get_text(0)).is_equal("(1/5) ExampleTestSuiteA")
 
-	var failure_ab := GdUnitEvent.new().test_after(test_ab.guid, "test_ab", {GdUnitEvent.FAILED: true})
+	var failure_ab := GdUnitEvent.new().test_after(test_ab.guid, "test_ab", { GdUnitEvent.FAILED: true })
 	_inspector._on_gdunit_event(failure_ab)
 	assert_str(suite_a_item.get_text(0)).is_equal("(1/5) ExampleTestSuiteA")
 
-	var skipped_ac := GdUnitEvent.new().test_after(test_ac.guid, "test_ac", {GdUnitEvent.SKIPPED: true})
+	var skipped_ac := GdUnitEvent.new().test_after(test_ac.guid, "test_ac", { GdUnitEvent.SKIPPED: true })
 	_inspector._on_gdunit_event(skipped_ac)
 	assert_str(suite_a_item.get_text(0)).is_equal("(2/5) ExampleTestSuiteA")
 
@@ -440,9 +436,9 @@ func test_update_icon_state() -> void:
 	# test_case1 succeeded
 	_inspector._on_gdunit_event(GdUnitEvent.new().test_after(test_case1.guid, "test_case1"))
 	# test_case2 is failing by an orphan warning and an failure
-	_inspector._on_gdunit_event(GdUnitEvent.new().test_after(test_case2.guid, "test_case2", {GdUnitEvent.FAILED: true}))
+	_inspector._on_gdunit_event(GdUnitEvent.new().test_after(test_case2.guid, "test_case2", { GdUnitEvent.FAILED: true }))
 	# We check whether a test event with a warning does not overwrite a higher object status, e.g. an error.
-	_inspector._on_gdunit_event(GdUnitEvent.new().test_after(test_case2.guid, "test_case2", {GdUnitEvent.WARNINGS: true}))
+	_inspector._on_gdunit_event(GdUnitEvent.new().test_after(test_case2.guid, "test_case2", { GdUnitEvent.WARNINGS: true }))
 	# at last the suite after event
 	_inspector._on_gdunit_event(GdUnitEvent.new().suite_after(suite_script_path, suite_name, {}))
 

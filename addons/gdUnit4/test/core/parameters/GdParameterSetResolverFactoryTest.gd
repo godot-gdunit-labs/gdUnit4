@@ -3,7 +3,7 @@ extends GdUnitTestSuite
 var _test_properties := [
 	["test_a"],
 	["test_b"],
-	["test_c"]
+	["test_c"],
 ]
 
 

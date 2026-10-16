@@ -4,12 +4,12 @@ extends GdUnitTestSuite
 
 const IGNORE := GdUnitSettings.GdScriptWarningMode.IGNORE
 const ERROR := GdUnitSettings.GdScriptWarningMode.ERROR
-
 const MUTATION_SUITE := "res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteProjectSettingsMutation.gd"
 const PROBE_KEY := "application/config/name"
 
 
 #region auto save flag
+
 
 func test_is_project_settings_auto_save_defaults_true() -> void:
 	assert_bool(GdUnitSettings.is_project_settings_auto_save()).is_true()

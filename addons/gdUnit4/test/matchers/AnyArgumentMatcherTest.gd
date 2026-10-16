@@ -12,7 +12,7 @@ func test_is_match() -> void:
 	assert_bool(matcher.is_match(true)).is_true()
 	assert_bool(matcher.is_match(false)).is_true()
 	assert_bool(matcher.is_match(0)).is_true()
-	assert_bool(matcher.is_match(100010)).is_true()
+	assert_bool(matcher.is_match(100_010)).is_true()
 	assert_bool(matcher.is_match(1.2)).is_true()
 	assert_bool(matcher.is_match(RefCounted.new())).is_true()
 	assert_bool(matcher.is_match(auto_free(Node.new()))).is_true()

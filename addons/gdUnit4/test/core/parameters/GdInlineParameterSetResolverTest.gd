@@ -14,9 +14,8 @@ var example_parameters := [
 	"[TestObj.new(), TestObj]",
 	"[Vector3(1,1,1), Vector2(2,2)]",
 	"[Color(1,1,1), _color]",
-	"_test_set_a]"
+	"_test_set_a]",
 	]
-
 @warning_ignore_start("unused_private_class_variable")
 var _x := 42
 var _obj: Node2D
@@ -29,21 +28,6 @@ var _test_param2 := 20
 
 func parameters_as_array(index: int, arg1: String, arg2: String) -> Array[Variant]:
 	return [index, arg1, arg2]
-
-
-class TestObj:
-	func _init() -> void:
-		pass
-
-
-class TestObjNamed extends RefCounted:
-	var _value: String
-
-	func _init(value: String) -> void:
-		_value = value
-
-	func _to_string() -> String:
-		return _value
 
 
 func before() -> void:
@@ -61,40 +45,40 @@ func build_param(value: float) -> Vector3:
 
 
 func using_parameters_static_int_values(_a: int, _b: int, _test_parameters := [
-	[1, 2], [3, 4]
+	[1, 2], [3, 4],
 	]) -> void:
 	pass
 
 
 func using_parameters_function_values(_a: Vector3, _b: Vector3, _test_parameters := [
 	[build_param(1), build_param(3)],
-	[Vector3.BACK, Vector3.UP]
+	[Vector3.BACK, Vector3.UP],
 	]) -> void:
 	pass
 
 
 func using_parameters_static_vector2_values(_a: Vector2, _b: Vector2, _test_parameters := [
-	[Vector2.ZERO, Vector2.ONE], [Vector2(1.1, 3.2), Vector2.DOWN]
+	[Vector2.ZERO, Vector2.ONE], [Vector2(1.1, 3.2), Vector2.DOWN],
 	]) -> void:
 	pass
 
 
 func using_parameters_static_object_values(_a: Object, _b: Object, _test_parameters := [
 	[Resource.new(), Resource.new()],
-	[Resource.new(), null]
+	[Resource.new(), null],
 	]) -> void:
 	pass
 
 
 func using_parameters_static_custom_object_values(_a: Object, _b: Object, _expected: String, _test_parameters := [
-	[TestObjNamed.new("abc"), TestObjNamed.new("def"), "abcdef"]
+	[TestObjNamed.new("abc"), TestObjNamed.new("def"), "abcdef"],
 	]) -> void:
 	pass
 
 
 func using_parameters_static_values(_a: int, _b: int, _test_parameters := [
 	[1, 10],
-	[2, 20]
+	[2, 20],
 	]) -> void:
 	pass
 
@@ -102,7 +86,7 @@ func using_parameters_static_values(_a: int, _b: int, _test_parameters := [
 func using_parameters_with_properties(_a: int, _b: int, _test_parameters := [
 	[1, _test_param1],
 	[2, _test_param2],
-	[3, 30]
+	[3, 30],
 	]) -> void:
 	pass
 
@@ -115,7 +99,7 @@ func using_parameters_with_script_constants(_func_name: String, _expected_type: 
 	["bool", TYPE_BOOL],
 	["double", TYPE_FLOAT],
 	["array", TYPE_ARRAY],
-	["packed_array", TYPE_PACKED_BYTE_ARRAY]
+	["packed_array", TYPE_PACKED_BYTE_ARRAY],
 	]) -> void:
 	pass
 
@@ -126,7 +110,7 @@ func using_parameters_with_comments(_a: int, _b: int, _c: String, _expected: int
 	# between data sets
 	[3, 4, "5", 11],
 	[6, 7, "string #ABCD", 21], # dataset with [comment] sign
-	[6, 7, "string #ABCD", 21] # dataset with "comment" sign
+	[6, 7, "string #ABCD", 21], # dataset with "comment" sign
 	#eof
 ]) -> void:
 	pass
@@ -150,7 +134,7 @@ func using_array_types_paramater(_value: Variant, _test_parameters := [
 	[PackedStringArray(["1", "2"])],
 	[PackedVector2Array([Vector2.ZERO, Vector2.ONE])],
 	[PackedVector3Array([Vector3.ZERO, Vector3.ONE])],
-	[PackedColorArray([Color.RED, Color.GREEN])]
+	[PackedColorArray([Color.RED, Color.GREEN])],
 	]) -> void:
 	pass
 
@@ -159,22 +143,22 @@ func using_untyped_dictionary_parameter(
 		_value: Dictionary,
 		_expected: Dictionary,
 		_test_parameters: Array = [
-			[{ "top" : 10.0},	{ "down" : 20.0}],
+			[{ "top": 10.0 },	{ "down": 20.0 }],
 		]
 	) -> void:
 	pass
 
 
 func using_typed_key_dictionary_parameter(_items: Dictionary[String, Variant], _test_parameters := [
-	[{"foo" : 10}],
-	[{"bar" : 20}],
+	[{ "foo": 10 }],
+	[{ "bar": 20 }],
 	]) -> void:
 	pass
 
 
 func using_typed_dictionary_parameter(_items: Dictionary[String, int], _test_parameters := [
-	[{"foo" : 10}],
-	[{"bar" : 20}],
+	[{ "foo": 10 }],
+	[{ "bar": 20 }],
 	]) -> void:
 	pass
 
@@ -315,7 +299,7 @@ func test_get_parameters_binds_user_classes_on_fast_path() -> void:
 
 
 func test_get_parameters_with_underscored_numbers(expression: String, expected: Array, _test_parameters := [
-	["[234_567, 234567]", [234567, 234567]],
+	["[234_567, 234567]", [234_567, 234_567]],
 	["[123.456_789, 123.456789]", [123.456789, 123.456789]],
 	["[0x0123_abcd, 0b1010_1010]", [0x0123abcd, 0b10101010]],
 	["[1_000.5e1_0, -1_0]", [1000.5e10, -10]],
@@ -381,7 +365,7 @@ func test_resolve_parameters_with_static_values() -> void:
 	assert_array(params) \
 		.is_equal([
 			[1, 10, []],
-			[2, 20, []]
+			[2, 20, []],
 		])
 
 
@@ -437,7 +421,7 @@ func test_resolve_parameters_with_untyped_dictionary() -> void:
 
 	assert_array(params).is_equal(
 		[
-			[{"top" : 10.0}, {"down" : 20.0}, []]
+			[{ "top": 10.0 }, { "down": 20.0 }, []],
 		]
 	)
 
@@ -456,8 +440,8 @@ func test_resolve_parameters_with_typed_key_dictionary(_do_skip := true, _skip_r
 
 	assert_dict(params).is_equal(
 		[
-			[{"foo" : 10}, []],
-			[{"bar" : 20}, []],
+			[{ "foo": 10 }, []],
+			[{ "bar": 20 }, []],
 		]
 	)
 
@@ -478,8 +462,8 @@ func test_resolve_parameters_with_typed_dictionary(_do_skip := true, _skip_reaso
 
 	assert_dict(params).is_equal(
 		[
-			[{"foo" : 10}, []],
-			[{"bar" : 20}, []],
+			[{ "foo": 10 }, []],
+			[{ "bar": 20 }, []],
 		]
 	)
 
@@ -500,7 +484,7 @@ func test_resolve_parameters_with_const_values() -> void:
 	assert_array(params) \
 		.is_equal([
 			["aa", []],
-			["bb", []]
+			["bb", []],
 			])
 
 
@@ -512,7 +496,7 @@ func test_resolve_parameters_with_scrip_constans() -> void:
 			["bool", TYPE_BOOL, []],
 			["double", TYPE_FLOAT, []],
 			["array", TYPE_ARRAY, []],
-			["packed_array", TYPE_PACKED_BYTE_ARRAY, []]
+			["packed_array", TYPE_PACKED_BYTE_ARRAY, []],
 			])
 
 
@@ -557,6 +541,7 @@ func _resolve_parameters(child_name: String) -> Array[Array]:
 
 #region performance
 
+
 func test_performance_single() -> void:
 	const ITERATIONS := 1000
 	var resolver := GdInlineParameterSetResolver.new(example_parameters, "", "")
@@ -595,6 +580,7 @@ func test_performance_get_parameters_overall() -> void:
 
 #region _get_native_class_mapping
 
+
 func test_get_native_class_mapping() -> void:
 	var expected_count := 0
 	for clazz_name in ClassDB.get_class_list():
@@ -606,3 +592,18 @@ func test_get_native_class_mapping() -> void:
 	assert_dict(GdInlineParameterSetResolver._get_native_class_mapping()).has_size(expected_count)
 
 #endregion
+
+
+class TestObj:
+	func _init() -> void:
+		pass
+
+
+class TestObjNamed extends RefCounted:
+	var _value: String
+
+	func _init(value: String) -> void:
+		_value = value
+
+	func _to_string() -> String:
+		return _value

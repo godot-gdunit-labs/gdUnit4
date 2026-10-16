@@ -81,7 +81,7 @@ func test_extract_from_func_without_return_type() -> void:
 	assert_int(fd.return_type()).is_equal(GdObjects.TYPE_VOID)
 	assert_array(fd.args()).contains_exactly([
 		GdFunctionArgument.new("sibling", GdObjects.TYPE_NODE),
-		GdFunctionArgument.new("force_readable_name", TYPE_BOOL, false)
+		GdFunctionArgument.new("force_readable_name", TYPE_BOOL, false),
 	])
 
 
@@ -114,7 +114,7 @@ func test_extract_from_func_with_vararg() -> void:
 	assert_int(fd.return_type()).is_equal(GdObjects.TYPE_ENUM)
 	assert_array(fd.args()).contains_exactly([GdFunctionArgument.new("signal", TYPE_STRING_NAME)])
 	assert_array(fd.varargs()).contains_exactly([
-		GdFunctionArgument.new("varargs", GdObjects.TYPE_VARARG, "")
+		GdFunctionArgument.new("varargs", GdObjects.TYPE_VARARG, ""),
 	])
 
 
@@ -156,7 +156,7 @@ func test_extract_from_descriptor_is_virtual_func_full_check() -> void:
 		"_property_get_revert",
 		"_iter_init",
 		"_iter_next",
-		"_iter_get"
+		"_iter_get",
 	]
 
 	var virtual_count := 0

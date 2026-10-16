@@ -315,7 +315,7 @@ func test_simmulate_flaky_test(retry_count: int, is_flaky: bool, is_failed: bool
 				GdUnitEvent.WARNINGS: false,
 				GdUnitEvent.FLAKY: is_flaky,
 				GdUnitEvent.SKIPPED: false,
-				GdUnitEvent.FAILED_COUNT: 0 if is_flaky else retry_count*2,
+				GdUnitEvent.FAILED_COUNT: 0 if is_flaky else retry_count * 2,
 				GdUnitEvent.ERROR_COUNT: 0,
 				GdUnitEvent.SKIPPED_COUNT: 0,
 				GdUnitEvent.ORPHAN_NODES: 0,

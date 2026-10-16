@@ -500,8 +500,8 @@ func _random_text(length: int, seed_value: int) -> String:
 
 func test_is_equal_large_different_values() -> void:
 	# a failing assertion on large values must report a failure and not run out of memory
-	var current := _random_text(131072, 1)
-	var expected := _random_text(131072, 2)
+	var current := _random_text(131_072, 1)
+	var expected := _random_text(131_072, 2)
 
 	assert_failure(func() -> void: assert_str(current).is_equal(expected)) \
 		.is_failed() \
@@ -509,7 +509,7 @@ func test_is_equal_large_different_values() -> void:
 
 
 func test_is_equal_large_similar_values() -> void:
-	var current := _random_text(131072, 1)
+	var current := _random_text(131_072, 1)
 
 	assert_failure(func() -> void: assert_str(current).is_equal(current + "x")) \
 		.is_failed() \

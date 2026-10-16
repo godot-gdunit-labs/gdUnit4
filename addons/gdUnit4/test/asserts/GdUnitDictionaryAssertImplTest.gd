@@ -42,13 +42,13 @@ func test_is_not_null() -> void:
 # gdlint: disable=mixed-tabs-and-spaces
 func test_is_equal() -> void:
 	assert_dict({}).is_equal({})
-	assert_dict({1: 1}).is_equal({1: 1})
-	assert_dict({1: 1, "key_a": "value_a"}).is_equal({1: 1, "key_a": "value_a"})
+	assert_dict({ 1: 1 }).is_equal({ 1: 1 })
+	assert_dict({ 1: 1, "key_a": "value_a" }).is_equal({ 1: 1, "key_a": "value_a" })
 	# different order is also equals
-	assert_dict({"key_a": "value_a", 1: 1}).is_equal({1: 1, "key_a": "value_a"})
+	assert_dict({ "key_a": "value_a", 1: 1 }).is_equal({ 1: 1, "key_a": "value_a" })
 
 	# should fail
-	assert_failure(func() -> void: assert_dict(null).is_equal({1:1})) \
+	assert_failure(func() -> void: assert_dict(null).is_equal({ 1: 1 })) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
@@ -60,16 +60,16 @@ func test_is_equal() -> void:
 			.dedent()
 			.trim_prefix("\n")
 		)
-	assert_failure(func() -> void: assert_dict({}).is_equal({1: 1})).is_failed()
-	assert_failure(func() -> void: assert_dict({1: 1}).is_equal({})).is_failed()
-	assert_failure(func() -> void: assert_dict({1: 1}).is_equal({1: 2})).is_failed()
-	assert_failure(func() -> void: assert_dict({1: 2}).is_equal({1: 1})).is_failed()
-	assert_failure(func() -> void: assert_dict({1: 1}).is_equal({1: 1, "key_a": "value_a"})).is_failed()
-	assert_failure(func() -> void: assert_dict({1: 1, "key_a": "value_a"}).is_equal({1: 1})).is_failed()
-	assert_failure(func() -> void: assert_dict({1: 1, "key_a": "value_a"}).is_equal({1: 1, "key_b": "value_b"})).is_failed()
-	assert_failure(func() -> void: assert_dict({1: 1, "key_b": "value_b"}).is_equal({1: 1, "key_a": "value_a"})).is_failed()
-	assert_failure(func() -> void: assert_dict({"key_a": "value_a", 1: 1}).is_equal({1: 1, "key_b": "value_b"})).is_failed()
-	assert_failure(func() -> void: assert_dict({1:1, "key_b": "value_b"}).is_equal({"key_a": "value_a", 1:1})) \
+	assert_failure(func() -> void: assert_dict({}).is_equal({ 1: 1 })).is_failed()
+	assert_failure(func() -> void: assert_dict({ 1: 1 }).is_equal({})).is_failed()
+	assert_failure(func() -> void: assert_dict({ 1: 1 }).is_equal({ 1: 2 })).is_failed()
+	assert_failure(func() -> void: assert_dict({ 1: 2 }).is_equal({ 1: 1 })).is_failed()
+	assert_failure(func() -> void: assert_dict({ 1: 1 }).is_equal({ 1: 1, "key_a": "value_a" })).is_failed()
+	assert_failure(func() -> void: assert_dict({ 1: 1, "key_a": "value_a" }).is_equal({ 1: 1 })).is_failed()
+	assert_failure(func() -> void: assert_dict({ 1: 1, "key_a": "value_a" }).is_equal({ 1: 1, "key_b": "value_b" })).is_failed()
+	assert_failure(func() -> void: assert_dict({ 1: 1, "key_b": "value_b" }).is_equal({ 1: 1, "key_a": "value_a" })).is_failed()
+	assert_failure(func() -> void: assert_dict({ "key_a": "value_a", 1: 1 }).is_equal({ 1: 1, "key_b": "value_b" })).is_failed()
+	assert_failure(func() -> void: assert_dict({ 1: 1, "key_b": "value_b" }).is_equal({ "key_a": "value_a", 1: 1 })) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
@@ -90,19 +90,19 @@ func test_is_equal() -> void:
 func test_is_not_equal() -> void:
 	assert_dict(null).is_not_equal({})
 	assert_dict({}).is_not_equal(null)
-	assert_dict({}).is_not_equal({1: 1})
-	assert_dict({1: 1}).is_not_equal({})
-	assert_dict({1: 1}).is_not_equal({1: 2})
-	assert_dict({2: 1}).is_not_equal({1: 1})
-	assert_dict({1: 1}).is_not_equal({1: 1, "key_a": "value_a"})
-	assert_dict({1: 1, "key_a": "value_a"}).is_not_equal({1: 1})
-	assert_dict({1: 1, "key_a": "value_a"}).is_not_equal({1: 1, "key_b": "value_b"})
+	assert_dict({}).is_not_equal({ 1: 1 })
+	assert_dict({ 1: 1 }).is_not_equal({})
+	assert_dict({ 1: 1 }).is_not_equal({ 1: 2 })
+	assert_dict({ 2: 1 }).is_not_equal({ 1: 1 })
+	assert_dict({ 1: 1 }).is_not_equal({ 1: 1, "key_a": "value_a" })
+	assert_dict({ 1: 1, "key_a": "value_a" }).is_not_equal({ 1: 1 })
+	assert_dict({ 1: 1, "key_a": "value_a" }).is_not_equal({ 1: 1, "key_b": "value_b" })
 
 	# should fail
 	assert_failure(func() -> void: assert_dict({}).is_not_equal({})).is_failed()
-	assert_failure(func() -> void: assert_dict({1: 1}).is_not_equal({1: 1})).is_failed()
-	assert_failure(func() -> void: assert_dict({1: 1, "key_a": "value_a"}).is_not_equal({1: 1, "key_a": "value_a"})).is_failed()
-	assert_failure(func() -> void: assert_dict({"key_a": "value_a", 1:1}).is_not_equal({1:1, "key_a": "value_a"})) \
+	assert_failure(func() -> void: assert_dict({ 1: 1 }).is_not_equal({ 1: 1 })).is_failed()
+	assert_failure(func() -> void: assert_dict({ 1: 1, "key_a": "value_a" }).is_not_equal({ 1: 1, "key_a": "value_a" })).is_failed()
+	assert_failure(func() -> void: assert_dict({ "key_a": "value_a", 1: 1 }).is_not_equal({ 1: 1, "key_a": "value_a" })) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
@@ -122,9 +122,9 @@ func test_is_not_equal() -> void:
 
 func test_is_same() -> void:
 	var dict_a := {}
-	var dict_b := {"key": "value", "key2": "value"}
-	var dict_c := {1: 1, "key_a": "value_a"}
-	var dict_d := {"key_a": "value_a", 1: 1}
+	var dict_b := { "key": "value", "key2": "value" }
+	var dict_c := { 1: 1, "key_a": "value_a" }
+	var dict_d := { "key_a": "value_a", 1: 1 }
 	assert_dict(dict_a).is_same(dict_a)
 	assert_dict(dict_b).is_same(dict_b)
 	assert_dict(dict_c).is_same(dict_c)
@@ -140,7 +140,7 @@ func test_is_same() -> void:
 			.dedent()
 			.trim_prefix("\n")
 		)
-	assert_failure(func() -> void: assert_dict({1:1, "key_a": "value_a"}).is_same({1:1, "key_a": "value_a" })) \
+	assert_failure(func() -> void: assert_dict({ 1: 1, "key_a": "value_a" }).is_same({ 1: 1, "key_a": "value_a" })) \
 		.is_failed()\
 		.has_message("""
 			Expecting:
@@ -161,8 +161,8 @@ func test_is_same() -> void:
 func test_is_not_same() -> void:
 	var dict_a := {}
 	var dict_b := {}
-	var dict_c := {1: 1, "key_a": "value_a"}
-	var dict_d := {1: 1, "key_a": "value_a"}
+	var dict_c := { 1: 1, "key_a": "value_a" }
+	var dict_d := { 1: 1, "key_a": "value_a" }
 	assert_dict(dict_a).is_not_same(dict_b).is_not_same(dict_c).is_not_same(dict_d)
 	assert_dict(dict_b).is_not_same(dict_a).is_not_same(dict_c).is_not_same(dict_d)
 	assert_dict(dict_c).is_not_same(dict_a).is_not_same(dict_b).is_not_same(dict_d)
@@ -197,7 +197,7 @@ func test_is_empty() -> void:
 		.has_message("Expecting:\n"
 			+ " must be empty but was\n"
 			+ " '<null>'")
-	assert_failure(func() -> void: assert_dict({1:1}).is_empty()) \
+	assert_failure(func() -> void: assert_dict({ 1: 1 }).is_empty()) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
@@ -211,8 +211,8 @@ func test_is_empty() -> void:
 
 
 func test_is_not_empty() -> void:
-	assert_dict({1: 1}).is_not_empty()
-	assert_dict({1: 1, "key_a": "value_a"}).is_not_empty()
+	assert_dict({ 1: 1 }).is_not_empty()
+	assert_dict({ 1: 1, "key_a": "value_a" }).is_not_empty()
 
 	assert_failure(func() -> void: assert_dict(null).is_not_empty()) \
 		.is_failed() \
@@ -223,17 +223,17 @@ func test_is_not_empty() -> void:
 
 func test_has_size() -> void:
 	assert_dict({}).has_size(0)
-	assert_dict({1: 1}).has_size(1)
-	assert_dict({1: 1, 2: 1}).has_size(2)
-	assert_dict({1: 1, 2: 1, 3: 1}).has_size(3)
+	assert_dict({ 1: 1 }).has_size(1)
+	assert_dict({ 1: 1, 2: 1 }).has_size(2)
+	assert_dict({ 1: 1, 2: 1, 3: 1 }).has_size(3)
 
 	assert_failure(func() -> void: assert_dict(null).has_size(0))\
 		.is_failed() \
 		.has_message("Expecting: not to be '<null>'")
 	assert_failure(func() -> void: assert_dict(null).has_size(1)).is_failed()
 	assert_failure(func() -> void: assert_dict({}).has_size(1)).is_failed()
-	assert_failure(func() -> void: assert_dict({1: 1}).has_size(0)).is_failed()
-	assert_failure(func() -> void: assert_dict({1:1}).has_size(2)) \
+	assert_failure(func() -> void: assert_dict({ 1: 1 }).has_size(0)).is_failed()
+	assert_failure(func() -> void: assert_dict({ 1: 1 }).has_size(2)) \
 		.is_failed() \
 		.has_message("""
 			Expecting size:
@@ -244,17 +244,6 @@ func test_has_size() -> void:
 			.trim_prefix("\n")
 		)
 
-class TestObj:
-	var _name: String
-	var _value: int
-
-	func _init(name: String = "Foo", value: int = 0) -> void:
-		_name = name
-		_value = value
-
-	func _to_string() -> String:
-		return "class:%s:%d" % [_name, _value]
-
 
 func test_contains_keys() -> void:
 	var key_a := TestObj.new()
@@ -262,14 +251,14 @@ func test_contains_keys() -> void:
 	var key_c := TestObj.new()
 	var key_d := TestObj.new("D")
 
-	assert_dict({1: 1, 2: 2, 3: 3}).contains_keys([2])
-	assert_dict({1: 1, 2: 2, "key_a": "value_a"}).contains_keys([2, "key_a"])
-	assert_dict({key_a: 1, key_b: 2, key_c: 3}).contains_keys([key_a, key_b])
-	assert_dict({key_a: 1, key_c: 3}).contains_keys([key_b])
-	assert_dict({key_a: 1, 3: 3}).contains_keys([key_a, key_b])
+	assert_dict({ 1: 1, 2: 2, 3: 3 }).contains_keys([2])
+	assert_dict({ 1: 1, 2: 2, "key_a": "value_a" }).contains_keys([2, "key_a"])
+	assert_dict({ key_a: 1, key_b: 2, key_c: 3 }).contains_keys([key_a, key_b])
+	assert_dict({ key_a: 1, key_c: 3 }).contains_keys([key_b])
+	assert_dict({ key_a: 1, 3: 3 }).contains_keys([key_a, key_b])
 
 
-	assert_failure(func() -> void: assert_dict({1:1, 3:3}).contains_keys([2])) \
+	assert_failure(func() -> void: assert_dict({ 1: 1, 3: 3 }).contains_keys([2])) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains keys:
@@ -281,7 +270,7 @@ func test_contains_keys() -> void:
 			.dedent()
 			.trim_prefix("\n")
 		)
-	assert_failure(func() -> void: assert_dict({1:1, 3:3}).contains_keys([1, 4])) \
+	assert_failure(func() -> void: assert_dict({ 1: 1, 3: 3 }).contains_keys([1, 4])) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains keys:
@@ -296,7 +285,7 @@ func test_contains_keys() -> void:
 	assert_failure(func() -> void: assert_dict(null).contains_keys([1, 4])) \
 		.is_failed() \
 		.has_message("Expecting: not to be '<null>'")
-	assert_failure(func() -> void: assert_dict({key_a:1, 3:3}).contains_keys([key_a, key_d])) \
+	assert_failure(func() -> void: assert_dict({ key_a: 1, 3: 3 }).contains_keys([key_a, key_d])) \
 		.is_failed() \
 		.has_message("""
 			 Expecting contains keys:
@@ -314,13 +303,13 @@ func test_contains_keys_variadic_args() -> void:
 	var key_c := TestObj.new()
 	var key_d := TestObj.new("D")
 
-	assert_dict({1: 1, 2: 2, 3: 3}).contains_keys(2)
-	assert_dict({1: 1, 2: 2, "key_a": "value_a"}).contains_keys(2, "key_a")
-	assert_dict({key_a: 1, key_b: 2, key_c: 3}).contains_keys(key_a, key_b)
-	assert_dict({key_a: 1, key_c: 3}).contains_keys(key_b)
-	assert_dict({key_a: 1, 3: 3}).contains_keys(key_a, key_b)
+	assert_dict({ 1: 1, 2: 2, 3: 3 }).contains_keys(2)
+	assert_dict({ 1: 1, 2: 2, "key_a": "value_a" }).contains_keys(2, "key_a")
+	assert_dict({ key_a: 1, key_b: 2, key_c: 3 }).contains_keys(key_a, key_b)
+	assert_dict({ key_a: 1, key_c: 3 }).contains_keys(key_b)
+	assert_dict({ key_a: 1, 3: 3 }).contains_keys(key_a, key_b)
 
-	assert_failure(func() -> void: assert_dict({1:1, 3:3}).contains_keys(2)) \
+	assert_failure(func() -> void: assert_dict({ 1: 1, 3: 3 }).contains_keys(2)) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains keys:
@@ -332,7 +321,7 @@ func test_contains_keys_variadic_args() -> void:
 			.dedent()
 			.trim_prefix("\n")
 		)
-	assert_failure(func() -> void: assert_dict({1:1, 3:3}).contains_keys(1, 4)) \
+	assert_failure(func() -> void: assert_dict({ 1: 1, 3: 3 }).contains_keys(1, 4)) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains keys:
@@ -347,7 +336,7 @@ func test_contains_keys_variadic_args() -> void:
 	assert_failure(func() -> void: assert_dict(null).contains_keys(1, 4)) \
 		.is_failed() \
 		.has_message("Expecting: not to be '<null>'")
-	assert_failure(func() -> void: assert_dict({key_a:1, 3:3}).contains_keys(key_a, key_d)) \
+	assert_failure(func() -> void: assert_dict({ key_a: 1, 3: 3 }).contains_keys(key_a, key_d)) \
 		.is_failed() \
 		.has_message("""
 			 Expecting contains keys:
@@ -360,10 +349,10 @@ func test_contains_keys_variadic_args() -> void:
 
 
 func test_contains_key_value() -> void:
-	assert_dict({1: 1}).contains_key_value(1, 1)
-	assert_dict({1: 1, 2: 2, 3: 3}).contains_key_value(3, 3).contains_key_value(1, 1)
+	assert_dict({ 1: 1 }).contains_key_value(1, 1)
+	assert_dict({ 1: 1, 2: 2, 3: 3 }).contains_key_value(3, 3).contains_key_value(1, 1)
 
-	assert_failure(func() -> void: assert_dict({1:1}).contains_key_value(1, 2)) \
+	assert_failure(func() -> void: assert_dict({ 1: 1 }).contains_key_value(1, 2)) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains key and value:
@@ -380,10 +369,10 @@ func test_contains_key_value() -> void:
 
 func test_not_contains_keys() -> void:
 	assert_dict({}).not_contains_keys([2])
-	assert_dict({1: 1, 3: 3}).not_contains_keys([2])
-	assert_dict({1: 1, 3: 3}).not_contains_keys([2, 4])
+	assert_dict({ 1: 1, 3: 3 }).not_contains_keys([2])
+	assert_dict({ 1: 1, 3: 3 }).not_contains_keys([2, 4])
 
-	assert_failure(func() -> void: assert_dict({1:1, 2:2, 3:3}).not_contains_keys([2, 4])) \
+	assert_failure(func() -> void: assert_dict({ 1: 1, 2: 2, 3: 3 }).not_contains_keys([2, 4])) \
 		.is_failed() \
 		.has_message("""
 			Expecting NOT contains keys:
@@ -395,7 +384,7 @@ func test_not_contains_keys() -> void:
 			.dedent()
 			.trim_prefix("\n")
 		)
-	assert_failure(func() -> void: assert_dict({1:1, 2:2, 3:3}).not_contains_keys([1, 2, 3, 4])) \
+	assert_failure(func() -> void: assert_dict({ 1: 1, 2: 2, 3: 3 }).not_contains_keys([1, 2, 3, 4])) \
 		.is_failed() \
 		.has_message("""
 			Expecting NOT contains keys:
@@ -414,10 +403,10 @@ func test_not_contains_keys() -> void:
 
 func test_not_contains_keys_variadic_args() -> void:
 	assert_dict({}).not_contains_keys(2)
-	assert_dict({1: 1, 3: 3}).not_contains_keys(2)
-	assert_dict({1: 1, 3: 3}).not_contains_keys(2, 4)
+	assert_dict({ 1: 1, 3: 3 }).not_contains_keys(2)
+	assert_dict({ 1: 1, 3: 3 }).not_contains_keys(2, 4)
 
-	assert_failure(func() -> void: assert_dict({1:1, 2:2, 3:3}).not_contains_keys(2, 4)) \
+	assert_failure(func() -> void: assert_dict({ 1: 1, 2: 2, 3: 3 }).not_contains_keys(2, 4)) \
 		.is_failed() \
 		.has_message("""
 			Expecting NOT contains keys:
@@ -429,7 +418,7 @@ func test_not_contains_keys_variadic_args() -> void:
 			.dedent()
 			.trim_prefix("\n")
 		)
-	assert_failure(func() -> void: assert_dict({1:1, 2:2, 3:3}).not_contains_keys(1, 2, 3, 4)) \
+	assert_failure(func() -> void: assert_dict({ 1: 1, 2: 2, 3: 3 }).not_contains_keys(1, 2, 3, 4)) \
 		.is_failed() \
 		.has_message("""
 			Expecting NOT contains keys:
@@ -451,12 +440,12 @@ func test_contains_same_keys() -> void:
 	var key_b := TestObj.new()
 	var key_c := TestObj.new()
 
-	assert_dict({1: 1, 2: 2, 3: 3}).contains_same_keys([2])
-	assert_dict({1: 1, 2: 2, "key_a": "value_a"}).contains_same_keys([2, "key_a"])
-	assert_dict({key_a: 1, key_b: 2, 3: 3}).contains_same_keys([key_b])
-	assert_dict({key_a: 1, key_b: 2, 3: 3}).contains_same_keys([key_a, key_b])
+	assert_dict({ 1: 1, 2: 2, 3: 3 }).contains_same_keys([2])
+	assert_dict({ 1: 1, 2: 2, "key_a": "value_a" }).contains_same_keys([2, "key_a"])
+	assert_dict({ key_a: 1, key_b: 2, 3: 3 }).contains_same_keys([key_b])
+	assert_dict({ key_a: 1, key_b: 2, 3: 3 }).contains_same_keys([key_a, key_b])
 
-	assert_failure(func() -> void: assert_dict({key_a:1, key_c:3 }).contains_same_keys([key_a, key_b])) \
+	assert_failure(func() -> void: assert_dict({ key_a: 1, key_c: 3 }).contains_same_keys([key_a, key_b])) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains SAME keys:
@@ -475,11 +464,11 @@ func test_contains_same_key_value() -> void:
 	var key_c := TestObj.new("C")
 	var key_d := TestObj.new("A")
 
-	assert_dict({key_a:1, key_b:2, key_c:3})\
+	assert_dict({ key_a: 1, key_b: 2, key_c: 3 })\
 		.contains_same_key_value(key_a, 1)\
 		.contains_same_key_value(key_b, 2)
 
-	assert_failure(func() -> void: assert_dict({key_a:1, key_b:2, key_c:3}).contains_same_key_value(key_a, 2)) \
+	assert_failure(func() -> void: assert_dict({ key_a: 1, key_b: 2, key_c: 3 }).contains_same_key_value(key_a, 2)) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains SAME key and value:
@@ -488,7 +477,7 @@ func test_contains_same_key_value() -> void:
 			 <class:A:0> : 1"""
 			.dedent().trim_prefix("\n")
 		)
-	assert_failure(func() -> void: assert_dict({key_a:1, key_b:2, key_c:3}).contains_same_key_value(key_d, 1)) \
+	assert_failure(func() -> void: assert_dict({ key_a: 1, key_b: 2, key_c: 3 }).contains_same_key_value(key_d, 1)) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains SAME keys:
@@ -508,9 +497,9 @@ func test_not_contains_same_keys() -> void:
 	var key_d := TestObj.new("A")
 
 	assert_dict({}).not_contains_same_keys([key_a])
-	assert_dict({key_a: 1, key_b: 2}).not_contains_same_keys([key_c, key_d])
+	assert_dict({ key_a: 1, key_b: 2 }).not_contains_same_keys([key_c, key_d])
 
-	assert_failure(func() -> void: assert_dict({key_a:1, key_b:2}).not_contains_same_keys([key_c, key_b])) \
+	assert_failure(func() -> void: assert_dict({ key_a: 1, key_b: 2 }).not_contains_same_keys([key_c, key_b])) \
 		.is_failed() \
 		.has_message("""
 			Expecting NOT contains SAME keys
@@ -530,9 +519,9 @@ func test_not_contains_same_keys_variadic_args() -> void:
 	var key_d := TestObj.new("A")
 
 	assert_dict({}).not_contains_same_keys(key_a)
-	assert_dict({key_a: 1, key_b: 2}).not_contains_same_keys(key_c, key_d)
+	assert_dict({ key_a: 1, key_b: 2 }).not_contains_same_keys(key_c, key_d)
 
-	assert_failure(func() -> void: assert_dict({key_a:1, key_b:2}).not_contains_same_keys(key_c, key_b)) \
+	assert_failure(func() -> void: assert_dict({ key_a: 1, key_b: 2 }).not_contains_same_keys(key_c, key_b)) \
 		.is_failed() \
 		.has_message("""
 			Expecting NOT contains SAME keys
@@ -546,9 +535,9 @@ func test_not_contains_same_keys_variadic_args() -> void:
 
 
 func test_override_failure_message() -> void:
-	assert_object(assert_dict({1: 1}).override_failure_message("error")).is_instanceof(GdUnitDictionaryAssert)
+	assert_object(assert_dict({ 1: 1 }).override_failure_message("error")).is_instanceof(GdUnitDictionaryAssert)
 	@warning_ignore("unsafe_method_access")
-	assert_failure(func() -> void: assert_dict({1:1}) \
+	assert_failure(func() -> void: assert_dict({ 1: 1 }) \
 			.override_failure_message("Custom failure message") \
 			.is_null()) \
 		.is_failed() \
@@ -556,9 +545,9 @@ func test_override_failure_message() -> void:
 
 
 func test_append_failure_message() -> void:
-	assert_object(assert_dict({1: 1}).append_failure_message("error")).is_instanceof(GdUnitDictionaryAssert)
+	assert_object(assert_dict({ 1: 1 }).append_failure_message("error")).is_instanceof(GdUnitDictionaryAssert)
 	@warning_ignore("unsafe_method_access")
-	assert_failure(func() -> void: assert_dict({1:1}) \
+	assert_failure(func() -> void: assert_dict({ 1: 1 }) \
 			.append_failure_message("custom failure data") \
 			.is_empty()) \
 		.is_failed() \
@@ -595,3 +584,15 @@ func test_is_failure() -> void:
 	if is_failure():
 		return
 	assert_bool(true).override_failure_message("This line shold never be called").is_false()
+
+
+class TestObj:
+	var _name: String
+	var _value: int
+
+	func _init(name: String = "Foo", value: int = 0) -> void:
+		_name = name
+		_value = value
+
+	func _to_string() -> String:
+		return "class:%s:%d" % [_name, _value]

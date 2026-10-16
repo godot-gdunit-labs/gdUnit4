@@ -51,7 +51,7 @@ func test_plus_seconds() -> void:
 	# test overflow
 	var time2 := LocalTime.local_time(10, 59, 59, 333)
 	var start_time := time2._time
-	for iteration in 10000:
+	for iteration in 10_000:
 		var t := LocalTime.of_unix_time(start_time)
 		var seconds: int = randi_range(0, 1000)
 		t.plus(LocalTime.TimeUnit.SECOND, seconds)

@@ -3,7 +3,7 @@ extends RefCounted
 
 enum MyEnumValue {
 	ONE = 10,
-	TWO = 20
+	TWO = 20,
 }
 
 var _value: MyEnumValue = MyEnumValue.ONE

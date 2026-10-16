@@ -4,7 +4,6 @@ class_name GdUnitTestSuiteExecutorTest
 extends GdUnitTestSuite
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
-
 const SUCCEEDED = true
 const FAILED = false
 const SKIPPED = true
@@ -154,7 +153,7 @@ func test_execute_success() -> void:
 	])
 	# all success no reports expected
 	assert_event_reports(events, [
-			[], [], [], [], [], []
+			[], [], [], [], [], [],
 		])
 
 
@@ -199,7 +198,7 @@ func test_execute_failure_on_stage_before() -> void:
 			[],
 			[],
 			[],
-			["failed on before()"]
+			["failed on before()"],
 		])
 
 
@@ -245,7 +244,7 @@ func test_execute_failure_on_stage_after() -> void:
 			[],
 			[],
 			[],
-			["failed on after()"]
+			["failed on after()"],
 		])
 
 
@@ -294,7 +293,7 @@ func test_execute_failure_on_stage_before_test() -> void:
 			[],
 			# verify failure report is append to 'test_case2'
 			["failed on before_test()"],
-			[]
+			[],
 		])
 
 
@@ -344,7 +343,7 @@ func test_execute_failure_on_stage_after_test() -> void:
 			[],
 			# verify failure report is append to 'test_case2'
 			["failed on after_test()"],
-			[]
+			[],
 		])
 
 
@@ -390,7 +389,7 @@ func test_execute_failure_on_stage_test_case1() -> void:
 			["failed on test_case1()"],
 			[],
 			[],
-			[]
+			[],
 		])
 
 
@@ -441,7 +440,7 @@ func test_execute_failure_on_multiple_stages() -> void:
 			# verify failure reports to 'test_case2'
 			["failed on before_test()"],
 			# and one failure detected at stage 'after'
-			["failed on after()"]
+			["failed on after()"],
 		])
 
 
@@ -499,7 +498,7 @@ func test_execute_failure_and_orphans() -> void:
 			["WARNING: Detected 2 possible orphan nodes.",
 			"fail on test_case2()"],
 			# and one warning detected at stage 'after'
-			["WARNING: Detected 1 possible orphan nodes."]
+			["WARNING: Detected 1 possible orphan nodes."],
 		])
 
 
@@ -512,7 +511,7 @@ func test_execute_failure_and_orphans_report_orphan_disabled() -> void:
 
 	# simulate test suite execution whit disabled orphan detection
 	var events := await run_tests(all_tests, {
-		GdUnitSettings.REPORT_ORPHANS: false
+		GdUnitSettings.REPORT_ORPHANS: false,
 	})
 
 	# (before_test+after_test) * test count + before+after hooks
@@ -551,7 +550,7 @@ func test_execute_failure_and_orphans_report_orphan_disabled() -> void:
 			[],
 			# ends with a failure
 			["fail on test_case2()"],
-			[]
+			[],
 		])
 
 
@@ -587,7 +586,7 @@ func test_execute_success_with_pending_queue_free_nodes() -> void:
 	])
 	# all success no reports expected
 	assert_event_reports(events, [
-			[], [], [], []
+			[], [], [], [],
 		])
 
 
@@ -635,7 +634,7 @@ func test_execute_error_on_test_timeout() -> void:
 			["Timeout !\n 'Test timed out after 2s 0ms'"],
 			[],
 			[],
-			[]
+			[],
 		])
 
 
@@ -656,7 +655,7 @@ func test_execute_fuzzed_metrics() -> void:
 			[],
 			[],
 			[],
-			[]
+			[],
 		])
 
 
@@ -677,7 +676,7 @@ func test_execute_parameterized_metrics() -> void:
 			[],
 			[],
 			[],
-			[]
+			[],
 		])
 
 
@@ -713,7 +712,7 @@ func test_execute_failure_fuzzer_iteration() -> void:
 		tuple(test_multi_yielding_with_fuzzer.guid, SUCCEEDED, NOT_SKIPPED, NO_WARNING, NO_FAILURES, NO_ERRORS),
 		tuple(test_multi_yielding_with_fuzzer_fail_after_3_iterations.guid, SUCCEEDED, NOT_SKIPPED, NO_WARNING, NO_FAILURES, NO_ERRORS),
 		tuple(test_multi_yielding_with_fuzzer_fail_after_3_iterations.guid, FAILED, NOT_SKIPPED, NO_WARNING, FAILURES, NO_ERRORS),
-		tuple(any_class(GdUnitGUID), SUCCEEDED, NOT_SKIPPED, NO_WARNING, NO_FAILURES, NO_ERRORS)
+		tuple(any_class(GdUnitGUID), SUCCEEDED, NOT_SKIPPED, NO_WARNING, NO_FAILURES, NO_ERRORS),
 	])
 	# 'test_case1' reports a error triggered by test timeout
 	assert_event_reports(events, [
@@ -723,7 +722,7 @@ func test_execute_failure_fuzzer_iteration() -> void:
 			[],
 			# must fail after three iterations
 			["Found an error after 3 test iterations\n Expecting: 'false' but is 'true'"],
-			[]
+			[],
 		])
 
 
@@ -760,7 +759,7 @@ func test_execute_add_child_on_before_gd_106() -> void:
 	])
 	# all success no reports expected
 	assert_event_reports(events, [
-			[], [], [], [], [], []
+			[], [], [], [], [], [],
 		])
 
 
@@ -778,7 +777,7 @@ func test_execute_parameterizied_tests() -> void:
 	var original_mode: Variant = ProjectSettings.get_setting(GdUnitSettings.REPORT_ASSERT_STRICT_NUMBER_TYPE_COMPARE)
 	ProjectSettings.set_setting(GdUnitSettings.REPORT_ASSERT_STRICT_NUMBER_TYPE_COMPARE, true)
 	var events := await run_tests(all_tests, {
-		GdUnitSettings.REPORT_ASSERT_STRICT_NUMBER_TYPE_COMPARE: true
+		GdUnitSettings.REPORT_ASSERT_STRICT_NUMBER_TYPE_COMPARE: true,
 	})
 	# the test is partial failing because of diverent type in the dictionary
 	assert_array(events).extractv(
@@ -787,7 +786,7 @@ func test_execute_parameterizied_tests() -> void:
 			tuple(GdUnitEvent.TESTCASE_AFTER, test_0.guid, NO_WARNING, NO_ERRORS, FAILURES, 0),
 			tuple(GdUnitEvent.TESTCASE_AFTER, test_1.guid, NO_WARNING, NO_ERRORS, NO_FAILURES, 0),
 			tuple(GdUnitEvent.TESTCASE_AFTER, test_2.guid, NO_WARNING, NO_ERRORS, FAILURES, 0),
-			tuple(GdUnitEvent.TESTCASE_AFTER, test_3.guid, NO_WARNING, NO_ERRORS, NO_FAILURES, 0)
+			tuple(GdUnitEvent.TESTCASE_AFTER, test_3.guid, NO_WARNING, NO_ERRORS, NO_FAILURES, 0),
 		])
 
 	# rerun the same tests again with allow to compare type unsave
@@ -803,7 +802,7 @@ func test_execute_parameterizied_tests() -> void:
 			tuple(GdUnitEvent.TESTCASE_AFTER, test_0.guid, NO_WARNING, NO_ERRORS, NO_FAILURES, 0),
 			tuple(GdUnitEvent.TESTCASE_AFTER, test_1.guid, NO_WARNING, NO_ERRORS, NO_FAILURES, 0),
 			tuple(GdUnitEvent.TESTCASE_AFTER, test_2.guid, NO_WARNING, NO_ERRORS, NO_FAILURES, 0),
-			tuple(GdUnitEvent.TESTCASE_AFTER, test_3.guid, NO_WARNING, NO_ERRORS, NO_FAILURES, 0)
+			tuple(GdUnitEvent.TESTCASE_AFTER, test_3.guid, NO_WARNING, NO_ERRORS, NO_FAILURES, 0),
 		])
 
 
@@ -848,7 +847,7 @@ func test_execute_test_suite_is_skipped() -> void:
 				The Entire test-suite is skipped!
 				  Skipped 2 tests
 				  Reason: 'do not run this'
-				""".dedent().trim_prefix("\n")]
+				""".dedent().trim_prefix("\n")],
 		])
 
 
@@ -885,7 +884,7 @@ func test_execute_test_case_is_skipped() -> void:
 				""".dedent().trim_prefix("\n")],
 			[],
 			[],
-			[]
+			[],
 		])
 # gdlint: enable=mixed-tabs-and-spaces
 
@@ -907,23 +906,23 @@ func test_execute_test_case_is_flaky_and_failed() -> void:
 	# simulate flaky test suite execution
 	var events := await run_tests(all_tests, {
 		GdUnitSettings.TEST_FLAKY_CHECK: true,
-		GdUnitSettings.TEST_FLAKY_MAX_RETRIES: 5
+		GdUnitSettings.TEST_FLAKY_MAX_RETRIES: 5,
 	})
 
 	assert_array(events).extractv(extr("type"), extr("guid"), extr("is_flaky"), extr("is_success"))\
 		.contains([
 		tuple(GdUnitEvent.TESTSUITE_BEFORE, any_class(GdUnitGUID), false, SUCCEEDED),
-		tuple(GdUnitEvent.TESTCASE_AFTER, test_success.guid, !FLAKY, SUCCEEDED),
+		tuple(GdUnitEvent.TESTCASE_AFTER, test_success.guid, not FLAKY, SUCCEEDED),
 		tuple(GdUnitEvent.TESTCASE_AFTER, test_flaky_success.guid, FLAKY, SUCCEEDED),
-		tuple(GdUnitEvent.TESTCASE_AFTER, test_flaky_fail.guid, !FLAKY, FAILED),
-		tuple(GdUnitEvent.TESTCASE_AFTER, test_parameterized_flaky0.guid, !FLAKY, SUCCEEDED),
-		tuple(GdUnitEvent.TESTCASE_AFTER, test_parameterized_flaky1.guid, !FLAKY, SUCCEEDED),
-		tuple(GdUnitEvent.TESTCASE_AFTER, test_parameterized_flaky2.guid, !FLAKY, FAILED),
-		tuple(GdUnitEvent.TESTCASE_AFTER, test_parameterized_flaky3.guid, !FLAKY, SUCCEEDED),
+		tuple(GdUnitEvent.TESTCASE_AFTER, test_flaky_fail.guid, not FLAKY, FAILED),
+		tuple(GdUnitEvent.TESTCASE_AFTER, test_parameterized_flaky0.guid, not FLAKY, SUCCEEDED),
+		tuple(GdUnitEvent.TESTCASE_AFTER, test_parameterized_flaky1.guid, not FLAKY, SUCCEEDED),
+		tuple(GdUnitEvent.TESTCASE_AFTER, test_parameterized_flaky2.guid, not FLAKY, FAILED),
+		tuple(GdUnitEvent.TESTCASE_AFTER, test_parameterized_flaky3.guid, not FLAKY, SUCCEEDED),
 		tuple(GdUnitEvent.TESTCASE_AFTER, test_parameterized_flaky4.guid, FLAKY, SUCCEEDED),
 		tuple(GdUnitEvent.TESTCASE_AFTER, test_fuzzed_flaky_success.guid, FLAKY, SUCCEEDED),
-		tuple(GdUnitEvent.TESTCASE_AFTER, test_fuzzed_flaky_fail.guid, !FLAKY, FAILED),
-		tuple(GdUnitEvent.TESTSUITE_AFTER, any_class(GdUnitGUID), !FLAKY, SUCCEEDED),
+		tuple(GdUnitEvent.TESTCASE_AFTER, test_fuzzed_flaky_fail.guid, not FLAKY, FAILED),
+		tuple(GdUnitEvent.TESTSUITE_AFTER, any_class(GdUnitGUID), not FLAKY, SUCCEEDED),
 	])
 
 
@@ -944,24 +943,24 @@ func test_execute_test_case_is_flaky_and_success() -> void:
 	# simulate flaky test suite execution
 	var events := await run_tests(all_tests, {
 		GdUnitSettings.TEST_FLAKY_CHECK: true,
-		GdUnitSettings.TEST_FLAKY_MAX_RETRIES: 6
+		GdUnitSettings.TEST_FLAKY_MAX_RETRIES: 6,
 	})
 
 	# verify test execution results. all test should pass at least after 6 retries
 	assert_array(events).extractv(extr("type"), extr("guid"), extr("is_flaky"), extr("is_success"))\
 		.contains([
 		tuple(GdUnitEvent.TESTSUITE_BEFORE, any_class(GdUnitGUID), false, SUCCEEDED),
-		tuple(GdUnitEvent.TESTCASE_AFTER, test_success.guid, !FLAKY, SUCCEEDED),
+		tuple(GdUnitEvent.TESTCASE_AFTER, test_success.guid, not FLAKY, SUCCEEDED),
 		tuple(GdUnitEvent.TESTCASE_AFTER, test_flaky_success.guid, FLAKY, SUCCEEDED),
 		tuple(GdUnitEvent.TESTCASE_AFTER, test_flaky_fail.guid, FLAKY, SUCCEEDED),
-		tuple(GdUnitEvent.TESTCASE_AFTER, test_parameterized_flaky0.guid, !FLAKY, SUCCEEDED),
-		tuple(GdUnitEvent.TESTCASE_AFTER, test_parameterized_flaky1.guid, !FLAKY, SUCCEEDED),
+		tuple(GdUnitEvent.TESTCASE_AFTER, test_parameterized_flaky0.guid, not FLAKY, SUCCEEDED),
+		tuple(GdUnitEvent.TESTCASE_AFTER, test_parameterized_flaky1.guid, not FLAKY, SUCCEEDED),
 		tuple(GdUnitEvent.TESTCASE_AFTER, test_parameterized_flaky2.guid, FLAKY, SUCCEEDED),
-		tuple(GdUnitEvent.TESTCASE_AFTER, test_parameterized_flaky3.guid, !FLAKY, SUCCEEDED),
+		tuple(GdUnitEvent.TESTCASE_AFTER, test_parameterized_flaky3.guid, not FLAKY, SUCCEEDED),
 		tuple(GdUnitEvent.TESTCASE_AFTER, test_parameterized_flaky4.guid, FLAKY, SUCCEEDED),
 		tuple(GdUnitEvent.TESTCASE_AFTER, test_fuzzed_flaky_success.guid, FLAKY, SUCCEEDED),
 		tuple(GdUnitEvent.TESTCASE_AFTER, test_fuzzed_flaky_fail.guid, FLAKY, SUCCEEDED),
-		tuple(GdUnitEvent.TESTSUITE_AFTER, any_class(GdUnitGUID), !FLAKY, SUCCEEDED),
+		tuple(GdUnitEvent.TESTSUITE_AFTER, any_class(GdUnitGUID), not FLAKY, SUCCEEDED),
 	])
 
 
@@ -970,7 +969,7 @@ func test_execute_push_error_monitoring_disabled() -> void:
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	# execute all tests
 	var events := await run_tests(all_tests, {
-		GdUnitSettings.REPORT_PUSH_ERRORS: false
+		GdUnitSettings.REPORT_PUSH_ERRORS: false,
 	})
 
 	assert_array(events).extractv(extr("type"), extr("test_name"), extr("is_success"))\
@@ -990,7 +989,7 @@ func test_execute_push_error_monitoring_enabled() -> void:
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	# execute all tests
 	var events := await run_tests(all_tests, {
-		GdUnitSettings.REPORT_PUSH_ERRORS: true
+		GdUnitSettings.REPORT_PUSH_ERRORS: true,
 	})
 
 	assert_array(events).extractv(extr("type"), extr("test_name"), extr("is_success"))\

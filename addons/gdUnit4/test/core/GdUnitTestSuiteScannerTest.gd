@@ -184,7 +184,7 @@ func test_create_test_case() -> void:
 	# try to add again
 	result = GdUnitTestSuiteScanner.create_test_case(test_suite_path, "last_name", source_path)
 	assert_bool(result.is_success()).is_true()
-	assert_that(result.value()).is_equal({"line": 11, "path": test_suite_path})
+	assert_that(result.value()).is_equal({ "line": 11, "path": test_suite_path })
 
 
 # https://github.com/MikeSchulze/gdUnit4/issues/25

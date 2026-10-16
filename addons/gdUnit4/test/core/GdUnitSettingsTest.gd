@@ -143,9 +143,9 @@ func test_migrate_property_change_key() -> void:
 	assert_str(GdUnitSettings.get_setting(new_property_x, null)).is_null()
 	var old_property := GdUnitSettings.get_property(old_property_x)
 
-	GdUnitSettings.migrate_property(old_property.name(),\
-		new_property_x,\
-		old_property.default(),\
+	GdUnitSettings.migrate_property(old_property.name(), \
+		new_property_x, \
+		old_property.default(), \
 		old_property.help())
 
 	var new_property := GdUnitSettings.get_property(new_property_x)
@@ -167,10 +167,10 @@ func test_migrate_property_change_value() -> void:
 	assert_str(GdUnitSettings.get_setting(new_property_x, null)).is_null()
 	var old_property := GdUnitSettings.get_property(old_property_x)
 
-	GdUnitSettings.migrate_property(old_property.name(),\
-		new_property_x,\
-		old_property.default(),\
-		old_property.help(),\
+	GdUnitSettings.migrate_property(old_property.name(), \
+		new_property_x, \
+		old_property.default(), \
+		old_property.help(), \
 		func(_value: Variant) -> String: return "bar")
 
 	var new_property := GdUnitSettings.get_property(new_property_x)
@@ -196,7 +196,7 @@ func test_validate_is_inferred_declaration_enabled_when_disabled() -> void:
 
 func test_validate_is_inferred_declaration_enabled_when_warning_and_addon_excluded() -> void:
 	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_INFERRED_DECLARATION, WARN)
-	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES, {"res://addons/gdUnit4": EXCLUDE})
+	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES, { "res://addons/gdUnit4": EXCLUDE })
 	assert_result(GdUnitSettings.validate_is_inferred_declaration_enabled())\
 		.is_success()
 
@@ -204,7 +204,7 @@ func test_validate_is_inferred_declaration_enabled_when_warning_and_addon_exclud
 func test_validate_is_inferred_declaration_enabled_when_warning_and_parent_dir_excluded() -> void:
 	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_INFERRED_DECLARATION, WARN)
 	# Godot's default: all plugins are excluded, covers gdUnit4 via parent path
-	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES, {"res://addons": EXCLUDE})
+	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES, { "res://addons": EXCLUDE })
 	assert_result(GdUnitSettings.validate_is_inferred_declaration_enabled())\
 		.is_success()
 
@@ -212,7 +212,7 @@ func test_validate_is_inferred_declaration_enabled_when_warning_and_parent_dir_e
 func test_validate_is_inferred_declaration_enabled_when_warning_and_addon_excluded_but_parent_included() -> void:
 	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_INFERRED_DECLARATION, WARN)
 	# parent addons dir is included (warnings active) but gdUnit4 is specifically excluded
-	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES, {"res://addons": INCLUDE, "res://addons/gdUnit4": EXCLUDE})
+	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES, { "res://addons": INCLUDE, "res://addons/gdUnit4": EXCLUDE })
 	assert_result(GdUnitSettings.validate_is_inferred_declaration_enabled())\
 		.is_success()
 
@@ -220,7 +220,7 @@ func test_validate_is_inferred_declaration_enabled_when_warning_and_addon_exclud
 func test_validate_is_inferred_declaration_enabled_when_warning_and_only_parent_included() -> void:
 	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_INFERRED_DECLARATION, WARN)
 	# only "res://addons" is included (warnings active), gdUnit4 has no explicit exclusion
-	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES, {"res://addons": INCLUDE})
+	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES, { "res://addons": INCLUDE })
 	var expected_message := """
 		GdUnit4: 'inferred_declaration' is set to Warning/Error!
 		GdUnit4 is not 'inferred_declaration' safe, you have to exclude the addon (debug/gdscript/warnings/directory_rules)
@@ -233,7 +233,7 @@ func test_validate_is_inferred_declaration_enabled_when_warning_and_only_parent_
 func test_validate_is_inferred_declaration_enabled_when_warning_and_addon_not_excluded() -> void:
 	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_INFERRED_DECLARATION, WARN)
 	# default + gdUnit4 explicitly re-included: addon is not excluded from warnings
-	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES, {"res://addons": EXCLUDE, "res://addons/gdUnit4": INCLUDE})
+	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES, { "res://addons": EXCLUDE, "res://addons/gdUnit4": INCLUDE })
 	var expected_message := """
 		GdUnit4: 'inferred_declaration' is set to Warning/Error!
 		GdUnit4 is not 'inferred_declaration' safe, you have to exclude the addon (debug/gdscript/warnings/directory_rules)
@@ -246,7 +246,7 @@ func test_validate_is_inferred_declaration_enabled_when_warning_and_addon_not_ex
 func test_validate_is_inferred_declaration_enabled_when_error_and_addon_not_excluded() -> void:
 	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_INFERRED_DECLARATION, ERROR)
 	# default + gdUnit4 explicitly re-included: addon is not excluded from warnings
-	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES, {"res://addons": EXCLUDE, "res://addons/gdUnit4": INCLUDE})
+	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES, { "res://addons": EXCLUDE, "res://addons/gdUnit4": INCLUDE })
 	var expected_message := """
 		GdUnit4: 'inferred_declaration' is set to Warning/Error!
 		GdUnit4 is not 'inferred_declaration' safe, you have to exclude the addon (debug/gdscript/warnings/directory_rules)

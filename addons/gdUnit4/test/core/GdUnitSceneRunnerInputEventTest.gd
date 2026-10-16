@@ -1,4 +1,5 @@
 # gdlint: disable=max-file-lines,max-public-methods
+
 @warning_ignore_start("redundant_await", "unsafe_method_access")
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
@@ -874,6 +875,8 @@ func test_simulate_mouse_button_press_and_release() -> void:
 
 
 #####################################################################################################################
+
+
 # Tests of simulate touch screen inputs                                                                             #
 #####################################################################################################################
 func test_simulate_screen_touch_press() -> void:

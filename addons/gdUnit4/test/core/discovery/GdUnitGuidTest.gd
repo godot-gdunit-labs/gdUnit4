@@ -29,7 +29,7 @@ func test_equals() -> void:
 
 func test_performance() -> void:
 	var time := LocalTime.now()
-	var construction_count := 10000.0
+	var construction_count := 10_000.0
 	for n in construction_count:
 		GdUnitGUID.new()
 	var error_message := "Expected to construct %d `GdUnitGUID` instances in less than 50ms but took %s ms" % [construction_count, time.elapsed_since_ms()]

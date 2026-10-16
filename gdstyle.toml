@@ -31,7 +31,7 @@ max_parameters = 11
 
 # File and directory patterns to exclude from linting.
 # These are matched as glob patterns against file paths.
-exclude = [".godot"]
+exclude = [".godot", "**/resources/**", "**/GdUnitScanTestSuiteTest.gd"]
 
 # Patterns to force-include even when `exclude` matches them. An include always
 # wins over an exclude, so you can lint one plugin inside an otherwise-excluded

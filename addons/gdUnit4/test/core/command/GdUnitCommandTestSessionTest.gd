@@ -5,11 +5,6 @@ extends GdUnitTestSuite
 var _command: GdUnitCommandTestSession
 
 
-class TestGdUnitCommandTestSession extends GdUnitCommandTestSession:
-	# gdlint: ignore=unnecessary-pass
-	pass
-
-
 func before_test() -> void:
 	_command = TestGdUnitCommandTestSession.new("TestGdUnitCommandTestSession", GdUnitShortcut.ShortCut.NONE)
 
@@ -47,3 +42,8 @@ func test_is_valid_runner_process_true() -> void:
 	if OS.is_process_running(pid):
 		OS.kill(pid)
 #endregion
+
+
+class TestGdUnitCommandTestSession extends GdUnitCommandTestSession:
+	# gdlint: ignore=unnecessary-pass
+	pass

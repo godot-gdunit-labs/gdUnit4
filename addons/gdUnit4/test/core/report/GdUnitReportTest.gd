@@ -5,6 +5,7 @@ extends GdUnitTestSuite
 
 #region _to_string
 
+
 func test_to_string_failure_with_line_number() -> void:
 	var report := GdUnitReport.new().create(GdUnitReport.FAILURE, 42, "test message")
 	assert_str(report.to_string()).is_equal("[color=green]line [/color][color=aqua]42:[/color] test message")
@@ -19,6 +20,7 @@ func test_to_string_failure_with_unknown_line() -> void:
 
 
 #region stack_trace
+
 
 func test_stack_trace_is_null_when_no_error() -> void:
 	var report := GdUnitReport.new().create(GdUnitReport.FAILURE, 42, "test message")
@@ -61,7 +63,7 @@ func test_serialize_report_with_error_includes_stack_trace_key() -> void:
 
 
 func test_deserialize_without_stack_trace_produces_full_report() -> void:
-	var serialized := {"type": GdUnitReport.FAILURE, "line_number": 42, "message": "test message"}
+	var serialized := { "type": GdUnitReport.FAILURE, "line_number": 42, "message": "test message" }
 	assert_that(GdUnitReport.new().deserialize(serialized)).is_equal(GdUnitReport.new().create(GdUnitReport.FAILURE, 42, "test message"))
 
 
@@ -75,7 +77,7 @@ func test_deserialize_reconstructs_full_report() -> void:
 		"type": GdUnitReport.FAILURE,
 		"line_number": 10,
 		"message": "test message",
-		"stack_trace": trace.serialize()
+		"stack_trace": trace.serialize(),
 	}
 	assert_that(GdUnitReport.new().deserialize(serialized)).is_equal(expected)
 

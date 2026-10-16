@@ -11,6 +11,7 @@ const INCLUDE := GdUnitSettings.GdScriptWarningDirectoryMode.INCLUDE
 
 #region save / restore
 
+
 func test_restore_restores_scalar_setting() -> void:
 	# Setup
 	var snapshot := GdUnitProjectSettingsSnapshot.new()
@@ -27,11 +28,11 @@ func test_restore_restores_scalar_setting() -> void:
 func test_restore_restores_dictionary_setting() -> void:
 	# Setup
 	var snapshot := GdUnitProjectSettingsSnapshot.new()
-	var original_rules: Dictionary = {"res://addons": EXCLUDE}
+	var original_rules: Dictionary = { "res://addons": EXCLUDE }
 	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES, original_rules.duplicate())
 	snapshot.save()
 	# Act
-	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES, {"res://modified": INCLUDE})
+	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES, { "res://modified": INCLUDE })
 	snapshot.restore()
 	# Verify
 	assert_dict(ProjectSettings.get_setting(GdUnitSettings.GDSCRIPT_WARNINGS_DIRECTORY_RULES))\

@@ -1,17 +1,6 @@
 extends GdUnitTestSuite
 
 
-# example test discovery sink
-class TestDiscoverSinkReceiver:
-	var _discovered_tests: Array[GdUnitTestCase]
-
-	func _init() -> void:
-		GdUnitSignals.instance().gdunit_test_discover_added.connect(on_test_case_discovered)
-
-	func on_test_case_discovered(test_case: GdUnitTestCase) -> void:
-		_discovered_tests.append(test_case)
-
-
 func test_discover() -> void:
 	# Create two example test cases
 	var test_a := GdUnitTestCase.new()
@@ -29,3 +18,14 @@ func test_discover() -> void:
 
 	# verify the sink contains all discovered tests
 	assert_array(receiver._discovered_tests).contains_exactly([test_a, test_b, test_b])
+
+
+# example test discovery sink
+class TestDiscoverSinkReceiver:
+	var _discovered_tests: Array[GdUnitTestCase]
+
+	func _init() -> void:
+		GdUnitSignals.instance().gdunit_test_discover_added.connect(on_test_case_discovered)
+
+	func on_test_case_discovered(test_case: GdUnitTestCase) -> void:
+		_discovered_tests.append(test_case)

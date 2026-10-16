@@ -1,6 +1,6 @@
 extends GdUnitTestSuite
-@warning_ignore_start("redundant_await")
 
+@warning_ignore_start("redundant_await")
 var o2: C2
 
 
@@ -33,6 +33,10 @@ func test_monitor_obj2_success() -> void:
 	await assert_signal(o2).wait_until(500).is_emitted("s2")
 
 
+func before() -> void:
+	o2 = C2.new()
+
+
 class C1:
 	signal s1
 
@@ -53,7 +57,3 @@ class C2:
 	func _on_s1() -> void:
 		s2.emit()
 		x = 2
-
-
-func before() -> void:
-	o2 = C2.new()

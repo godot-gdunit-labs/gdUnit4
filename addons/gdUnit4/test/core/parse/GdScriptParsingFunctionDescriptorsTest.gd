@@ -32,17 +32,17 @@ func test_default_args_dictionary() -> void:
 		)
 	assert_that(fds[3])\
 		.is_equal(create("on_dictionary_case4", script.resource_path, 17, 18, TYPE_ARRAY, [
-				GdFunctionArgument.new("dict", TYPE_DICTIONARY, {"a":"value_a", "b":"value_b"}),
+				GdFunctionArgument.new("dict", TYPE_DICTIONARY, { "a": "value_a", "b": "value_b" }),
 			])
 		)
 	assert_that(fds[4])\
 		.is_equal(create("on_dictionary_case5", script.resource_path, 21, 24, TYPE_ARRAY, [
-				GdFunctionArgument.new("dict", TYPE_DICTIONARY, {"a":"value_a", "b":"value_b"}),
+				GdFunctionArgument.new("dict", TYPE_DICTIONARY, { "a": "value_a", "b": "value_b" }),
 			])
 		)
 	assert_that(fds[5])\
 		.is_equal(create("on_dictionary_case6", script.resource_path, 27, 28, TYPE_ARRAY, [
-				GdFunctionArgument.new("dict", TYPE_DICTIONARY, {"a":"value_a", "b":"value_b"}),
+				GdFunctionArgument.new("dict", TYPE_DICTIONARY, { "a": "value_a", "b": "value_b" }),
 			])
 		)
 

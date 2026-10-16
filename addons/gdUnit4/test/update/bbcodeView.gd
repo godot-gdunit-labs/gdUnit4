@@ -8,7 +8,6 @@ var _md_reader := GdMarkDownReader.new()
 
 @onready var _input: TextEdit = $HSplitContainer/TextEdit
 @onready var _text: RichTextLabel = $HSplitContainer/RichTextLabel
-
 @onready var _update_client: GdUnitUpdateClient = $GdUnitUpdateClient
 
 

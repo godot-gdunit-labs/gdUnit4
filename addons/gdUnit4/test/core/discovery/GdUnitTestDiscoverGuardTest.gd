@@ -339,7 +339,7 @@ func test_discover_moved_test_gdscript() -> void:
 
 
 #if GDUNIT4NET_API_V5
-func test_discover_on_csharp_script(_do_skip := !GdUnit4CSharpApiLoader.is_api_loaded()) -> void:
+func test_discover_on_csharp_script(_do_skip := not GdUnit4CSharpApiLoader.is_api_loaded()) -> void:
 	var discoverer: GdUnitTestDiscoverGuard = auto_free(GdUnitTestDiscoverGuard.new())
 	var discovered_tests: Array[GdUnitTestCase] = []
 	var script := load_non_cached("res://addons/gdUnit4/test/core/discovery/resources/DiscoverExampleTestSuite.cs")
@@ -357,7 +357,7 @@ func test_discover_on_csharp_script(_do_skip := !GdUnit4CSharpApiLoader.is_api_l
 		.extractv(extr("test_name"), extr("display_name"), extr("fully_qualified_name"))\
 		.contains_exactly([
 			tuple("TestCase1", "TestCase1", "gdUnit4.addons.gdUnit4.test.core.discovery.resources.DiscoverExampleTestSuite.TestCase1"),
-			tuple("TestCase2", "TestCase2", "gdUnit4.addons.gdUnit4.test.core.discovery.resources.DiscoverExampleTestSuite.TestCase2")
+			tuple("TestCase2", "TestCase2", "gdUnit4.addons.gdUnit4.test.core.discovery.resources.DiscoverExampleTestSuite.TestCase2"),
 		])
 #endif
 

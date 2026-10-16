@@ -21,23 +21,17 @@ func capture_stack_3() -> GdUnitStackTrace:
 
 func capture_stack_4() -> GdUnitStackTrace:
 	return capture_stack_3()
-
-
-class InnerClass:
-	static func capture_stack() -> GdUnitStackTrace:
-		return GdUnitStackTrace.new()
-
-
 #endregion
 
 
 #region tests
 
+
 func test_captures_stack_depth_0() -> void:
 	var trace := GdUnitStackTrace.new()
-	assert_int(trace.get_line_number()).is_equal(37)
+	assert_int(trace.get_line_number()).is_equal(31)
 	assert_str(trace.print_stack_trace())\
-		.is_equal("\tat 'test_captures_stack_depth_0' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:37")
+		.is_equal("\tat 'test_captures_stack_depth_0' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:31")
 
 
 func test_captures_stack_depth_1() -> void:
@@ -46,7 +40,7 @@ func test_captures_stack_depth_1() -> void:
 	assert_str(trace.print_stack_trace())\
 		.is_equal("""
 			at 'capture_stack' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:7
-			at 'test_captures_stack_depth_1' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:44"""
+			at 'test_captures_stack_depth_1' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:38"""
 				.dedent().indent("\t").trim_prefix("\n"))
 
 
@@ -57,7 +51,7 @@ func test_captures_stack_depth_2() -> void:
 		.is_equal("""
 			at 'capture_stack' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:7
 			at 'capture_stack_1' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:11
-			at 'test_captures_stack_depth_2' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:54"""
+			at 'test_captures_stack_depth_2' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:48"""
 				.dedent().indent("\t").trim_prefix("\n"))
 
 
@@ -69,7 +63,7 @@ func test_captures_stack_depth_3() -> void:
 			at 'capture_stack' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:7
 			at 'capture_stack_1' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:11
 			at 'capture_stack_2' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:15
-			at 'test_captures_stack_depth_3' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:65"""
+			at 'test_captures_stack_depth_3' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:59"""
 				.dedent().indent("\t").trim_prefix("\n"))
 
 
@@ -82,7 +76,7 @@ func test_captures_stack_depth_4() -> void:
 			at 'capture_stack_1' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:11
 			at 'capture_stack_2' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:15
 			at 'capture_stack_3' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:19
-			at 'test_captures_stack_depth_4' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:77"""
+			at 'test_captures_stack_depth_4' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:71"""
 				.dedent().indent("\t").trim_prefix("\n"))
 
 
@@ -96,7 +90,7 @@ func test_captures_stack_depth_5() -> void:
 			at 'capture_stack_2' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:15
 			at 'capture_stack_3' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:19
 			at 'capture_stack_4' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:23
-			at 'test_captures_stack_depth_5' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:90"""
+			at 'test_captures_stack_depth_5' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:84"""
 				.dedent().indent("\t").trim_prefix("\n"))
 
 
@@ -107,8 +101,8 @@ func test_mock_frames_are_filtered_from_stack_trace() -> void:
 			verify(mock_node, 1).set_process(true)\
 		)\
 		.has_stack_trace([
-			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd", 107, "verify_call"),
-			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd", 105, "test_mock_frames_are_filtered_from_stack_trace"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd", 101, "verify_call"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd", 99, "test_mock_frames_are_filtered_from_stack_trace"),
 		])
 
 
@@ -120,24 +114,25 @@ func test_spy_frames_are_filtered_from_stack_trace() -> void:
 			verify(spy_node, 1).set_process(true)\
 		)\
 		.has_stack_trace([
-			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd", 120, "verify_call"),
-			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd", 118, "test_spy_frames_are_filtered_from_stack_trace"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd", 114, "verify_call"),
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd", 112, "test_spy_frames_are_filtered_from_stack_trace"),
 		])
 
 
 func test_inner_class_frames_in_stack_trace() -> void:
 	var trace := InnerClass.capture_stack()
-	assert_int(trace.get_line_number()).is_equal(28)
+	assert_int(trace.get_line_number()).is_equal(174)
 	assert_str(trace.print_stack_trace())\
 		.is_equal("""
-			at 'capture_stack' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:28
-			at 'test_inner_class_frames_in_stack_trace' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:129"""
+			at 'capture_stack' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:174
+			at 'test_inner_class_frames_in_stack_trace' in res://addons/gdUnit4/test/core/GdUnitStackTraceTest.gd:123"""
 				.dedent().indent("\t").trim_prefix("\n"))
 
 #endregion
 
 
 #region serialize / deserialize
+
 
 func test_serialize_empty_trace_returns_empty_json_array() -> void:
 	var trace := GdUnitStackTrace.of([])
@@ -172,3 +167,8 @@ func test_serialize_deserialize_round_trip() -> void:
 	var restored := GdUnitStackTrace.deserialize(original.serialize())
 	assert_that(restored).is_equal(original)
 #endregion
+
+
+class InnerClass:
+	static func capture_stack() -> GdUnitStackTrace:
+		return GdUnitStackTrace.new()

@@ -45,7 +45,7 @@ func test_create_temp_dir() -> void:
 
 	var data := {
 		"user": "Hoschi",
-		"level": 42
+		"level": 42,
 	}
 	var file := FileAccess.open(file_to_save, FileAccess.WRITE)
 	file.store_line(JSON.stringify(data))
@@ -163,7 +163,7 @@ func test_delete_directory() -> void:
 		"data2",
 		"example_a.txt",
 		"example_b.txt",
-		".hidden_file.txt"
+		".hidden_file.txt",
 	])
 
 	# Delete the entire directory and its contents
@@ -185,7 +185,7 @@ func test_delete_directory_content_only() -> void:
 		"data1",
 		"data2",
 		"example_a.txt",
-		"example_b.txt"
+		"example_b.txt",
 	])
 
 	# Delete the entire directory and its contents

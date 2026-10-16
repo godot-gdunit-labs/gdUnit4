@@ -7,7 +7,6 @@ var option_f := CmdOption.new("-f, --foo", "some help text foo", "some descripti
 var option_b := CmdOption.new("-b, --bar", "-b <value>", "comand with required argument", TYPE_STRING)
 var option_c := CmdOption.new("-c, --calc", "-c [value]", "command with optional argument", TYPE_STRING, true)
 var option_x := CmdOption.new("-x", "some help text x", "some description x")
-
 var _cmd_options: CmdOptions
 
 
@@ -55,7 +54,7 @@ func test_parse_success_required_arg() -> void:
 	assert_result(result).is_success()
 	assert_array(result.value()).contains_exactly([
 		CmdCommand.new("-a"),
-		CmdCommand.new("-b", ["value"])
+		CmdCommand.new("-b", ["value"]),
 	])
 
 
@@ -67,7 +66,7 @@ func test_parse_success_optional_arg() -> void:
 	assert_result(result).is_success()
 	assert_array(result.value()).contains_exactly([
 		CmdCommand.new("-c"),
-		CmdCommand.new("-a")
+		CmdCommand.new("-a"),
 	])
 
 	# without argument at end
@@ -75,7 +74,7 @@ func test_parse_success_optional_arg() -> void:
 	assert_result(result).is_success()
 	assert_array(result.value()).contains_exactly([
 		CmdCommand.new("-a"),
-		CmdCommand.new("-c")
+		CmdCommand.new("-c"),
 	])
 
 	# with argument
@@ -83,7 +82,7 @@ func test_parse_success_optional_arg() -> void:
 	assert_result(result).is_success()
 	assert_array(result.value()).contains_exactly([
 		CmdCommand.new("-c", ["argument"]),
-		CmdCommand.new("-a")
+		CmdCommand.new("-a"),
 	])
 
 
@@ -95,7 +94,7 @@ func test_parse_success_repead_cmd_args() -> void:
 	assert_result(result).is_success()
 	assert_array(result.value()).contains_exactly([
 		CmdCommand.new("-c", ["argument"]),
-		CmdCommand.new("-a")
+		CmdCommand.new("-a"),
 	])
 
 	# with repeading commands argument
@@ -103,7 +102,7 @@ func test_parse_success_repead_cmd_args() -> void:
 	assert_result(result).is_success()
 	assert_array(result.value()).contains_exactly([
 		CmdCommand.new("-c", ["argument1", "argument2", "argument3"]),
-		CmdCommand.new("-a")
+		CmdCommand.new("-a"),
 	])
 
 

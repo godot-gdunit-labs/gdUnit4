@@ -264,7 +264,7 @@ func test_double_static_return_void_function_with_args() -> void:
 	var doubler := GdUnitSpyFunctionDoubler.new()
 	var fd := GdFunctionDescriptor.new("foo", false, true, false, TYPE_NIL, "", [
 		GdFunctionArgument.new("arg1", TYPE_BOOL),
-		GdFunctionArgument.new("arg2", TYPE_STRING, "default")
+		GdFunctionArgument.new("arg2", TYPE_STRING, "default"),
 	])
 	var expected := """
 		static func foo(arg1_, arg2_="default") -> void:
@@ -289,7 +289,7 @@ func test_double_static_script_function_with_args_return_bool() -> void:
 
 	var fd := GdFunctionDescriptor.new("foo", false, true, false, TYPE_BOOL, "", [
 		GdFunctionArgument.new("arg1", TYPE_BOOL),
-		GdFunctionArgument.new("arg2", TYPE_STRING, "default")
+		GdFunctionArgument.new("arg2", TYPE_STRING, "default"),
 	])
 	var expected := """
 		static func foo(arg1_, arg2_="default") -> bool:

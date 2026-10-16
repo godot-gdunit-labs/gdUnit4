@@ -39,17 +39,17 @@ func test_decode_primitives(variant_type: int, value: Variant, expected: String,
 
 func test_decode_vectors(variant_type: int, value: Variant, expected: String, _test_parameters := [
 	[TYPE_VECTOR2, Vector2(), "Vector2()"],
-	[TYPE_VECTOR2, Vector2(1,2), "Vector2" + str(Vector2(1, 2))],
+	[TYPE_VECTOR2, Vector2(1, 2), "Vector2" + str(Vector2(1, 2))],
 	[TYPE_VECTOR2I, Vector2i(), "Vector2i()"],
-	[TYPE_VECTOR2I, Vector2i(1,2), "Vector2i(1, 2)"],
+	[TYPE_VECTOR2I, Vector2i(1, 2), "Vector2i(1, 2)"],
 	[TYPE_VECTOR3, Vector3(), "Vector3()"],
-	[TYPE_VECTOR3, Vector3(1,2,3), "Vector3" +str(Vector3(1, 2, 3))],
+	[TYPE_VECTOR3, Vector3(1, 2, 3), "Vector3" + str(Vector3(1, 2, 3))],
 	[TYPE_VECTOR3I, Vector3i(), "Vector3i()"],
-	[TYPE_VECTOR3I, Vector3i(1,2,3), "Vector3i(1, 2, 3)"],
+	[TYPE_VECTOR3I, Vector3i(1, 2, 3), "Vector3i(1, 2, 3)"],
 	[TYPE_VECTOR4, Vector4(), "Vector4()"],
-	[TYPE_VECTOR4, Vector4(1,2,3,4), "Vector4" + str(Vector4(1, 2, 3, 4))],
+	[TYPE_VECTOR4, Vector4(1, 2, 3, 4), "Vector4" + str(Vector4(1, 2, 3, 4))],
 	[TYPE_VECTOR4I, Vector4i(), "Vector4i()"],
-	[TYPE_VECTOR4I, Vector4i(1,2,3,4), "Vector4i(1, 2, 3, 4)"],
+	[TYPE_VECTOR4I, Vector4i(1, 2, 3, 4), "Vector4i(1, 2, 3, 4)"],
 	]) -> void:
 
 	assert_that(GdDefaultValueDecoder.decode_typed(variant_type, value)).is_equal(expected)
@@ -58,9 +58,9 @@ func test_decode_vectors(variant_type: int, value: Variant, expected: String, _t
 
 func test_decode_rect2(variant_type: int, value: Variant, expected: String, _test_parameters := [
 	[TYPE_RECT2, Rect2(), "Rect2()"],
-	[TYPE_RECT2, Rect2(1,2, 10,20), "Rect2(Vector2"+str(Vector2(1, 2))+", Vector2"+str(Vector2(10, 20))+")"],
+	[TYPE_RECT2, Rect2(1, 2, 10, 20), "Rect2(Vector2" + str(Vector2(1, 2)) + ", Vector2" + str(Vector2(10, 20)) + ")"],
 	[TYPE_RECT2I, Rect2i(), "Rect2i()"],
-	[TYPE_RECT2I, Rect2i(1,2, 10,20), "Rect2i(Vector2i(1, 2), Vector2i(10, 20))"],
+	[TYPE_RECT2I, Rect2i(1, 2, 10, 20), "Rect2i(Vector2i(1, 2), Vector2i(10, 20))"],
 	]) -> void:
 
 	assert_that(GdDefaultValueDecoder.decode_typed(variant_type, value)).is_equal(expected)
@@ -70,25 +70,25 @@ func test_decode_rect2(variant_type: int, value: Variant, expected: String, _tes
 func test_decode_transforms(variant_type: int, value: Variant, expected: String, _test_parameters := [
 	[TYPE_TRANSFORM2D, Transform2D(),
 		"Transform2D()"],
-	[TYPE_TRANSFORM2D, Transform2D(2.0, Vector2(1,2)),
-		"Transform2D(Vector2(-0.416147, 0.909297), Vector2(-0.909297, -0.416147), Vector2"+str(Vector2(1, 2))+")"],
-	[TYPE_TRANSFORM2D, Transform2D(2.0, Vector2(1,2), 2.0, Vector2(3,4)),
-		"Transform2D(Vector2(-0.416147, 0.909297), Vector2(1.513605, -1.307287), Vector2"+str(Vector2(3, 4))+")"],
-	[TYPE_TRANSFORM2D, Transform2D(Vector2(1,2), Vector2(3,4), Vector2.ONE),
-		"Transform2D(Vector2"+str(Vector2(1, 2))+", Vector2"+str(Vector2(3, 4))+", Vector2"+str(Vector2(1, 1))+")"],
+	[TYPE_TRANSFORM2D, Transform2D(2.0, Vector2(1, 2)),
+		"Transform2D(Vector2(-0.416147, 0.909297), Vector2(-0.909297, -0.416147), Vector2" + str(Vector2(1, 2)) + ")"],
+	[TYPE_TRANSFORM2D, Transform2D(2.0, Vector2(1, 2), 2.0, Vector2(3, 4)),
+		"Transform2D(Vector2(-0.416147, 0.909297), Vector2(1.513605, -1.307287), Vector2" + str(Vector2(3, 4)) + ")"],
+	[TYPE_TRANSFORM2D, Transform2D(Vector2(1, 2), Vector2(3, 4), Vector2.ONE),
+		"Transform2D(Vector2" + str(Vector2(1, 2)) + ", Vector2" + str(Vector2(3, 4)) + ", Vector2" + str(Vector2(1, 1)) + ")"],
 	[TYPE_TRANSFORM3D, Transform3D(),
 		"Transform3D()"],
 	[TYPE_TRANSFORM3D, Transform3D(Basis.FLIP_X, Vector3.ONE),
-		"Transform3D(Vector3"+str(Vector3(-1, 0, 0))+", Vector3"+str(Vector3(0, 1, 0))
-		+", Vector3"+str(Vector3(0, 0, 1))+", Vector3"+str(Vector3(1, 1, 1))+")"],
-	[TYPE_TRANSFORM3D, Transform3D(Vector3(1,2,3), Vector3(4,5,6), Vector3(7,8,9), Vector3.ONE),
-		"Transform3D(Vector3"+str(Vector3(1, 2, 3))+", Vector3"+str(Vector3(4, 5, 6))
-		+", Vector3"+str(Vector3(7, 8, 9))+", Vector3"+str(Vector3(1, 1, 1))+")"],
+		"Transform3D(Vector3" + str(Vector3(-1, 0, 0)) + ", Vector3" + str(Vector3(0, 1, 0))
+		+ ", Vector3" + str(Vector3(0, 0, 1)) + ", Vector3" + str(Vector3(1, 1, 1)) + ")"],
+	[TYPE_TRANSFORM3D, Transform3D(Vector3(1, 2, 3), Vector3(4, 5, 6), Vector3(7, 8, 9), Vector3.ONE),
+		"Transform3D(Vector3" + str(Vector3(1, 2, 3)) + ", Vector3" + str(Vector3(4, 5, 6))
+		+ ", Vector3" + str(Vector3(7, 8, 9)) + ", Vector3" + str(Vector3(1, 1, 1)) + ")"],
 	[TYPE_PROJECTION, Projection(), "Projection(Vector4%s, Vector4%s, Vector4%s, Vector4%s)"
 		% [Vector4(1, 0, 0, 0), Vector4(0, 1, 0, 0), Vector4(0, 0, 1, 0), Vector4(0, 0, 0, 1)]],
-	[TYPE_PROJECTION, Projection(Vector4.ONE, Vector4.ONE*2, Vector4.ONE*3, Vector4.ZERO),
+	[TYPE_PROJECTION, Projection(Vector4.ONE, Vector4.ONE * 2, Vector4.ONE * 3, Vector4.ZERO),
 		"Projection(Vector4%s, Vector4%s, Vector4%s, Vector4%s)" %
-		[Vector4.ONE, Vector4.ONE*2, Vector4.ONE*3, Vector4.ZERO]]
+		[Vector4.ONE, Vector4.ONE * 2, Vector4.ONE * 3, Vector4.ZERO]],
 	]) -> void:
 	assert_that(GdDefaultValueDecoder.decode_typed(variant_type, value)).is_equal(expected)
 	_tested_types[variant_type] = 1
@@ -96,7 +96,7 @@ func test_decode_transforms(variant_type: int, value: Variant, expected: String,
 
 func test_decode_plane(variant_type: int, value: Plane, expected: String, _test_parameters := [
 	[TYPE_PLANE, Plane(), "Plane()"],
-	[TYPE_PLANE, Plane(1,2,3,4), "Plane(1, 2, 3, 4)"],
+	[TYPE_PLANE, Plane(1, 2, 3, 4), "Plane(1, 2, 3, 4)"],
 	[TYPE_PLANE, Plane(Vector3.ONE, Vector3.ZERO), "Plane(1, 1, 1, 0)"],
 	]) -> void:
 	assert_that(GdDefaultValueDecoder.decode_typed(variant_type, value)).is_equal(expected)
@@ -105,7 +105,7 @@ func test_decode_plane(variant_type: int, value: Plane, expected: String, _test_
 
 func test_decode_quaternion(variant_type: int, value: Quaternion, expected: String, _test_parameters := [
 	[TYPE_QUATERNION, Quaternion(), "Quaternion()"],
-	[TYPE_QUATERNION, Quaternion(1,2,3,4), "Quaternion(1, 2, 3, 4)"],
+	[TYPE_QUATERNION, Quaternion(1, 2, 3, 4), "Quaternion(1, 2, 3, 4)"],
 	]) -> void:
 	assert_that(GdDefaultValueDecoder.decode_typed(variant_type, value)).is_equal(expected)
 	_tested_types[variant_type] = 1
@@ -113,7 +113,7 @@ func test_decode_quaternion(variant_type: int, value: Quaternion, expected: Stri
 
 func test_decode_aabb(variant_type: int, value: AABB, expected: String, _test_parameters := [
 	[TYPE_AABB, AABB(), "AABB()"],
-	[TYPE_AABB, AABB(Vector3.ONE, Vector3(10,20,30)), "AABB(Vector3"+str(Vector3(1, 1, 1))+", Vector3"+str(Vector3(10, 20, 30))+")"],
+	[TYPE_AABB, AABB(Vector3.ONE, Vector3(10, 20, 30)), "AABB(Vector3" + str(Vector3(1, 1, 1)) + ", Vector3" + str(Vector3(10, 20, 30)) + ")"],
 	]) -> void:
 	assert_that(GdDefaultValueDecoder.decode_typed(variant_type, value)).is_equal(expected)
 	_tested_types[variant_type] = 1
@@ -121,10 +121,10 @@ func test_decode_aabb(variant_type: int, value: AABB, expected: String, _test_pa
 
 func test_decode_basis(variant_type: int, value: Basis, expected: String, _test_parameters := [
 	[TYPE_BASIS, Basis(), "Basis()"],
-	[TYPE_BASIS, Basis(Vector3(0.1,0.2,0.3).normalized(), .1),
+	[TYPE_BASIS, Basis(Vector3(0.1, 0.2, 0.3).normalized(), .1),
 		"Basis(Vector3(0.995361, 0.080758, -0.052293), Vector3(-0.079331, 0.996432, 0.028823), Vector3(0.054434, -0.024541, 0.998216))"],
-	[TYPE_BASIS, Basis(Vector3.ONE, Vector3.ONE*2, Vector3.ONE*3),
-		"Basis(Vector3"+str(Vector3(1, 1, 1))+", Vector3"+str(Vector3(2, 2, 2))+", Vector3"+str(Vector3(3, 3, 3))+")"],
+	[TYPE_BASIS, Basis(Vector3.ONE, Vector3.ONE * 2, Vector3.ONE * 3),
+		"Basis(Vector3" + str(Vector3(1, 1, 1)) + ", Vector3" + str(Vector3(2, 2, 2)) + ", Vector3" + str(Vector3(3, 3, 3)) + ")"],
 	]) -> void:
 	assert_that(GdDefaultValueDecoder.decode_typed(variant_type, value)).is_equal(expected)
 	_tested_types[variant_type] = 1
@@ -132,8 +132,8 @@ func test_decode_basis(variant_type: int, value: Basis, expected: String, _test_
 
 func test_decode_color(variant_type: int, value: Color, expected: String, _test_parameters := [
 	[TYPE_COLOR, Color(), "Color()"],
-	[TYPE_COLOR, Color.RED, "Color"+str(Color(1, 0, 0, 1))],
-	[TYPE_COLOR, Color(1,.2,.5,.5), "Color"+str(Color(1, 0.2, 0.5, 0.5))],
+	[TYPE_COLOR, Color.RED, "Color" + str(Color(1, 0, 0, 1))],
+	[TYPE_COLOR, Color(1, .2, .5, .5), "Color" + str(Color(1, 0.2, 0.5, 0.5))],
 	]) -> void:
 	assert_that(GdDefaultValueDecoder.decode_typed(variant_type, value)).is_equal(expected)
 	_tested_types[variant_type] = 1
@@ -178,8 +178,8 @@ func test_decode_signal(variant_type: int, value: Signal, expected: String, _tes
 func test_decode_dictionary(variant_type: int, value: Dictionary, expected: String, _test_parameters := [
 	[TYPE_DICTIONARY, {}, "{}"],
 	[TYPE_DICTIONARY, Dictionary(), "{}"],
-	[TYPE_DICTIONARY, {1:2, 2:3}, "{ 1: 2, 2: 3 }"],
-	[TYPE_DICTIONARY, {"aa":2, "bb":"cc"}, '{ "aa": 2, "bb": "cc" }'],
+	[TYPE_DICTIONARY, { 1: 2, 2: 3 }, "{ 1: 2, 2: 3 }"],
+	[TYPE_DICTIONARY, { "aa": 2, "bb": "cc" }, '{ "aa": 2, "bb": "cc" }'],
 	]) -> void:
 	assert_that(GdDefaultValueDecoder.decode_typed(variant_type, value)).is_equal(expected)
 	_tested_types[variant_type] = 1
@@ -188,7 +188,7 @@ func test_decode_dictionary(variant_type: int, value: Dictionary, expected: Stri
 func test_decode_array(variant_type: int, value: Array, expected: String, _test_parameters := [
 	[TYPE_ARRAY, [], "[]"],
 	[TYPE_ARRAY, Array(), "[]"],
-	[TYPE_ARRAY, [1,2,3], "[1, 2, 3]"],
+	[TYPE_ARRAY, [1, 2, 3], "[1, 2, 3]"],
 	]) -> void:
 	assert_that(GdDefaultValueDecoder.decode_typed(variant_type, value)).is_equal(expected)
 	_tested_types[variant_type] = 1
@@ -202,7 +202,7 @@ func test_decode_typed_arrays(variant_type: int, value: Variant, expected: Strin
 	[TYPE_PACKED_COLOR_ARRAY, PackedColorArray(),
 		"PackedColorArray()"],
 	[TYPE_PACKED_COLOR_ARRAY, PackedColorArray([Color.RED, Color.BLUE]),
-		"PackedColorArray([Color"+str(Color(1, 0, 0, 1))+", Color"+str(Color(0, 0, 1, 1))+"])"],
+		"PackedColorArray([Color" + str(Color(1, 0, 0, 1)) + ", Color" + str(Color(0, 0, 1, 1)) + "])"],
 	[TYPE_PACKED_FLOAT32_ARRAY, PackedFloat32Array(),
 		"PackedFloat32Array()"],
 	[TYPE_PACKED_FLOAT32_ARRAY, PackedFloat32Array([1.2, 2.3]),
@@ -225,16 +225,16 @@ func test_decode_typed_arrays(variant_type: int, value: Variant, expected: Strin
 		'PackedStringArray(["aa", "bb"])'],
 	[TYPE_PACKED_VECTOR2_ARRAY, PackedVector2Array(),
 		"PackedVector2Array()"],
-	[TYPE_PACKED_VECTOR2_ARRAY, PackedVector2Array([Vector2.ONE, Vector2.ONE*2]),
-		"PackedVector2Array([Vector2"+str(Vector2.ONE)+", Vector2"+str(Vector2.ONE*2)+"])"],
+	[TYPE_PACKED_VECTOR2_ARRAY, PackedVector2Array([Vector2.ONE, Vector2.ONE * 2]),
+		"PackedVector2Array([Vector2" + str(Vector2.ONE) + ", Vector2" + str(Vector2.ONE * 2) + "])"],
 	[TYPE_PACKED_VECTOR3_ARRAY, PackedVector3Array(),
 		"PackedVector3Array()"],
-	[TYPE_PACKED_VECTOR3_ARRAY, PackedVector3Array([Vector3.ONE, Vector3.ONE*2]),
-		"PackedVector3Array([Vector3"+str(Vector3.ONE)+", Vector3"+str(Vector3.ONE*2)+"])"],
+	[TYPE_PACKED_VECTOR3_ARRAY, PackedVector3Array([Vector3.ONE, Vector3.ONE * 2]),
+		"PackedVector3Array([Vector3" + str(Vector3.ONE) + ", Vector3" + str(Vector3.ONE * 2) + "])"],
 	[TYPE_PACKED_VECTOR4_ARRAY, PackedVector4Array(),
 		"PackedVector4Array()"],
-	[TYPE_PACKED_VECTOR4_ARRAY, PackedVector4Array([Vector4.ONE, Vector4.ONE*2]),
-		"PackedVector4Array([Vector4"+str(Vector4.ONE)+", Vector4"+str(Vector4.ONE*2)+"])"]
+	[TYPE_PACKED_VECTOR4_ARRAY, PackedVector4Array([Vector4.ONE, Vector4.ONE * 2]),
+		"PackedVector4Array([Vector4" + str(Vector4.ONE) + ", Vector4" + str(Vector4.ONE * 2) + "])"],
 	]) -> void:
 	assert_that(GdDefaultValueDecoder.decode_typed(variant_type, value)).is_equal(expected)
 	_tested_types[variant_type] = 1

@@ -5,19 +5,6 @@ class_name GdUnitSignalAwaiterTest
 extends GdUnitTestSuite
 
 
-class Monster extends Node:
-
-	signal move(value: float)
-	signal slide(value: float, x: int, z: int)
-
-	var _pos: float = 0.0
-
-	func _process(_delta: float) -> void:
-		_pos += 0.2
-		emit_signal(move.get_name(), _pos)
-		emit_signal(slide.get_name(), _pos, 1, 2)
-
-
 func test_on_signal_with_single_arg() -> void:
 	var monster: Monster = auto_free(Monster.new())
 	add_child(monster)
@@ -41,3 +28,16 @@ func test_on_signal_fail() -> void:
 		await assert_failure_await( func x() -> void: await await_signal_on(monster, "move", [4.0]))
 	).has_message("await_signal_on(move, [$v0]) timed out after 2000ms".replace("$v0", str(4.0)))
 	remove_child(monster)
+
+
+class Monster extends Node:
+
+	signal move(value: float)
+	signal slide(value: float, x: int, z: int)
+
+	var _pos: float = 0.0
+
+	func _process(_delta: float) -> void:
+		_pos += 0.2
+		emit_signal(move.get_name(), _pos)
+		emit_signal(slide.get_name(), _pos, 1, 2)

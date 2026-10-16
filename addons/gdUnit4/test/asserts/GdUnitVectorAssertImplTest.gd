@@ -160,7 +160,7 @@ func test_is_equal_approx_over_all_types(value: Variant, expected: Variant, appr
 	[Vector3(0.996, 0.996, 1.004), Vector3.ONE, Vector3(0.004, 0.004, 0.004)],
 	[Vector3i(10, 9, 11), Vector3i(10, 10, 10), Vector3i(1, 1, 1)],
 	[Vector4(0.996, 0.996, 1.004, 1.004), Vector4.ONE, Vector4(0.004, 0.004, 0.004, 0.004)],
-	[Vector4i(10, 9, 11, 9), Vector4i(10, 10, 10, 10), Vector4i(1, 1, 1, 1)]
+	[Vector4i(10, 9, 11, 9), Vector4i(10, 10, 10, 10), Vector4i(1, 1, 1, 1)],
 ]) -> void:
 	assert_vector(value).is_equal_approx(expected, approx)
 

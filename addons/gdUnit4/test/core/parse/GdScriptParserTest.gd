@@ -29,64 +29,64 @@ func test_parse_function_arguments() -> void:
 	assert_array(_parser._parse_function_arguments("func foo(arg1, arg2, name):")) \
 		.has_size(3)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_VARIANT, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_VARIANT, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "name", "type" : TYPE_VARIANT, "value" : GdFunctionArgument.UNDEFINED},
+			{ "name": "arg1", "type": TYPE_VARIANT, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_VARIANT, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "name", "type": TYPE_VARIANT, "value": GdFunctionArgument.UNDEFINED },
 		])
 
 	assert_array(_parser._parse_function_arguments('func foo(arg1 :int, arg2 :bool, name :String = "abc"):')) \
 		.has_size(3)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_INT, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_BOOL, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "name", "type" : TYPE_STRING, "value" : '"abc"'},
+			{ "name": "arg1", "type": TYPE_INT, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_BOOL, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "name", "type": TYPE_STRING, "value": '"abc"' },
 		])
 
 	assert_array(_parser._parse_function_arguments('func bar(arg1 :int, arg2 :int = 23, name :String = "test") -> String:')) \
 		.has_size(3)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_INT, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_INT, "value" : "23"},
-			{"name" : "name", "type" : TYPE_STRING, "value" : '"test"'},
+			{ "name": "arg1", "type": TYPE_INT, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_INT, "value": "23" },
+			{ "name": "name", "type": TYPE_STRING, "value": '"test"' },
 		])
 
 	assert_array(_parser._parse_function_arguments("func foo(arg1, arg2=value(1,2,3), name:=foo()):")) \
 		.has_size(3)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_VARIANT, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_VARIANT, "value" : "value(1,2,3)"},
-			{"name" : "name", "type" : TYPE_VARIANT, "value" : "foo()"},
+			{ "name": "arg1", "type": TYPE_VARIANT, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_VARIANT, "value": "value(1,2,3)" },
+			{ "name": "name", "type": TYPE_VARIANT, "value": "foo()" },
 		])
 
 	# enum as prefix in value name
 	assert_array(_parser._parse_function_arguments("func get_value( type := ENUM_A) -> int:"))\
 		.has_size(1)\
 		.contains([
-			{"name" : "type", "type" : TYPE_VARIANT, "value" : "ENUM_A"},
+			{ "name": "type", "type": TYPE_VARIANT, "value": "ENUM_A" },
 		])
 
 	assert_array(_parser._parse_function_arguments("func create_timer(timeout :float) -> Timer:")) \
 		.has_size(1)\
 		.contains([
-			{"name" : "timeout", "type" : TYPE_FLOAT, "value" : GdFunctionArgument.UNDEFINED},
+			{ "name": "timeout", "type": TYPE_FLOAT, "value": GdFunctionArgument.UNDEFINED },
 		])
 
 	# array argument
 	assert_array(_parser._parse_function_arguments("func foo(a :int, b :int, parameters = [[1, 2], [3, 4], [5, 6]]):")) \
 		.has_size(3)\
 		.contains([
-			{"name" : "a", "type" : TYPE_INT, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "b", "type" : TYPE_INT, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "parameters", "type" : TYPE_VARIANT, "value" : "[[1, 2], [3, 4], [5, 6]]"},
+			{ "name": "a", "type": TYPE_INT, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "b", "type": TYPE_INT, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "parameters", "type": TYPE_VARIANT, "value": "[[1, 2], [3, 4], [5, 6]]" },
 		])
 
 	assert_array(_parser._parse_function_arguments("func test_values(a:Vector2, b:Vector2, expected:Vector2, test_parameters:=[[Vector2.ONE,Vector2.ONE,Vector2(1,1)]]):"))\
 		.has_size(4)\
 		.contains([
-			{"name" : "a", "type" : TYPE_VECTOR2, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "b", "type" : TYPE_VECTOR2, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "expected", "type" : TYPE_VECTOR2, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "test_parameters", "type" : TYPE_VARIANT, "value" : "[[Vector2.ONE,Vector2.ONE,Vector2(1,1)]]"},
+			{ "name": "a", "type": TYPE_VECTOR2, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "b", "type": TYPE_VECTOR2, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "expected", "type": TYPE_VECTOR2, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "test_parameters", "type": TYPE_VARIANT, "value": "[[Vector2.ONE,Vector2.ONE,Vector2(1,1)]]" },
 		])
 
 
@@ -95,7 +95,7 @@ func test_parse_arguments_with_super_constructor() -> void:
 	assert_array(_parser._parse_function_arguments('func foo(arg1 = "arg").foo("abc", arg1):'))\
 		.has_size(1)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_VARIANT, "value" : '"arg"'},
+			{ "name": "arg1", "type": TYPE_VARIANT, "value": '"arg"' },
 		])
 
 
@@ -103,22 +103,22 @@ func test_parse_arguments_default_build_in_type_string() -> void:
 	assert_array(_parser._parse_function_arguments('func foo(arg1 :String, arg2="default"):')) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_VARIANT, "value" : '"default"'},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_VARIANT, "value": '"default"' },
 		])
 
 	assert_array(_parser._parse_function_arguments('func foo(arg1 :String, arg2 :="default"):')) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_VARIANT, "value" : '"default"'},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_VARIANT, "value": '"default"' },
 		])
 
 	assert_array(_parser._parse_function_arguments('func foo(arg1 :String, arg2 :String ="default"):')) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_STRING, "value" : '"default"'},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_STRING, "value": '"default"' },
 		])
 
 
@@ -129,9 +129,9 @@ func test_parse_arguments_default_build_in_type_string_with_escaped_quote() -> v
 		"""func foo(arg1: String, arg2: String, test_parameters := _parameters_string_arg('abc', "d\\"ef")):"""))\
 		.has_size(3)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "test_parameters", "type" : TYPE_VARIANT, "value" : """_parameters_string_arg('abc', "d\\"ef")"""},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "test_parameters", "type": TYPE_VARIANT, "value": """_parameters_string_arg('abc', "d\\"ef")""" },
 		])
 
 	# same for an escaped single quote inside a single quoted argument value
@@ -139,9 +139,9 @@ func test_parse_arguments_default_build_in_type_string_with_escaped_quote() -> v
 		"""func foo(arg1: String, arg2: String, test_parameters := _parameters_string_arg("abc", 'd\\'ef')):"""))\
 		.has_size(3)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "test_parameters", "type" : TYPE_VARIANT, "value" : """_parameters_string_arg("abc", 'd\\'ef')"""},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "test_parameters", "type": TYPE_VARIANT, "value": """_parameters_string_arg("abc", 'd\\'ef')""" },
 		])
 
 
@@ -149,22 +149,22 @@ func test_parse_arguments_default_build_in_type_boolean() -> void:
 	assert_array(_parser._parse_function_arguments("func foo(arg1 :String, arg2=false):")) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_VARIANT, "value" : "false"},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_VARIANT, "value": "false" },
 		])
 
 	assert_array(_parser._parse_function_arguments("func foo(arg1 :String, arg2 :=false):")) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_VARIANT, "value" : "false"},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_VARIANT, "value": "false" },
 		])
 
 	assert_array(_parser._parse_function_arguments("func foo(arg1 :String, arg2 :bool=false):")) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_BOOL, "value" : "false"},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_BOOL, "value": "false" },
 		])
 
 
@@ -172,22 +172,22 @@ func test_parse_arguments_default_build_in_type_float() -> void:
 	assert_array(_parser._parse_function_arguments("func foo(arg1 :String, arg2=3.14):")) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_VARIANT, "value" : "3.14"},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_VARIANT, "value": "3.14" },
 		])
 
 	assert_array(_parser._parse_function_arguments("func foo(arg1 :String, arg2 :=3.14):")) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_VARIANT, "value" : "3.14"},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_VARIANT, "value": "3.14" },
 		])
 
 	assert_array(_parser._parse_function_arguments("func foo(arg1 :String, arg2 :float=3.14):")) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_FLOAT, "value" : "3.14"},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_FLOAT, "value": "3.14" },
 		])
 
 
@@ -195,44 +195,44 @@ func test_parse_arguments_default_build_in_type_array() -> void:
 	assert_array(_parser._parse_function_arguments("func foo(arg1 :String, arg2 :Array=[]):")) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_ARRAY, "value" : "[]"},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_ARRAY, "value": "[]" },
 		])
 
 	assert_array(_parser._parse_function_arguments("func foo(arg1 :String, arg2 :Array=Array()):")) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_ARRAY, "value" : "Array()"},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_ARRAY, "value": "Array()" },
 		])
 
 	assert_array(_parser._parse_function_arguments("func foo(arg1 :String, arg2 :Array=[1, 2, 3]):")) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_ARRAY, "value" : "[1, 2, 3]"},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_ARRAY, "value": "[1, 2, 3]" },
 		])
 
 	assert_array(_parser._parse_function_arguments("func foo(arg1 :String, arg2 :=[1, 2, 3]):")) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_VARIANT, "value" : "[1, 2, 3]"},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_VARIANT, "value": "[1, 2, 3]" },
 		])
 
 	assert_array(_parser._parse_function_arguments("func foo(arg1 :String, arg2=[]):")) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_VARIANT, "value" : "[]"},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_VARIANT, "value": "[]" },
 		])
 
 	assert_array(_parser._parse_function_arguments("func foo(arg1 :String, arg2 :Array=[1, 2, 3], arg3 := false):")) \
 		.has_size(3)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_ARRAY, "value" : "[1, 2, 3]"},
-			{"name" : "arg3", "type" : TYPE_VARIANT, "value" : "false"},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_ARRAY, "value": "[1, 2, 3]" },
+			{ "name": "arg3", "type": TYPE_VARIANT, "value": "false" },
 		])
 
 
@@ -240,22 +240,22 @@ func test_parse_arguments_default_build_in_type_color() -> void:
 	assert_array(_parser._parse_function_arguments("func foo(arg1 :String, arg2=Color.RED):")) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_VARIANT, "value" : "Color.RED"},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_VARIANT, "value": "Color.RED" },
 		])
 
 	assert_array(_parser._parse_function_arguments("func foo(arg1 :String, arg2 :=Color.RED):")) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_VARIANT, "value" : "Color.RED"},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_VARIANT, "value": "Color.RED" },
 		])
 
 	assert_array(_parser._parse_function_arguments("func foo(arg1 :String, arg2 :Color=Color.RED):")) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_COLOR, "value" : "Color.RED"},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_COLOR, "value": "Color.RED" },
 		])
 
 
@@ -263,22 +263,22 @@ func test_parse_arguments_default_build_in_type_vector() -> void:
 	assert_array(_parser._parse_function_arguments("func bar(arg1 :String, arg2 =Vector3.FORWARD):")) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_VARIANT, "value" : "Vector3.FORWARD"},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_VARIANT, "value": "Vector3.FORWARD" },
 		])
 
 	assert_array(_parser._parse_function_arguments("func bar(arg1 :String, arg2 :=Vector3.FORWARD):")) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_VARIANT, "value" : "Vector3.FORWARD"},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_VARIANT, "value": "Vector3.FORWARD" },
 		])
 
 	assert_array(_parser._parse_function_arguments("func bar(arg1 :String, arg2 :Vector3=Vector3.FORWARD):")) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_VECTOR3, "value" : "Vector3.FORWARD"},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_VECTOR3, "value": "Vector3.FORWARD" },
 		])
 
 
@@ -286,15 +286,15 @@ func test_parse_arguments_default_build_in_type_aabb() -> void:
 	assert_array(_parser._parse_function_arguments("func bar(arg1 :String, arg2 := AABB()):")) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_VARIANT, "value" : "AABB()"},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_VARIANT, "value": "AABB()" },
 		])
 
 	assert_array(_parser._parse_function_arguments("func bar(arg1 :String, arg2 :AABB=AABB()):")) \
 		.has_size(2)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_AABB, "value" : "AABB()"},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_AABB, "value": "AABB()" },
 		])
 
 
@@ -302,9 +302,9 @@ func test_parse_arguments_default_build_in_types() -> void:
 	assert_array(_parser._parse_function_arguments("func bar(arg1 :String, arg2 := Vector3.FORWARD, aabb := AABB()):")) \
 		.has_size(3)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_STRING, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_VARIANT, "value" : "Vector3.FORWARD"},
-			{"name" : "aabb", "type" : TYPE_VARIANT, "value" : "AABB()"},
+			{ "name": "arg1", "type": TYPE_STRING, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_VARIANT, "value": "Vector3.FORWARD" },
+			{ "name": "aabb", "type": TYPE_VARIANT, "value": "AABB()" },
 		])
 
 
@@ -313,11 +313,11 @@ func test_parse_arguments_fuzzers() -> void:
 		"func test_foo(fuzzer_a = fuzz_a(), fuzzer_b := fuzz_b(), fuzzer_c :Fuzzer = fuzz_c(), fuzzer_iterations = 234, fuzzer_seed = 100):")) \
 		.has_size(5)\
 		.contains([
-			{"name" : "fuzzer_a", "type" : TYPE_FUZZER, "value" : "fuzz_a()"},
-			{"name" : "fuzzer_b", "type" : TYPE_FUZZER, "value" : "fuzz_b()"},
-			{"name" : "fuzzer_c", "type" : TYPE_FUZZER, "value" : "fuzz_c()"},
-			{"name" : "fuzzer_iterations", "type" : TYPE_VARIANT, "value" : "234"},
-			{"name" : "fuzzer_seed", "type" : TYPE_VARIANT, "value" : "100"},
+			{ "name": "fuzzer_a", "type": TYPE_FUZZER, "value": "fuzz_a()" },
+			{ "name": "fuzzer_b", "type": TYPE_FUZZER, "value": "fuzz_b()" },
+			{ "name": "fuzzer_c", "type": TYPE_FUZZER, "value": "fuzz_c()" },
+			{ "name": "fuzzer_iterations", "type": TYPE_VARIANT, "value": "234" },
+			{ "name": "fuzzer_seed", "type": TYPE_VARIANT, "value": "100" },
 		])
 
 
@@ -325,9 +325,9 @@ func test_parse_arguments_typed_dict() -> void:
 	assert_array(_parser._parse_function_arguments('func generate(arg1: Dictionary[String,Variant], arg2 :Dictionary = {"a":1, "b":2}, arg3 := {}) -> void:'))\
 		.has_size(3)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_DICTIONARY, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_DICTIONARY, "value" : '{"a":1, "b":2}'},
-			{"name" : "arg3", "type" : TYPE_VARIANT, "value" : "{}"},
+			{ "name": "arg1", "type": TYPE_DICTIONARY, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_DICTIONARY, "value": '{"a":1, "b":2}' },
+			{ "name": "arg3", "type": TYPE_VARIANT, "value": "{}" },
 		])
 
 
@@ -347,15 +347,15 @@ func test_parse_arguments_variant() -> void:
 	assert_array(args)\
 		.has_size(9)\
 		.contains([
-			{"name" : "ucids",       "type" : TYPE_ARRAY, "value" : GdFunctionArgument.UNDEFINED, },
-			{"name" : "position",    "type" : TYPE_VECTOR2I, "value" : GdFunctionArgument.UNDEFINED, },
-			{"name" : "size",        "type" : TYPE_VECTOR2I, "value" : GdFunctionArgument.UNDEFINED },
-			{"name" : "style",       "type" : TYPE_INT, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "text",        "type" : TYPE_VARIANT, "value" : '""'},
-			{"name" : "button_name", "type" : TYPE_VARIANT, "value" : '""'},
-			{"name" : "type_in",     "type" : TYPE_VARIANT, "value" : "0"},
-			{"name" : "caption",     "type" : TYPE_VARIANT, "value" : '""'},
-			{"name" : "show_everywhere", "type" : TYPE_VARIANT, "value" : "false"},
+			{ "name": "ucids",       "type": TYPE_ARRAY, "value": GdFunctionArgument.UNDEFINED, },
+			{ "name": "position",    "type": TYPE_VECTOR2I, "value": GdFunctionArgument.UNDEFINED, },
+			{ "name": "size",        "type": TYPE_VECTOR2I, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "style",       "type": TYPE_INT, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "text",        "type": TYPE_VARIANT, "value": '""' },
+			{ "name": "button_name", "type": TYPE_VARIANT, "value": '""' },
+			{ "name": "type_in",     "type": TYPE_VARIANT, "value": "0" },
+			{ "name": "caption",     "type": TYPE_VARIANT, "value": '""' },
+			{ "name": "show_everywhere", "type": TYPE_VARIANT, "value": "false" },
 			])
 
 
@@ -364,7 +364,7 @@ func test_parse_arguments_variadic() -> void:
 	assert_array(args)\
 		.has_size(1)\
 		.contains([
-			{"name" : "args", "type" : TYPE_VARARG, "value" : GdFunctionArgument.UNDEFINED}
+			{ "name": "args", "type": TYPE_VARARG, "value": GdFunctionArgument.UNDEFINED },
 		])
 
 	var script := GDScript.new()
@@ -385,15 +385,11 @@ func test_parse_arguments_typed_array() -> void:
 	assert_array(_parser._parse_function_arguments("func generate(arg1: Array, arg2: Array = [1,2,3], arg3: Array[int] = [4,5,6], arg4 := []) -> void:"))\
 		.has_size(4)\
 		.contains([
-			{"name" : "arg1", "type" : TYPE_ARRAY, "value" : GdFunctionArgument.UNDEFINED},
-			{"name" : "arg2", "type" : TYPE_ARRAY, "value" : "[1,2,3]"},
-			{"name" : "arg3", "type" : TYPE_ARRAY, "value" : "[4,5,6]"},
-			{"name" : "arg4", "type" : TYPE_VARIANT, "value" : "[]"},
+			{ "name": "arg1", "type": TYPE_ARRAY, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "arg2", "type": TYPE_ARRAY, "value": "[1,2,3]" },
+			{ "name": "arg3", "type": TYPE_ARRAY, "value": "[4,5,6]" },
+			{ "name": "arg4", "type": TYPE_VARIANT, "value": "[]" },
 		])
-
-
-class TestObject:
-	var x: int
 
 
 func test_parse_func_name() -> void:
@@ -501,21 +497,21 @@ func test_parse_func_description() -> void:
 	assert_that(fds[0])\
 		.is_equal(create("foo0", script.resource_path, 4, 5, TYPE_STRING, [
 			GdFunctionArgument.new("arg1", TYPE_INT),
-			GdFunctionArgument.new("arg2", TYPE_BOOL, false)
+			GdFunctionArgument.new("arg2", TYPE_BOOL, false),
 		]))
 
 	# static function
 	assert_that(fds[1])\
 		.is_equal(create_static("foo1", script.resource_path, 8, 9, TYPE_STRING, [
 			GdFunctionArgument.new("arg1", TYPE_INT),
-			GdFunctionArgument.new("arg2", TYPE_BOOL, false)
+			GdFunctionArgument.new("arg2", TYPE_BOOL, false),
 		]))
 
 	# static function without return type
 	assert_that(fds[2])\
 		.is_equal(create_static("foo2", script.resource_path, 12, 13, GdObjects.TYPE_VARIANT, [
 			GdFunctionArgument.new("arg1", TYPE_INT),
-			GdFunctionArgument.new("arg2", TYPE_BOOL, true)
+			GdFunctionArgument.new("arg2", TYPE_BOOL, true),
 		]))
 
 
@@ -708,7 +704,7 @@ func test_parse_func_descriptor_with_fuzzers() -> void:
 		# untyped arg is TYPE_VARIANT
 		GdFunctionArgument.new("fuzzer_iterations", GdObjects.TYPE_VARIANT, 234),
 		# typed is TYPE_INT
-		GdFunctionArgument.new("fuzzer_seed", TYPE_INT, 100)
+		GdFunctionArgument.new("fuzzer_seed", TYPE_INT, 100),
 	]))
 
 
@@ -820,3 +816,7 @@ static func create_static(func_name: String, source_path: String, begin_line: in
 	var fd := GdFunctionDescriptor.new(func_name, false, true, false, return_type, "", args)
 	fd.enrich_file_info(source_path, begin_line, end_line)
 	return fd
+
+
+class TestObject:
+	var x: int

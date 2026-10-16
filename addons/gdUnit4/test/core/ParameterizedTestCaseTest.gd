@@ -7,76 +7,75 @@ const _DATA2 := ["bb"]
 
 var _collected_tests: Dictionary[String, Array] = {}
 var _expected_tests := {
-	"test_parameterized_bool_value" : [
+	"test_parameterized_bool_value": [
 		[0, false],
-		[1, true]
+		[1, true],
 	],
-	"test_parameterized_int_values" : [
+	"test_parameterized_int_values": [
 		[1, 2, 3, 6],
 		[3, 4, 5, 12],
-		[6, 7, 8, 21]
+		[6, 7, 8, 21],
 	],
-	"test_parameterized_float_values" : [
+	"test_parameterized_float_values": [
 		[2.2, 2.2, 4.4],
 		[2.2, 2.3, 4.5],
-		[3.3, 2.2, 5.5]
+		[3.3, 2.2, 5.5],
 	],
-	"test_parameterized_string_values" : [
+	"test_parameterized_string_values": [
 		["2.2", "2.2", "2.22.2"],
 		["foo", "bar", "foobar"],
-		["a", "b", "ab"]
+		["a", "b", "ab"],
 	],
-	"test_parameterized_vector2_values" : [
+	"test_parameterized_vector2_values": [
 		[Vector2.ONE, Vector2.ONE, Vector2(2, 2)],
 		[Vector2.LEFT, Vector2.RIGHT, Vector2.ZERO],
-		[Vector2.ZERO, Vector2.LEFT, Vector2.LEFT]
+		[Vector2.ZERO, Vector2.LEFT, Vector2.LEFT],
 	],
-	"test_parameterized_vector3_values" : [
+	"test_parameterized_vector3_values": [
 		[Vector3.ONE, Vector3.ONE, Vector3(2, 2, 2)],
 		[Vector3.LEFT, Vector3.RIGHT, Vector3.ZERO],
-		[Vector3.ZERO, Vector3.LEFT, Vector3.LEFT]
+		[Vector3.ZERO, Vector3.LEFT, Vector3.LEFT],
 	],
-	"test_parameterized_obj_values" : [
-		[TestObj.new("abc"), TestObj.new("def"), "abcdef"]
+	"test_parameterized_obj_values": [
+		[TestObj.new("abc"), TestObj.new("def"), "abcdef"],
 	],
-	"test_parameterized_dict_values" : [
-		[{"key_a":"value_a"}, '{"key_a":"value_a"}'],
-		[{"key_b":"value_b"}, '{"key_b":"value_b"}']
+	"test_parameterized_dict_values": [
+		[{ "key_a": "value_a" }, '{"key_a":"value_a"}'],
+		[{ "key_b": "value_b" }, '{"key_b":"value_b"}'],
 	],
-	"test_parameterized_untyped_array" : [
-		[[42]]
+	"test_parameterized_untyped_array": [
+		[[42]],
 	],
-	"test_parameterized_typed_array" : [
-		[[42]]
+	"test_parameterized_typed_array": [
+		[[42]],
 	],
-	"test_with_dynamic_paramater_resolving" : [
+	"test_with_dynamic_paramater_resolving": [
 		["test_a"],
 		["test_b"],
 		["test_c"],
-		["test_d"]
+		["test_d"],
 	],
-	"test_with_dynamic_paramater_resolving2" : [
+	"test_with_dynamic_paramater_resolving2": [
 		["test_a"],
 		["test_b"],
-		["test_c"]
+		["test_c"],
 	],
-	"test_with_extern_parameter_set" : [
+	"test_with_extern_parameter_set": [
 		["test_a"],
 		["test_b"],
-		["test_c"]
+		["test_c"],
 	],
-	"test_with_extern_const_parameter_set" : [
+	"test_with_extern_const_parameter_set": [
 		["aa"],
-		["bb"]
-	]
+		["bb"],
+	],
 }
-
 var _test_node_before: Node
 var _test_node_before_test: Node
 var _test_set := [
 	["test_a"],
 	["test_b"],
-	["test_c"]
+	["test_c"],
 ]
 
 
@@ -168,16 +167,6 @@ func test_parameterized_vector3_values(a: Vector3, b: Vector3, expected: Vector3
 	assert_that(a + b).is_equal(expected)
 
 
-class TestObj extends RefCounted:
-	var _value: String
-
-	func _init(value: String) -> void:
-		_value = value
-
-	func _to_string() -> String:
-		return _value
-
-
 func test_parameterized_obj_values(a: Object, b: Object, expected: String, _test_parameters := [
 	[TestObj.new("abc"), TestObj.new("def"), "abcdef"]]) -> void:
 
@@ -186,8 +175,8 @@ func test_parameterized_obj_values(a: Object, b: Object, expected: String, _test
 
 
 func test_parameterized_dict_values(data: Dictionary, expected: String, _test_parameters := [
-	[{"key_a" : "value_a"}, '{"key_a":"value_a"}'],
-	[{"key_b" : "value_b"}, '{"key_b":"value_b"}']
+	[{ "key_a": "value_a" }, '{"key_a":"value_a"}'],
+	[{ "key_b": "value_b" }, '{"key_b":"value_b"}'],
 	]) -> void:
 	collect_test_call("test_parameterized_dict_values", [data, expected])
 	assert_that(str(data).replace(" ", "")).is_equal(expected)
@@ -197,10 +186,10 @@ func test_dictionary_div_number_types(
 	value: Dictionary,
 	expected: Dictionary,
 	_test_parameters: Array = [
-		[{"top": 50.0, "bottom": 50.0, "left": 50.0, "right": 50.0}, {"top": 50, "bottom": 50, "left": 50, "right": 50}],
-		[{"top": 50.0, "bottom": 50.0, "left": 50.0, "right": 50.0}, {"top": 50.0, "bottom": 50.0, "left": 50.0, "right": 50.0}],
-		[{"top": 50, "bottom": 50, "left": 50, "right": 50}, {"top": 50.0, "bottom": 50.0, "left": 50.0, "right": 50.0}],
-		[{"top": 50, "bottom": 50, "left": 50, "right": 50}, {"top": 50, "bottom": 50, "left": 50, "right": 50}],
+		[{ "top": 50.0, "bottom": 50.0, "left": 50.0, "right": 50.0 }, { "top": 50, "bottom": 50, "left": 50, "right": 50 }],
+		[{ "top": 50.0, "bottom": 50.0, "left": 50.0, "right": 50.0 }, { "top": 50.0, "bottom": 50.0, "left": 50.0, "right": 50.0 }],
+		[{ "top": 50, "bottom": 50, "left": 50, "right": 50 }, { "top": 50.0, "bottom": 50.0, "left": 50.0, "right": 50.0 }],
+		[{ "top": 50, "bottom": 50, "left": 50, "right": 50 }, { "top": 50, "bottom": 50, "left": 50, "right": 50 }],
 	]
 ) -> void:
 	# allow to compare type unsave
@@ -210,7 +199,7 @@ func test_dictionary_div_number_types(
 
 
 func test_parameterized_untyped_array(items: Array, _test_parameters := [
-		[[42]]
+		[[42]],
 	]
 ) -> void:
 	collect_test_call("test_parameterized_untyped_array", [items])
@@ -218,7 +207,7 @@ func test_parameterized_untyped_array(items: Array, _test_parameters := [
 
 
 func test_parameterized_typed_array(items: Array[int], _test_parameters := [
-		[[42]]
+		[[42]],
 	]
 ) -> void:
 	collect_test_call("test_parameterized_typed_array", [items])
@@ -299,14 +288,14 @@ func test_with_dynamic_parameter_resolving2(
 			"test_b",
 			Node2D,
 			null,
-			{Node2D: "ERROR"}
+			{ Node2D: "ERROR" },
 		],
 		[
 			"test_c",
 			Node2D,
 			"LOG",
-			{Node2D: "LOG"}
-		]
+			{ Node2D: "LOG" },
+		],
 	]
 ) -> void:
 	# the argument '_test_parameters' must be replaced by <null> set to avoid re-instantiate of test arguments
@@ -324,3 +313,13 @@ func test_with_extern_const_parameter_set(value: String, _test_parameters := [_D
 	assert_str(value).is_not_empty()
 	assert_array(_test_parameters).is_empty()
 	collect_test_call("test_with_extern_const_parameter_set", [value])
+
+
+class TestObj extends RefCounted:
+	var _value: String
+
+	func _init(value: String) -> void:
+		_value = value
+
+	func _to_string() -> String:
+		return _value

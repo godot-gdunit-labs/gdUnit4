@@ -118,6 +118,7 @@ func test_is_not_inheriting() -> void:
 		assert_object([]).is_not_inheriting(Node)
 	).is_failed().has_message("Expected '[]' to inherit from at least Object.")
 
+
 func test_is_null() -> void:
 	assert_object(null).is_null()
 

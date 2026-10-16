@@ -5,13 +5,6 @@ var _x := 42
 var _obj: Node2D
 var _color := Color.RED
 var _test_set_a := ["test_8", Color(1, 1, 1), Color(.1, .1, .1)]
-
-
-class TestObj:
-	func _init() -> void:
-		pass
-
-
 @warning_ignore("unused_private_class_variable")
 var _parameters_with_references_typed: Array
 
@@ -27,7 +20,7 @@ func before() -> void:
 		["test_5", TestObj.new(), TestObj],
 		["test_6", Vector3(1, 1, 1), Vector2(2, 2)],
 		["test_7", Color(1, 1, 1), _color],
-		_test_set_a
+		_test_set_a,
 	]
 
 
@@ -143,3 +136,8 @@ func test_performance_get_parameters_overall() -> void:
 	@warning_ignore_restore("integer_division")
 
 #endregion
+
+
+class TestObj:
+	func _init() -> void:
+		pass

@@ -7,39 +7,6 @@ extends GdUnitTestSuite
 
 const GdUnitTools = preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
-
-class TestEmitter extends Node:
-	signal test_signal_counted(value: int)
-	signal test_signal(value: int)
-	signal test_signal_without_value()
-	signal test_signal_a(value: String)
-	signal test_signal_arry_value(values: Array)
-	@warning_ignore("unused_signal")
-	signal test_signal_unused()
-
-	var _trigger_count: int
-	var _count := 0
-
-	func _init(trigger_count := 10) -> void:
-		_trigger_count = trigger_count
-
-	func _process(_delta: float) -> void:
-		if _count >= _trigger_count:
-			test_signal_counted.emit(_count)
-
-		if _count == 20:
-			test_signal.emit(10)
-			test_signal.emit(20)
-			test_signal_a.emit("foo")
-			test_signal_without_value.emit()
-			test_signal_arry_value.emit(1, 2, 3)
-		_count += 1
-
-	func reset_trigger(trigger_count := 10) -> void:
-		_trigger_count = trigger_count
-		_count = 0
-
-
 var signal_emitter: TestEmitter
 
 
@@ -252,18 +219,6 @@ func test_is_signal_exists() -> void:
 	).has_message("The signal 'not_existing_signal' not exists checked object 'Node2D'.")
 
 
-class MyEmitter extends Node:
-
-	signal my_signal_a
-	signal my_signal_b(value: String)
-
-	func do_emit_a() -> void:
-		my_signal_a.emit()
-
-	func do_emit_b() -> void:
-		my_signal_b.emit("foo")
-
-
 @warning_ignore("unsafe_method_access")
 func test_monitor_signals() -> void:
 	# start to watch on the emitter to collect all emitted signals
@@ -292,16 +247,6 @@ func test_monitor_signals() -> void:
 	await assert_signal(emitter_b).wait_until(50).is_emitted("my_signal_a")
 
 
-class ExampleResource extends Resource:
-	@export var title := "Title":
-		set(new_value):
-			title = new_value
-			changed.emit()
-
-	func change_title(p_title: String) -> void:
-		title = p_title
-
-
 func test_monitor_signals_on_resource_set() -> void:
 	var sut := ExampleResource.new()
 	var emitter := monitor_signals(sut)
@@ -311,3 +256,57 @@ func test_monitor_signals_on_resource_set() -> void:
 	# title change should emit "changed" signal
 	await assert_signal(emitter).is_emitted("changed")
 	assert_str(sut.title).is_equal("Some title")
+
+
+class TestEmitter extends Node:
+	signal test_signal_counted(value: int)
+	signal test_signal(value: int)
+	signal test_signal_without_value()
+	signal test_signal_a(value: String)
+	signal test_signal_arry_value(values: Array)
+	@warning_ignore("unused_signal")
+	signal test_signal_unused()
+
+	var _trigger_count: int
+	var _count := 0
+
+	func _init(trigger_count := 10) -> void:
+		_trigger_count = trigger_count
+
+	func _process(_delta: float) -> void:
+		if _count >= _trigger_count:
+			test_signal_counted.emit(_count)
+
+		if _count == 20:
+			test_signal.emit(10)
+			test_signal.emit(20)
+			test_signal_a.emit("foo")
+			test_signal_without_value.emit()
+			test_signal_arry_value.emit(1, 2, 3)
+		_count += 1
+
+	func reset_trigger(trigger_count := 10) -> void:
+		_trigger_count = trigger_count
+		_count = 0
+
+
+class MyEmitter extends Node:
+
+	signal my_signal_a
+	signal my_signal_b(value: String)
+
+	func do_emit_a() -> void:
+		my_signal_a.emit()
+
+	func do_emit_b() -> void:
+		my_signal_b.emit("foo")
+
+
+class ExampleResource extends Resource:
+	@export var title := "Title":
+		set(new_value):
+			title = new_value
+			changed.emit()
+
+	func change_title(p_title: String) -> void:
+		title = p_title

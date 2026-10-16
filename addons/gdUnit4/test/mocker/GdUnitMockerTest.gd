@@ -205,24 +205,6 @@ func test_mock_node_func_vararg_call_real_func() -> void:
 	assert_that(_test_signal_args).is_equal(["aa", "xxx"])
 
 
-class ClassWithSignal:
-	signal test_signal_a
-	signal test_signal_b
-
-	func foo(arg: int) -> void:
-		if arg == 0:
-			emit_signal(test_signal_a.get_name(), "aa")
-		else:
-			emit_signal(test_signal_b.get_name(), "bb", true)
-
-	func bar(arg: int) -> bool:
-		if arg == 0:
-			emit_signal(test_signal_a.get_name(), "aa")
-		else:
-			emit_signal(test_signal_b.get_name(), "bb", true)
-		return true
-
-
 func _test_mock_verify_emit_signal() -> void:
 	var mocked_node: Variant = mock(ClassWithSignal, CALL_REAL_FUNC)
 	assert_that(mocked_node).is_not_null()
@@ -1184,16 +1166,6 @@ func test_mock_scene_execute_func_yielded() -> void:
 	verify(mocked_scene)._on_panel_color_changed(mocked_scene._box1, Color.GREEN)
 
 
-class Base:
-	func _init(_value: String) -> void:
-		pass
-
-
-class Foo extends Base:
-	func _init() -> void:
-		super("test")
-
-
 func test_mock_with_inheritance_method() -> void:
 	var foo: Variant = mock(Foo)
 	assert_object(foo).is_not_null()
@@ -1223,3 +1195,31 @@ func test_mock_with_await_function() -> void:
 	await mocked_instance.await_function()
 
 	verify(mocked_instance, 1).await_function()
+
+
+class ClassWithSignal:
+	signal test_signal_a
+	signal test_signal_b
+
+	func foo(arg: int) -> void:
+		if arg == 0:
+			emit_signal(test_signal_a.get_name(), "aa")
+		else:
+			emit_signal(test_signal_b.get_name(), "bb", true)
+
+	func bar(arg: int) -> bool:
+		if arg == 0:
+			emit_signal(test_signal_a.get_name(), "aa")
+		else:
+			emit_signal(test_signal_b.get_name(), "bb", true)
+		return true
+
+
+class Base:
+	func _init(_value: String) -> void:
+		pass
+
+
+class Foo extends Base:
+	func _init() -> void:
+		super("test")

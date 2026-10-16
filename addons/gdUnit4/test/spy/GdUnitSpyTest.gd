@@ -4,6 +4,10 @@ extends GdUnitTestSuite
 const Issue = preload("res://addons/gdUnit4/test/resources/issues/gd-166/issue.gd")
 const Type = preload("res://addons/gdUnit4/test/resources/issues/gd-166/types.gd")
 const TEST_SCENE := preload("res://addons/gdUnit4/test/mocker/resources/scenes/TestScene.tscn")
+#region documented examples
+# The following tests verify the examples of the spy documentation page
+# documentation/doc/_advanced_testing/spy.md
+const TestClass := preload("res://addons/gdUnit4/test/spy/resources/DocExampleTestClass.gd")  # gdlint: ignore=class-definitions-order
 
 
 func before() -> void:
@@ -143,15 +147,15 @@ func test_spy_class_with_custom_formattings() -> void:
 	verify_no_more_interactions(do_spy)
 	assert_failure(func() -> void: verify_no_interactions(do_spy))\
 		.is_failed() \
-		.has_line(144)
+		.has_line(148)
 
 
 func test_spy_copied_class_members() -> void:
-	var instance: TestPerson = auto_free(_load("res://addons/gdUnit4/test/mocker/resources/TestPerson.gd").new("user-x", "street", 56616))
+	var instance: TestPerson = auto_free(_load("res://addons/gdUnit4/test/mocker/resources/TestPerson.gd").new("user-x", "street", 56_616))
 	assert_that(instance._name).is_equal("user-x")
 	assert_that(instance._value).is_equal(1024)
 	assert_that(instance._address._street).is_equal("street")
-	assert_that(instance._address._code).is_equal(56616)
+	assert_that(instance._address._code).is_equal(56_616)
 
 	# spy it
 	var spy_instance: Variant = spy(instance)
@@ -161,7 +165,7 @@ func test_spy_copied_class_members() -> void:
 	assert_that(spy_instance._name).is_equal("user-x")
 	assert_that(spy_instance._value).is_equal(1024)
 	assert_that(spy_instance._address._street).is_equal("street")
-	assert_that(spy_instance._address._code).is_equal(56616)
+	assert_that(spy_instance._address._code).is_equal(56_616)
 
 	spy_instance._value = 2048
 	assert_that(instance._value).is_equal(1024)
@@ -257,7 +261,7 @@ func test_verify_fail() -> void:
 	@warning_ignore("unsafe_method_access")
 	assert_failure(func() -> void: verify(spy_node, 1).set_process(true)) \
 		.is_failed() \
-		.has_line(258) \
+		.has_line(262) \
 		.has_message(expected_error)
 
 
@@ -286,7 +290,7 @@ func test_verify_func_interaction_wiht_packed_string_array_fail() -> void:
 	@warning_ignore("unsafe_method_access")
 	assert_failure(func() -> void: verify(spy_instance, 1).set_values([])) \
 		.is_failed() \
-		.has_line(287) \
+		.has_line(291) \
 		.has_message(expected_error)
 
 	reset(spy_instance)
@@ -305,7 +309,7 @@ func test_verify_func_interaction_wiht_packed_string_array_fail() -> void:
 	@warning_ignore("unsafe_method_access")
 	assert_failure(func() -> void: verify(spy_instance, 1).set_values([])) \
 		.is_failed() \
-		.has_line(306) \
+		.has_line(310) \
 		.has_message(expected_error)
 
 
@@ -361,7 +365,7 @@ func test_verify_no_interactions_fails() -> void:
 	# it should fail because we have interactions
 	assert_failure(func() -> void: verify_no_interactions(spy_node)) \
 		.is_failed() \
-		.has_line(362) \
+		.has_line(366) \
 		.has_message(expected_error)
 
 
@@ -434,19 +438,8 @@ func test_verify_no_more_interactions_but_has() -> void:
 			.dedent().trim_prefix("\n")
 	assert_failure(func() -> void: verify_no_more_interactions(spy_node)) \
 		.is_failed() \
-		.has_line(435) \
+		.has_line(439) \
 		.has_message(expected_error)
-
-
-class ClassWithStaticFunctions:
-	static func _static_init() -> void:
-		return
-
-	static func foo() -> void:
-		pass
-
-	static func bar() -> void:
-		pass
 
 
 func test_create_spy_static_func_untyped() -> void:
@@ -535,27 +528,6 @@ func test_spy_node_use_real_func_vararg() -> void:
 	# verify is emitted
 	@warning_ignore("unsafe_method_access")
 	verify(spy_node).emit_signal("ready", "aa", "xxx")
-
-
-class ClassWithSignal:
-	signal test_signal_a
-	signal test_signal_b
-
-	func foo(arg: int) -> void:
-		if arg == 0:
-			emit_signal(test_signal_a.get_name(), "aa")
-		else:
-			emit_signal(test_signal_b.get_name(), "bb", true)
-
-	func bar(arg: int) -> bool:
-		if arg == 0:
-			emit_signal(test_signal_a.get_name(), "aa")
-		else:
-			emit_signal(test_signal_b.get_name(), "bb", true)
-		return true
-
-	func do_call(_name: String, ..._varargs: Array) -> void:
-		pass
 
 
 func test_spy_verify_variadic_args() -> void:
@@ -716,17 +688,6 @@ func test_spy_scene_initalize() -> void:
 	assert_str(spy_scene._initial_color.to_html()).is_equal(Color.RED.to_html())
 
 
-class CustomNode extends Node:
-
-	func _ready() -> void:
-		# we call this function to verify the _ready is only once called
-		# this is need to verify `add_child` is calling the original implementation only once
-		only_one_time_call()
-
-	func only_one_time_call() -> void:
-		pass
-
-
 func test_spy_ready_called_once() -> void:
 	var spy_node: Variant = spy(auto_free(CustomNode.new()))
 
@@ -776,12 +737,6 @@ func test_spy_with_enum_in_constructor() -> void:
 	# test
 	@warning_ignore("unsafe_method_access")
 	verify(s, 1).set_value(ClassWithEnumConstructor.MyEnumValue.ONE)
-
-
-#region documented examples
-# The following tests verify the examples of the spy documentation page
-# documentation/doc/_advanced_testing/spy.md
-const TestClass := preload("res://addons/gdUnit4/test/spy/resources/DocExampleTestClass.gd")  # gdlint: ignore=class-definitions-order
 
 
 func test_doc_verify_example() -> void:
@@ -895,3 +850,46 @@ func test_spy_class_with_field_initializer_calling_overridden_method() -> void:
 
 func _load(resource_path: String) -> GDScript:
 	return load(resource_path)
+
+
+class ClassWithStaticFunctions:
+	static func _static_init() -> void:
+		return
+
+	static func foo() -> void:
+		pass
+
+	static func bar() -> void:
+		pass
+
+
+class ClassWithSignal:
+	signal test_signal_a
+	signal test_signal_b
+
+	func foo(arg: int) -> void:
+		if arg == 0:
+			emit_signal(test_signal_a.get_name(), "aa")
+		else:
+			emit_signal(test_signal_b.get_name(), "bb", true)
+
+	func bar(arg: int) -> bool:
+		if arg == 0:
+			emit_signal(test_signal_a.get_name(), "aa")
+		else:
+			emit_signal(test_signal_b.get_name(), "bb", true)
+		return true
+
+	func do_call(_name: String, ..._varargs: Array) -> void:
+		pass
+
+
+class CustomNode extends Node:
+
+	func _ready() -> void:
+		# we call this function to verify the _ready is only once called
+		# this is need to verify `add_child` is calling the original implementation only once
+		only_one_time_call()
+
+	func only_one_time_call() -> void:
+		pass

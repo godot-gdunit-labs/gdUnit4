@@ -13,7 +13,7 @@ func before() -> void:
 	add_child(tcp_server)
 	add_child(tcp_client)
 
-	var result := tcp_server.start(62222)
+	var result := tcp_server.start(62_222)
 	if not result.is_success():
 		return
 

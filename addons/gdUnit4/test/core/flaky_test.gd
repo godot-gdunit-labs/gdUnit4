@@ -11,17 +11,9 @@ var test_retries := {
 	"test_paramaterized_flaky:4": 0,
 	"test_paramaterized_flaky:5": 0,
 	"test_fuzzed_flaky_success": 0,
-	"test_fuzzed_flaky_fail": 0
+	"test_fuzzed_flaky_fail": 0,
 }
-
 var _run_with_reries := 5
-
-
-class ValueSetFuzzer extends Fuzzer:
-	var _values := [0, 1, 2, 3, 4]
-
-	func next_value() -> Variant:
-		return _values.pop_front()
 
 
 func before(_do_skip := true, _skip_reason := "Do only activate for internal testing!") -> void:
@@ -142,3 +134,10 @@ func test_fuzzed_flaky_fail(fuzzer := ValueSetFuzzer.new(), _fuzzer_iterations :
 
 	if retry_count < 6:
 		fail("failed at retry %d" % retry_count)
+
+
+class ValueSetFuzzer extends Fuzzer:
+	var _values := [0, 1, 2, 3, 4]
+
+	func next_value() -> Variant:
+		return _values.pop_front()

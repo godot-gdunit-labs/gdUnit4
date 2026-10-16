@@ -4,17 +4,6 @@ extends GdUnitTestSuite
 static var _instance_called := 0
 
 
-class ExampleSingletonImplementaion extends Object:
-
-	static func instance() -> ExampleSingletonImplementaion:
-		return GdUnitSingleton.instance(
-			"ExampleSingletonImplementaion",
-			func() -> ExampleSingletonImplementaion:
-				GdUnitSingletonTest._instance_called += 1
-				return ExampleSingletonImplementaion.new()
-		)
-
-
 func test_instance() -> void:
 	var n: Variant = GdUnitSingleton.instance("singelton_test", func() -> Node: return Node.new())
 	assert_object(n).is_instanceof(Node)
@@ -38,3 +27,14 @@ func test_instance_implementaion() -> void:
 	# finally free it
 	GdUnitSingleton.unregister("ExampleSingletonImplementaion")
 	assert_bool(Engine.has_meta("ExampleSingletonImplementaion")).is_false()
+
+
+class ExampleSingletonImplementaion extends Object:
+
+	static func instance() -> ExampleSingletonImplementaion:
+		return GdUnitSingleton.instance(
+			"ExampleSingletonImplementaion",
+			func() -> ExampleSingletonImplementaion:
+				GdUnitSingletonTest._instance_called += 1
+				return ExampleSingletonImplementaion.new()
+		)

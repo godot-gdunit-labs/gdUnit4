@@ -33,7 +33,7 @@ func test_monitor_push_error() -> void:
 		.is_equal(GdUnitStackTrace.new([
 			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd", 74, "force_push_error2"),
 			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd", 69, "force_push_error"),
-			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd", 24, "test_monitor_push_error")
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd", 24, "test_monitor_push_error"),
 		]))
 	assert_int(report.line_number()).is_equal(74)
 
@@ -54,7 +54,7 @@ func test_monitor_push_waring() -> void:
 		.contains("Test GodotGdErrorMonitor 'push_warning' reporting")
 	assert_object(report.stack_trace()) \
 		.is_equal(GdUnitStackTrace.new([
-			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd", 47, "test_monitor_push_waring")
+			GdUnitStackTraceElement.new("res://addons/gdUnit4/test/monitor/GodotGdErrorMonitorTest.gd", 47, "test_monitor_push_waring"),
 		]))
 	assert_int(report.line_number()).is_equal(47)
 

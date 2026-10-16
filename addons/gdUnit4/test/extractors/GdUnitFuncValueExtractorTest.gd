@@ -3,28 +3,6 @@ class_name GdUnitFuncValueExtractorTest
 extends GdUnitTestSuite
 
 
-class TestNode extends Resource:
-	var _parent: TestNode = null
-	var _children := Array()
-
-	func _init(name: String, parent: TestNode = null) -> void:
-		set_name(name)
-		_parent = parent
-		if _parent:
-			_parent._children.append(self)
-
-	func _notification(what: int) -> void:
-		if what == NOTIFICATION_PREDELETE:
-			_parent = null
-			_children.clear()
-
-	func get_parent() -> TestNode:
-		return _parent
-
-	func get_children() -> Array:
-		return _children
-
-
 func test_extract_value_success() -> void:
 	var node: TestNode = auto_free(TestNode.new("node_a"))
 
@@ -57,3 +35,25 @@ func test_extract_value_chanined_array_values() -> void:
 
 	assert_array(GdUnitFuncValueExtractor.new("get_children.get_name", []).extract_value(parent))\
 		.contains_exactly(["node_a", "node_b", "node_c"])
+
+
+class TestNode extends Resource:
+	var _parent: TestNode = null
+	var _children := Array()
+
+	func _init(name: String, parent: TestNode = null) -> void:
+		set_name(name)
+		_parent = parent
+		if _parent:
+			_parent._children.append(self)
+
+	func _notification(what: int) -> void:
+		if what == NOTIFICATION_PREDELETE:
+			_parent = null
+			_children.clear()
+
+	func get_parent() -> TestNode:
+		return _parent
+
+	func get_children() -> Array:
+		return _children

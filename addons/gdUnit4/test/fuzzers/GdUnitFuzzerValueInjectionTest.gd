@@ -8,14 +8,6 @@ var _expected_iterations: Dictionary
 var _fuzzer_instance_before: Fuzzer = null
 
 
-# a simple test fuzzer where provided a hard coded value set
-class TestFuzzer extends Fuzzer:
-	var _data := [0, 1, 2, 3, 4, 5, 6, 23, 8, 9]
-
-	func next_value() -> int:
-		return _data.pop_front()
-
-
 func max_value() -> int:
 	return 10
 
@@ -91,7 +83,7 @@ func test_fuzzer_with_timeout(fuzzer := Fuzzers.rangei(-23, 22), _fuzzer_iterati
 	assert_int(fuzzer.iteration_index()).is_less_equal(10)
 
 
-func test_fuzzer_inject_value_with_seed(fuzzer := Fuzzers.rangei(-23, 22), _fuzzer_iterations := 10, _fuzzer_seed := 187772) -> void:
+func test_fuzzer_inject_value_with_seed(fuzzer := Fuzzers.rangei(-23, 22), _fuzzer_iterations := 10, _fuzzer_seed := 187_772) -> void:
 	assert_object(fuzzer).is_not_null()
 	var iteration_index := fuzzer.iteration_index() - 1
 	var current := fuzzer.next_value()
@@ -106,7 +98,7 @@ func test_multiple_fuzzers_inject_value_with_seed(
 	fuzzer_a := Fuzzers.rangei(-23, 22),
 	fuzzer_b := Fuzzers.rangei(33, 44),
 	_fuzzer_iterations := 10,
-	_fuzzer_seed := 187772
+	_fuzzer_seed := 187_772
 ) -> void:
 	_current_iterations["test_multiple_fuzzers_inject_value_with_seed"] += 1
 	assert_object(fuzzer_a).is_not_null()
@@ -162,3 +154,11 @@ func test_fuzzing_with_untyped_parameters(float_fuzzer = Fuzzers.rangef(-100.0, 
 func test_boolean_fuzzer(bool_fuzzer := Fuzzers.boolean(), _fuzzer_iterations := 50) -> void:
 	var value := bool_fuzzer.next_value()
 	assert_bool(value in [true, false]).is_true()
+
+
+# a simple test fuzzer where provided a hard coded value set
+class TestFuzzer extends Fuzzer:
+	var _data := [0, 1, 2, 3, 4, 5, 6, 23, 8, 9]
+
+	func next_value() -> int:
+		return _data.pop_front()

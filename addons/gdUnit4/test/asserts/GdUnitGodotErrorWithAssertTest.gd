@@ -33,5 +33,5 @@ func before(
 func after() -> void:
 	# We expect no errors or failures, as we caught already the assert error by using the assert `assert_error` on the test case
 	assert_array(_catched_events).extractv(extr("error_count"), extr("failed_count"))\
-		.contains_exactly([tuple(0, 0), tuple(0,0), tuple(0,0), tuple(0,0)])
+		.contains_exactly([tuple(0, 0), tuple(0, 0), tuple(0, 0), tuple(0, 0)])
 	GdUnitSignals.instance().gdunit_event.disconnect(catch_test_events)

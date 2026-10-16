@@ -3,6 +3,7 @@ extends GdUnitTestSuite
 
 var _rpc_called: String = ""
 
+
 @rpc("call_local")
 func do_rpc(rpc_name: String, value: Variant) -> void:
 	_rpc_called = rpc_name + str(value)
@@ -42,7 +43,6 @@ func test_exclude_functions() -> void:
 	# it should not exclude callable function
 	assert_array(CallableDoubler.excluded_functions())\
 		.not_contains(CallableDoubler.callable_functions())
-
 
 
 func test_call() -> void:

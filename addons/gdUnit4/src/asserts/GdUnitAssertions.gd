@@ -26,10 +26,8 @@ func _init() -> void:
 	@warning_ignore_restore("return_value_discarded")
 
 
-### We now load all used asserts and tool scripts into the cache according to the principle of "lazy loading"
-### in order to noticeably reduce the loading time of the test suite.
-
-
+## We now load all used asserts and tool scripts into the cache according to the principle of "lazy loading"
+## in order to noticeably reduce the loading time of the test suite.
 # We go this hard way to increase the loading performance to avoid reparsing all the used scripts
 # for more detailed info -> https://github.com/godotengine/godot/issues/67400
 # gdlint:disable=function-name

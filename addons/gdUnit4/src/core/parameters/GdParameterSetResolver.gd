@@ -120,14 +120,10 @@ func _finalize_parameter_set(parameters: Array) -> Array:
 
 
 ## Returns the total number of test iterations this resolver provides.
-
-
 @abstract func get_max_index() -> int
 
 
 ## Describes a single test function parameter and the type contract it must satisfy.
-
-
 class ParameterSpec:
 	## Position of this parameter in the resolved parameter array.
 	var index: int

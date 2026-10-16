@@ -2,7 +2,7 @@
 
 > A Godot 4 embedded unit testing framework (plugin) supporting GDScript and C#.
 
-GdUnit4 v6.1.2 — supports Godot 4.3–4.6. C# targets net9.0 (.NET SDK 9.0.308). The framework is self-tested: it uses itself to run its own test suite. The plugin lives entirely under `addons/gdUnit4/`.
+GdUnit4 v7.0.0 — supports Godot 4.7–4.8. C# targets net9.0 (.NET SDK 9.0.308). The framework is self-tested: it uses itself to run its own test suite. The plugin lives entirely under `addons/gdUnit4/`.
 
 **License:** MIT
 

@@ -58,5 +58,5 @@ gdstyle check --max-warnings 0 addons/gdUnit4/
 - Main branch: `master`
 - Feature branches named after issue number (e.g. `GD-111`)
 - PRs must link to an issue and pass all CI checks
-- CI runs format checks, `gdstyle check`, and tests against Godot 4.5, 4.5.1, and 4.6
+- CI runs format checks, `gdstyle check`, and tests against Godot 4.7, 4.7.1, and 4.8 (dev), see the Compatibility Overview in `README.md`
 - PR descriptions must include `# Why` and `# What` sections

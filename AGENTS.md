@@ -218,7 +218,7 @@ The `current_version` in `documentation/_config.yml` should be updated when rele
 - Main branch: `master`
 - Feature branches should be named after the issue number (e.g., `GD-111`)
 - PRs must link to an issue and pass all CI checks before merging
-- CI runs format checks, `gdstyle check`, and tests against Godot 4.5, 4.5.1, and 4.6
+- CI runs format checks, `gdstyle check`, and tests against Godot 4.7, 4.7.1, and 4.8 (dev), see the Compatibility Overview in `README.md`
 
 ### Git Hooks
 

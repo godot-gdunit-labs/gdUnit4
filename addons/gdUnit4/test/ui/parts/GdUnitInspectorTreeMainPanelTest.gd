@@ -1,4 +1,3 @@
-# gdlint: disable=max-public-methods
 # GdUnit generated TestSuite
 class_name GdUnitInspectorTreeMainPanelTest
 extends GdUnitTestSuite  # gdstyle:ignore-file=quality/max-public-methods

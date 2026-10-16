@@ -226,7 +226,6 @@ static func test_session_terminated() -> String:
 	return "%s" % _error("Test Session Terminated")
 
 
-# gdlint:disable = mixed-tabs-and-spaces
 static func test_suite_skipped(hint: String, skip_count: int) -> String:
 	return """
 		%s

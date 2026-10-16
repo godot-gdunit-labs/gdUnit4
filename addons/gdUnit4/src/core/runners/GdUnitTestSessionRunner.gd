@@ -174,6 +174,5 @@ func _on_gdunit_event(_event: GdUnitEvent) -> void:
 ## Used to handle test events from C# tests.
 
 
-# gdlint: disable=function-name
 func PublishEvent(data: Dictionary) -> void:  # gdstyle:ignore=naming/function-name-snake-case
 	_on_gdunit_event(GdUnitEvent.new().deserialize(data))

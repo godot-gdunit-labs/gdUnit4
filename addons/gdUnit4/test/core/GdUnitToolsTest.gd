@@ -40,10 +40,8 @@ func test_richtext_normalize() -> void:
 
 
 class InnerTestNodeClass extends Node:
-	# gdlint: ignore=unnecessary-pass
 	pass
 
 
 class InnerTestRefCountedClass extends RefCounted:
-	# gdlint: ignore=unnecessary-pass
 	pass

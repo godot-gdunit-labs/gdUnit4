@@ -168,7 +168,6 @@ func ends_with(expected: String) -> GdUnitStringAssert:
 	return report_success()
 
 
-# gdlint:disable=max-returns
 func has_length(expected: int, comparator := Comparator.EQUAL) -> GdUnitStringAssert:  # gdstyle:ignore=quality/max-returns
 	var current: Variant = current_value()
 	if current == null:

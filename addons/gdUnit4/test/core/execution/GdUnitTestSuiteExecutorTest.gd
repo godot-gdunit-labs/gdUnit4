@@ -1,4 +1,3 @@
-# gdlint: disable=max-file-lines
 # GdUnit generated TestSuite
 class_name GdUnitTestSuiteExecutorTest
 extends GdUnitTestSuite  # gdstyle:ignore-file=format/no-tabs-as-spaces,quality/max-file-length
@@ -806,7 +805,6 @@ func test_execute_parameterizied_tests() -> void:
 		])
 
 
-# gdlint: disable=mixed-tabs-and-spaces
 func test_execute_test_suite_is_skipped() -> void:
 	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteSkipped.resource")
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
@@ -886,7 +884,6 @@ func test_execute_test_case_is_skipped() -> void:
 			[],
 			[],
 		])
-# gdlint: enable=mixed-tabs-and-spaces
 
 
 func test_execute_test_case_is_flaky_and_failed() -> void:

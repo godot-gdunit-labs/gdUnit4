@@ -1,4 +1,3 @@
-# gdlint: disable=max-public-methods,max-file-lines
 @tool
 extends Control  # gdstyle:ignore-file=quality/max-file-length,quality/max-public-methods
 

@@ -3,7 +3,6 @@ extends MainLoop
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
-# gdlint: disable=max-line-length
 const LOG_FRAME_TEMPLATE = """
 <!DOCTYPE html>
 <html style="display: inline-grid;">

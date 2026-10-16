@@ -64,7 +64,6 @@ func unregister_emitter(emitter: Object) -> void:
 
 
 # receives the signal from the emitter with all emitted signal arguments and additional the emitter and signal_name as last two arguements
-# gdlint: ignore=function-arguments-number
 func _on_signal_emmited(  # gdstyle:ignore=quality/max-parameters
 	arg0: Variant = NO_ARG,
 	arg1: Variant = NO_ARG,

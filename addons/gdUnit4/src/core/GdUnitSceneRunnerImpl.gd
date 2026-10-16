@@ -1,4 +1,3 @@
-# gdlint: disable=max-public-methods
 # This class provides a runner for scense to simulate interactions like keyboard or mouse
 class_name GdUnitSceneRunnerImpl
 extends GdUnitSceneRunner  # gdstyle:ignore-file=quality/max-public-methods

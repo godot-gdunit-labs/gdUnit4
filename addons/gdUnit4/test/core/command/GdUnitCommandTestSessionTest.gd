@@ -45,5 +45,4 @@ func test_is_valid_runner_process_true() -> void:
 
 
 class TestGdUnitCommandTestSession extends GdUnitCommandTestSession:
-	# gdlint: ignore=unnecessary-pass
 	pass

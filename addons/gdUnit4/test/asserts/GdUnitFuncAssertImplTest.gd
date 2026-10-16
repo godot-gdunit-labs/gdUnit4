@@ -216,7 +216,6 @@ func test_override_failure_message() -> void:
 	).has_message("Custom failure message")
 
 
-# gdlint: disable=mixed-tabs-and-spaces
 @warning_ignore("unsafe_method_access")
 func test_append_failure_message() -> void:
 	assert_object(assert_func(RefCounted.new(), "get_reference_count").append_failure_message("error")).is_instanceof(GdUnitFuncAssert)
@@ -230,7 +229,6 @@ func test_append_failure_message() -> void:
 		.contains_message("""
 			Additional info:
 			 custom failure data""".dedent().trim_prefix("\n"))
-# gdlint: enable=mixed-tabs-and-spaces
 
 
 func test_invalid_function(_timeout := 100) -> void:

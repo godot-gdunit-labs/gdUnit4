@@ -1,6 +1,6 @@
-name: gdlint
+name: gdstyle
 
-run-name: ${{ github.head_ref || github.ref_name }}-gdlint
+run-name: ${{ github.head_ref || github.ref_name }}-gdstyle
 
 on: # yamllint disable-line rule:truthy
   workflow_call:
@@ -17,11 +17,14 @@ on: # yamllint disable-line rule:truthy
         type: string
         default: "ubuntu-22.04"
 
+env:
+  GDSTYLE_VERSION: "0.3.3"
+
 jobs:
-  gdlint:
+  gdstyle:
     name: GdUnit
     runs-on: ${{ inputs.os }}
-    timeout-minutes: 5
+    timeout-minutes: 15
 
     steps:
       - name: Checkout GdUnit Repository
@@ -29,23 +32,23 @@ jobs:
         with:
           lfs: true
 
-      - name: Setup GDLint
-        uses: Scony/godot-gdscript-toolkit@master
-        with:
-          version: 4.5.0
+      - name: Install gdstyle
+        shell: bash
+        run: cargo install gdstyle --version "${GDSTYLE_VERSION}" --locked
 
-      - name: Run GDLint
-        id: run-gdlint
+      - name: Run gdstyle check
+        id: run-gdstyle-check
         shell: bash
         run: |
-          mkdir -p reports/gdlint/
-          gdlint addons/gdUnit4/ 2>&1 | tee reports/gdlint/gdlint.txt
+          mkdir -p reports/gdstyle/
+          gdstyle --version
+          gdstyle check --no-color --max-warnings 0 addons/gdUnit4/ 2>&1 | tee reports/gdstyle/gdstyle-check.txt
 
-      - name: Upload GDLint Report
+      - name: Upload gdstyle Report
         if: failure()
         uses: actions/upload-artifact@v7
         with:
-          name: gdlint.txt
-          path: reports/gdlint/**
+          name: gdstyle-check.txt
+          path: reports/gdstyle/**
           if-no-files-found: error
           compression-level: 0 # no compression

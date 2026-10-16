@@ -1,4 +1,3 @@
-# gdlint: disable=max-file-lines,max-public-methods
 # GdUnit generated TestSuite
 extends GdUnitTestSuite  # gdstyle:ignore-file=format/no-tabs-as-spaces,quality/max-file-length,quality/max-public-methods
 
@@ -23,7 +22,6 @@ func test_is_not_null() -> void:
 		.has_message("Expecting: not to be '<null>'")
 
 
-# gdlint: disable=mixed-tabs-and-spaces
 func test_is_equal() -> void:
 	assert_array([1, 2, 3, 4, 2, 5]).is_equal([1, 2, 3, 4, 2, 5])
 	# should fail because the array not contains same elements and has diff size
@@ -1046,7 +1044,6 @@ func test_append_failure_message() -> void:
 			 must not be empty
 			Additional info:
 			 custom failure data""".dedent().trim_prefix("\n"))
-# gdlint: enable=mixed-tabs-and-spaces
 
 
 # tests if an assert fails the 'is_failure' reflects the failure status

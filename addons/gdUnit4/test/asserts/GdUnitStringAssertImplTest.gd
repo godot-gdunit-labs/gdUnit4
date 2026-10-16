@@ -20,7 +20,6 @@ func test_is_not_null() -> void:
 		.has_message("Expecting: not to be '<null>'")
 
 
-# gdlint: disable=mixed-tabs-and-spaces
 func test_is_equal() -> void:
 	assert_str("This is a test message").is_equal("This is a test message")
 	assert_str("abc").is_equal("abc")
@@ -463,7 +462,6 @@ func test_is_failure() -> void:
 	assert_bool(is_failure()).is_true()
 
 
-# gdlint: ignore=function-name
 func test_日本語() -> void:  # gdstyle:ignore=naming/function-name-snake-case
 	assert_str("test_日本語").is_equal("test_日本語")
 	assert_failure(func() -> void: assert_str("test_日本語").is_equal("test_本語")) \
@@ -485,7 +483,6 @@ func test_is_equal_on_rich_text() -> void:
 			 '[lb]color=ffff00]test[lb]/color]'
 			 but was
 			 '[lb]color=ff00ff]test[lb]/color]'""".dedent().trim_prefix("\n"))
-# gdlint: enable=mixed-tabs-and-spaces
 
 
 #region large values GD-1327

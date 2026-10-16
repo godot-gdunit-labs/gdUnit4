@@ -1,8 +1,5 @@
 class_name DoubledSpyClassSourceClassName
 
-
-# gdlint: disable=function-name,function-argument-name,function-variable-name,loop-variable-name,constant-name,class-variable-name
-
 const __INSTANCE_ID := "gdunit_doubler_instance_id_{instance_id}"
 
 var __spy_state := GdUnitSpyDoublerState.new()

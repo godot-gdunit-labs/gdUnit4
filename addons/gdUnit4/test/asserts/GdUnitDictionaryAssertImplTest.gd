@@ -39,7 +39,6 @@ func test_is_not_null() -> void:
 		.has_message("Expecting: not to be '<null>'")
 
 
-# gdlint: disable=mixed-tabs-and-spaces
 func test_is_equal() -> void:
 	assert_dict({}).is_equal({})
 	assert_dict({ 1: 1 }).is_equal({ 1: 1 })
@@ -559,7 +558,6 @@ func test_append_failure_message() -> void:
 			  }'
 			Additional info:
 			 custom failure data""".dedent().trim_prefix("\n"))
-# gdlint: enable=mixed-tabs-and-spaces
 
 
 # tests if an assert fails the 'is_failure' reflects the failure status

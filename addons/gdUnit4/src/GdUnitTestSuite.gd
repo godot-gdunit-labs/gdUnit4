@@ -1,5 +1,3 @@
-# gdlint: disable=max-public-methods
-
 ## The main class for all GdUnit test suites[br]
 ## This class is the main class to implement your unit tests[br]
 ## You have to extend and implement your test cases as described[br]
@@ -24,20 +22,17 @@ const CALL_REAL_FUNC = GdUnitMock.CALL_REAL_FUNC
 const RETURN_DEEP_STUB = GdUnitMock.RETURN_DEEP_STUB
 
 # ## internal runtime variables that must not be overwritten!!!
-# gdlint: disable=class-variable-name
 @warning_ignore("unused_private_class_variable")
 var __is_skipped := false
 @warning_ignore("unused_private_class_variable")
 var __skip_reason := "Unknow."
 var __active_test_case: String
 var __awaiter := __gdunit_awaiter()
-# gdlint: enable=class-variable-name
 
 # ## We now load all used asserts and tool scripts into the cache according to the principle of "lazy loading"
 # ## in order to noticeably reduce the loading time of the test suite.
 # We go this hard way to increase the loading performance to avoid reparsing all the used scripts
 # for more detailed info -> https://github.com/godotengine/godot/issues/67400
-# gdlint: disable=function-name
 static func __lazy_load(script_path: String) -> GDScript:
 	return GdUnitAssertions.__lazy_load(script_path)
 
@@ -64,7 +59,6 @@ func __gdunit_argument_matchers() -> GDScript:
 
 func __gdunit_object_interactions() -> GDScript:
 	return __lazy_load("res://addons/gdUnit4/src/doubler/GdUnitObjectInteractions.gd")
-	# gdlint: enable=function-name
 
 
 ## This function is called before a test suite starts[br]
@@ -609,7 +603,6 @@ func tuple(...args: Array) -> GdUnitTuple:
 # === Asserts ==================================================================
 
 
-# gdlint: disable=max-returns
 ## The common assertion tool to verify values.
 ## It checks the given value by type to fit to the best assert
 func assert_that(current: Variant) -> GdUnitAssert:  # gdstyle:ignore=quality/max-returns
@@ -634,7 +627,6 @@ func assert_that(current: Variant) -> GdUnitAssert:  # gdstyle:ignore=quality/ma
 			return assert_object(current)
 		_:
 			return __gdunit_assert().new(current)
-	# gdlint: enable=max-returns
 
 
 ## An assertion tool to verify boolean values.
@@ -776,6 +768,5 @@ func fail(message: String) -> void:
 
 
 # --- internal stuff do not override!!!
-# gdlint: ignore=function-name
 func ResourcePath() -> String:  # gdstyle:ignore=naming/function-name-snake-case
 	return get_script().resource_path

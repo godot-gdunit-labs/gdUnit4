@@ -158,7 +158,6 @@ func test_is_same() -> void:
 		.is_failed()
 
 
-# gdlint: disable=mixed-tabs-and-spaces
 func test_is_not_same() -> void:
 	var obj1: Variant = auto_free(Node.new())
 	var obj2: Variant = obj1
@@ -228,7 +227,6 @@ func test_append_failure_message() -> void:
 			Expecting: '<null>' but was <Node>
 			Additional info:
 			 custom failure data""".dedent().trim_prefix("\n"))
-# gdlint: enable=mixed-tabs-and-spaces
 
 
 # tests if an assert fails the 'is_failure' reflects the failure status
@@ -257,10 +255,8 @@ func test_is_failure() -> void:
 
 
 class MyNode extends Node:
-	# gdlint: ignore=unnecessary-pass
 	pass
 
 
 class MyExtendedNode extends MyNode:
-	# gdlint: ignore=unnecessary-pass
 	pass

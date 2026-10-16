@@ -169,7 +169,6 @@ func test_override_failure_message() -> void:
 	).has_message("Custom failure message")
 
 
-# gdlint: disable=mixed-tabs-and-spaces
 @warning_ignore("unsafe_method_access")
 func test_append_failure_message() -> void:
 	assert_object(assert_signal(signal_emitter).append_failure_message("error")).is_instanceof(GdUnitSignalAssert)
@@ -182,7 +181,6 @@ func test_append_failure_message() -> void:
 		Expecting emit signal: 'test_signal_unused()' but timed out after 100ms
 		Additional info:
 		 custom failure data""".dedent().trim_prefix("\n"))
-# gdlint: enable=mixed-tabs-and-spaces
 
 
 func test_node_changed_emitting_signals() -> void:

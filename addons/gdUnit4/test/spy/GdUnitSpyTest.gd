@@ -1,10 +1,10 @@
-class_name GdUnitSpyTest  # gdlint: ignore=max-public-methods
+class_name GdUnitSpyTest
 extends GdUnitTestSuite  # gdstyle:ignore-file=quality/max-public-methods
 
 const Issue = preload("res://addons/gdUnit4/test/resources/issues/gd-166/issue.gd")
 const Type = preload("res://addons/gdUnit4/test/resources/issues/gd-166/types.gd")
 const TEST_SCENE := preload("res://addons/gdUnit4/test/mocker/resources/scenes/TestScene.tscn")
-const TestClass := preload("res://addons/gdUnit4/test/spy/resources/DocExampleTestClass.gd")  # gdlint: ignore=class-definitions-order
+const TestClass := preload("res://addons/gdUnit4/test/spy/resources/DocExampleTestClass.gd")
 
 
 func before() -> void:

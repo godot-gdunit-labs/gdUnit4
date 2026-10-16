@@ -1,7 +1,4 @@
 class_name DoubledMockClassSourceClassName
-
-
-# gdlint: disable=function-name,function-argument-name,function-variable-name,loop-variable-name,constant-name,class-variable-name
 ################################################################################
 # internal mocking stuff
 ################################################################################

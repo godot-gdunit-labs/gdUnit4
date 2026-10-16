@@ -95,7 +95,6 @@ func test_is_not_equal_over_all_types(value: Variant, _test_parameters := _test_
 	assert_vector(value).is_not_equal(expected)
 
 
-# gdlint: disable=mixed-tabs-and-spaces
 func test_is_equal_approx() -> void:
 	assert_vector(Vector2.ONE).is_equal_approx(Vector2.ONE, Vector2(0.004, 0.004))
 	assert_vector(Vector2(0.996, 0.996)).is_equal_approx(Vector2.ONE, Vector2(0.004, 0.004))
@@ -400,7 +399,6 @@ func test_append_failure_message() -> void:
 			.trim_prefix("\n")
 			.replace("$v0", str(Vector2.ZERO))
 			.replace("$v1", str(Vector2.ONE)))
-# gdlint: enable=mixed-tabs-and-spaces
 
 
 # tests if an assert fails the 'is_failure' reflects the failure status

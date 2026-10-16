@@ -338,7 +338,6 @@ func tokenize_value(input: String, current: int, token: Token, ignore_dots := fa
 	return _token_not_match
 
 
-# gdlint: disable=max-returns
 # const ALLOWED_CHARACTERS := "0123456789_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\""
 func is_allowed_character(input: String) -> bool:  # gdstyle:ignore=quality/max-returns
 	var code_point := input.unicode_at(0)
@@ -362,7 +361,6 @@ func is_allowed_character(input: String) -> bool:  # gdstyle:ignore=quality/max-
 	if code_point == 34 or code_point == 39:
 		return true
 	return false
-	# gdlint: enable=max-returns
 
 
 func parse_return_token(input: String) -> Variable:

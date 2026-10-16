@@ -94,7 +94,6 @@ func _on_type_dictionary(dict: Dictionary) -> String:
 	return str(dict)
 
 
-# gdlint: disable=max-returns
 func _on_type_array(value: Variant, type: int) -> String:  # gdstyle:ignore=quality/max-returns
 	match type:
 		TYPE_ARRAY:
@@ -191,7 +190,6 @@ func _on_type_vector(value: Variant, type: int) -> String:  # gdstyle:ignore=qua
 				return "Vector4i()"
 			return "Vector4i%s" % value
 	return "unknown vector type %d" % type
-	# gdlint: enable=max-returns
 
 
 func _on_type_transform2d(transform: Transform2D) -> String:

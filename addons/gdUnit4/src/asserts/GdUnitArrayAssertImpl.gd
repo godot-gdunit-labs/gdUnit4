@@ -62,7 +62,6 @@ func max_length(left: Variant, right: Variant) -> int:
 	return rs if ls < rs else ls
 
 
-# gdlint: disable=function-name
 func _to_packed_string_array(value: Variant) -> PackedStringArray:
 	if GdArrayTools.is_array_type(value):
 		@warning_ignore("unsafe_cast")

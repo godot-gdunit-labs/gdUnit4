@@ -1,5 +1,5 @@
 # GdUnit generated TestSuite
-extends GdUnitTestSuite  # gdstyle:ignore-file=format/no-tabs-as-spaces
+extends GdUnitTestSuite
 
 
 func test_must_fail_has_invlalid_type() -> void:
@@ -51,11 +51,11 @@ func test_is_equal() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '{
+			\u0020'{
 				1: 1
-			  }'
-			 but was
-			 '<null>'"""
+			\u0020\u0020}'
+			\u0020but was
+			\u0020'<null>'"""
 			.dedent()
 			.trim_prefix("\n")
 		)
@@ -72,15 +72,15 @@ func test_is_equal() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '{
+			\u0020'{
 				1: 1,
 				"key_a": "value_a"
-			  }'
-			 but was
-			 '{
+			\u0020\u0020}'
+			\u0020but was
+			\u0020'{
 				1: 1,
 				"key_b": "value_b"
-			  }'"""
+			\u0020\u0020}'"""
 			.dedent()
 			.trim_prefix("\n")
 		)
@@ -105,15 +105,15 @@ func test_is_not_equal() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '{
+			\u0020'{
 				1: 1,
 				"key_a": "value_a"
-			  }'
-			 not equal to
-			 '{
+			\u0020\u0020}'
+			\u0020not equal to
+			\u0020'{
 				1: 1,
 				"key_a": "value_a"
-			  }'"""
+			\u0020\u0020}'"""
 			.dedent()
 			.trim_prefix("\n")
 		)
@@ -133,9 +133,9 @@ func test_is_same() -> void:
 		.is_failed()\
 		.has_message("""
 			Expecting:
-			 '{ }'
-			 to refer to the same object
-			 '{ }'"""
+			\u0020'{ }'
+			\u0020to refer to the same object
+			\u0020'{ }'"""
 			.dedent()
 			.trim_prefix("\n")
 		)
@@ -143,15 +143,15 @@ func test_is_same() -> void:
 		.is_failed()\
 		.has_message("""
 			Expecting:
-			 '{
+			\u0020'{
 				1: 1,
 				"key_a": "value_a"
-			  }'
-			 to refer to the same object
-			 '{
+			\u0020\u0020}'
+			\u0020to refer to the same object
+			\u0020'{
 				1: 1,
 				"key_a": "value_a"
-			  }'"""
+			\u0020\u0020}'"""
 			.dedent()
 			.trim_prefix("\n")
 		)
@@ -171,7 +171,7 @@ func test_is_not_same() -> void:
 		.is_failed()\
 		.has_message("""
 			Expecting not same:
-			 '{ }'"""
+			\u0020'{ }'"""
 			.dedent()
 			.trim_prefix("\n")
 		)
@@ -179,10 +179,10 @@ func test_is_not_same() -> void:
 		.is_failed()\
 		.has_message("""
 			Expecting not same:
-			 '{
+			\u0020'{
 				1: 1,
 				"key_a": "value_a"
-			  }'"""
+			\u0020\u0020}'"""
 			.dedent()
 			.trim_prefix("\n")
 		)
@@ -200,10 +200,10 @@ func test_is_empty() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 must be empty but was
-			 '{
+			\u0020must be empty but was
+			\u0020'{
 				1: 1
-			  }'"""
+			\u0020\u0020}'"""
 			.dedent()
 			.trim_prefix("\n")
 		)
@@ -236,9 +236,9 @@ func test_has_size() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting size:
-			 2
-			 but was
-			 1"""
+			\u00202
+			\u0020but was
+			\u00201"""
 			.dedent()
 			.trim_prefix("\n")
 		)
@@ -261,11 +261,11 @@ func test_contains_keys() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains keys:
-			 '[1, 3]'
-			 to contains:
-			 '[2]'
-			 but can't find key's:
-			 '[2]'"""
+			\u0020'[1, 3]'
+			\u0020to contains:
+			\u0020'[2]'
+			\u0020but can't find key's:
+			\u0020'[2]'"""
 			.dedent()
 			.trim_prefix("\n")
 		)
@@ -273,11 +273,11 @@ func test_contains_keys() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains keys:
-			 '[1, 3]'
-			 to contains:
-			 '[1, 4]'
-			 but can't find key's:
-			 '[4]'"""
+			\u0020'[1, 3]'
+			\u0020to contains:
+			\u0020'[1, 4]'
+			\u0020but can't find key's:
+			\u0020'[4]'"""
 			.dedent()
 			.trim_prefix("\n")
 		)
@@ -287,12 +287,12 @@ func test_contains_keys() -> void:
 	assert_failure(func() -> void: assert_dict({ key_a: 1, 3: 3 }).contains_keys([key_a, key_d])) \
 		.is_failed() \
 		.has_message("""
-			 Expecting contains keys:
-			  '[class:Foo:0, 3]'
-			  to contains:
-			  '[class:Foo:0, class:D:0]'
-			  but can't find key's:
-			  '[class:D:0]'"""
+			\u0020Expecting contains keys:
+			\u0020\u0020'[class:Foo:0, 3]'
+			\u0020\u0020to contains:
+			\u0020\u0020'[class:Foo:0, class:D:0]'
+			\u0020\u0020but can't find key's:
+			\u0020\u0020'[class:D:0]'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -312,11 +312,11 @@ func test_contains_keys_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains keys:
-			 '[1, 3]'
-			 to contains:
-			 '[2]'
-			 but can't find key's:
-			 '[2]'"""
+			\u0020'[1, 3]'
+			\u0020to contains:
+			\u0020'[2]'
+			\u0020but can't find key's:
+			\u0020'[2]'"""
 			.dedent()
 			.trim_prefix("\n")
 		)
@@ -324,11 +324,11 @@ func test_contains_keys_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains keys:
-			 '[1, 3]'
-			 to contains:
-			 '[1, 4]'
-			 but can't find key's:
-			 '[4]'"""
+			\u0020'[1, 3]'
+			\u0020to contains:
+			\u0020'[1, 4]'
+			\u0020but can't find key's:
+			\u0020'[4]'"""
 			.dedent()
 			.trim_prefix("\n")
 		)
@@ -338,12 +338,12 @@ func test_contains_keys_variadic_args() -> void:
 	assert_failure(func() -> void: assert_dict({ key_a: 1, 3: 3 }).contains_keys(key_a, key_d)) \
 		.is_failed() \
 		.has_message("""
-			 Expecting contains keys:
-			  '[class:Foo:0, 3]'
-			  to contains:
-			  '[class:Foo:0, class:D:0]'
-			  but can't find key's:
-			  '[class:D:0]'"""
+			\u0020Expecting contains keys:
+			\u0020\u0020'[class:Foo:0, 3]'
+			\u0020\u0020to contains:
+			\u0020\u0020'[class:Foo:0, class:D:0]'
+			\u0020\u0020but can't find key's:
+			\u0020\u0020'[class:D:0]'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -355,9 +355,9 @@ func test_contains_key_value() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains key and value:
-			 1 : 2
-			 but contains
-			 1 : 1"""
+			\u00201 : 2
+			\u0020but contains
+			\u00201 : 1"""
 			.dedent()
 			.trim_prefix("\n")
 		)
@@ -375,11 +375,11 @@ func test_not_contains_keys() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting NOT contains keys:
-			 '[1, 2, 3]'
-			 do not contains:
-			 '[2, 4]'
-			 but contains key's:
-			 '[2]'"""
+			\u0020'[1, 2, 3]'
+			\u0020do not contains:
+			\u0020'[2, 4]'
+			\u0020but contains key's:
+			\u0020'[2]'"""
 			.dedent()
 			.trim_prefix("\n")
 		)
@@ -387,11 +387,11 @@ func test_not_contains_keys() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting NOT contains keys:
-			 '[1, 2, 3]'
-			 do not contains:
-			 '[1, 2, 3, 4]'
-			 but contains key's:
-			 '[1, 2, 3]'"""
+			\u0020'[1, 2, 3]'
+			\u0020do not contains:
+			\u0020'[1, 2, 3, 4]'
+			\u0020but contains key's:
+			\u0020'[1, 2, 3]'"""
 			.dedent()
 			.trim_prefix("\n")
 		)
@@ -409,11 +409,11 @@ func test_not_contains_keys_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting NOT contains keys:
-			 '[1, 2, 3]'
-			 do not contains:
-			 '[2, 4]'
-			 but contains key's:
-			 '[2]'"""
+			\u0020'[1, 2, 3]'
+			\u0020do not contains:
+			\u0020'[2, 4]'
+			\u0020but contains key's:
+			\u0020'[2]'"""
 			.dedent()
 			.trim_prefix("\n")
 		)
@@ -421,11 +421,11 @@ func test_not_contains_keys_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting NOT contains keys:
-			 '[1, 2, 3]'
-			 do not contains:
-			 '[1, 2, 3, 4]'
-			 but contains key's:
-			 '[1, 2, 3]'"""
+			\u0020'[1, 2, 3]'
+			\u0020do not contains:
+			\u0020'[1, 2, 3, 4]'
+			\u0020but contains key's:
+			\u0020'[1, 2, 3]'"""
 			.dedent()
 			.trim_prefix("\n")
 		)
@@ -448,11 +448,11 @@ func test_contains_same_keys() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains SAME keys:
-			 '[class:Foo:0, class:Foo:0]'
-			 to contains:
-			 '[class:Foo:0, class:Foo:0]'
-			 but can't find key's:
-			 '[class:Foo:0]'"""
+			\u0020'[class:Foo:0, class:Foo:0]'
+			\u0020to contains:
+			\u0020'[class:Foo:0, class:Foo:0]'
+			\u0020but can't find key's:
+			\u0020'[class:Foo:0]'"""
 			.dedent().trim_prefix("\n")
 		)
 
@@ -471,20 +471,20 @@ func test_contains_same_key_value() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains SAME key and value:
-			 <class:A:0> : 2
-			 but contains
-			 <class:A:0> : 1"""
+			\u0020<class:A:0> : 2
+			\u0020but contains
+			\u0020<class:A:0> : 1"""
 			.dedent().trim_prefix("\n")
 		)
 	assert_failure(func() -> void: assert_dict({ key_a: 1, key_b: 2, key_c: 3 }).contains_same_key_value(key_d, 1)) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains SAME keys:
-			 '[class:A:0, class:B:0, class:C:0]'
-			 to contains:
-			 '[class:A:0]'
-			 but can't find key's:
-			 '[class:A:0]'"""
+			\u0020'[class:A:0, class:B:0, class:C:0]'
+			\u0020to contains:
+			\u0020'[class:A:0]'
+			\u0020but can't find key's:
+			\u0020'[class:A:0]'"""
 			.dedent().trim_prefix("\n")
 		)
 
@@ -502,11 +502,11 @@ func test_not_contains_same_keys() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting NOT contains SAME keys
-			 '[class:A:0, class:B:0]'
-			 do not contains:
-			 '[class:C:0, class:B:0]'
-			 but contains key's:
-			 '[class:B:0]'"""
+			\u0020'[class:A:0, class:B:0]'
+			\u0020do not contains:
+			\u0020'[class:C:0, class:B:0]'
+			\u0020but contains key's:
+			\u0020'[class:B:0]'"""
 			.dedent().trim_prefix("\n")
 		)
 
@@ -524,11 +524,11 @@ func test_not_contains_same_keys_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting NOT contains SAME keys
-			 '[class:A:0, class:B:0]'
-			 do not contains:
-			 '[class:C:0, class:B:0]'
-			 but contains key's:
-			 '[class:B:0]'"""
+			\u0020'[class:A:0, class:B:0]'
+			\u0020do not contains:
+			\u0020'[class:C:0, class:B:0]'
+			\u0020but contains key's:
+			\u0020'[class:B:0]'"""
 			.dedent().trim_prefix("\n")
 		)
 
@@ -552,12 +552,12 @@ func test_append_failure_message() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 must be empty but was
-			 '{
+			\u0020must be empty but was
+			\u0020'{
 				1: 1
-			  }'
+			\u0020\u0020}'
 			Additional info:
-			 custom failure data""".dedent().trim_prefix("\n"))
+			\u0020custom failure data""".dedent().trim_prefix("\n"))
 
 
 # tests if an assert fails the 'is_failure' reflects the failure status

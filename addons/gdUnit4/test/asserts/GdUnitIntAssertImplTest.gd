@@ -1,6 +1,6 @@
 # GdUnit generated TestSuite
 class_name GdUnitIntAssertImplTest
-extends GdUnitTestSuite  # gdstyle:ignore-file=format/no-tabs-as-spaces
+extends GdUnitTestSuite
 
 
 func test_is_null() -> void:
@@ -225,9 +225,9 @@ func test_append_failure_message() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 equal to 0 but is 314
+			\u0020equal to 0 but is 314
 			Additional info:
-			 custom failure data""".dedent().trim_prefix("\n"))
+			\u0020custom failure data""".dedent().trim_prefix("\n"))
 
 
 # tests if an assert fails the 'is_failure' reflects the failure status

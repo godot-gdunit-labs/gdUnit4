@@ -1,5 +1,5 @@
 class_name GdAssertMessages
-extends Resource  # gdstyle:ignore-file=format/no-tabs-as-spaces,quality/max-public-methods
+extends Resource  # gdstyle:ignore-file=quality/max-public-methods
 
 const SUB_COLOR := Color(1, 0, 0, .15)
 const ADD_COLOR := Color(0, 1, 0, .15)
@@ -229,8 +229,8 @@ static func test_session_terminated() -> String:
 static func test_suite_skipped(hint: String, skip_count: int) -> String:
 	return """
 		%s
-		  Skipped %s tests
-		  Reason: %s
+		\u0020\u0020Skipped %s tests
+		\u0020\u0020Reason: %s
 		""".dedent().trim_prefix("\n")\
 		% [_error("The Entire test-suite is skipped!"), _colored_value(skip_count), _colored_value(hint)]
 
@@ -238,7 +238,7 @@ static func test_suite_skipped(hint: String, skip_count: int) -> String:
 static func test_skipped(hint: String) -> String:
 	return """
 		%s
-		  Reason: %s
+		\u0020\u0020Reason: %s
 		""".dedent().trim_prefix("\n")\
 		% [_error("This test is skipped!"), _colored_value(hint)]
 
@@ -262,9 +262,9 @@ static func error_is_not_null() -> String:
 static func error_equal(current: Variant, expected: Variant, index_reports: Array = []) -> String:
 	var report := """
 		%s
-		 %s
-		 but was
-		 %s""".dedent().trim_prefix("\n") % [_error("Expecting:"), _colored_value(expected), _colored_value(current)]
+		\u0020%s
+		\u0020but was
+		\u0020%s""".dedent().trim_prefix("\n") % [_error("Expecting:"), _colored_value(expected), _colored_value(current)]
 	if not index_reports.is_empty():
 		report += "\n\n%s\n%s" % [_error("Differences found:"), _index_report_as_table(index_reports)]
 	return report
@@ -720,7 +720,7 @@ static func build_failure_message(failure: String, additional_failure_message: S
 	return """
 		%s
 		[color=LIME_GREEN][b]Additional info:[/b][/color]
-		 %s""".dedent().trim_prefix("\n") % [message, additional_failure_message]
+		\u0020%s""".dedent().trim_prefix("\n") % [message, additional_failure_message]
 
 
 static func is_empty(value: Variant) -> bool:

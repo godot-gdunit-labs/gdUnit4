@@ -1,5 +1,5 @@
 # GdUnit generated TestSuite
-extends GdUnitTestSuite  # gdstyle:ignore-file=format/no-tabs-as-spaces,quality/max-file-length,quality/max-public-methods
+extends GdUnitTestSuite  # gdstyle:ignore-file=quality/max-file-length,quality/max-public-methods
 
 
 func before() -> void:
@@ -34,9 +34,9 @@ func test_is_equal() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '[1,    2, 3, 4]'
-			 but was
-			 '[1, 2222, 3, 4, 5, 6]'
+			\u0020'[1,    2, 3, 4]'
+			\u0020but was
+			\u0020'[1, 2222, 3, 4, 5, 6]'
 
 			Differences found:
 			Index	Current	Expected	1	2222	2	4	5	<N/A>	5	6	<N/A>	"""
@@ -47,9 +47,9 @@ func test_is_equal() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '[1,   2, 3, 4, 5, 6]'
-			 but was
-			 '[1, 222, 3, 4]'
+			\u0020'[1,   2, 3, 4, 5, 6]'
+			\u0020but was
+			\u0020'[1, 222, 3, 4]'
 
 			Differences found:
 			Index	Current	Expected	1	222	2	4	<N/A>	5	5	<N/A>	6	"""
@@ -59,9 +59,9 @@ func test_is_equal() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '[1, 2, 3]'
-			 but was
-			 '<null>'"""
+			\u0020'[1, 2, 3]'
+			\u0020but was
+			\u0020'<null>'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -77,9 +77,9 @@ func test_is_equal_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '[1,    2, 3, 4]'
-			 but was
-			 '[1, 2222, 3, 4, 5, 6]'
+			\u0020'[1,    2, 3, 4]'
+			\u0020but was
+			\u0020'[1, 2222, 3, 4, 5, 6]'
 
 			Differences found:
 			Index	Current	Expected	1	2222	2	4	5	<N/A>	5	6	<N/A>	"""
@@ -90,9 +90,9 @@ func test_is_equal_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '[1,   2, 3, 4, 5, 6]'
-			 but was
-			 '[1, 222, 3, 4]'
+			\u0020'[1,   2, 3, 4, 5, 6]'
+			\u0020but was
+			\u0020'[1, 222, 3, 4]'
 
 			Differences found:
 			Index	Current	Expected	1	222	2	4	<N/A>	5	5	<N/A>	6	"""
@@ -102,9 +102,9 @@ func test_is_equal_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '[1, 2, 3]'
-			 but was
-			 '<null>'"""
+			\u0020'[1, 2, 3]'
+			\u0020but was
+			\u0020'<null>'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -123,9 +123,9 @@ func test_is_equal_big_arrays() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9,      10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, ...]'
-			 but was
-			 '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, invalid, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, ...]'
+			\u0020'[0, 1, 2, 3, 4, 5, 6, 7, 8, 9,      10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, ...]'
+			\u0020but was
+			\u0020'[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, invalid, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, ...]'
 
 			Differences found:
 			Index	Current	Expected	10	invalid	10	40	invalid	40	100	invalid	100	888	invalid	888	"""
@@ -141,9 +141,9 @@ func test_is_equal_ignoring_case() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '["This", "is"]'
-			 but was
-			 '<null>'"""
+			\u0020'["This", "is"]'
+			\u0020but was
+			\u0020'<null>'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -156,9 +156,9 @@ func test_is_equal_ignoring_case_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '["This", "is"]'
-			 but was
-			 '<null>'"""
+			\u0020'["This", "is"]'
+			\u0020but was
+			\u0020'<null>'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -170,9 +170,9 @@ func test_is_not_equal() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '[1, 2, 3, 4, 5]'
-			 not equal to
-			 '[1, 2, 3, 4, 5]'"""
+			\u0020'[1, 2, 3, 4, 5]'
+			\u0020not equal to
+			\u0020'[1, 2, 3, 4, 5]'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -184,9 +184,9 @@ func test_is_not_equal_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '[1, 2, 3, 4, 5]'
-			 not equal to
-			 '[1, 2, 3, 4, 5]'"""
+			\u0020'[1, 2, 3, 4, 5]'
+			\u0020not equal to
+			\u0020'[1, 2, 3, 4, 5]'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -198,9 +198,9 @@ func test_is_not_equal_ignoring_case() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '["This", "is", "a", "Message"]'
-			 not equal to (case insensitiv)
-			 '["this", "is", "a", "message"]'"""
+			\u0020'["This", "is", "a", "Message"]'
+			\u0020not equal to (case insensitiv)
+			\u0020'["this", "is", "a", "message"]'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -212,9 +212,9 @@ func test_is_not_equal_ignoring_case_varadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '["This", "is", "a", "Message"]'
-			 not equal to (case insensitiv)
-			 '["this", "is", "a", "message"]'"""
+			\u0020'["This", "is", "a", "Message"]'
+			\u0020not equal to (case insensitiv)
+			\u0020'["this", "is", "a", "message"]'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -225,15 +225,15 @@ func test_is_empty() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 must be empty but was
-			 '[1, 2, 3]'"""
+			\u0020must be empty but was
+			\u0020'[1, 2, 3]'"""
 			.dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_array(null).is_empty()) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 must be empty but was
-			 '<null>'"""
+			\u0020must be empty but was
+			\u0020'<null>'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -271,17 +271,17 @@ func test_has_size() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting size:
-			 4
-			 but was
-			 5"""
+			\u00204
+			\u0020but was
+			\u00205"""
 			.dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_array(null).has_size(4)) \
 		.is_failed() \
 		.has_message("""
 			Expecting size:
-			 4
-			 but was
-			 '<null>'"""
+			\u00204
+			\u0020but was
+			\u0020'<null>'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -298,33 +298,33 @@ func test_contains() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains elements:
-			 '[1, 2, 3, 4, 5]'
-			 do contains (in any order)
-			 '[2, 7, 6]'
+			\u0020'[1, 2, 3, 4, 5]'
+			\u0020do contains (in any order)
+			\u0020'[2, 7, 6]'
 			but could not find elements:
-			 '[7, 6]'"""
+			\u0020'[7, 6]'"""
 			.dedent().trim_prefix("\n"))
 
 	assert_failure(func() -> void: assert_array(null).contains([2, 7, 6])) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains elements:
-			 '<null>'
-			 do contains (in any order)
-			 '[2, 7, 6]'
+			\u0020'<null>'
+			\u0020do contains (in any order)
+			\u0020'[2, 7, 6]'
 			but could not find elements:
-			 '[2, 7, 6]'"""
+			\u0020'[2, 7, 6]'"""
 			.dedent().trim_prefix("\n"))
 
 	assert_failure(func() -> void: assert_array([value_a, value_b]).contains([TestObj.new("C", 0)])) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains elements:
-			 '[class:A, class:B]'
-			 do contains (in any order)
-			 '[class:C]'
+			\u0020'[class:A, class:B]'
+			\u0020do contains (in any order)
+			\u0020'[class:C]'
 			but could not find elements:
-			 '[class:C]'"""
+			\u0020'[class:C]'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -341,33 +341,33 @@ func test_contains_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains elements:
-			 '[1, 2, 3, 4, 5]'
-			 do contains (in any order)
-			 '[2, 7, 6]'
+			\u0020'[1, 2, 3, 4, 5]'
+			\u0020do contains (in any order)
+			\u0020'[2, 7, 6]'
 			but could not find elements:
-			 '[7, 6]'"""
+			\u0020'[7, 6]'"""
 			.dedent().trim_prefix("\n"))
 
 	assert_failure(func() -> void: assert_array(null).contains(2, 7, 6)) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains elements:
-			 '<null>'
-			 do contains (in any order)
-			 '[2, 7, 6]'
+			\u0020'<null>'
+			\u0020do contains (in any order)
+			\u0020'[2, 7, 6]'
 			but could not find elements:
-			 '[2, 7, 6]'"""
+			\u0020'[2, 7, 6]'"""
 			.dedent().trim_prefix("\n"))
 
 	assert_failure(func() -> void: assert_array([value_a, value_b]).contains(TestObj.new("C", 0))) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains elements:
-			 '[class:A, class:B]'
-			 do contains (in any order)
-			 '[class:C]'
+			\u0020'[class:A, class:B]'
+			\u0020do contains (in any order)
+			\u0020'[class:C]'
 			but could not find elements:
-			 '[class:C]'"""
+			\u0020'[class:C]'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -382,11 +382,11 @@ func test_contains_exactly() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
-			 '[1, 2, 3, 4, 5]'
-			 do contains (in same order)
-			 '[1, 4, 3, 2, 5]'
-			 but has different order at position 1
-			 '2' vs '4'"""
+			\u0020'[1, 2, 3, 4, 5]'
+			\u0020do contains (in same order)
+			\u0020'[1, 4, 3, 2, 5]'
+			\u0020but has different order at position 1
+			\u0020'2' vs '4'"""
 			.dedent().trim_prefix("\n"))
 
 	# should fail because the array contains more elements and in a different order
@@ -394,11 +394,11 @@ func test_contains_exactly() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
-			 '[1, 2, 3, 4, 5, 6, 7]'
-			 do contains (in same order)
-			 '[1, 4, 3, 2, 5]'
+			\u0020'[1, 2, 3, 4, 5, 6, 7]'
+			\u0020do contains (in same order)
+			\u0020'[1, 4, 3, 2, 5]'
 			but some elements where not expected:
-			 '[6, 7]'"""
+			\u0020'[6, 7]'"""
 			.dedent().trim_prefix("\n"))
 
 	# should fail because the array contains less elements and in a different order
@@ -406,33 +406,33 @@ func test_contains_exactly() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
-			 '[1, 2, 3, 4, 5]'
-			 do contains (in same order)
-			 '[1, 4, 3, 2, 5, 6, 7]'
+			\u0020'[1, 2, 3, 4, 5]'
+			\u0020do contains (in same order)
+			\u0020'[1, 4, 3, 2, 5, 6, 7]'
 			but could not find elements:
-			 '[6, 7]'"""
+			\u0020'[6, 7]'"""
 			.dedent().trim_prefix("\n"))
 
 	assert_failure(func() -> void: assert_array(null).contains_exactly([1, 4, 3])) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
-			 '<null>'
-			 do contains (in same order)
-			 '[1, 4, 3]'
+			\u0020'<null>'
+			\u0020do contains (in same order)
+			\u0020'[1, 4, 3]'
 			but could not find elements:
-			 '[1, 4, 3]'"""
+			\u0020'[1, 4, 3]'"""
 			.dedent().trim_prefix("\n"))
 
 	assert_failure(func() -> void: assert_array([value_a, value_b]).contains_exactly([value_b, TestObj.new("A", 0)])) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
-			 '[class:A, class:B]'
-			 do contains (in same order)
-			 '[class:B, class:A]'
-			 but has different order at position 0
-			 'class:A' vs 'class:B'"""
+			\u0020'[class:A, class:B]'
+			\u0020do contains (in same order)
+			\u0020'[class:B, class:A]'
+			\u0020but has different order at position 0
+			\u0020'class:A' vs 'class:B'"""
 		.dedent().trim_prefix("\n"))
 
 
@@ -447,11 +447,11 @@ func test_contains_exactly_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
-			 '[1, 2, 3, 4, 5]'
-			 do contains (in same order)
-			 '[1, 4, 3, 2, 5]'
-			 but has different order at position 1
-			 '2' vs '4'"""
+			\u0020'[1, 2, 3, 4, 5]'
+			\u0020do contains (in same order)
+			\u0020'[1, 4, 3, 2, 5]'
+			\u0020but has different order at position 1
+			\u0020'2' vs '4'"""
 			.dedent().trim_prefix("\n"))
 
 	# should fail because the array contains more elements and in a different order
@@ -459,11 +459,11 @@ func test_contains_exactly_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
-			 '[1, 2, 3, 4, 5, 6, 7]'
-			 do contains (in same order)
-			 '[1, 4, 3, 2, 5]'
+			\u0020'[1, 2, 3, 4, 5, 6, 7]'
+			\u0020do contains (in same order)
+			\u0020'[1, 4, 3, 2, 5]'
 			but some elements where not expected:
-			 '[6, 7]'"""
+			\u0020'[6, 7]'"""
 			.dedent().trim_prefix("\n"))
 
 	# should fail because the array contains less elements and in a different order
@@ -471,33 +471,33 @@ func test_contains_exactly_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
-			 '[1, 2, 3, 4, 5]'
-			 do contains (in same order)
-			 '[1, 4, 3, 2, 5, 6, 7]'
+			\u0020'[1, 2, 3, 4, 5]'
+			\u0020do contains (in same order)
+			\u0020'[1, 4, 3, 2, 5, 6, 7]'
 			but could not find elements:
-			 '[6, 7]'"""
+			\u0020'[6, 7]'"""
 			.dedent().trim_prefix("\n"))
 
 	assert_failure(func() -> void: assert_array(null).contains_exactly(1, 4, 3)) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
-			 '<null>'
-			 do contains (in same order)
-			 '[1, 4, 3]'
+			\u0020'<null>'
+			\u0020do contains (in same order)
+			\u0020'[1, 4, 3]'
 			but could not find elements:
-			 '[1, 4, 3]'"""
+			\u0020'[1, 4, 3]'"""
 			.dedent().trim_prefix("\n"))
 
 	assert_failure(func() -> void: assert_array([value_a, value_b]).contains_exactly(value_b, TestObj.new("A", 0))) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
-			 '[class:A, class:B]'
-			 do contains (in same order)
-			 '[class:B, class:A]'
-			 but has different order at position 0
-			 'class:A' vs 'class:B'"""
+			\u0020'[class:A, class:B]'
+			\u0020do contains (in same order)
+			\u0020'[class:B, class:A]'
+			\u0020but has different order at position 0
+			\u0020'class:A' vs 'class:B'"""
 		.dedent().trim_prefix("\n"))
 
 
@@ -514,13 +514,13 @@ func test_contains_exactly_in_any_order() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
-			 '[1, 2, 6, 4, 5]'
-			 do contains exactly (in any order)
-			 '[5, 3, 2, 4, 1, 9, 10]'
+			\u0020'[1, 2, 6, 4, 5]'
+			\u0020do contains exactly (in any order)
+			\u0020'[5, 3, 2, 4, 1, 9, 10]'
 			but some elements where not expected:
-			 '[6]'
+			\u0020'[6]'
 			and could not find elements:
-			 '[3, 9, 10]'"""
+			\u0020'[3, 9, 10]'"""
 			.dedent().trim_prefix("\n"))
 
 	#should fail because the array contains the same elements but in a different order
@@ -528,37 +528,37 @@ func test_contains_exactly_in_any_order() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
-			 '[1, 2, 6, 9, 10, 4, 5]'
-			 do contains exactly (in any order)
-			 '[5, 3, 2, 4, 1]'
+			\u0020'[1, 2, 6, 9, 10, 4, 5]'
+			\u0020do contains exactly (in any order)
+			\u0020'[5, 3, 2, 4, 1]'
 			but some elements where not expected:
-			 '[6, 9, 10]'
+			\u0020'[6, 9, 10]'
 			and could not find elements:
-			 '[3]'"""
+			\u0020'[3]'"""
 			.dedent().trim_prefix("\n"))
 
 	assert_failure(func() -> void: assert_array(null).contains_exactly_in_any_order([1, 4, 3])) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
-			 '<null>'
-			 do contains exactly (in any order)
-			 '[1, 4, 3]'
+			\u0020'<null>'
+			\u0020do contains exactly (in any order)
+			\u0020'[1, 4, 3]'
 			but could not find elements:
-			 '[1, 4, 3]'"""
+			\u0020'[1, 4, 3]'"""
 			.dedent().trim_prefix("\n"))
 
 	assert_failure(func() -> void:  assert_array([value_a, value_b]).contains_exactly_in_any_order([value_b, TestObj.new("C", 0)])) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
-			 '[class:A, class:B]'
-			 do contains exactly (in any order)
-			 '[class:B, class:C]'
+			\u0020'[class:A, class:B]'
+			\u0020do contains exactly (in any order)
+			\u0020'[class:B, class:C]'
 			but some elements where not expected:
-			 '[class:A]'
+			\u0020'[class:A]'
 			and could not find elements:
-			 '[class:C]'"""
+			\u0020'[class:C]'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -575,13 +575,13 @@ func test_contains_exactly_in_any_order_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
-			 '[1, 2, 6, 4, 5]'
-			 do contains exactly (in any order)
-			 '[5, 3, 2, 4, 1, 9, 10]'
+			\u0020'[1, 2, 6, 4, 5]'
+			\u0020do contains exactly (in any order)
+			\u0020'[5, 3, 2, 4, 1, 9, 10]'
 			but some elements where not expected:
-			 '[6]'
+			\u0020'[6]'
 			and could not find elements:
-			 '[3, 9, 10]'"""
+			\u0020'[3, 9, 10]'"""
 			.dedent().trim_prefix("\n"))
 
 	#should fail because the array contains the same elements but in a different order
@@ -589,37 +589,37 @@ func test_contains_exactly_in_any_order_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
-			 '[1, 2, 6, 9, 10, 4, 5]'
-			 do contains exactly (in any order)
-			 '[5, 3, 2, 4, 1]'
+			\u0020'[1, 2, 6, 9, 10, 4, 5]'
+			\u0020do contains exactly (in any order)
+			\u0020'[5, 3, 2, 4, 1]'
 			but some elements where not expected:
-			 '[6, 9, 10]'
+			\u0020'[6, 9, 10]'
 			and could not find elements:
-			 '[3]'"""
+			\u0020'[3]'"""
 			.dedent().trim_prefix("\n"))
 
 	assert_failure(func() -> void: assert_array(null).contains_exactly_in_any_order(1, 4, 3)) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
-			 '<null>'
-			 do contains exactly (in any order)
-			 '[1, 4, 3]'
+			\u0020'<null>'
+			\u0020do contains exactly (in any order)
+			\u0020'[1, 4, 3]'
 			but could not find elements:
-			 '[1, 4, 3]'"""
+			\u0020'[1, 4, 3]'"""
 			.dedent().trim_prefix("\n"))
 
 	assert_failure(func() -> void:  assert_array([value_a, value_b]).contains_exactly_in_any_order(value_b, TestObj.new("C", 0))) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
-			 '[class:A, class:B]'
-			 do contains exactly (in any order)
-			 '[class:B, class:C]'
+			\u0020'[class:A, class:B]'
+			\u0020do contains exactly (in any order)
+			\u0020'[class:B, class:C]'
 			but some elements where not expected:
-			 '[class:A]'
+			\u0020'[class:A]'
 			and could not find elements:
-			 '[class:C]'"""
+			\u0020'[class:C]'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -633,11 +633,11 @@ func test_contains_same() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains SAME elements:
-			 '[class:A, class:B]'
-			 do contains (in any order)
-			 '[class:A]'
+			\u0020'[class:A, class:B]'
+			\u0020do contains (in any order)
+			\u0020'[class:A]'
 			but could not find elements:
-			 '[class:A]'"""
+			\u0020'[class:A]'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -651,11 +651,11 @@ func test_contains_same_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains SAME elements:
-			 '[class:A, class:B]'
-			 do contains (in any order)
-			 '[class:A]'
+			\u0020'[class:A, class:B]'
+			\u0020do contains (in any order)
+			\u0020'[class:A]'
 			but could not find elements:
-			 '[class:A]'"""
+			\u0020'[class:A]'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -668,24 +668,24 @@ func test_contains_same_exactly() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains SAME exactly elements:
-			 '[class:A, class:B]'
-			 do contains (in same order)
-			 '[class:B, class:A]'
-			 but has different order at position 0
-			 'class:A' vs 'class:B'"""
+			\u0020'[class:A, class:B]'
+			\u0020do contains (in same order)
+			\u0020'[class:B, class:A]'
+			\u0020but has different order at position 0
+			\u0020'class:A' vs 'class:B'"""
 		.dedent().trim_prefix("\n"))
 
 	assert_failure(func() -> void: assert_array([value_a, value_b]).contains_same_exactly([TestObj.new("A", 0), value_b])) \
 		.is_failed() \
 		.has_message("""
 			Expecting contains SAME exactly elements:
-			 '[class:A, class:B]'
-			 do contains (in same order)
-			 '[class:A, class:B]'
+			\u0020'[class:A, class:B]'
+			\u0020do contains (in same order)
+			\u0020'[class:A, class:B]'
 			but some elements where not expected:
-			 '[class:A]'
+			\u0020'[class:A]'
 			and could not find elements:
-			 '[class:A]'"""
+			\u0020'[class:A]'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -698,13 +698,13 @@ func test_contains_same_exactly_in_any_order() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains SAME exactly elements:
-			 '[class:A, class:B]'
-			 do contains exactly (in any order)
-			 '[class:B, class:A]'
+			\u0020'[class:A, class:B]'
+			\u0020do contains exactly (in any order)
+			\u0020'[class:B, class:A]'
 			but some elements where not expected:
-			 '[class:A]'
+			\u0020'[class:A]'
 			and could not find elements:
-			 '[class:A]'"""
+			\u0020'[class:A]'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -717,13 +717,13 @@ func test_contains_same_exactly_in_any_order_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains SAME exactly elements:
-			 '[class:A, class:B]'
-			 do contains exactly (in any order)
-			 '[class:B, class:A]'
+			\u0020'[class:A, class:B]'
+			\u0020do contains exactly (in any order)
+			\u0020'[class:B, class:A]'
 			but some elements where not expected:
-			 '[class:A]'
+			\u0020'[class:A]'
 			and could not find elements:
-			 '[class:A]'"""
+			\u0020'[class:A]'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -739,11 +739,11 @@ func test_not_contains() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '[1, 2, 3, 4, 5]'
-			 do not contains
-			 '[5]'
-			 but found elements:
-			 '[5]'"""
+			\u0020'[1, 2, 3, 4, 5]'
+			\u0020do not contains
+			\u0020'[5]'
+			\u0020but found elements:
+			\u0020'[5]'"""
 			.dedent().trim_prefix("\n")
 		)
 
@@ -751,11 +751,11 @@ func test_not_contains() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '[1, 2, 3, 4, 5]'
-			 do not contains
-			 '[1, 4, 6]'
-			 but found elements:
-			 '[1, 4]'"""
+			\u0020'[1, 2, 3, 4, 5]'
+			\u0020do not contains
+			\u0020'[1, 4, 6]'
+			\u0020but found elements:
+			\u0020'[1, 4]'"""
 			.dedent().trim_prefix("\n")
 		)
 
@@ -763,11 +763,11 @@ func test_not_contains() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '[1, 2, 3, 4, 5]'
-			 do not contains
-			 '[6, 4, 1]'
-			 but found elements:
-			 '[4, 1]'"""
+			\u0020'[1, 2, 3, 4, 5]'
+			\u0020do not contains
+			\u0020'[6, 4, 1]'
+			\u0020but found elements:
+			\u0020'[4, 1]'"""
 			.dedent().trim_prefix("\n")
 		)
 
@@ -775,11 +775,11 @@ func test_not_contains() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '[class:A, class:B]'
-			 do not contains
-			 '[class:A]'
-			 but found elements:
-			 '[class:A]'"""
+			\u0020'[class:A, class:B]'
+			\u0020do not contains
+			\u0020'[class:A]'
+			\u0020but found elements:
+			\u0020'[class:A]'"""
 			.dedent().trim_prefix("\n")
 		)
 
@@ -796,11 +796,11 @@ func test_not_contains_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '[1, 2, 3, 4, 5]'
-			 do not contains
-			 '[5]'
-			 but found elements:
-			 '[5]'"""
+			\u0020'[1, 2, 3, 4, 5]'
+			\u0020do not contains
+			\u0020'[5]'
+			\u0020but found elements:
+			\u0020'[5]'"""
 			.dedent().trim_prefix("\n")
 		)
 
@@ -808,11 +808,11 @@ func test_not_contains_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '[1, 2, 3, 4, 5]'
-			 do not contains
-			 '[1, 4, 6]'
-			 but found elements:
-			 '[1, 4]'"""
+			\u0020'[1, 2, 3, 4, 5]'
+			\u0020do not contains
+			\u0020'[1, 4, 6]'
+			\u0020but found elements:
+			\u0020'[1, 4]'"""
 			.dedent().trim_prefix("\n")
 		)
 
@@ -820,11 +820,11 @@ func test_not_contains_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '[1, 2, 3, 4, 5]'
-			 do not contains
-			 '[6, 4, 1]'
-			 but found elements:
-			 '[4, 1]'"""
+			\u0020'[1, 2, 3, 4, 5]'
+			\u0020do not contains
+			\u0020'[6, 4, 1]'
+			\u0020but found elements:
+			\u0020'[4, 1]'"""
 			.dedent().trim_prefix("\n")
 		)
 
@@ -832,11 +832,11 @@ func test_not_contains_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '[class:A, class:B]'
-			 do not contains
-			 '[class:A]'
-			 but found elements:
-			 '[class:A]'"""
+			\u0020'[class:A, class:B]'
+			\u0020do not contains
+			\u0020'[class:A]'
+			\u0020but found elements:
+			\u0020'[class:A]'"""
 			.dedent().trim_prefix("\n")
 		)
 
@@ -851,11 +851,11 @@ func test_not_contains_same() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting SAME:
-			 '[class:A, class:B]'
-			 do not contains
-			 '[class:B]'
-			 but found elements:
-			 '[class:B]'"""
+			\u0020'[class:A, class:B]'
+			\u0020do not contains
+			\u0020'[class:B]'
+			\u0020but found elements:
+			\u0020'[class:B]'"""
 			.dedent().trim_prefix("\n")
 		)
 
@@ -870,11 +870,11 @@ func test_not_contains_same_variadic_args() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting SAME:
-			 '[class:A, class:B]'
-			 do not contains
-			 '[class:B]'
-			 but found elements:
-			 '[class:B]'"""
+			\u0020'[class:A, class:B]'
+			\u0020do not contains
+			\u0020'[class:B]'
+			\u0020but found elements:
+			\u0020'[class:B]'"""
 			.dedent().trim_prefix("\n")
 		)
 
@@ -928,11 +928,11 @@ func test_extract() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
-			 '<null>'
-			 do contains (in same order)
-			 '["AStar3D", "Node"]'
+			\u0020'<null>'
+			\u0020do contains (in same order)
+			\u0020'["AStar3D", "Node"]'
 			but could not find elements:
-			 '["AStar3D", "Node"]'"""
+			\u0020'["AStar3D", "Node"]'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -957,11 +957,11 @@ func test_extractv() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
-			 '<null>'
-			 do contains (in same order)
-			 '[tuple(["A", 10, <null>]), tuple(["B", "foo", "bar"]), tuple(["C", 11, 42])]'
+			\u0020'<null>'
+			\u0020do contains (in same order)
+			\u0020'[tuple(["A", 10, <null>]), tuple(["B", "foo", "bar"]), tuple(["C", 11, 42])]'
 			but could not find elements:
-			 '[tuple(["A", 10, <null>]), tuple(["B", "foo", "bar"]), tuple(["C", 11, 42])]'"""
+			\u0020'[tuple(["A", 10, <null>]), tuple(["B", "foo", "bar"]), tuple(["C", 11, 42])]'"""
 			.dedent().trim_prefix("\n"))
 
 
@@ -1041,9 +1041,9 @@ func test_append_failure_message() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 must not be empty
+			\u0020must not be empty
 			Additional info:
-			 custom failure data""".dedent().trim_prefix("\n"))
+			\u0020custom failure data""".dedent().trim_prefix("\n"))
 
 
 # tests if an assert fails the 'is_failure' reflects the failure status

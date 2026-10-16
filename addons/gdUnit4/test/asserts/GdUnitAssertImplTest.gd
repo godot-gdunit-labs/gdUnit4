@@ -1,6 +1,6 @@
 # GdUnit generated TestSuite
 class_name GdUnitAssertImplTest
-extends GdUnitTestSuite  # gdstyle:ignore-file=format/no-tabs-as-spaces
+extends GdUnitTestSuite
 
 
 func before() -> void:
@@ -142,4 +142,4 @@ func test_append_failure_message() -> void:
 		.has_message("""
 			Expecting: not to be '<null>'
 			Additional info:
-			 custom failure data""".dedent().trim_prefix("\n"))
+			\u0020custom failure data""".dedent().trim_prefix("\n"))

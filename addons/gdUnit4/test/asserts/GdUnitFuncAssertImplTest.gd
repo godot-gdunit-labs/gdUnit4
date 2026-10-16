@@ -1,5 +1,5 @@
 class_name GdUnitFuncAssertImplTest
-extends GdUnitTestSuite  # gdstyle:ignore-file=format/no-tabs-as-spaces
+extends GdUnitTestSuite
 
 @warning_ignore_start("redundant_await")
 const GdUnitTools = preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
@@ -228,7 +228,7 @@ func test_append_failure_message() -> void:
 		.contains_message("Expected: is equal 42 but timed out after") \
 		.contains_message("""
 			Additional info:
-			 custom failure data""".dedent().trim_prefix("\n"))
+			\u0020custom failure data""".dedent().trim_prefix("\n"))
 
 
 func test_invalid_function(_timeout := 100) -> void:

@@ -1,6 +1,6 @@
 # GdUnit generated TestSuite
 class_name GdUnitTestSuiteExecutorTest
-extends GdUnitTestSuite  # gdstyle:ignore-file=format/no-tabs-as-spaces,quality/max-file-length
+extends GdUnitTestSuite  # gdstyle:ignore-file=quality/max-file-length
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 const SUCCEEDED = true
@@ -833,18 +833,18 @@ func test_execute_test_suite_is_skipped() -> void:
 			[],
 			["""
 				This test is skipped!
-				  Reason: 'Skipped from the entire test suite'
+				\u0020\u0020Reason: 'Skipped from the entire test suite'
 				""".dedent().trim_prefix("\n")],
 			[],
 			["""
 				This test is skipped!
-				  Reason: 'Skipped from the entire test suite'
+				\u0020\u0020Reason: 'Skipped from the entire test suite'
 				""".dedent().trim_prefix("\n")],
 			# must fail after three iterations
 			["""
 				The Entire test-suite is skipped!
-				  Skipped 2 tests
-				  Reason: 'do not run this'
+				\u0020\u0020Skipped 2 tests
+				\u0020\u0020Reason: 'do not run this'
 				""".dedent().trim_prefix("\n")],
 		])
 
@@ -878,7 +878,7 @@ func test_execute_test_case_is_skipped() -> void:
 			[],
 			["""
 				This test is skipped!
-				  Reason: 'do not run this'
+				\u0020\u0020Reason: 'do not run this'
 				""".dedent().trim_prefix("\n")],
 			[],
 			[],

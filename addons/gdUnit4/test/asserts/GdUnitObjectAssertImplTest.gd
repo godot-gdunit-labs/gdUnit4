@@ -1,6 +1,6 @@
 # GdUnit generated TestSuite
 class_name GdUnitObjectAssertImplTest
-extends GdUnitTestSuite  # gdstyle:ignore-file=format/no-tabs-as-spaces
+extends GdUnitTestSuite
 
 
 func test_is_equal() -> void:
@@ -172,21 +172,21 @@ func test_is_not_same() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting not same:
-			 <Node>"""
+			\u0020<Node>"""
 			.dedent()
 			.trim_prefix("\n"))
 	assert_failure(func() -> void: assert_object(obj1).is_not_same(obj2)) \
 		.is_failed() \
 		.has_message("""
 			Expecting not same:
-			 <Node>"""
+			\u0020<Node>"""
 			.dedent()
 			.trim_prefix("\n"))
 	assert_failure(func() -> void: assert_object(obj2).is_not_same(obj1)) \
 		.is_failed() \
 		.has_message("""
 			Expecting not same:
-			 <Node>"""
+			\u0020<Node>"""
 			.dedent()
 			.trim_prefix("\n"))
 
@@ -226,7 +226,7 @@ func test_append_failure_message() -> void:
 		.has_message("""
 			Expecting: '<null>' but was <Node>
 			Additional info:
-			 custom failure data""".dedent().trim_prefix("\n"))
+			\u0020custom failure data""".dedent().trim_prefix("\n"))
 
 
 # tests if an assert fails the 'is_failure' reflects the failure status

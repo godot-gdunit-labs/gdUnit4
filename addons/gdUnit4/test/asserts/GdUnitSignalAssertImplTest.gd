@@ -3,7 +3,7 @@
 #warning-ignore-all:unused_argument
 #warning-ignore-all:return_value_discarded
 class_name GdUnitSignalAssertImplTest
-extends GdUnitTestSuite  # gdstyle:ignore-file=format/no-tabs-as-spaces
+extends GdUnitTestSuite
 
 const GdUnitTools = preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
@@ -180,7 +180,7 @@ func test_append_failure_message() -> void:
 	).has_message("""
 		Expecting emit signal: 'test_signal_unused()' but timed out after 100ms
 		Additional info:
-		 custom failure data""".dedent().trim_prefix("\n"))
+		\u0020custom failure data""".dedent().trim_prefix("\n"))
 
 
 func test_node_changed_emitting_signals() -> void:

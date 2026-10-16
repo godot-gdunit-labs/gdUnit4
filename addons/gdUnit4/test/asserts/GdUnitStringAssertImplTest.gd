@@ -1,6 +1,6 @@
 # GdUnit generated TestSuite
 class_name GdUnitStringAssertImplTest
-extends GdUnitTestSuite  # gdstyle:ignore-file=format/no-tabs-as-spaces
+extends GdUnitTestSuite
 
 
 func test_is_null() -> void:
@@ -31,16 +31,16 @@ func test_is_equal() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 'This is a test Message'
-			 but was
-			 'This is a test Mmessage'""".dedent().trim_prefix("\n"))
+			\u0020'This is a test Message'
+			\u0020but was
+			\u0020'This is a test Mmessage'""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str(null).is_equal("This is a test Message")) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 'This is a test Message'
-			 but was
-			 '<null>'""".dedent().trim_prefix("\n"))
+			\u0020'This is a test Message'
+			\u0020but was
+			\u0020'<null>'""".dedent().trim_prefix("\n"))
 
 
 func test_is_equal_pipe_character() -> void:
@@ -58,16 +58,16 @@ func test_is_equal_ignoring_case() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 'This is a Message'
-			 but was
-			 'This is a Mtest message' (ignoring case)""".dedent().trim_prefix("\n"))
+			\u0020'This is a Message'
+			\u0020but was
+			\u0020'This is a Mtest message' (ignoring case)""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str(null).is_equal_ignoring_case("This is a Message")) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 'This is a Message'
-			 but was
-			 '<null>' (ignoring case)""".dedent().trim_prefix("\n"))
+			\u0020'This is a Message'
+			\u0020but was
+			\u0020'<null>' (ignoring case)""".dedent().trim_prefix("\n"))
 
 
 func test_is_not_equal() -> void:
@@ -81,9 +81,9 @@ func test_is_not_equal() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 'This is a test message'
-			 not equal to
-			 'This is a test message'""".dedent().trim_prefix("\n"))
+			\u0020'This is a test message'
+			\u0020not equal to
+			\u0020'This is a test message'""".dedent().trim_prefix("\n"))
 
 
 func test_is_not_equal_ignoring_case() -> void:
@@ -97,9 +97,9 @@ func test_is_not_equal_ignoring_case() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 'This is a test Message'
-			 not equal to
-			 'This is a test message'""".dedent().trim_prefix("\n"))
+			\u0020'This is a test Message'
+			\u0020not equal to
+			\u0020'This is a test message'""".dedent().trim_prefix("\n"))
 
 
 func test_is_empty() -> void:
@@ -110,26 +110,26 @@ func test_is_empty() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 must be empty but was
-			 ' '""".dedent().trim_prefix("\n"))
+			\u0020must be empty but was
+			\u0020' '""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str("abc").is_empty()) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 must be empty but was
-			 'abc'""".dedent().trim_prefix("\n"))
+			\u0020must be empty but was
+			\u0020'abc'""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str(&"abc").is_empty()) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 must be empty but was
-			 'abc'""".dedent().trim_prefix("\n"))
+			\u0020must be empty but was
+			\u0020'abc'""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str(null).is_empty()) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 must be empty but was
-			 '<null>'""".dedent().trim_prefix("\n"))
+			\u0020must be empty but was
+			\u0020'<null>'""".dedent().trim_prefix("\n"))
 
 
 func test_is_not_empty() -> void:
@@ -142,12 +142,12 @@ func test_is_not_empty() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 must not be empty""".dedent().trim_prefix("\n"))
+			\u0020must not be empty""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str(null).is_not_empty()) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 must not be empty""".dedent().trim_prefix("\n"))
+			\u0020must not be empty""".dedent().trim_prefix("\n"))
 
 
 func test_contains() -> void:
@@ -160,16 +160,16 @@ func test_contains() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 'This is a test message'
-			 do contains
-			 'a Test'""".dedent().trim_prefix("\n"))
+			\u0020'This is a test message'
+			\u0020do contains
+			\u0020'a Test'""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str(null).contains("a Test")) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '<null>'
-			 do contains
-			 'a Test'""".dedent().trim_prefix("\n"))
+			\u0020'<null>'
+			\u0020do contains
+			\u0020'a Test'""".dedent().trim_prefix("\n"))
 
 
 func test_not_contains() -> void:
@@ -183,16 +183,16 @@ func test_not_contains() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 'This is a test message'
-			 not do contain
-			 'a test'""".dedent().trim_prefix("\n"))
+			\u0020'This is a test message'
+			\u0020not do contain
+			\u0020'a test'""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str(&"This is a test message").not_contains("a test")) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 'This is a test message'
-			 not do contain
-			 'a test'""".dedent().trim_prefix("\n"))
+			\u0020'This is a test message'
+			\u0020not do contain
+			\u0020'a test'""".dedent().trim_prefix("\n"))
 
 
 func test_contains_ignoring_case() -> void:
@@ -205,18 +205,18 @@ func test_contains_ignoring_case() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 'This is a test message'
-			 contains
-			 'a Tesd'
-			 (ignoring case)""".dedent().trim_prefix("\n"))
+			\u0020'This is a test message'
+			\u0020contains
+			\u0020'a Tesd'
+			\u0020(ignoring case)""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str(null).contains_ignoring_case("a Tesd")) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '<null>'
-			 contains
-			 'a Tesd'
-			 (ignoring case)""".dedent().trim_prefix("\n"))
+			\u0020'<null>'
+			\u0020contains
+			\u0020'a Tesd'
+			\u0020(ignoring case)""".dedent().trim_prefix("\n"))
 
 
 func test_not_contains_ignoring_case() -> void:
@@ -230,10 +230,10 @@ func test_not_contains_ignoring_case() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 'This is a test message'
-			 not do contains
-			 'a Test'
-			 (ignoring case)""".dedent().trim_prefix("\n"))
+			\u0020'This is a test message'
+			\u0020not do contains
+			\u0020'a Test'
+			\u0020(ignoring case)""".dedent().trim_prefix("\n"))
 
 
 func test_starts_with() -> void:
@@ -246,30 +246,30 @@ func test_starts_with() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 'This is a test message'
-			 to start with
-			 'This iss'""".dedent().trim_prefix("\n"))
+			\u0020'This is a test message'
+			\u0020to start with
+			\u0020'This iss'""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str("This is a test message").starts_with("this is")) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 'This is a test message'
-			 to start with
-			 'this is'""".dedent().trim_prefix("\n"))
+			\u0020'This is a test message'
+			\u0020to start with
+			\u0020'this is'""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str("This is a test message").starts_with("test")) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 'This is a test message'
-			 to start with
-			 'test'""".dedent().trim_prefix("\n"))
+			\u0020'This is a test message'
+			\u0020to start with
+			\u0020'test'""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str(null).starts_with("test")) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '<null>'
-			 to start with
-			 'test'""".dedent().trim_prefix("\n"))
+			\u0020'<null>'
+			\u0020to start with
+			\u0020'test'""".dedent().trim_prefix("\n"))
 
 
 func test_ends_with() -> void:
@@ -282,23 +282,23 @@ func test_ends_with() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 'This is a test message'
-			 to end with
-			 'tes message'""".dedent().trim_prefix("\n"))
+			\u0020'This is a test message'
+			\u0020to end with
+			\u0020'tes message'""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str("This is a test message").ends_with("a test")) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 'This is a test message'
-			 to end with
-			 'a test'""".dedent().trim_prefix("\n"))
+			\u0020'This is a test message'
+			\u0020to end with
+			\u0020'a test'""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str(null).ends_with("a test")) \
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 '<null>'
-			 to end with
-			 'a test'""".dedent().trim_prefix("\n"))
+			\u0020'<null>'
+			\u0020to end with
+			\u0020'a test'""".dedent().trim_prefix("\n"))
 
 
 func test_has_length() -> void:
@@ -311,14 +311,14 @@ func test_has_length() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting size:
-			 23 but was 22 in
-			 'This is a test message'""".dedent().trim_prefix("\n"))
+			\u002023 but was 22 in
+			\u0020'This is a test message'""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str(null).has_length(23)) \
 		.is_failed() \
 		.has_message("""
 			Expecting size:
-			 23 but was <null> in
-			 '<null>'""".dedent().trim_prefix("\n"))
+			\u002023 but was <null> in
+			\u0020'<null>'""".dedent().trim_prefix("\n"))
 
 
 func test_has_length_less_than() -> void:
@@ -330,14 +330,14 @@ func test_has_length_less_than() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting size to be less than:
-			 22 but was 22 in
-			 'This is a test message'""".dedent().trim_prefix("\n"))
+			\u002022 but was 22 in
+			\u0020'This is a test message'""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str(null).has_length(22, Comparator.LESS_THAN)) \
 		.is_failed() \
 		.has_message("""
 			Expecting size to be less than:
-			 22 but was <null> in
-			 '<null>'""".dedent().trim_prefix("\n"))
+			\u002022 but was <null> in
+			\u0020'<null>'""".dedent().trim_prefix("\n"))
 
 
 func test_has_length_less_equal() -> void:
@@ -349,14 +349,14 @@ func test_has_length_less_equal() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting size to be less than or equal:
-			 21 but was 22 in
-			 'This is a test message'""".dedent().trim_prefix("\n"))
+			\u002021 but was 22 in
+			\u0020'This is a test message'""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str(null).has_length(21, Comparator.LESS_EQUAL)) \
 		.is_failed() \
 		.has_message("""
 			Expecting size to be less than or equal:
-			 21 but was <null> in
-			 '<null>'""".dedent().trim_prefix("\n"))
+			\u002021 but was <null> in
+			\u0020'<null>'""".dedent().trim_prefix("\n"))
 
 
 func test_has_length_greater_than() -> void:
@@ -367,14 +367,14 @@ func test_has_length_greater_than() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting size to be greater than:
-			 22 but was 22 in
-			 'This is a test message'""".dedent().trim_prefix("\n"))
+			\u002022 but was 22 in
+			\u0020'This is a test message'""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str(null).has_length(22, Comparator.GREATER_THAN)) \
 		.is_failed() \
 		.has_message("""
 			Expecting size to be greater than:
-			 22 but was <null> in
-			 '<null>'""".dedent().trim_prefix("\n"))
+			\u002022 but was <null> in
+			\u0020'<null>'""".dedent().trim_prefix("\n"))
 
 
 func test_has_length_greater_equal() -> void:
@@ -386,14 +386,14 @@ func test_has_length_greater_equal() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting size to be greater than or equal:
-			 23 but was 22 in
-			 'This is a test message'""".dedent().trim_prefix("\n"))
+			\u002023 but was 22 in
+			\u0020'This is a test message'""".dedent().trim_prefix("\n"))
 	assert_failure(func() -> void: assert_str(null).has_length(23, Comparator.GREATER_EQUAL)) \
 		.is_failed() \
 		.has_message("""
 			Expecting size to be greater than or equal:
-			 23 but was <null> in
-			 '<null>'""".dedent().trim_prefix("\n"))
+			\u002023 but was <null> in
+			\u0020'<null>'""".dedent().trim_prefix("\n"))
 
 
 func test_fluentable() -> void:
@@ -437,9 +437,9 @@ func test_append_failure_message() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 must not be empty
+			\u0020must not be empty
 			Additional info:
-			 custom failure data""".dedent().trim_prefix("\n"))
+			\u0020custom failure data""".dedent().trim_prefix("\n"))
 
 
 # tests if an assert fails the 'is_failure' reflects the failure status
@@ -468,9 +468,9 @@ func test_日本語() -> void:  # gdstyle:ignore=naming/function-name-snake-case
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			 'test_本語'
-			 but was
-			 'test_日本語'""".dedent().trim_prefix("\n"))
+			\u0020'test_本語'
+			\u0020but was
+			\u0020'test_日本語'""".dedent().trim_prefix("\n"))
 
 
 func test_is_equal_on_rich_text() -> void:
@@ -480,9 +480,9 @@ func test_is_equal_on_rich_text() -> void:
 	).is_failed() \
 		.has_message("""
 			Expecting:
-			 '[lb]color=ffff00]test[lb]/color]'
-			 but was
-			 '[lb]color=ff00ff]test[lb]/color]'""".dedent().trim_prefix("\n"))
+			\u0020'[lb]color=ffff00]test[lb]/color]'
+			\u0020but was
+			\u0020'[lb]color=ff00ff]test[lb]/color]'""".dedent().trim_prefix("\n"))
 
 
 #region large values GD-1327

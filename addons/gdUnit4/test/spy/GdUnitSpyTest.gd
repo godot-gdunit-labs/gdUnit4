@@ -144,7 +144,7 @@ func test_spy_class_with_custom_formattings() -> void:
 	verify_no_more_interactions(do_spy)
 	assert_failure(func() -> void: verify_no_interactions(do_spy))\
 		.is_failed() \
-		.has_line(148)
+		.has_line(145)
 
 
 func test_spy_copied_class_members() -> void:
@@ -258,7 +258,7 @@ func test_verify_fail() -> void:
 	@warning_ignore("unsafe_method_access")
 	assert_failure(func() -> void: verify(spy_node, 1).set_process(true)) \
 		.is_failed() \
-		.has_line(262) \
+		.has_line(259) \
 		.has_message(expected_error)
 
 
@@ -287,7 +287,7 @@ func test_verify_func_interaction_wiht_packed_string_array_fail() -> void:
 	@warning_ignore("unsafe_method_access")
 	assert_failure(func() -> void: verify(spy_instance, 1).set_values([])) \
 		.is_failed() \
-		.has_line(291) \
+		.has_line(288) \
 		.has_message(expected_error)
 
 	reset(spy_instance)
@@ -306,7 +306,7 @@ func test_verify_func_interaction_wiht_packed_string_array_fail() -> void:
 	@warning_ignore("unsafe_method_access")
 	assert_failure(func() -> void: verify(spy_instance, 1).set_values([])) \
 		.is_failed() \
-		.has_line(310) \
+		.has_line(307) \
 		.has_message(expected_error)
 
 
@@ -362,7 +362,7 @@ func test_verify_no_interactions_fails() -> void:
 	# it should fail because we have interactions
 	assert_failure(func() -> void: verify_no_interactions(spy_node)) \
 		.is_failed() \
-		.has_line(366) \
+		.has_line(363) \
 		.has_message(expected_error)
 
 
@@ -435,7 +435,7 @@ func test_verify_no_more_interactions_but_has() -> void:
 			.dedent().trim_prefix("\n")
 	assert_failure(func() -> void: verify_no_more_interactions(spy_node)) \
 		.is_failed() \
-		.has_line(439) \
+		.has_line(436) \
 		.has_message(expected_error)
 
 
@@ -739,6 +739,7 @@ func test_spy_with_enum_in_constructor() -> void:
 #region documented examples
 # The following tests verify the examples of the spy documentation page
 # documentation/doc/_advanced_testing/spy.md
+
 
 func test_doc_verify_example() -> void:
 	var spyed_instance: TestClass = spy(auto_free(TestClass.new()))

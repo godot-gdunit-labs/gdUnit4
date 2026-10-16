@@ -63,7 +63,7 @@ func max_length(left: Variant, right: Variant) -> int:
 
 
 # gdlint: disable=function-name
-func _toPackedStringArray(value: Variant) -> PackedStringArray:  # gdstyle:ignore=naming/function-name-snake-case
+func _to_packed_string_array(value: Variant) -> PackedStringArray:
 	if GdArrayTools.is_array_type(value):
 		@warning_ignore("unsafe_cast")
 		return PackedStringArray(value as Array)
@@ -71,8 +71,8 @@ func _toPackedStringArray(value: Variant) -> PackedStringArray:  # gdstyle:ignor
 
 
 func _array_equals_div(current: Variant, expected: Variant, case_sensitive: bool = true) -> Array:
-	var current_value := _toPackedStringArray(current)
-	var expected_value := _toPackedStringArray(expected)
+	var current_value := _to_packed_string_array(current)
+	var expected_value := _to_packed_string_array(expected)
 	var index_report := Array()
 	for index in current_value.size():
 		var c := current_value[index]

@@ -233,7 +233,7 @@ Continuous Integration (CI) is in place for every pull request to prevent any po
 
 ### Code Formatting
 
-🙏 Special Thanks to @Scony for creating [gdlint](https://github.com/Scony/godot-gdscript-toolkit), a valuable tool contributing to code quality.
+🙏 Special Thanks to the @atelico team for creating [gdstyle](https://github.com/atelico/gdstyle), a valuable tool contributing to code quality.
 
 ---
 

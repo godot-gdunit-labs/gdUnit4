@@ -2,7 +2,7 @@
 extends MainLoop
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
-
+#
 const LOG_FRAME_TEMPLATE = """
 <!DOCTYPE html>
 <html style="display: inline-grid;">
@@ -20,7 +20,7 @@ ${content}
 </body>
 </html>
 """
-
+#
 const NO_LOG_MESSAGE = """
 <h3>No logging available!</h3>
 </br>
@@ -39,8 +39,7 @@ var _cmd_options := CmdOptions.new([
 			true
 		),
 	])
-
-
+#
 var _report_root_path: String
 var _current_report_path: String
 var _debug_cmd_args := PackedStringArray()

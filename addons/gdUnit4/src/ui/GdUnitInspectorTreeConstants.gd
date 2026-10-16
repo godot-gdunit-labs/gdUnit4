@@ -13,7 +13,7 @@ enum SortMode {
 	NAME_DESCENDING,
 	EXECUTION_TIME,
 }
-enum STATE {
+enum STATE {  # gdstyle:ignore=naming/enum-name-pascal-case
 	INITIAL,
 	RUNNING,
 	SKIPPED,

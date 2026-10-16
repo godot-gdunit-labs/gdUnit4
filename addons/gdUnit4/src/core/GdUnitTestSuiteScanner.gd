@@ -1,5 +1,5 @@
 class_name GdUnitTestSuiteScanner
-extends RefCounted
+extends RefCounted  # gdstyle:ignore-file=order/class-member-order
 
 const TEST_FUNC_TEMPLATE = """
 

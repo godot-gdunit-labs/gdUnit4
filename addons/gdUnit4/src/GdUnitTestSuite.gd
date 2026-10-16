@@ -13,7 +13,7 @@
 ## @tutorial:  https://mikeschulze.github.io/gdUnit4/faq/test-suite/
 @icon("res://addons/gdUnit4/src/ui/settings/logo.png")
 class_name GdUnitTestSuite
-extends Node
+extends Node  # gdstyle:ignore-file=quality/max-public-methods
 
 ## do return a default value for primitive types or null
 const RETURN_DEFAULTS = GdUnitMock.RETURN_DEFAULTS
@@ -612,7 +612,7 @@ func tuple(...args: Array) -> GdUnitTuple:
 # gdlint: disable=max-returns
 ## The common assertion tool to verify values.
 ## It checks the given value by type to fit to the best assert
-func assert_that(current: Variant) -> GdUnitAssert:
+func assert_that(current: Variant) -> GdUnitAssert:  # gdstyle:ignore=quality/max-returns
 	match typeof(current):
 		TYPE_BOOL:
 			return assert_bool(current)
@@ -777,5 +777,5 @@ func fail(message: String) -> void:
 
 # --- internal stuff do not override!!!
 # gdlint: ignore=function-name
-func ResourcePath() -> String:
+func ResourcePath() -> String:  # gdstyle:ignore=naming/function-name-snake-case
 	return get_script().resource_path

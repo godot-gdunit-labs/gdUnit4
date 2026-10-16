@@ -1,6 +1,6 @@
 # gdlint: disable=max-public-methods
 # GdUnit generated TestSuite
-extends GdUnitTestSuite
+extends GdUnitTestSuite  # gdstyle:ignore-file=quality/max-public-methods
 
 const DATA1 := ["aa"]
 const DATA2 := ["bb"]
@@ -47,7 +47,7 @@ func build_param(value: float) -> Vector3:
 func using_parameters_static_int_values(_a: int, _b: int, _test_parameters := [
 	[1, 2], [3, 4],
 	]) -> void:
-	pass
+	pass  # gdstyle:ignore=quality/unnecessary-pass
 
 
 func using_parameters_function_values(_a: Vector3, _b: Vector3, _test_parameters := [
@@ -60,7 +60,7 @@ func using_parameters_function_values(_a: Vector3, _b: Vector3, _test_parameters
 func using_parameters_static_vector2_values(_a: Vector2, _b: Vector2, _test_parameters := [
 	[Vector2.ZERO, Vector2.ONE], [Vector2(1.1, 3.2), Vector2.DOWN],
 	]) -> void:
-	pass
+	pass  # gdstyle:ignore=quality/unnecessary-pass
 
 
 func using_parameters_static_object_values(_a: Object, _b: Object, _test_parameters := [
@@ -73,7 +73,7 @@ func using_parameters_static_object_values(_a: Object, _b: Object, _test_paramet
 func using_parameters_static_custom_object_values(_a: Object, _b: Object, _expected: String, _test_parameters := [
 	[TestObjNamed.new("abc"), TestObjNamed.new("def"), "abcdef"],
 	]) -> void:
-	pass
+	pass  # gdstyle:ignore=quality/unnecessary-pass
 
 
 func using_parameters_static_values(_a: int, _b: int, _test_parameters := [

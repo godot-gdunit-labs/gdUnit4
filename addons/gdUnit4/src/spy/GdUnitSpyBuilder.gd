@@ -6,7 +6,7 @@ const SPY_TEMPLATE: GDScript = preload("res://addons/gdUnit4/src/spy/GdUnitSpyIm
 const EXCLUDE_PROPERTIES_TO_COPY = ["script", "type"]
 
 
-static func build(to_spy: Variant, debug_write := false) -> Variant:
+static func build(to_spy: Variant, debug_write := false) -> Variant:  # gdstyle:ignore=quality/max-returns
 	if GdObjects.is_singleton(to_spy):
 		@warning_ignore("unsafe_cast")
 		push_error("Spy on a Singleton is not allowed! '%s'" % (to_spy as Object).get_class())

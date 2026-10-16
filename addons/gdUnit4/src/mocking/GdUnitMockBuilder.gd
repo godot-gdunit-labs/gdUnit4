@@ -126,7 +126,7 @@ static func mock_on_script(instance: Object, clazz: Variant, function_excludes: 
 	return mock
 
 
-static func is_mockable(clazz: Variant, push_errors: bool = false) -> bool:
+static func is_mockable(clazz: Variant, push_errors: bool = false) -> bool:  # gdstyle:ignore=quality/max-returns
 	var clazz_type := typeof(clazz)
 	if clazz_type != TYPE_OBJECT and clazz_type != TYPE_STRING:
 		push_error("Invalid clazz type is used")

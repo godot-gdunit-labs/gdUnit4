@@ -1,5 +1,5 @@
 class_name GdUnitSpyTest  # gdlint: ignore=max-public-methods
-extends GdUnitTestSuite
+extends GdUnitTestSuite  # gdstyle:ignore-file=quality/max-public-methods
 
 const Issue = preload("res://addons/gdUnit4/test/resources/issues/gd-166/issue.gd")
 const Type = preload("res://addons/gdUnit4/test/resources/issues/gd-166/types.gd")

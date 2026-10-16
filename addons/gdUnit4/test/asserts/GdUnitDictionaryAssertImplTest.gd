@@ -1,5 +1,5 @@
 # GdUnit generated TestSuite
-extends GdUnitTestSuite
+extends GdUnitTestSuite  # gdstyle:ignore-file=format/no-tabs-as-spaces
 
 
 func test_must_fail_has_invlalid_type() -> void:

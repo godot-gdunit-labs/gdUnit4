@@ -49,7 +49,7 @@ func is_greater(other: GdUnit4Version) -> bool:
 static func init_version_label(label: Control) -> void:
 	var config := ConfigFile.new()
 	@warning_ignore("return_value_discarded")
-	config.load("addons/gdUnit4/plugin.cfg")
+	config.load("addons/gdUnit4/plugin.cfg")  # gdstyle:ignore=quality/duplicated-load
 	var version: String = config.get_value("plugin", "version")
 	if label is RichTextLabel:
 		(label as RichTextLabel).text = VERSION_PATTERN.replace("${version}", version)

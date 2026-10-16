@@ -31,7 +31,7 @@ func parse(args: Array, ignore_unknown_cmd := false) -> GdUnitResult:
 		if option:
 			if _parse_cmd_arguments(option, args) == -1:
 				return GdUnitResult.error("The '%s' command requires an argument!" % option.short_command())
-		elif not ignore_unknown_cmd:
+		elif not ignore_unknown_cmd:  # gdstyle:ignore=quality/no-else-return
 			return GdUnitResult.error("Unknown '%s' command!" % cmd)
 	return GdUnitResult.success(_parsed_commands.values())
 

@@ -1,6 +1,6 @@
 @warning_ignore_start("unsafe_method_access")
 # GdUnit generated TestSuite
-extends GdUnitTestSuite
+extends GdUnitTestSuite  # gdstyle:ignore-file=format/no-tabs-as-spaces
 
 
 func test_is_array_assert(_test: String, array: Variant, _test_parameters := [

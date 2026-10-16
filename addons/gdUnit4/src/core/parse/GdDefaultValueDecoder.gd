@@ -95,7 +95,7 @@ func _on_type_dictionary(dict: Dictionary) -> String:
 
 
 # gdlint: disable=max-returns
-func _on_type_array(value: Variant, type: int) -> String:
+func _on_type_array(value: Variant, type: int) -> String:  # gdstyle:ignore=quality/max-returns
 	match type:
 		TYPE_ARRAY:
 			return str(value)
@@ -160,7 +160,7 @@ func _on_type_array(value: Variant, type: int) -> String:
 	return "unknown array type %d" % type
 
 
-func _on_type_vector(value: Variant, type: int) -> String:
+func _on_type_vector(value: Variant, type: int) -> String:  # gdstyle:ignore=quality/max-returns
 	if typeof(value) != type:
 		push_error("Internal Error: type missmatch detected for value '%s', expects type %s" % [value, type_string(type)])
 		return ""

@@ -1,6 +1,6 @@
 # gdlint: disable=max-file-lines,max-public-methods
 # GdUnit generated TestSuite
-extends GdUnitTestSuite
+extends GdUnitTestSuite  # gdstyle:ignore-file=format/no-tabs-as-spaces,quality/max-file-length,quality/max-public-methods
 
 
 func before() -> void:

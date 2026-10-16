@@ -1,5 +1,5 @@
 # this test suite simulates long running test cases
-extends GdUnitTestSuite
+extends GdUnitTestSuite  # gdstyle:ignore-file=order/class-member-order
 
 const SECOND: int = 1000
 const MINUTE: int = SECOND * 60

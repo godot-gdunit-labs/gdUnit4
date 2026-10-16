@@ -1,7 +1,7 @@
 class_name ErrorLogEntry
 extends RefCounted
 
-enum TYPE {
+enum TYPE {  # gdstyle:ignore=naming/enum-name-pascal-case
 	SCRIPT_ERROR,
 	PUSH_ERROR,
 	PUSH_WARNING,

@@ -1,5 +1,5 @@
 class_name GdScriptParser
-extends RefCounted
+extends RefCounted  # gdstyle:ignore-file=order/class-member-order
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 const TYPE_VOID := GdObjects.TYPE_VOID
@@ -340,7 +340,7 @@ func tokenize_value(input: String, current: int, token: Token, ignore_dots := fa
 
 # gdlint: disable=max-returns
 # const ALLOWED_CHARACTERS := "0123456789_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\""
-func is_allowed_character(input: String) -> bool:
+func is_allowed_character(input: String) -> bool:  # gdstyle:ignore=quality/max-returns
 	var code_point := input.unicode_at(0)
 	# Unicode
 	if code_point > 127:

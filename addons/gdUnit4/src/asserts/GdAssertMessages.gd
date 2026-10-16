@@ -1,5 +1,5 @@
 class_name GdAssertMessages
-extends Resource
+extends Resource  # gdstyle:ignore-file=format/no-tabs-as-spaces,quality/max-public-methods
 
 const SUB_COLOR := Color(1, 0, 0, .15)
 const ADD_COLOR := Color(0, 1, 0, .15)
@@ -122,7 +122,7 @@ static func _colored(value: Variant, color: Color) -> String:
 	return "[color=%s]%s[/color]" % [color.to_html(), value]
 
 
-static func _colored_value(value: Variant) -> String:
+static func _colored_value(value: Variant) -> String:  # gdstyle:ignore=quality/max-returns
 	match typeof(value):
 		TYPE_STRING, TYPE_STRING_NAME:
 			var text := str(value)
@@ -349,7 +349,7 @@ static func error_is_wrong_type(current_type: Variant.Type, expected_type: Varia
 		_colored_value(GdObjects.type_as_string(expected_type))]
 
 
-static func error_is_value(operation: int, current: Variant, expected: Variant, expected2: Variant = null) -> String:
+static func error_is_value(operation: int, current: Variant, expected: Variant, expected2: Variant = null) -> String:  # gdstyle:ignore=quality/max-returns
 	match operation:
 		Comparator.EQUAL:
 			return "%s\n %s but was %s" % [_error("Expecting:"), _colored_value(expected), _colored_value(current)]

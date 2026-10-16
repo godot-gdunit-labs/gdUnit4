@@ -219,7 +219,7 @@ func script_path() -> String:
 
 
 # gdlint: ignore=function-name
-func ResourcePath() -> String:
+func ResourcePath() -> String:  # gdstyle:ignore=naming/function-name-snake-case
 	return _test_case.source_file
 
 

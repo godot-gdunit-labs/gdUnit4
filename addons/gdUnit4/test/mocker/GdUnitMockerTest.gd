@@ -1,7 +1,7 @@
 # gdlint: disable=max-file-lines,max-public-methods
 @warning_ignore_start("unsafe_method_access")
 class_name GdUnitMockerTest
-extends GdUnitTestSuite
+extends GdUnitTestSuite  # gdstyle:ignore-file=quality/max-file-length,quality/max-public-methods
 
 const TEST_SCENE := preload("res://addons/gdUnit4/test/mocker/resources/scenes/TestScene.tscn")
 

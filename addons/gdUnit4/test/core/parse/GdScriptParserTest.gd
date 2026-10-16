@@ -1,4 +1,4 @@
-extends GdUnitTestSuite
+extends GdUnitTestSuite  # gdstyle:ignore-file=quality/max-public-methods
 
 const TYPE_VOID := GdObjects.TYPE_VOID
 const TYPE_VARIANT := GdObjects.TYPE_VARIANT
@@ -691,7 +691,7 @@ func test_parse_func_descriptor_with_fuzzers() -> void:
 			fuzzer = Fuzzers.rangei(-23, 22),
 			fuzzer_iterations = 234,
 			fuzzer_seed := 100):
-			pass
+			pass  # gdstyle:ignore=quality/unnecessary-pass
 	""")
 	var fds := _parser.get_function_descriptors(script, ["test_foo"])
 	# see https://github.com/godotengine/godot/pull/118032

@@ -1,5 +1,5 @@
 # GdUnit generated TestSuite
-extends GdFunctionDoublerTest
+extends GdFunctionDoublerTest  # gdstyle:ignore-file=quality/no-else-return
 
 
 func test_double_return_typed_function_without_arg() -> void:

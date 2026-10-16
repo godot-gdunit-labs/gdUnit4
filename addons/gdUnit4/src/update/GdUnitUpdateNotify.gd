@@ -1,5 +1,5 @@
 @tool
-extends MarginContainer
+extends MarginContainer  # gdstyle:ignore-file=order/class-member-order
 
 #signal request_completed(response)
 

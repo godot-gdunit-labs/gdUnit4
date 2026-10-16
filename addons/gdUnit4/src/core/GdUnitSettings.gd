@@ -1,6 +1,6 @@
 @tool
 class_name GdUnitSettings
-extends RefCounted
+extends RefCounted  # gdstyle:ignore-file=quality/max-public-methods
 
 enum GdScriptWarningMode {
 	IGNORE = 0,

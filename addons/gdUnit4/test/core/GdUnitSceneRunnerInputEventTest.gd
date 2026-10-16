@@ -2,7 +2,7 @@
 
 @warning_ignore_start("redundant_await", "unsafe_method_access")
 # GdUnit generated TestSuite
-extends GdUnitTestSuite
+extends GdUnitTestSuite  # gdstyle:ignore-file=quality/max-file-length,quality/max-public-methods
 
 var _runner: GdUnitSceneRunner
 var _scene_spy: Node

@@ -115,7 +115,7 @@ func convert_rtf_to_text(bbcode: String) -> String:
 	return GdUnitTools.richtext_normalize(bbcode)
 
 
-static func to_type(type: int) -> String:
+static func to_type(type: int) -> String:  # gdstyle:ignore=quality/max-returns
 	match type:
 		GdUnitReport.SUCCESS:
 			return "SUCCESS"

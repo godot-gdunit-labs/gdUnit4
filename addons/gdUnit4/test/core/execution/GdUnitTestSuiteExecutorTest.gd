@@ -1,7 +1,7 @@
 # gdlint: disable=max-file-lines
 # GdUnit generated TestSuite
 class_name GdUnitTestSuiteExecutorTest
-extends GdUnitTestSuite
+extends GdUnitTestSuite  # gdstyle:ignore-file=format/no-tabs-as-spaces,quality/max-file-length
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 const SUCCEEDED = true

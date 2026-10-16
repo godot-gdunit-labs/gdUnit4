@@ -1,6 +1,6 @@
 # GdUnit generated TestSuite
 class_name GdUnitVectorAssertImplTest
-extends GdUnitTestSuite
+extends GdUnitTestSuite  # gdstyle:ignore-file=format/no-tabs-as-spaces
 
 var _test_seta := [
 	[null],

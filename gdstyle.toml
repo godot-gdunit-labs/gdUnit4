@@ -20,6 +20,12 @@ max_file_length = 1000
 # Maximum number of function parameters (default: 5)
 max_parameters = 11
 
+# Maximum number of public methods per class (default: 20)
+max_public_methods = 40
+
+# Maximum number of return statements per function (default: 6)
+max_returns = 6
+
 # Smallest number format/large-number-underscores asks to group with
 # underscores (default: 10_000). Floats compare their integer part. Raise it
 # (e.g. to 1_000_000) to leave sample rates like 44100 ungrouped.
@@ -63,10 +69,10 @@ exclude = [
 # "naming/signal-name-snake-case" = "warn"
 # "naming/enum-name-pascal-case" = "warn"
 # "naming/enum-member-screaming-case" = "warn"
-# "naming/file-name-snake-case" = "warn"
-# "naming/signal-past-tense" = "warn"
+"naming/file-name-snake-case" = "off"
+"naming/signal-past-tense" = "off"
 # "naming/private-underscore-prefix" = "warn"
-# "naming/node-name-pascal-case" = "warn"
+"naming/node-name-pascal-case" = "off"
 
 # --- Formatting ---
 # "format/max-line-length" = "warn"
@@ -90,6 +96,14 @@ exclude = [
 # "order/class-member-order" = "warn"
 
 # --- Quality ---
-# "quality/max-function-length" = "warn"
+"quality/max-function-length" = "off"
+"quality/max-local-variables" = "off"
+"quality/max-branches" = "off"
+"quality/max-nesting-depth" = "off"
+"quality/max-class-variables" = "off"
+"quality/max-inner-classes" = "off"
+"quality/allocation-in-loop" = "off"
+"quality/await-in-loop" = "off"
+"quality/process-get-node" = "off"
 # "quality/max-file-length" = "warn"
 # "quality/max-parameters" = "warn"

@@ -63,7 +63,7 @@ func _call_func(value: Variant, func_name: String) -> Variant:
 			var extract := Callable(obj_value, func_name)
 			if extract.is_valid():
 				return obj_value.call(func_name) if args().is_empty() else obj_value.callv(func_name, args())
-		else:
+		else:  # gdstyle:ignore=quality/no-else-return
 			# if no function exists than try to extract form parmeters
 			var parameter: Variant = obj_value.get(func_name)
 			if parameter != null:

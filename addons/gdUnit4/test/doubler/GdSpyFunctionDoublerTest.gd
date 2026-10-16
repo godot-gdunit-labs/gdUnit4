@@ -1,4 +1,4 @@
-extends GdFunctionDoublerTest
+extends GdFunctionDoublerTest  # gdstyle:ignore-file=quality/no-else-return
 
 
 func test_double_virtual_return_void_function_without_arg() -> void:

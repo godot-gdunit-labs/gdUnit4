@@ -1,6 +1,6 @@
 # This class provides Date/Time functionallity to Godot
 class_name LocalTime
-extends Resource
+extends Resource  # gdstyle:ignore-file=order/class-member-order
 
 enum TimeUnit {
 	DEFAULT = 0,

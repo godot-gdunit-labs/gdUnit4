@@ -125,7 +125,7 @@ func return_type_as_string() -> String:
 func set_argument_value(arg_name: String, value: String) -> void:
 	var argument: GdFunctionArgument = _args.filter(func(arg: GdFunctionArgument) -> bool:
 		return arg.name() == arg_name
-		).front()
+		).front()  # gdstyle:ignore=quality/unreachable-code
 	if argument != null:
 		argument.set_value(value)
 

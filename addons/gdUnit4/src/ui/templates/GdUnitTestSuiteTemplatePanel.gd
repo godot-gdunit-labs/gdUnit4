@@ -104,25 +104,25 @@ func load_template(template_id: int) -> void:
 	_template_editor.set_text(GdUnitTestSuiteTemplate.load_template(template_id))
 
 
-func _on_Restore_pressed() -> void:
+func _on_Restore_pressed() -> void:  # gdstyle:ignore=naming/function-name-snake-case
 	_template_editor.set_text(GdUnitTestSuiteTemplate.default_template(_selected_template))
 	GdUnitTestSuiteTemplate.reset_to_default(_selected_template)
 	_save_button.disabled = true
 
 
-func _on_Save_pressed() -> void:
+func _on_Save_pressed() -> void:  # gdstyle:ignore=naming/function-name-snake-case
 	GdUnitTestSuiteTemplate.save_template(_selected_template, _template_editor.get_text())
 	_save_button.disabled = true
 
 
-func _on_Tags_pressed() -> void:
+func _on_Tags_pressed() -> void:  # gdstyle:ignore=naming/function-name-snake-case
 	_show_tags.popup_centered_ratio(.5)
 
 
-func _on_Editor_text_changed() -> void:
+func _on_Editor_text_changed() -> void:  # gdstyle:ignore=naming/function-name-snake-case
 	_save_button.disabled = false
 
 
-func _on_SelectType_item_selected(index: int) -> void:
+func _on_SelectType_item_selected(index: int) -> void:  # gdstyle:ignore=naming/function-name-snake-case
 	load_template(_selected_type.get_item_id(index))
 	setup_tags_help()

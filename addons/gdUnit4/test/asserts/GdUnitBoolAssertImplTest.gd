@@ -1,6 +1,6 @@
 # GdUnit generated TestSuite
 class_name GdUnitBoolAssertImplTest
-extends GdUnitTestSuite
+extends GdUnitTestSuite  # gdstyle:ignore-file=format/no-tabs-as-spaces
 
 
 func test_is_true() -> void:

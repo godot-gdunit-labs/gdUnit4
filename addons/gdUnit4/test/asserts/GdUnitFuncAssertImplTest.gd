@@ -1,5 +1,5 @@
 class_name GdUnitFuncAssertImplTest
-extends GdUnitTestSuite
+extends GdUnitTestSuite  # gdstyle:ignore-file=format/no-tabs-as-spaces
 
 @warning_ignore_start("redundant_await")
 const GdUnitTools = preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")

@@ -1,6 +1,6 @@
 # This is a helper class to compare two objects by equals
 class_name GdObjects
-extends Resource
+extends Resource  # gdstyle:ignore-file=order/class-member-order,quality/max-returns
 
 enum CompareMode {
 	OBJECT_REFERENCE,

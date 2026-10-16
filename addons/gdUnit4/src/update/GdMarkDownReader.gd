@@ -1,5 +1,5 @@
 @tool
-extends RefCounted
+extends RefCounted  # gdstyle:ignore-file=order/class-member-order
 
 const GdUnitUpdateClient = preload("res://addons/gdUnit4/src/update/GdUnitUpdateClient.gd")
 const FONT_H1 := 22

@@ -3,7 +3,7 @@
 #warning-ignore-all:unused_argument
 #warning-ignore-all:return_value_discarded
 class_name GdUnitSignalAssertImplTest
-extends GdUnitTestSuite
+extends GdUnitTestSuite  # gdstyle:ignore-file=format/no-tabs-as-spaces
 
 const GdUnitTools = preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 

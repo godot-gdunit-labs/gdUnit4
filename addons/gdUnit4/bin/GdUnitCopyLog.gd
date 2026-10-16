@@ -38,7 +38,7 @@ var _cmd_options := CmdOptions.new([
 			"Specifies the output directory in which the reports are to be written. The default is res://reports/.",
 			TYPE_STRING,
 			true
-		)
+		),
 	])
 
 

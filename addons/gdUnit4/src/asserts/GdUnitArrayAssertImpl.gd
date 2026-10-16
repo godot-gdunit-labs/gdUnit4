@@ -63,7 +63,7 @@ func max_length(left: Variant, right: Variant) -> int:
 
 
 # gdlint: disable=function-name
-func _toPackedStringArray(value: Variant) -> PackedStringArray:
+func _toPackedStringArray(value: Variant) -> PackedStringArray:  # gdstyle:ignore=naming/function-name-snake-case
 	if GdArrayTools.is_array_type(value):
 		@warning_ignore("unsafe_cast")
 		return PackedStringArray(value as Array)

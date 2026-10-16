@@ -38,7 +38,7 @@ func _report_error(error_message: String, failure_line_number: int = -1) -> GdUn
 	return self
 
 
-func _has_log_entry(log_entries: Array[ErrorLogEntry], type: ErrorLogEntry.TYPE, error: Variant) -> bool:
+func _has_log_entry(log_entries: Array[ErrorLogEntry], type: ErrorLogEntry.Type, error: Variant) -> bool:
 	for entry in log_entries:
 		if entry._type == type and GdObjects.equals(entry._message, error):
 			GdUnitThreadManager.get_current_context().get_execution_context().error_monitor.erase_log_entry(entry)
@@ -103,7 +103,7 @@ func is_runtime_error(expected_error: Variant) -> GdUnitGodotErrorAssert:
 	if result.is_error():
 		return _report_error(result.error_message())
 	var log_entries := await _execute()
-	if _has_log_entry(log_entries, ErrorLogEntry.TYPE.SCRIPT_ERROR, expected_error):
+	if _has_log_entry(log_entries, ErrorLogEntry.Type.SCRIPT_ERROR, expected_error):
 		return _report_success()
 	return _report_error("""
 		Expecting: a runtime error is triggered.
@@ -120,7 +120,7 @@ func is_push_warning(expected_warning: Variant) -> GdUnitGodotErrorAssert:
 	if result.is_error():
 		return _report_error(result.error_message())
 	var log_entries := await _execute()
-	if _has_log_entry(log_entries, ErrorLogEntry.TYPE.PUSH_WARNING, expected_warning):
+	if _has_log_entry(log_entries, ErrorLogEntry.Type.PUSH_WARNING, expected_warning):
 		return _report_success()
 	return _report_error("""
 		Expecting: push_warning() is called.
@@ -137,7 +137,7 @@ func is_push_error(expected_error: Variant) -> GdUnitGodotErrorAssert:
 	if result.is_error():
 		return _report_error(result.error_message())
 	var log_entries := await _execute()
-	if _has_log_entry(log_entries, ErrorLogEntry.TYPE.PUSH_ERROR, expected_error):
+	if _has_log_entry(log_entries, ErrorLogEntry.Type.PUSH_ERROR, expected_error):
 		return _report_success()
 	return _report_error("""
 		Expecting: push_error() is called.

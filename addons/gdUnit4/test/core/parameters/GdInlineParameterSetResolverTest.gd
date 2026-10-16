@@ -331,11 +331,39 @@ func test_fallback_warning_includes_source_context() -> void:
 	assert_error(func() -> void:
 		GdInlineParameterSetResolver.new(test_parameters, "res://foo/bar.gd", "test_broken_expression")
 	).is_push_warning("""
-		Avoid type-casting with `as Array` in parameter sets; use the typed `Array(...)` constructor instead.
+		Parameter set uses the type cast `as Array[int]`, which the fast parameter resolver cannot parse.
+		Use the typed Array constructor instead: `Array([...], TYPE_INT, "", null)`
+		The test still runs, but falls back to the slower script-based resolver.
 			test: 'test_broken_expression' (res://foo/bar.gd)
 			expression: '%s'
-		Falling back to slower script-based resolver.
 		""".dedent() % [test_parameters[0]])
+
+
+func test_typed_array_constructor_hint(element_type: String, expected: String, _test_parameters := [
+	["", "Array([...])"],
+	["int", 'Array([...], TYPE_INT, "", null)'],
+	["Vector2i", 'Array([...], TYPE_VECTOR2I, "", null)'],
+	["PackedStringArray", 'Array([...], TYPE_PACKED_STRING_ARRAY, "", null)'],
+	["Object", 'Array([...], TYPE_OBJECT, "Object", null)'],
+	["Node", 'Array([...], TYPE_OBJECT, "Node", null)'],
+	["CustomResourceTestClass", 'Array([...], TYPE_OBJECT, "Resource", CustomResourceTestClass)'],
+]) -> void:
+	assert_str(GdInlineParameterSetResolver._typed_array_constructor_hint(element_type)).is_equal(expected)
+
+
+func test_typed_array_constructor_hint_is_resolvable(element_type: String, expected_type: int, expected_class: String, _test_parameters := [
+	["int", TYPE_INT, ""],
+	["Vector2i", TYPE_VECTOR2I, ""],
+	["Node", TYPE_OBJECT, "Node"],
+	["CustomResourceTestClass", TYPE_OBJECT, "Resource"],
+]) -> void:
+	var hint := GdInlineParameterSetResolver._typed_array_constructor_hint(element_type).replace("[...]", "[]")
+	var resolver := GdInlineParameterSetResolver.new(["[%s]" % hint], "", "")
+
+	assert_object(resolver._preparsed_expressions[0]).is_not_null()
+	var typed_array: Array = resolver.get_parameters(self, 0)[0]
+	assert_int(typed_array.get_typed_builtin()).is_equal(expected_type)
+	assert_str(typed_array.get_typed_class_name()).is_equal(expected_class)
 
 #endregion
 #region _resolve_parameters

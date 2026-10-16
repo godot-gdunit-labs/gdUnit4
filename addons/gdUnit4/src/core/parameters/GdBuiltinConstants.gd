@@ -56,6 +56,17 @@ static func to_ordinal_value(value: String) -> int:
 	return _variant_types.get(value, TYPE_NIL)
 
 
+## Returns the `TYPE_*` constant name of a built-in type name (e.g. `int` to `TYPE_INT`), or an empty string.
+static func to_constant_name(type_name: String) -> String:
+	if _variant_types.is_empty():
+		_build_variant_type_mapping()
+
+	for constant_name: String in _variant_types:
+		if type_string(_variant_types[constant_name]) == type_name:
+			return constant_name
+	return ""
+
+
 static func _build_variant_type_mapping() -> void:
 	for ordinal_value in range(TYPE_MAX):
 		var ordinal_name := type_string(ordinal_value)

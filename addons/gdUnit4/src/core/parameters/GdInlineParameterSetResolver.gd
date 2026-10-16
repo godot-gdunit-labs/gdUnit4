@@ -20,6 +20,7 @@ static var _resolved_user_classes: Dictionary[String, Variant] = {}
 static var _constant_token_regex: RegEx
 static var _number_literal_regex: RegEx
 static var _script_variant_type_regex: RegEx
+static var _array_cast_regex: RegEx
 
 var _parameter_sets: PackedStringArray
 var _preparsed_expressions: Array[Expression] = []
@@ -138,13 +139,20 @@ static func _get_number_literal_regex() -> RegEx:
 
 
 static func _print_fallback_warning(parameter_set: String, error_text: String, source_path: String, function_name: String) -> void:
-	if parameter_set.contains("as Array"):
+	var array_cast := _get_array_cast_regex().search(parameter_set)
+	if array_cast != null:
 		push_warning("""
-		Avoid type-casting with `as Array` in parameter sets; use the typed `Array(...)` constructor instead.
+		Parameter set uses the type cast `%s`, which the fast parameter resolver cannot parse.
+		Use the typed Array constructor instead: `%s`
+		The test still runs, but falls back to the slower script-based resolver.
 			test: '%s' (%s)
 			expression: '%s'
-		Falling back to slower script-based resolver.
-		""".dedent() % [function_name, source_path, parameter_set])
+		""".dedent() % [
+			array_cast.get_string(0),
+			_typed_array_constructor_hint(array_cast.get_string("type")),
+			function_name,
+			source_path,
+			parameter_set])
 		return
 
 	push_warning("""
@@ -154,6 +162,25 @@ static func _print_fallback_warning(parameter_set: String, error_text: String, s
 			test: '%s' (%s)
 			expression: '%s'
 		""".dedent() % [error_text, function_name, source_path, parameter_set])
+
+
+static func _typed_array_constructor_hint(element_type: String) -> String:
+	if element_type.is_empty():
+		return "Array([...])"
+	if _get_user_class_paths().has(element_type):
+		var script: Script = _lazily_loaded_user_class(element_type)
+		return "Array([...], TYPE_OBJECT, \"%s\", %s)" % [script.get_instance_base_type(), element_type]
+	var type_constant := GdBuiltinConstants.to_constant_name(element_type)
+	if ClassDB.class_exists(element_type) or type_constant.is_empty():
+		return "Array([...], TYPE_OBJECT, \"%s\", null)" % element_type
+	return "Array([...], %s, \"\", null)" % type_constant
+
+
+static func _get_array_cast_regex() -> RegEx:
+	if _array_cast_regex == null:
+		_array_cast_regex = RegEx.new()
+		_array_cast_regex.compile("\\bas\\s+Array\\b(?:\\[\\s*(?<type>[A-Za-z_][A-Za-z0-9_]*)\\s*\\])?")
+	return _array_cast_regex
 
 
 static func _get_constant_token_regex() -> RegEx:

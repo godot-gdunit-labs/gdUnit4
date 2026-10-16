@@ -74,3 +74,15 @@ func test_get_ordinal_value() -> void:
 	assert_int(GdBuiltinConstants.to_ordinal_value("TYPE_PACKED_VECTOR3_ARRAY")).is_equal(TYPE_PACKED_VECTOR3_ARRAY)
 	assert_int(GdBuiltinConstants.to_ordinal_value("TYPE_PACKED_COLOR_ARRAY")).is_equal(TYPE_PACKED_COLOR_ARRAY)
 	assert_int(GdBuiltinConstants.to_ordinal_value("TYPE_PACKED_VECTOR4_ARRAY")).is_equal(TYPE_PACKED_VECTOR4_ARRAY)
+
+
+func test_to_constant_name(type_name: String, expected: String, _test_parameters := [
+	["int", "TYPE_INT"],
+	["Vector2i", "TYPE_VECTOR2I"],
+	["StringName", "TYPE_STRING_NAME"],
+	["PackedStringArray", "TYPE_PACKED_STRING_ARRAY"],
+	["Array", "TYPE_ARRAY"],
+	["Node", ""],
+	["Unknown", ""],
+]) -> void:
+	assert_str(GdBuiltinConstants.to_constant_name(type_name)).is_equal(expected)

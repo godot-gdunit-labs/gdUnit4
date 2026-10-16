@@ -27,21 +27,21 @@ func set_bbcode(text: String) -> void:
 	_text.queue_redraw()
 
 
-func _on_TextEdit_text_changed() -> void:  # gdstyle:ignore=naming/function-name-snake-case
+func _on_text_edit_text_changed() -> void:
 	await set_bbcode(_input.get_text())
 
 
-func _on_RichTextLabel_meta_clicked(meta: String) -> void:  # gdstyle:ignore=naming/function-name-snake-case
+func _on_rich_text_label_meta_clicked(meta: String) -> void:
 	var properties: Dictionary = str_to_var(meta)
 	if properties.has("url"):
 		OS.shell_open(str(properties.get("url")))
 
 
-func _on_RichTextLabel_meta_hover_started(meta: String) -> void:  # gdstyle:ignore=naming/function-name-snake-case
+func _on_rich_text_label_meta_hover_started(meta: String) -> void:
 	var properties: Dictionary = str_to_var(meta)
 	if properties.has("tool_tip"):
 		_text.set_tooltip_text(str(properties.get("tool_tip")))
 
 
-func _on_RichTextLabel_meta_hover_ended(_meta: String) -> void:  # gdstyle:ignore=naming/function-name-snake-case
+func _on_rich_text_label_meta_hover_ended(_meta: String) -> void:
 	_text.set_tooltip_text("")

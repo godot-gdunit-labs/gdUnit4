@@ -33,7 +33,7 @@ bbcode_enabled = true
 [node name="GdUnitUpdateClient" type="Node" parent="."]
 script = ExtResource("6")
 
-[connection signal="text_changed" from="HSplitContainer/TextEdit" to="." method="_on_TextEdit_text_changed"]
-[connection signal="meta_clicked" from="HSplitContainer/RichTextLabel" to="." method="_on_RichTextLabel_meta_clicked"]
-[connection signal="meta_hover_ended" from="HSplitContainer/RichTextLabel" to="." method="_on_RichTextLabel_meta_hover_ended"]
-[connection signal="meta_hover_started" from="HSplitContainer/RichTextLabel" to="." method="_on_RichTextLabel_meta_hover_started"]
+[connection signal="text_changed" from="HSplitContainer/TextEdit" to="." method="_on_text_edit_text_changed"]
+[connection signal="meta_clicked" from="HSplitContainer/RichTextLabel" to="." method="_on_rich_text_label_meta_clicked"]
+[connection signal="meta_hover_ended" from="HSplitContainer/RichTextLabel" to="." method="_on_rich_text_label_meta_hover_ended"]
+[connection signal="meta_hover_started" from="HSplitContainer/RichTextLabel" to="." method="_on_rich_text_label_meta_hover_started"]

@@ -1,6 +1,7 @@
 class_name GdUnit4Version
 extends RefCounted
 
+const PLUGIN_CFG = "addons/gdUnit4/plugin.cfg"
 const VERSION_PATTERN = "[center][color=#9887c4]gd[/color][color=#7a57d6]Unit[/color][color=#9887c4]4[/color] [color=#9887c4]${version}[/color][/center]"
 
 var _major: int
@@ -29,7 +30,7 @@ static func parse(value: String) -> GdUnit4Version:
 static func current() -> GdUnit4Version:
 	var config := ConfigFile.new()
 	@warning_ignore("return_value_discarded")
-	config.load("addons/gdUnit4/plugin.cfg")
+	config.load(PLUGIN_CFG)
 	@warning_ignore("unsafe_cast")
 	return parse(config.get_value("plugin", "version") as String)
 
@@ -49,7 +50,7 @@ func is_greater(other: GdUnit4Version) -> bool:
 static func init_version_label(label: Control) -> void:
 	var config := ConfigFile.new()
 	@warning_ignore("return_value_discarded")
-	config.load("addons/gdUnit4/plugin.cfg")  # gdstyle:ignore=quality/duplicated-load
+	config.load(PLUGIN_CFG)
 	var version: String = config.get_value("plugin", "version")
 	if label is RichTextLabel:
 		(label as RichTextLabel).text = VERSION_PATTERN.replace("${version}", version)

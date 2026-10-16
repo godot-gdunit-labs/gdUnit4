@@ -1,36 +1,14 @@
+@abstract class_name GdParameterSetResolver
+extends RefCounted
 ## Abstract base class for all parameterized test resolvers.
 ## Subclasses resolve the concrete parameter values for each test iteration from
 ## different sources (inline literals, callable, or a property reference).
 ## The base class pre-builds a [ParameterSpec] list from the test function's
 ## parameter descriptors and provides a shared [method validate] implementation.
-@abstract class_name GdParameterSetResolver
-extends RefCounted
 
 ## Placeholder written into the [code]_test_parameters[/code] position of a resolved
 ## parameter array to prevent re-initialization of the test data on the next invocation.
 const EMPTY_SET: Array[Array] = []
-
-
-## Describes a single test function parameter and the type contract it must satisfy.
-class ParameterSpec:
-	## Position of this parameter in the resolved parameter array.
-	var index: int
-	## The GDScript type constant ([code]TYPE_*[/code]) the resolved value must match.
-	var type: int
-	## Value type hint, for typed arrays or dictionaries
-	var value_type_hint: int
-	## [code]true[/code] when this parameter is [code]_test_parameters[/code] — internal, not a user-supplied test input.
-	var is_parameter_set: bool
-	## Human-readable representation used in validation error messages.
-	var declaration: String
-
-	func _init(p_index: int, p_type: int, p_is_parameter_set: bool, p_declaration: String, p_value_type_hint: int) -> void:
-		index = p_index
-		type = p_type
-		value_type_hint = p_value_type_hint
-		is_parameter_set = p_is_parameter_set
-		declaration = p_declaration
-
 
 ## Comma-separated display string of the user-supplied parameter names.
 var _parameter_names := ""
@@ -140,5 +118,31 @@ func _finalize_parameter_set(parameters: Array) -> Array:
 ## Returns the resolved parameter values for the given test iteration index.
 @abstract func get_parameters(instance: Node, index: int) -> Array
 
+
 ## Returns the total number of test iterations this resolver provides.
+
+
 @abstract func get_max_index() -> int
+
+
+## Describes a single test function parameter and the type contract it must satisfy.
+
+
+class ParameterSpec:
+	## Position of this parameter in the resolved parameter array.
+	var index: int
+	## The GDScript type constant ([code]TYPE_*[/code]) the resolved value must match.
+	var type: int
+	## Value type hint, for typed arrays or dictionaries
+	var value_type_hint: int
+	## [code]true[/code] when this parameter is [code]_test_parameters[/code] — internal, not a user-supplied test input.
+	var is_parameter_set: bool
+	## Human-readable representation used in validation error messages.
+	var declaration: String
+
+	func _init(p_index: int, p_type: int, p_is_parameter_set: bool, p_declaration: String, p_value_type_hint: int) -> void:
+		index = p_index
+		type = p_type
+		value_type_hint = p_value_type_hint
+		is_parameter_set = p_is_parameter_set
+		declaration = p_declaration

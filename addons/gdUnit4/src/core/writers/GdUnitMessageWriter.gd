@@ -28,15 +28,14 @@ enum Effect {
 	## No special effect applied
 	NONE,
 	## Applies a wave animation to the text
-	WAVE
+	WAVE,
 }
-
 ## Controls text alignment at the specified cursor position
 enum Align {
 	## Aligns text to the left of the cursor position
 	LEFT,
 	## Aligns text to the right of the cursor position, accounting for text length
-	RIGHT
+	RIGHT,
 }
 
 ## Text style flag for bold formatting
@@ -48,17 +47,13 @@ const UNDERLINE = 0x4
 
 ## The current text color to be used for the next output operation
 var _current_color := Color.WHITE
-
 ## The current indentation level to be used for the next output operation.[br]
 ## Each level represents two spaces of indentation.
 var _current_indent := 0
-
 ## The current text style flags (BOLD, ITALIC, UNDERLINE) to be used for the next output operation
 var _current_flags := 0
-
 ## The current text alignment to be used for the next output operation
 var _current_align := Align.LEFT
-
 ## The current text effect to be used for the next output operation
 var _current_effect := GdUnitMessageWriter.Effect.NONE
 
@@ -183,6 +178,7 @@ func print_stack_trace(stack_trace: GdUnitStackTrace) -> void:
 ## [param current_indent] The indentation level.
 @abstract func _print_stack_trace(stack_trace: GdUnitStackTrace, current_indent: int) -> void
 
+
 ## Internal implementation of print_message.[br]
 ## [br]
 ## To be overridden by concrete formatters.[br]
@@ -193,6 +189,7 @@ func print_stack_trace(stack_trace: GdUnitStackTrace) -> void:
 ## [param _flags] The style flags to apply.
 @abstract func _print_message(_message: String, _color: Color, _indent: int, _flags: int) -> void
 
+
 ## Internal implementation of println_message.[br]
 ## [br]
 ## To be overridden by concrete formatters.[br]
@@ -202,6 +199,7 @@ func print_stack_trace(stack_trace: GdUnitStackTrace) -> void:
 ## [param _indent] The indentation level.[br]
 ## [param _flags] The style flags to apply.
 @abstract func _println_message(_message: String, _color: Color, _indent: int, _flags: int) -> void
+
 
 ## Internal implementation of print_at.[br]
 ## [br]
@@ -214,6 +212,7 @@ func print_stack_trace(stack_trace: GdUnitStackTrace) -> void:
 ## [param _align] The text alignment.[br]
 ## [param _flags] The style flags to apply.
 @abstract func _print_at(_message: String, _cursor_pos: int, _color: Color, _effect: GdUnitMessageWriter.Effect, _align: Align, _flags: int) -> void
+
 
 ## Clears all output content.[br]
 ## [br]

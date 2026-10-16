@@ -5,15 +5,15 @@ const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 const UNDEFINED: String = "<-NO_ARG->"
 const ARG_PARAMETERIZED_TEST := ["test_parameters", "_test_parameters"]
 
+static var _fuzzer_regex: RegEx
+static var _cleanup_leading_spaces := RegEx.create_from_string("(?m)^[ \t]+")
+static var _fix_comma_space := RegEx.create_from_string(""", {0,}\t{0,}(?=(?:[^"]*"[^"]*")*[^"]*$)(?!\\s)""")
+
 var _name: String
 var _type: int
 var _type_hint: int
 var _default_value: Variant
 var _parameter_sets: PackedStringArray = []
-
-static var _fuzzer_regex: RegEx
-static var _cleanup_leading_spaces := RegEx.create_from_string("(?m)^[ \t]+")
-static var _fix_comma_space := RegEx.create_from_string(""", {0,}\t{0,}(?=(?:[^"]*"[^"]*")*[^"]*$)(?!\\s)""")
 
 
 func _init(p_name: String, p_type: int, value: Variant = UNDEFINED, p_type_hint: int = TYPE_NIL) -> void:

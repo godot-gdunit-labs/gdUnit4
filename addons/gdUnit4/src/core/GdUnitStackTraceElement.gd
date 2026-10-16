@@ -1,7 +1,7 @@
-## Represents a single frame in a GDScript call stack.[br]
-## Stores the source file, line number, and function name at the point of capture.
 class_name GdUnitStackTraceElement
 extends RefCounted
+## Represents a single frame in a GDScript call stack.[br]
+## Stores the source file, line number, and function name at the point of capture.
 
 ## The resource path of the source file (e.g. [code]res://addons/my_plugin/foo.gd[/code]).
 var _source: String

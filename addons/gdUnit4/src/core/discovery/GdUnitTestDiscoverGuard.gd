@@ -1,3 +1,5 @@
+class_name GdUnitTestDiscoverGuard
+extends Object
 ## Guards and tracks test case changes during test discovery and file modifications.[br]
 ## [br]
 ## This guard maintains a cache of discovered tests to track changes between test runs and during[br]
@@ -34,15 +36,12 @@
 ## # Discover tests and track changes
 ## await guard.discover(test_script)
 ## [/codeblock]
-class_name GdUnitTestDiscoverGuard
-extends Object
 
 ## Maps source files to their discovered test cases.[br]
 ## [br]
 ## Key: Test suite source file path[br]
 ## Value: Array of [class GdUnitTestCase] instances
 var _discover_cache := {}
-
 ## Tracks discovered test changes for debug purposes.[br]
 ## [br]
 ## Available in debug mode only. Contains dictionaries:[br]
@@ -50,18 +49,11 @@ var _discover_cache := {}
 ## - deleted_tests: Tests that were removed[br]
 ## - added_tests: New tests that were discovered
 var _discovered_changes := {}
-
 ## Controls test change debug tracking.[br]
 ## [br]
 ## When true, maintains _discovered_changes for debugging.[br]
 ## Used primarily in tests to verify change detection.
 var _is_debug := false
-
-
-static func instance() -> GdUnitTestDiscoverGuard:
-	return GdUnitSingleton.instance("GdUnitTestDiscoverGuard", func() -> GdUnitTestDiscoverGuard:
-		return GdUnitTestDiscoverGuard.new()
-	)
 
 
 ## Creates a new guard instance.[br]
@@ -75,6 +67,12 @@ func _init(is_debug := false) -> void:
 	GdUnitSignals.instance().gdunit_test_discover_deleted.connect(sync_test_deleted)
 	GdUnitSignals.instance().gdunit_test_discover_modified.connect(sync_test_modified)
 	GdUnitSignals.instance().gdunit_event.connect(handle_discover_events)
+
+
+static func instance() -> GdUnitTestDiscoverGuard:
+	return GdUnitSingleton.instance("GdUnitTestDiscoverGuard", func() -> GdUnitTestDiscoverGuard:
+		return GdUnitTestDiscoverGuard.new()
+	)
 
 
 ## Adds a discovered test to the cache.[br]

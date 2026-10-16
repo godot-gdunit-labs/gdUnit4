@@ -6,7 +6,6 @@ var enigne_hooks: Array[GdUnitTestSessionHook] = []:
 		return enigne_hooks
 	set(value):
 		enigne_hooks.append(value)
-
 var _save_settings: bool = false
 
 
@@ -38,7 +37,7 @@ func find_custom(hook: GdUnitTestSessionHook) -> int:
 
 
 func load_hook(hook_resourc_path: String) -> GdUnitResult:
-	if !FileAccess.file_exists(hook_resourc_path):
+	if not FileAccess.file_exists(hook_resourc_path):
 		return GdUnitResult.error("The hook '%s' not exists." % hook_resourc_path)
 	var script: GDScript = load(hook_resourc_path)
 	if script.get_base_script() != GdUnitTestSessionHook:

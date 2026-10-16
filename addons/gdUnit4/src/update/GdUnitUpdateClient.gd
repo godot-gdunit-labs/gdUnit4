@@ -3,33 +3,6 @@ extends Node
 
 signal request_completed(response: HttpResponse)
 
-
-class HttpResponse:
-	var _http_status: int
-	var _body: PackedByteArray
-
-	func _init(http_status: int, body: PackedByteArray) -> void:
-		_http_status = http_status
-		_body = body
-
-	func status() -> int:
-		return _http_status
-
-	func response() -> Variant:
-		if _http_status != 200:
-			return _body.get_string_from_utf8()
-
-		var test_json_conv := JSON.new()
-		@warning_ignore("return_value_discarded")
-		var error := test_json_conv.parse(_body.get_string_from_utf8())
-		if error != OK:
-			return "HttpResponse: %s Error: %s" % [error_string(error), _body.get_string_from_utf8()]
-		return test_json_conv.get_data()
-
-	func get_body() -> PackedByteArray:
-		return _body
-
-
 var _http_request := HTTPRequest.new()
 
 
@@ -94,3 +67,29 @@ func _on_request_completed(_result: int, response_http_status: int, _headers: Pa
 	if _http_request.get_http_client_status() != HTTPClient.STATUS_DISCONNECTED:
 		_http_request.set_download_file("")
 	request_completed.emit(HttpResponse.new(response_http_status, body))
+
+
+class HttpResponse:
+	var _http_status: int
+	var _body: PackedByteArray
+
+	func _init(http_status: int, body: PackedByteArray) -> void:
+		_http_status = http_status
+		_body = body
+
+	func status() -> int:
+		return _http_status
+
+	func response() -> Variant:
+		if _http_status != 200:
+			return _body.get_string_from_utf8()
+
+		var test_json_conv := JSON.new()
+		@warning_ignore("return_value_discarded")
+		var error := test_json_conv.parse(_body.get_string_from_utf8())
+		if error != OK:
+			return "HttpResponse: %s Error: %s" % [error_string(error), _body.get_string_from_utf8()]
+		return test_json_conv.get_data()
+
+	func get_body() -> PackedByteArray:
+		return _body

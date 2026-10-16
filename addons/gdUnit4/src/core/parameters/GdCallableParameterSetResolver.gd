@@ -3,7 +3,6 @@ extends GdParameterSetResolver
 
 var _expression: String
 var _parameters: Array[Array]
-
 var _func_call_regex := RegEx.create_from_string("^(\\w+)\\((.*)\\)$")
 var _string_regex := RegEx.create_from_string("^(['\"])(.*?)\\1$")
 

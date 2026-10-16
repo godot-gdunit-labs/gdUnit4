@@ -2,7 +2,6 @@
 class_name GdDefaultValueDecoder
 extends GdUnitSingleton
 
-
 @warning_ignore("unused_parameter")
 var _decoders := {
 	TYPE_NIL: func(value: Variant) -> String: return "null",
@@ -42,7 +41,7 @@ var _decoders := {
 	TYPE_TRANSFORM2D: _on_type_transform2d,
 	TYPE_TRANSFORM3D: _on_type_transform3d,
 	TYPE_PROJECTION: _on_type_projection,
-	TYPE_OBJECT: _on_type_object
+	TYPE_OBJECT: _on_type_object,
 }
 
 
@@ -146,10 +145,10 @@ func _on_type_array(value: Variant, type: int) -> String:
 				return "PackedStringArray()"
 			return "PackedStringArray([%s])" % ", ".join(values)
 
-		TYPE_PACKED_BYTE_ARRAY,\
-		TYPE_PACKED_FLOAT32_ARRAY,\
-		TYPE_PACKED_FLOAT64_ARRAY,\
-		TYPE_PACKED_INT32_ARRAY,\
+		TYPE_PACKED_BYTE_ARRAY, \
+		TYPE_PACKED_FLOAT32_ARRAY, \
+		TYPE_PACKED_FLOAT64_ARRAY, \
+		TYPE_PACKED_INT32_ARRAY, \
 		TYPE_PACKED_INT64_ARRAY:
 			var vectors := PackedStringArray()
 			for vector: Variant in value:

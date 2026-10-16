@@ -1,6 +1,6 @@
-## The test suite main execution stage.[br]
 class_name GdUnitTestSuiteExecutionStage
 extends IGdUnitExecutionStage
+## The test suite main execution stage.[br]
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
@@ -116,7 +116,7 @@ func fire_test_suite_skipped(context: GdUnitExecutionContext) -> void:
 		GdUnitEvent.FAILED: false,
 		GdUnitEvent.FAILED_COUNT: 0,
 		GdUnitEvent.SKIPPED_COUNT: skip_count,
-		GdUnitEvent.SKIPPED: true
+		GdUnitEvent.SKIPPED: true,
 	}
 	var report := GdUnitReport.new().create(GdUnitReport.SKIPPED, -1, GdAssertMessages.test_suite_skipped(test_suite.__skip_reason, skip_count))
 	fire_event(GdUnitEvent.new().suite_after(context.get_test_suite_path(), test_suite.get_name(), statistics, [report]))

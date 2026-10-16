@@ -4,7 +4,7 @@ class_name GdUnitSignalCollector
 extends RefCounted
 
 const NO_ARG: Variant = GdUnitConstants.NO_ARG
-const SIGNAL_BLACK_LIST = []  #["tree_exiting", "tree_exited", "child_exiting_tree"]
+const SIGNAL_BLACK_LIST = []  # ["tree_exiting", "tree_exited", "child_exiting_tree"]
 
 # {
 #	emitter<Object> : {
@@ -35,7 +35,7 @@ func register_emitter(emitter: Object, force_recreate := false) -> void:
 
 		_collected_signals[emitter] = Dictionary()
 		# connect to 'tree_exiting' of the emitter to finally release all acquired resources/connections.
-		if emitter is Node and !(emitter as Node).tree_exiting.is_connected(unregister_emitter):
+		if emitter is Node and not (emitter as Node).tree_exiting.is_connected(unregister_emitter):
 			(emitter as Node).tree_exiting.connect(unregister_emitter.bind(emitter))
 		# connect to all signals of the emitter we want to collect
 		for signal_def in emitter.get_signal_list():
@@ -45,7 +45,7 @@ func register_emitter(emitter: Object, force_recreate := false) -> void:
 				_collected_signals[emitter][signal_name] = Array()
 			if SIGNAL_BLACK_LIST.find(signal_name) != -1:
 				continue
-			if !emitter.is_connected(signal_name, _on_signal_emmited):
+			if not emitter.is_connected(signal_name, _on_signal_emmited):
 				var err := emitter.connect(signal_name, _on_signal_emmited.bind(emitter, signal_name))
 				if err != OK:
 					push_error("Can't connect to signal %s on %s. Error: %s" % [signal_name, emitter, error_string(err)])

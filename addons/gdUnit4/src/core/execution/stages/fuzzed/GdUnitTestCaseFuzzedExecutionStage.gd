@@ -1,6 +1,6 @@
-## The test case execution stage.[br]
 class_name GdUnitTestCaseFuzzedExecutionStage
 extends IGdUnitExecutionStage
+## The test case execution stage.[br]
 
 var _stage_before: IGdUnitExecutionStage = GdUnitTestCaseBeforeStage.new(false)
 var _stage_after: IGdUnitExecutionStage = GdUnitTestCaseAfterStage.new(false)

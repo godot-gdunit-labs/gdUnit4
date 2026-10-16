@@ -1,7 +1,7 @@
-## The test suite shutdown hook implementation.[br]
-## It executes the 'after()' block from the test-suite.
 class_name GdUnitTestSuiteAfterStage
 extends IGdUnitExecutionStage
+## The test suite shutdown hook implementation.[br]
+## It executes the 'after()' block from the test-suite.
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
@@ -16,7 +16,7 @@ func _execute(context: GdUnitExecutionContext) -> void:
 	var reports := context.collect_reports(false)
 	var statistics := context.calculate_statistics(reports)
 	fire_event(GdUnitEvent.new()\
-		.suite_after(context.get_test_suite_path(),\
+		.suite_after(context.get_test_suite_path(), \
 			test_suite.get_name(),
 			statistics,
 			reports))

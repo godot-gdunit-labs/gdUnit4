@@ -3,7 +3,6 @@ extends Node
 
 signal completed()
 
-
 var _test_case: GdUnitTestCase
 var _attribute: TestCaseAttribute
 var _current_iteration: int = -1

@@ -1,6 +1,6 @@
-## The fuzzed test case execution stage.[br]
 class_name GdUnitTestCaseFuzzedTestStage
 extends IGdUnitExecutionStage
+## The fuzzed test case execution stage.[br]
 
 var _expression_runner := GdUnitExpressionRunner.new()
 

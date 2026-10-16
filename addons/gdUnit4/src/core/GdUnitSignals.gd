@@ -24,53 +24,42 @@ extends RefCounted
 ## [param client_id] The ID of the connected client.
 @warning_ignore("unused_signal")
 signal gdunit_client_connected(client_id: int)
-
 ## Emitted when a client disconnects from the GdUnit server.[br]
 ## [param client_id] The ID of the disconnected client.
 @warning_ignore("unused_signal")
 signal gdunit_client_disconnected(client_id: int)
-
 ## Emitted when a the user stops (terminates) the current test session
 @warning_ignore("unused_signal")
 signal gdunit_test_session_terminate()
-
-
 ## Emitted when a test execution event occurs.[br]
 ## [param event] The test event containing details about test execution.
 @warning_ignore("unused_signal")
 signal gdunit_event(event: GdUnitEvent)
-
 ## Emitted for test debug events during execution.[br]
 ## [param event] The debug event containing test execution details.
 @warning_ignore("unused_signal")
 signal gdunit_event_debug(event: GdUnitEvent)
-
 ## Emitted to broadcast a general message.[br]
 ## [param message] The message to broadcast.
 @warning_ignore("unused_signal")
 signal gdunit_message(message: String)
-
 ## Emitted to update test failure status.[br]
 ## [param is_failed] Whether the test has failed.
 @warning_ignore("unused_signal")
 signal gdunit_set_test_failed(is_failed: bool)
-
 ## Emitted when a GdUnit setting changes.[br]
 ## [param property] The property that was changed.
 @warning_ignore("unused_signal")
 signal gdunit_settings_changed(property: GdUnitProperty)
-
 ## Called when a new test case is discovered during the discovery process.
 ## Custom implementations should connect to this signal and store the discovered test case as needed.[br]
 ## [param test_case] The discovered test case instance to be processed.
 @warning_ignore("unused_signal")
 signal gdunit_test_discover_added(test_case: GdUnitTestCase)
-
 ## Emitted when a test case is deleted.[br]
 ## [param test_case] The test case that was deleted.
 @warning_ignore("unused_signal")
 signal gdunit_test_discover_deleted(test_case: GdUnitTestCase)
-
 ## Emitted when a test case is modified.[br]
 ## [param test_case] The test case that was modified.
 @warning_ignore("unused_signal")

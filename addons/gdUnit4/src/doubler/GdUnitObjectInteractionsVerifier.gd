@@ -40,7 +40,7 @@ func verify_interactions(func_name: String, args: Array[Variant]) -> void:
 
 	var assert_tool := GdUnitAssertImpl.new("")
 	if total_interactions != expected_interactions:
-		var expected_summary := {function_args: expected_interactions}
+		var expected_summary := { function_args: expected_interactions }
 		var error_message: String
 		# if no interactions macht collect not verified interactions for failure report
 		if summary.is_empty():

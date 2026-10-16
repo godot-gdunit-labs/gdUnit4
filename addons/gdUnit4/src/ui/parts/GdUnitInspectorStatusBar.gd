@@ -11,7 +11,6 @@ signal select_skipped_next()
 signal select_skipped_prevous()
 signal select_orphan_next()
 signal select_orphan_prevous()
-
 @warning_ignore("unused_signal")
 signal tree_view_mode_changed(flat: bool)
 
@@ -22,7 +21,6 @@ var total_errors := 0
 var total_flaky := 0
 var total_skipped := 0
 var total_orphans := 0
-
 var icon_mappings := {
 	# tree sort modes
 	0x100 + GdUnitInspectorTreeConstants.SortMode.UNSORTED: GdUnitUiTools.get_icon("TripleBar"),
@@ -31,9 +29,8 @@ var icon_mappings := {
 	0x100 + GdUnitInspectorTreeConstants.SortMode.EXECUTION_TIME: GdUnitUiTools.get_icon("History"),
 	# tree view modes
 	0x200 + GdUnitInspectorTreeConstants.TreeViewMode.TREE: GdUnitUiTools.get_icon("Tree", Color.GHOST_WHITE),
-	0x200 + GdUnitInspectorTreeConstants.TreeViewMode.FLAT: GdUnitUiTools.get_icon("AnimationTrackGroup", Color.GHOST_WHITE)
+	0x200 + GdUnitInspectorTreeConstants.TreeViewMode.FLAT: GdUnitUiTools.get_icon("AnimationTrackGroup", Color.GHOST_WHITE),
 }
-
 var _timer: LocalTime
 
 @onready var time_value: Label = %time_value
@@ -42,6 +39,7 @@ var _timer: LocalTime
 @onready var _button_view_mode: MenuButton = %btn_tree_mode
 @onready var _button_sort_mode: MenuButton = %btn_tree_sort
 @onready var _icon_template: SpinBox = %icon_template
+
 
 @warning_ignore("return_value_discarded")
 func _ready() -> void:
@@ -61,17 +59,17 @@ func _process(_delta: float) -> void:
 		time_value.text = _timer.elapsed_since()
 
 
+func _notification(what: int) -> void:
+	if what == EditorSettings.NOTIFICATION_EDITOR_SETTINGS_CHANGED:
+		_init_status_pannels()
+
+
 func _init_status_pannels() -> void:
 	_init_statistic_panels(STATE.FAILED)
 	_init_statistic_panels(STATE.ERROR)
 	_init_statistic_panels(STATE.FLAKY)
 	_init_statistic_panels(STATE.SKIPPED)
 	_init_statistic_panels(STATE.ORPHAN)
-
-
-func _notification(what: int) -> void:
-	if what == EditorSettings.NOTIFICATION_EDITOR_SETTINGS_CHANGED:
-		_init_status_pannels()
 
 
 func _init_statistic_panels(state: STATE) -> void:
@@ -291,9 +289,9 @@ func _on_tree_view_mode_changed(index: int) -> void:
 	GdUnitSettings.set_inspector_tree_view_mode(selected_tree_mode)
 
 
-################################################################################
+# ###############################################################################
 # external signal receiver
-################################################################################
+# ###############################################################################
 func _on_settings_changed(property: GdUnitProperty) -> void:
 	if property.name() == GdUnitSettings.INSPECTOR_TREE_SORT_MODE:
 		_set_sort_mode_menu_options()

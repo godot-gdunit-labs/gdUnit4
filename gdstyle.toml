@@ -1,0 +1,89 @@
+# gdstyle.toml: starter configuration
+#
+# Place this file as `gdstyle.toml` or `.gdstyle.toml` in your project root.
+# gdstyle will search for it starting from the current directory and walking
+# up the directory tree.
+
+# Maximum line length (default: 100)
+max_line_length = 180
+
+# Use tabs for indentation (default: true).
+# Set to false if your project uses spaces.
+use_tabs = true
+
+# Maximum function body length in lines (default: 50)
+max_function_length = 50
+
+# Maximum file length in lines (default: 1000)
+max_file_length = 1000
+
+# Maximum number of function parameters (default: 5)
+max_parameters = 11
+
+# Smallest number format/large-number-underscores asks to group with
+# underscores (default: 10_000). Floats compare their integer part. Raise it
+# (e.g. to 1_000_000) to leave sample rates like 44100 ungrouped.
+# large_number_threshold = 10_000
+
+# Put one blank line between public and private (`_`-prefixed) constants and
+# variables of the same kind when formatting (default: false).
+# blank_line_between_public_and_private = false
+
+# File and directory patterns to exclude from linting.
+# These are matched as glob patterns against file paths.
+exclude = [".godot"]
+
+# Patterns to force-include even when `exclude` matches them. An include always
+# wins over an exclude, so you can lint one plugin inside an otherwise-excluded
+# directory. Empty by default.
+# include = ["addons/my_plugin"]
+
+# Per-rule severity overrides.
+# Values: "off" (disable), "warn" (warning), "error" (error)
+#
+# Rules are enabled with "warn" severity by default, except the syntax rules
+# (which default to "error") and a few opt-in advisory rules.
+# Uncomment any line below to change its severity.
+[rules]
+# --- Syntax (error by default: Godot cannot load these files) ---
+# "syntax/lex-error" = "error"
+# "syntax/reserved-identifier" = "error"
+
+# --- Naming ---
+# "naming/class-name-pascal-case" = "warn"
+# "naming/function-name-snake-case" = "warn"
+# "naming/variable-name-snake-case" = "warn"
+# "naming/constant-name-screaming-case" = "warn"
+# "naming/signal-name-snake-case" = "warn"
+# "naming/enum-name-pascal-case" = "warn"
+# "naming/enum-member-screaming-case" = "warn"
+# "naming/file-name-snake-case" = "warn"
+# "naming/signal-past-tense" = "warn"
+# "naming/private-underscore-prefix" = "warn"
+# "naming/node-name-pascal-case" = "warn"
+
+# --- Formatting ---
+# "format/max-line-length" = "warn"
+# "format/trailing-whitespace" = "warn"
+# "format/trailing-newline" = "warn"
+# "format/no-tabs-as-spaces" = "warn"
+# "format/boolean-operators" = "warn"
+# "format/double-quotes" = "warn"
+# "format/comment-spacing" = "warn"
+# "format/no-unnecessary-parens" = "warn"
+# "format/number-literals" = "warn"
+# "format/one-statement-per-line" = "warn"
+# "format/blank-lines" = "warn"
+# "format/trailing-comma" = "warn"
+# "format/operator-spacing" = "warn"
+# "format/float-literal-zeros" = "warn"
+# "format/large-number-underscores" = "warn"
+# "format/enum-one-per-line" = "warn"
+
+# --- Ordering ---
+# "order/class-member-order" = "warn"
+
+# --- Quality ---
+# "quality/max-function-length" = "warn"
+# "quality/max-file-length" = "warn"
+# "quality/max-parameters" = "warn"

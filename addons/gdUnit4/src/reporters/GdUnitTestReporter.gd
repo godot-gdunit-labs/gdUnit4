@@ -26,7 +26,7 @@ func add_test_statistics(event: GdUnitEvent) -> void:
 		"failed_count": event.failed_count(),
 		"skipped_count": event.skipped_count(),
 		"flaky_count": event.is_flaky() as int,
-		"orphan_nodes": event.orphan_nodes()
+		"orphan_nodes": event.orphan_nodes(),
 	}
 
 
@@ -37,7 +37,7 @@ func build_test_suite_statisitcs(event: GdUnitEvent) -> Dictionary:
 		"failed_count": event.failed_count(),
 		"skipped_count": event.skipped_count(),
 		"flaky_count": 0,
-		"orphan_nodes": event.orphan_nodes()
+		"orphan_nodes": event.orphan_nodes(),
 	}
 	_summary["suite_count"] += 1
 	_summary["total_count"] += _statistics.size()

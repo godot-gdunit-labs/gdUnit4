@@ -12,7 +12,6 @@ var test_session: GdUnitTestSession:
 		test_session = value
 		if test_session != null:
 			test_session.test_event.connect(_on_test_event)
-
 var _report_summary: GdUnitReportSummary
 var _reporter: GdUnitTestReporter
 var _report_writer: GdUnitReportWriter

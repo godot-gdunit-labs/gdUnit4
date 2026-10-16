@@ -1,3 +1,5 @@
+class_name StringFuzzer
+extends Fuzzer
 ## A fuzzer that generates random strings with configurable length and character sets.[br]
 ##
 ## It supports custom character sets defined by patterns or ranges,
@@ -21,8 +23,6 @@
 ##     var password := fuzzer.next_value()
 ##     assert_str(password).has_length(8, Comparator.GREATER_EQUAL).has_length(32, Comparator.LESS_EQUAL)
 ## [/codeblock]
-class_name StringFuzzer
-extends Fuzzer
 
 ## Default character set pattern including word characters, letters, numbers, and common symbols.[br]
 ## Includes: word characters (\\w), Unicode letters (\\p{L}), Unicode numbers (\\p{N}),

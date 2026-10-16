@@ -4,11 +4,10 @@ extends Resource
 
 enum CompareMode {
 	OBJECT_REFERENCE,
-	PARAMETER_DEEP_TEST
+	PARAMETER_DEEP_TEST,
 }
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
-
 # introduced with Godot 4.3.beta1
 const TYPE_VOID = 1000
 const TYPE_VARARG = 1001
@@ -20,7 +19,6 @@ const TYPE_NODE = 2001
 const TYPE_CONTROL = 2002
 const TYPE_CANVAS = 2003
 const TYPE_ENUM = 2004
-
 const TYPE_AS_STRING_MAPPINGS := {
 	TYPE_NIL: "null",
 	TYPE_BOOL: "bool",
@@ -65,7 +63,7 @@ const TYPE_AS_STRING_MAPPINGS := {
 	TYPE_VARARG: "VarArg",
 	TYPE_FUNC: "Func",
 	TYPE_FUZZER: "Fuzzer",
-	TYPE_VARIANT: "Variant"
+	TYPE_VARIANT: "Variant",
 }
 
 
@@ -73,7 +71,7 @@ class EditorNotifications:
 	# NOTE: Hardcoding to avoid runtime errors in exported projects when editor
 	#       classes are not available. These values are unlikely to change.
 	# See: EditorSettings.NOTIFICATION_EDITOR_SETTINGS_CHANGED
-	const NOTIFICATION_EDITOR_SETTINGS_CHANGED := 10000
+	const NOTIFICATION_EDITOR_SETTINGS_CHANGED := 10_000
 
 
 const NOTIFICATION_AS_STRING_MAPPINGS := {
@@ -138,7 +136,7 @@ const NOTIFICATION_AS_STRING_MAPPINGS := {
 		#Control.NOTIFICATION_MODAL_CLOSE: "MODAL_CLOSE",
 		Control.NOTIFICATION_SCROLL_BEGIN: "SCROLL_BEGIN",
 		Control.NOTIFICATION_SCROLL_END: "SCROLL_END",
-	}
+	},
 }
 
 
@@ -193,7 +191,7 @@ static func obj2dict(obj: Object, hashed_objects := Dictionary()) -> Dictionary:
 		var childrens: Array = (obj as TreeItem).get_children()
 		dict["childrens"] = childrens.map(func(child: Object) -> Dictionary: return obj2dict(child, hashed_objects))
 
-	return {"%s" % clazz_name: dict}
+	return { "%s" % clazz_name: dict }
 
 
 static func equals(obj_a: Variant, obj_b: Variant, case_sensitive: bool = true, compare_mode: CompareMode = CompareMode.PARAMETER_DEEP_TEST) -> bool:

@@ -12,7 +12,7 @@ const FILE_SAVE_ALL := 4
 # The script is saved when is opened in the editor.
 # The script is closed when <close> is set to true.
 static func save_and_close_script(script_path: String, close := false) -> bool:
-	if !Engine.is_editor_hint():
+	if not Engine.is_editor_hint():
 		return false
 
 	var editor := EditorInterface.get_script_editor()
@@ -55,7 +55,7 @@ static func edit_script(script_path: String, line_number := -1) -> void:
 
 
 static func run_file_command(command_id: int) -> void:
-	if !Engine.is_editor_hint():
+	if not Engine.is_editor_hint():
 		return
 
 	match command_id:

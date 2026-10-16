@@ -1,3 +1,6 @@
+@static_unload
+class_name GdUnit4CSharpApiLoader
+extends RefCounted
 ## GdUnit4CSharpApiLoader
 ##
 ## A bridge class that handles communication between GDScript and C# for the GdUnit4 testing framework.
@@ -9,24 +12,11 @@
 ## - Loading the C# wrapper script
 ## - Checking for the GdUnit4Api assembly
 ## - Providing proxy methods to access GdUnit4 functionality in C#
-@static_unload
-class_name GdUnit4CSharpApiLoader
-extends RefCounted
 
 ## Cached reference to the loaded C# wrapper script
 static var _gdunit4_net_wrapper: Script
-
 ## Cached instance of the API (singleton pattern)
 static var _api_instance: RefCounted
-
-
-class TestEventListener extends RefCounted:
-
-	func publish_event(event: Dictionary) -> void:
-		var test_event := GdUnitEvent.new().deserialize(event)
-		GdUnitSignals.instance().gdunit_event.emit(test_event)
-
-
 static var _test_event_listener := TestEventListener.new()
 
 
@@ -113,3 +103,10 @@ static func create_test_suite(source_path: String, line_number: int, test_suite_
 static func is_csharp_file(resource_path: String) -> bool:
 	var ext := resource_path.get_extension()
 	return ext == "cs" and GdUnit4CSharpApiLoader.is_api_loaded()
+
+
+class TestEventListener extends RefCounted:
+
+	func publish_event(event: Dictionary) -> void:
+		var test_event := GdUnitEvent.new().deserialize(event)
+		GdUnitSignals.instance().gdunit_event.emit(test_event)

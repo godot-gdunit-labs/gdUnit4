@@ -1,3 +1,5 @@
+class_name Vector3Fuzzer
+extends Fuzzer
 ## A fuzzer that generates random Vector3 values within a specified box range.[br]
 ##
 ## This is particularly useful for testing 3D physics, spatial
@@ -15,8 +17,6 @@
 ##     var object = spawn_object(position)
 ##
 ## [/codeblock]
-class_name Vector3Fuzzer
-extends Fuzzer
 
 ## Minimum bounds for the generated vectors (inclusive for x, y, and z).
 var _from: Vector3

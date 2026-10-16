@@ -1,3 +1,5 @@
+class_name IntFuzzer
+extends Fuzzer
 ## A fuzzer that generates random integer values with optional even/odd constraints.[br]
 ##
 ## It supports three modes: normal (any integer), even-only,
@@ -17,8 +19,6 @@
 ##     var even_num := fuzzer.next_value()
 ##     assert_int(even_num % 2).is_equal(0)
 ## [/codeblock]
-class_name IntFuzzer
-extends Fuzzer
 
 ## Generates any integer within the range.
 enum {
@@ -26,7 +26,6 @@ enum {
 	EVEN,  ## Generate only even integers within the specified range.
 	ODD,  ## Generate only odd integers within the specified range.
 }
-
 
 ## Minimum value (inclusive) for generated integers.
 var _from: int = 0

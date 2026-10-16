@@ -32,7 +32,7 @@ func _validate_value_type(value: Variant) -> bool:
 			TYPE_VECTOR3,
 			TYPE_VECTOR3I,
 			TYPE_VECTOR4,
-			TYPE_VECTOR4I
+			TYPE_VECTOR4I,
 		]
 	)
 
@@ -179,6 +179,6 @@ func is_not_between(from: Variant, to: Variant) -> GdUnitVectorAssert:
 	if not _validate_is_vector_type(from) or not _validate_is_vector_type(to):
 		return self
 	var current: Variant = current_value()
-	if (current != null and current >= from and current <= to):
+	if current != null and current >= from and current <= to:
 		return report_error(GdAssertMessages.error_is_value(Comparator.NOT_BETWEEN_EQUAL, current, from, to))
 	return report_success()

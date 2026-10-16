@@ -1,3 +1,5 @@
+class_name Vector2Fuzzer
+extends Fuzzer
 ## A fuzzer that generates random Vector2 values within a specified rectangular range.[br]
 ##
 ## This is particularly useful for testing 2D physics, movement
@@ -14,8 +16,6 @@
 ##     player.set_position(position)
 ##
 ## [/codeblock]
-class_name Vector2Fuzzer
-extends Fuzzer
 
 ## Minimum bounds for the generated vectors (inclusive for both x and y).
 var _from: Vector2

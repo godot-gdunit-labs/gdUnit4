@@ -10,7 +10,7 @@ enum TimeUnit {
 	HOUR   = 4,
 	DAY    = 5,
 	MONTH  = 6,
-	YEAR   = 7
+	YEAR   = 7,
 }
 
 const SECONDS_PER_MINUTE: int = 60

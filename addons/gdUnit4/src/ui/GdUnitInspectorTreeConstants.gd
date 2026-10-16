@@ -4,19 +4,15 @@ extends RefCounted
 # the inspector panel presantation
 enum TreeViewMode {
 	TREE,
-	FLAT
+	FLAT,
 }
-
-
 # The inspector sort modes
 enum SortMode {
 	UNSORTED,
 	NAME_ASCENDING,
 	NAME_DESCENDING,
-	EXECUTION_TIME
+	EXECUTION_TIME,
 }
-
-
 enum STATE {
 	INITIAL,
 	RUNNING,
@@ -27,5 +23,5 @@ enum STATE {
 	FAILED,
 	ERROR,
 	ABORDED,
-	ORPHAN
+	ORPHAN,
 }

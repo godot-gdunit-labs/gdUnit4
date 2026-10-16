@@ -1,29 +1,11 @@
+class_name GdUnitScriptErrorCollector
+extends Logger
 ## Collects GDScript parse errors.[br]
 ## [br]
 ## Installed via [method OS.add_logger] so it intercepts [constant ErrorType.ERROR_TYPE_SCRIPT]
 ## entries without triggering Godot's interactive CLI debugger.[br]
 ## Used by [class GdUnitTestCIRunner] to detect broken user test scripts early
 ## and exit with a meaningful error instead of silently skipping them.
-class_name GdUnitScriptErrorCollector
-extends Logger
-
-
-## Holds information about a single captured script error.
-class ScriptError extends RefCounted:
-	var _message: String
-	var _source_file: String
-	var _source_line: int
-
-	func _init(message: String, source_file: String, source_line: int) -> void:
-		_message = message
-		_source_file = source_file
-		_source_line = source_line
-
-	func _to_string() -> String:
-		if _source_file.is_empty():
-			return _message
-		return "%s\n\tat %s:%d" % [_message, _source_file, _source_line]
-
 
 var _errors: Array[ScriptError] = []
 
@@ -64,3 +46,20 @@ func errors() -> Array[ScriptError]:
 ## Clears all captured errors.
 func clear() -> void:
 	_errors.clear()
+
+
+## Holds information about a single captured script error.
+class ScriptError extends RefCounted:
+	var _message: String
+	var _source_file: String
+	var _source_line: int
+
+	func _init(message: String, source_file: String, source_line: int) -> void:
+		_message = message
+		_source_file = source_file
+		_source_line = source_line
+
+	func _to_string() -> String:
+		if _source_file.is_empty():
+			return _message
+		return "%s\n\tat %s:%d" % [_message, _source_file, _source_line]

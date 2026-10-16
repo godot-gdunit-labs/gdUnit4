@@ -1,13 +1,11 @@
 class_name ErrorLogEntry
 extends RefCounted
 
-
 enum TYPE {
 	SCRIPT_ERROR,
 	PUSH_ERROR,
-	PUSH_WARNING
+	PUSH_WARNING,
 }
-
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 

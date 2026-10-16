@@ -1,6 +1,6 @@
-## Small helper tool to work with Godot Arrays
 class_name GdArrayTools
 extends RefCounted
+## Small helper tool to work with Godot Arrays
 
 const MAX_ELEMENTS := 32
 const ARRAY_TYPES := [
@@ -14,7 +14,7 @@ const ARRAY_TYPES := [
 	TYPE_PACKED_VECTOR2_ARRAY,
 	TYPE_PACKED_VECTOR3_ARRAY,
 	TYPE_PACKED_VECTOR4_ARRAY,
-	TYPE_PACKED_COLOR_ARRAY
+	TYPE_PACKED_COLOR_ARRAY,
 ]
 
 
@@ -82,13 +82,13 @@ static func scan_typed(array: Array) -> int:
 ## Converts given array into a string presentation.[br]
 ## This function is different to the original Godot str(<array>) implementation.
 ## The string presentaion contains fullquallified typed informations.
-##[br]
+## [br]
 ## Examples:
 ## 	[codeblock]
-##		# will result in PackedString(["a", "b"])
+## 		# will result in PackedString(["a", "b"])
 ## 		GdArrayTools.as_string(PackedStringArray("a", "b"))
-##		# will result in PackedString(["a", "b"])
-##		GdArrayTools.as_string(PackedColorArray(Color.RED, COLOR.GREEN))
+## 		# will result in PackedString(["a", "b"])
+## 		GdArrayTools.as_string(PackedColorArray(Color.RED, COLOR.GREEN))
 ## 	[/codeblock]
 static func as_string(elements: Variant, encode_value := true) -> String:
 	var delemiter := ", "

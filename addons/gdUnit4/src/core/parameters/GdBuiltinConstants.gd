@@ -13,7 +13,6 @@ const CONSTANT_BEARING_TYPES: PackedStringArray = [
 	"Basis", "Quaternion", "Plane",
 	"Transform2D", "Transform3D", "Projection",
 ]
-
 const _RESOLVE_SCRIPT_TEMPLATE := """
 extends RefCounted
 

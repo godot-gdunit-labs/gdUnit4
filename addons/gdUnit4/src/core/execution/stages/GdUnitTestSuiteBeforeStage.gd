@@ -1,7 +1,7 @@
-## The test suite startup hook implementation.[br]
-## It executes the 'before()' block from the test-suite.
 class_name GdUnitTestSuiteBeforeStage
 extends IGdUnitExecutionStage
+## The test suite startup hook implementation.[br]
+## It executes the 'before()' block from the test-suite.
 
 
 func _execute(context: GdUnitExecutionContext) -> void:

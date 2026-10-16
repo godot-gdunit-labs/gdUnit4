@@ -1,9 +1,7 @@
 class_name GdUnitCommandInspectorRerunTestsUntilFailure
 extends GdUnitBaseCommand
 
-
 signal session_closed()
-
 
 const GdUnitInspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/GdUnitInspectorTreeMainPanel.gd")
 const ID := "Rerun Inspector Tests Until Failure"

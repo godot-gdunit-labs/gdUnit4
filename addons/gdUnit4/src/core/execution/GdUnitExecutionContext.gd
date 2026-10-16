@@ -6,9 +6,8 @@ enum GcOrphansCheck {
 	NONE,
 	SUITE_HOOK_AFTER,
 	TEST_HOOK_AFTER,
-	TEST_CASE
+	TEST_CASE,
 }
-
 
 var error_monitor: GodotGdErrorMonitor = null:
 	get:
@@ -17,19 +16,16 @@ var error_monitor: GodotGdErrorMonitor = null:
 		if error_monitor == null:
 			error_monitor = GodotGdErrorMonitor.new()
 		return error_monitor
-
 var test_suite: GdUnitTestSuite = null:
 	get:
 		if _parent_context != null:
 			return _parent_context.test_suite
 		return test_suite
-
 var test_case: GdUnitTestCaseImpl = null:
 	get:
 		if test_case == null and _parent_context != null:
 			return _parent_context.test_case
 		return test_case
-
 var _parent_context: GdUnitExecutionContext
 var _sub_context: Array[GdUnitExecutionContext] = []
 var _orphan_monitor: GdUnitOrphanNodesMonitor
@@ -43,7 +39,6 @@ var _test_execution_iteration: int = 0
 var _flaky_test_check := GdUnitSettings.is_test_flaky_check_enabled()
 var _flaky_test_retries := GdUnitSettings.get_flaky_max_retries()
 var _last_error: GdUnitError = null
-
 var _settings_snapshot: GdUnitProjectSettingsSnapshot = null
 
 
@@ -206,7 +201,7 @@ func calculate_statistics(test_reports: Array[GdUnitReport]) -> Dictionary:
 	var warn_count := GdUnitTestReportCollector.count_warnings(test_reports)
 	var skip_count := GdUnitTestReportCollector.count_skipped(test_reports)
 	var orphan_count := GdUnitTestReportCollector.count_orphans(test_reports)
-	var is_failed := !is_success()
+	var is_failed := not is_success()
 	var elapsed_time := _timer.elapsed_since_ms()
 	var retries := 1 if _parent_context == null else _sub_context.size()
 	# Mark as flaky if it is successful, but errors were counted
@@ -299,7 +294,6 @@ func gc(gc_orphan_check: GcOrphansCheck = GcOrphansCheck.NONE) -> void:
 			report_ophans(test_case.line_number(),
 			"	collect_orphan_node_details()"
 			)
-
 
 
 func report_ophans(line_number: int, additonal_info := "") -> void:

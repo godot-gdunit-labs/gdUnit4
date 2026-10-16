@@ -1,3 +1,5 @@
+class_name GdUnitTuple
+extends RefCounted
 ## A tuple implementation for GdUnit4 test assertions and value extraction.
 ## @tutorial(GdUnit4 Array Assertions): https://mikeschulze.github.io/gdUnit4/latest/testing/assert-array/#extractv
 ## @tutorial(GdUnit4 Testing Framework): https://mikeschulze.github.io/gdUnit4/
@@ -45,8 +47,6 @@
 ## [b]Note:[/b] This class is part of the GdUnit4 testing framework's internal
 ## utilities and is primarily intended for use within test assertions rather
 ## than production code.
-class_name GdUnitTuple
-extends RefCounted
 
 var _values: Array = []
 

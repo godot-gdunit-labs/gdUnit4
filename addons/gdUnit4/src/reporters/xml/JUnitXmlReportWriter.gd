@@ -4,7 +4,6 @@ class_name JUnitXmlReportWriter
 extends GdUnitReportWriter
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
-
 const ATTR_CLASSNAME := "classname"
 const ATTR_ERRORS := "errors"
 const ATTR_FAILURES := "failures"
@@ -19,7 +18,6 @@ const ATTR_TESTS := "tests"
 const ATTR_TIME := "time"
 const ATTR_TIMESTAMP := "timestamp"
 const ATTR_TYPE := "type"
-
 const HEADER := '<?xml version="1.0" encoding="UTF-8" ?>\n'
 
 

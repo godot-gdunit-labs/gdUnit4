@@ -1,8 +1,8 @@
+class_name GdParameterSetResolverFactory
+extends RefCounted
 ## Factory that selects and constructs the correct [GdParameterSetResolver] for a
 ## parameterized test function based on how the [code]_test_parameters[/code] default
 ## value is expressed: inline array literals, a callable, or a property reference.
-class_name GdParameterSetResolverFactory
-extends RefCounted
 
 
 ## Returns the appropriate resolver for [param fd], or null when the function is not parameterized.

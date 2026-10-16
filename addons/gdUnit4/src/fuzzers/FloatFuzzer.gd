@@ -1,3 +1,5 @@
+class_name FloatFuzzer
+extends Fuzzer
 ## A fuzzer that generates random floating-point values within a specified range.[br]
 ##
 ## This is particularly useful for testing numerical calculations,
@@ -13,8 +15,6 @@
 ## [/codeblock]
 ## [br]
 ## [b]Note:[/b] The range is inclusive on both ends, and values are uniformly distributed.
-class_name FloatFuzzer
-extends Fuzzer
 
 ## Minimum value (inclusive) for generated floats.
 var _from: float = 0

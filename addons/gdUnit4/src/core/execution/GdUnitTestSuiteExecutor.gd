@@ -1,5 +1,5 @@
-## The executor to run a test-suite
 class_name GdUnitTestSuiteExecutor
+## The executor to run a test-suite
 
 # preload all asserts here
 @warning_ignore("unused_private_class_variable")
@@ -21,7 +21,7 @@ func _on_testsession_terminated() -> void:
 
 
 func run_and_wait(tests: Array[GdUnitTestCase]) -> void:
-	if !_debug_mode:
+	if not _debug_mode:
 		GdUnitSignals.instance().gdunit_event.emit(GdUnitInit.new())
 
 	var orphan_detection_enabled := GdUnitSettings.is_verbose_orphans()
@@ -49,7 +49,7 @@ func run_and_wait(tests: Array[GdUnitTestCase]) -> void:
 			context.dispose()
 		else:
 			await GdUnit4CSharpApiLoader.execute(suite_tests)
-	if !_debug_mode:
+	if not _debug_mode:
 		GdUnitSignals.instance().gdunit_event.emit(GdUnitStop.new())
 
 

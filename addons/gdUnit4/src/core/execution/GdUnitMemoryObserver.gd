@@ -1,6 +1,6 @@
-## The memory watcher for objects that have been registered and are released when 'gc' is called.
 class_name GdUnitMemoryObserver
 extends RefCounted
+## The memory watcher for objects that have been registered and are released when 'gc' is called.
 
 const TAG_OBSERVE_INSTANCE := "GdUnit4_observe_instance_"
 const TAG_AUTO_FREE = "GdUnit4_marked_auto_free"

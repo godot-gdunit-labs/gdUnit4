@@ -27,7 +27,6 @@ var _runner_config_file := ""
 var _debug_cmd_args := PackedStringArray()
 var _included_tests := PackedStringArray()
 var _excluded_tests := PackedStringArray()
-
 ## Command line options configuration
 var _cmd_options := CmdOptions.new([
 		CmdOption.new(
@@ -61,7 +60,7 @@ var _cmd_options := CmdOptions.new([
 		),
 		CmdOption.new("--help-advanced", "",
 			"Shows advanced options."
-		)
+		),
 	],
 	[
 		# advanced options

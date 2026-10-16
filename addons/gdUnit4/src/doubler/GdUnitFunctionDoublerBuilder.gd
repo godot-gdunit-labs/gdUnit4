@@ -7,7 +7,6 @@ const TYPE_VARARG = GdObjects.TYPE_VARARG
 const TYPE_FUNC = GdObjects.TYPE_FUNC
 const TYPE_FUZZER = GdObjects.TYPE_FUZZER
 const TYPE_ENUM = GdObjects.TYPE_ENUM
-
 const DEFAULT_TYPED_RETURN_VALUES := {
 	TYPE_NIL: "null",
 	TYPE_BOOL: "false",
@@ -49,9 +48,8 @@ const DEFAULT_TYPED_RETURN_VALUES := {
 	TYPE_PACKED_VECTOR4_ARRAY: "PackedVector4Array()",
 	TYPE_PACKED_COLOR_ARRAY: "PackedColorArray()",
 	GdObjects.TYPE_VARIANT: "null",
-	GdObjects.TYPE_ENUM: "0"
+	GdObjects.TYPE_ENUM: "0",
 }
-
 # @GlobalScript enums
 # needs to manually map because of https://github.com/godotengine/godot/issues/73835
 const DEFAULT_ENUM_RETURN_VALUES = {
@@ -81,21 +79,11 @@ const DEFAULT_ENUM_RETURN_VALUES = {
 	"Vector4i.Axis": "Vector4i.AXIS_X",
 }
 
-var fd: GdFunctionDescriptor
-var func_args: Array
-var default_return: String
-var verify_block: String = ""
-var prepare_block: String = ""
-var mock_return: String = ""
-
-
 static var def_constructor := """
 	func _init({constructor_args}) -> void:
 		__init_doubler()
 		super({args})
 	""".dedent()
-
-
 static var def_verify_block := """
 	# verify block
 	var __verifier := __get_verifier()
@@ -106,32 +94,31 @@ static var def_verify_block := """
 		else:
 			__verifier.save_function_interaction("{func_name}", __args)
 	""".dedent().indent("\t").trim_suffix("\n")
-
-
 static var def_prepare_block := """
 	if __is_prepare_return_value():
 		__save_function_return_value("{func_name}", __args)
 		{default_return}
 	""".dedent().indent("\t").trim_suffix("\n")
-
-
 static var def_void_prepare_block := """
 	if __is_prepare_return_value():
 		push_error("Mocking functions with return type void is not allowed!")
 		return
 	""".dedent().indent("\t").trim_suffix("\n")
-
-
 static var def_mock_return := """
 	if __is_do_not_call_real_func("{func_name}", __args):
 		return __return_mock_value("{func_name}", __args, {default_return})
 	""".dedent().indent("\t").trim_suffix("\n")
-
-
 static var def_void_mock_return := """
 	if __is_do_not_call_real_func("{func_name}", __args):
 		return
 	""".dedent().indent("\t").trim_suffix("\n")
+
+var fd: GdFunctionDescriptor
+var func_args: Array
+var default_return: String
+var verify_block: String = ""
+var prepare_block: String = ""
+var mock_return: String = ""
 
 
 func _init(descriptor: GdFunctionDescriptor) -> void:
@@ -150,10 +137,10 @@ func _init(descriptor: GdFunctionDescriptor) -> void:
 func build_func_signature() -> String:
 	var return_type := ":" if fd._return_type == TYPE_VARIANT else " -> %s:" % fd.return_type_as_string()
 	return "{static}func {func_name}({args}){return_type}".format({
-			"static" : "static " if fd.is_static() else "",
+			"static": "static " if fd.is_static() else "",
 			"func_name": fd.name(),
 			"args": arguments_full_quilified(),
-			"return_type": return_type
+			"return_type": return_type,
 		})
 
 
@@ -163,9 +150,9 @@ func arguments_full_quilified() -> String:
 		var name := argument_name(arg)
 		if arg.has_default():
 			var signature := "{argument_name}{arg_typed}={arg_value}".format({
-				"argument_name" : name,
-				"arg_typed" : ":"+GdObjects.type_as_string(arg.type()) if arg.type() == GdObjects.TYPE_VARIANT else "",
-				"arg_value" : arg.value_as_string()
+				"argument_name": name,
+				"arg_typed": ":" + GdObjects.type_as_string(arg.type()) if arg.type() == GdObjects.TYPE_VARIANT else "",
+				"arg_value": arg.value_as_string(),
 			})
 			collect.push_back(signature)
 		else:
@@ -195,9 +182,9 @@ func build_constructor_arguments() -> String:
 	for arg in fd.args():
 		var default_value := argument_default(arg)
 		var arg_signature := "{name}:{type}={default}".format({
-			"name" : argument_name(arg),
-			"type" : "Variant" if default_value == "null" else "",
-			"default" : default_value
+			"name": argument_name(arg),
+			"type": "Variant" if default_value == "null" else "",
+			"default": default_value,
 		})
 		arguments.append(arg_signature)
 	if fd.is_vararg():
@@ -207,20 +194,20 @@ func build_constructor_arguments() -> String:
 
 func build_arguments() -> String:
 	return "\tvar __args := [{args}]{varargs}".format({
-		"args" : ", ".join(func_args),
-		"varargs" : " + varargs_" if fd.is_vararg() else ""
+		"args": ", ".join(func_args),
+		"varargs": " + varargs_" if fd.is_vararg() else "",
 	})
 
 
 func build_super_calls() -> String:
-	if !fd.is_vararg():
+	if not fd.is_vararg():
 		return "super(%s)\n" % ", ".join(func_args)
 
 	var match_block := "match varargs_.size():\n"
 	for index in range(0, 11):
 		match_block += "{index}: super({args})\n".format({
-			"index" : index,
-			"args" : ", ".join(func_args + build_vararg_list(index))
+			"index": index,
+			"args": ", ".join(func_args + build_vararg_list(index)),
 		}).indent("\t")
 	match_block += '_: push_error("To many varradic arguments.")\n'.indent("\t")
 	match_block += "return\n" if is_void_func() else "return %s\n" % default_return
@@ -278,8 +265,8 @@ func is_void_func() -> bool:
 
 func with_verify_block() -> GdUnitFunctionDoublerBuilder:
 	verify_block = def_verify_block.format({
-		"func_name" : fd.name(),
-		"default_return" : "return" if is_void_func() else "return " + default_return
+		"func_name": fd.name(),
+		"default_return": "return" if is_void_func() else "return " + default_return,
 	})
 	return self
 
@@ -290,8 +277,8 @@ func with_prepare_block() -> GdUnitFunctionDoublerBuilder:
 		return self
 
 	prepare_block = def_prepare_block.format({
-		"func_name" : fd.name(),
-		"default_return" : "return" if is_void_func() else "return " + default_return
+		"func_name": fd.name(),
+		"default_return": "return" if is_void_func() else "return " + default_return,
 	})
 	return self
 
@@ -299,12 +286,12 @@ func with_prepare_block() -> GdUnitFunctionDoublerBuilder:
 func with_mocked_return_value() -> GdUnitFunctionDoublerBuilder:
 	if is_void_func():
 		mock_return = def_void_mock_return.format({
-			"func_name" : fd.name(),
+			"func_name": fd.name(),
 		})
 	else:
 		mock_return = def_mock_return.format({
-			"func_name" : fd.name(),
-			"default_return" : '"no_arg"' if is_void_func() else default_return
+			"func_name": fd.name(),
+			"default_return": '"no_arg"' if is_void_func() else default_return,
 		})
 	return self
 
@@ -312,8 +299,8 @@ func with_mocked_return_value() -> GdUnitFunctionDoublerBuilder:
 func build() -> PackedStringArray:
 	if fd.name() == "_init":
 		return [def_constructor.format({
-			"constructor_args" : build_constructor_arguments(),
-			"args" : ", ".join(func_args)
+			"constructor_args": build_constructor_arguments(),
+			"args": ", ".join(func_args),
 		})]
 
 	var func_body: PackedStringArray = []

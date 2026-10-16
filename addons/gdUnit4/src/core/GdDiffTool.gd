@@ -13,8 +13,130 @@ const MIN_COST_LIMIT := 256
 ## Limits the work (visited diagonals and compared characters) spent on a whole diff.
 ## Once exhausted, the remaining regions are reported as completely changed instead of refining them further.
 const MAX_WORK := 4_000_000
-
 const _LINE_MAX := 1 << 30
+
+
+## Compares both values and returns the changed regions in ascending order.
+## Text between the hunks is equal. Returns an empty array when both values are equal.
+static func diff(current: String, expected: String) -> Array[Hunk]:
+	var cur_chars: PackedInt32Array = current.to_utf32_buffer().to_int32_array()
+	var exp_chars: PackedInt32Array = expected.to_utf32_buffer().to_int32_array()
+	var hunks: Array[Hunk] = []
+
+	# cut off the common prefix and suffix, the search only needs to look at the characters in between
+	var min_size: int = mini(cur_chars.size(), exp_chars.size())
+	var prefix: int = 0
+	while prefix < min_size and cur_chars[prefix] == exp_chars[prefix]:
+		prefix += 1
+	var suffix: int = 0
+	while suffix < min_size - prefix and cur_chars[cur_chars.size() - 1 - suffix] == exp_chars[exp_chars.size() - 1 - suffix]:
+		suffix += 1
+	var cur_len: int = cur_chars.size() - prefix - suffix
+	var exp_len: int = exp_chars.size() - prefix - suffix
+	if cur_len == 0 and exp_len == 0:
+		return hunks
+	if cur_len == 0 or exp_len == 0:
+		hunks.append(Hunk.new(prefix, cur_len, prefix, exp_len))
+		return hunks
+
+	var search := MyersSearch.new(cur_chars.slice(prefix, prefix + cur_len), exp_chars.slice(prefix, prefix + exp_len))
+	search.run()
+	var changed_cur: PackedByteArray = search.changed_a
+	var changed_exp: PackedByteArray = search.changed_b
+	# group the marked characters to hunks, the unchanged characters of both values are paired in sequence
+	var i1: int = 0
+	var i2: int = 0
+	while i1 < cur_len or i2 < exp_len:
+		var start1: int = i1
+		var start2: int = i2
+		while i1 < cur_len and changed_cur[i1] == 1:
+			i1 += 1
+		while i2 < exp_len and changed_exp[i2] == 1:
+			i2 += 1
+		if i1 > start1 or i2 > start2:
+			hunks.append(Hunk.new(prefix + start1, i1 - start1, prefix + start2, i2 - start2))
+		elif i1 < cur_len and i2 < exp_len:
+			i1 += 1
+			i2 += 1
+		else:
+			break
+	return hunks
+
+
+# prototype
+static func longest_common_subsequence(text1: String, text2: String) -> PackedStringArray:
+	var text1_words := text1.split(" ")
+	var text2_words := text2.split(" ")
+	var text1_word_count := text1_words.size()
+	var text2_word_count := text2_words.size()
+	var solution_matrix := Array()
+	for i in text1_word_count + 1:
+		var ar := Array()
+		for n in text2_word_count + 1:
+			ar.append(0)
+		solution_matrix.append(ar)
+
+	for i in range(text1_word_count - 1, 0, -1):
+		for j in range(text2_word_count - 1, 0, -1):
+			if text1_words[i] == text2_words[j]:
+				solution_matrix[i][j] = solution_matrix[i + 1][j + 1] + 1
+			else:
+				solution_matrix[i][j] = max(solution_matrix[i + 1][j], solution_matrix[i][j + 1])
+
+	var i := 0
+	var j := 0
+	var lcs_result_list := PackedStringArray()
+	while i < text1_word_count and j < text2_word_count:
+		if text1_words[i] == text2_words[j]:
+			@warning_ignore("return_value_discarded")
+			lcs_result_list.append(text2_words[j])
+			i += 1
+			j += 1
+		else: if solution_matrix[i + 1][j] >= solution_matrix[i][j + 1]:
+			i += 1
+		else:
+			j += 1
+	return lcs_result_list
+
+
+static func mark_text_differences(text1: String, text2: String, lcs_list: PackedStringArray, insert_color: Color, delete_color: Color) -> String:
+	var string_buffer := ""
+	if text1 == null and lcs_list == null:
+		return string_buffer
+
+	var text1_words := text1.split(" ")
+	var text2_words := text2.split(" ")
+	var i := 0
+	var j := 0
+	var word1_last_index := 0
+	var word2_last_index := 0
+	for k in lcs_list.size():
+		while i < text1_words.size() and j < text2_words.size():
+			if text1_words[i] == lcs_list[k] and text2_words[j] == lcs_list[k]:
+				string_buffer += "<SPAN>" + lcs_list[k] + " </SPAN>"
+				word1_last_index = i + 1
+				word2_last_index = j + 1
+				i = text1_words.size()
+				j = text2_words.size()
+
+			else: if text1_words[i] != lcs_list[k]:
+				while i < text1_words.size() and text1_words[i] != lcs_list[k]:
+					string_buffer += "<SPAN style='BACKGROUND-COLOR:" + delete_color.to_html() + "'>" + text1_words[i] + " </SPAN>"
+					i += 1
+			else: if text2_words[j] != lcs_list[k]:
+				while j < text2_words.size() and text2_words[j] != lcs_list[k]:
+					string_buffer += "<SPAN style='BACKGROUND-COLOR:" + insert_color.to_html() + "'>" + text2_words[j] + " </SPAN>"
+					j += 1
+			i = word1_last_index
+			j = word2_last_index
+
+			while word1_last_index < text1_words.size():
+				string_buffer += "<SPAN style='BACKGROUND-COLOR:" + delete_color.to_html() + "'>" + text1_words[word1_last_index] + " </SPAN>"
+				word1_last_index += 1
+			while word2_last_index < text2_words.size():
+				string_buffer += "<SPAN style='BACKGROUND-COLOR:" + insert_color.to_html() + "'>" + text2_words[word2_last_index] + " </SPAN>"
+				word2_last_index += 1
+	return string_buffer
 
 
 ## A changed region. The characters of `current` in [current_start, current_start + current_len) are replaced
@@ -230,126 +352,3 @@ class MyersSearch:
 			value >>= 2
 			result <<= 1
 		return result
-
-
-## Compares both values and returns the changed regions in ascending order.
-## Text between the hunks is equal. Returns an empty array when both values are equal.
-static func diff(current: String, expected: String) -> Array[Hunk]:
-	var cur_chars: PackedInt32Array = current.to_utf32_buffer().to_int32_array()
-	var exp_chars: PackedInt32Array = expected.to_utf32_buffer().to_int32_array()
-	var hunks: Array[Hunk] = []
-
-	# cut off the common prefix and suffix, the search only needs to look at the characters in between
-	var min_size: int = mini(cur_chars.size(), exp_chars.size())
-	var prefix: int = 0
-	while prefix < min_size and cur_chars[prefix] == exp_chars[prefix]:
-		prefix += 1
-	var suffix: int = 0
-	while suffix < min_size - prefix and cur_chars[cur_chars.size() - 1 - suffix] == exp_chars[exp_chars.size() - 1 - suffix]:
-		suffix += 1
-	var cur_len: int = cur_chars.size() - prefix - suffix
-	var exp_len: int = exp_chars.size() - prefix - suffix
-	if cur_len == 0 and exp_len == 0:
-		return hunks
-	if cur_len == 0 or exp_len == 0:
-		hunks.append(Hunk.new(prefix, cur_len, prefix, exp_len))
-		return hunks
-
-	var search := MyersSearch.new(cur_chars.slice(prefix, prefix + cur_len), exp_chars.slice(prefix, prefix + exp_len))
-	search.run()
-	var changed_cur: PackedByteArray = search.changed_a
-	var changed_exp: PackedByteArray = search.changed_b
-	# group the marked characters to hunks, the unchanged characters of both values are paired in sequence
-	var i1: int = 0
-	var i2: int = 0
-	while i1 < cur_len or i2 < exp_len:
-		var start1: int = i1
-		var start2: int = i2
-		while i1 < cur_len and changed_cur[i1] == 1:
-			i1 += 1
-		while i2 < exp_len and changed_exp[i2] == 1:
-			i2 += 1
-		if i1 > start1 or i2 > start2:
-			hunks.append(Hunk.new(prefix + start1, i1 - start1, prefix + start2, i2 - start2))
-		elif i1 < cur_len and i2 < exp_len:
-			i1 += 1
-			i2 += 1
-		else:
-			break
-	return hunks
-
-
-# prototype
-static func longest_common_subsequence(text1: String, text2: String) -> PackedStringArray:
-	var text1_words := text1.split(" ")
-	var text2_words := text2.split(" ")
-	var text1_word_count := text1_words.size()
-	var text2_word_count := text2_words.size()
-	var solution_matrix := Array()
-	for i in text1_word_count + 1:
-		var ar := Array()
-		for n in text2_word_count + 1:
-			ar.append(0)
-		solution_matrix.append(ar)
-
-	for i in range(text1_word_count - 1, 0, -1):
-		for j in range(text2_word_count - 1, 0, -1):
-			if text1_words[i] == text2_words[j]:
-				solution_matrix[i][j] = solution_matrix[i + 1][j + 1] + 1
-			else:
-				solution_matrix[i][j] = max(solution_matrix[i + 1][j], solution_matrix[i][j + 1])
-
-	var i := 0
-	var j := 0
-	var lcs_result_list := PackedStringArray()
-	while (i < text1_word_count && j < text2_word_count):
-		if text1_words[i] == text2_words[j]:
-			@warning_ignore("return_value_discarded")
-			lcs_result_list.append(text2_words[j])
-			i += 1
-			j += 1
-		else: if (solution_matrix[i + 1][j] >= solution_matrix[i][j + 1]):
-			i += 1
-		else:
-			j += 1
-	return lcs_result_list
-
-
-static func mark_text_differences(text1: String, text2: String, lcs_list: PackedStringArray, insert_color: Color, delete_color: Color) -> String:
-	var string_buffer := ""
-	if text1 == null and lcs_list == null:
-		return string_buffer
-
-	var text1_words := text1.split(" ")
-	var text2_words := text2.split(" ")
-	var i := 0
-	var j := 0
-	var word1_last_index := 0
-	var word2_last_index := 0
-	for k in lcs_list.size():
-		while i < text1_words.size() and j < text2_words.size():
-			if text1_words[i] == lcs_list[k] and text2_words[j] == lcs_list[k]:
-				string_buffer += "<SPAN>" + lcs_list[k] + " </SPAN>"
-				word1_last_index = i + 1
-				word2_last_index = j + 1
-				i = text1_words.size()
-				j = text2_words.size()
-
-			else: if text1_words[i] != lcs_list[k]:
-				while i < text1_words.size() and text1_words[i] != lcs_list[k]:
-					string_buffer += "<SPAN style='BACKGROUND-COLOR:" + delete_color.to_html() + "'>" + text1_words[i] + " </SPAN>"
-					i += 1
-			else: if text2_words[j] != lcs_list[k]:
-				while j < text2_words.size() and text2_words[j] != lcs_list[k]:
-					string_buffer += "<SPAN style='BACKGROUND-COLOR:" + insert_color.to_html() + "'>" + text2_words[j] + " </SPAN>"
-					j += 1
-			i = word1_last_index
-			j = word2_last_index
-
-			while word1_last_index < text1_words.size():
-				string_buffer += "<SPAN style='BACKGROUND-COLOR:" + delete_color.to_html() + "'>" + text1_words[word1_last_index] + " </SPAN>"
-				word1_last_index += 1
-			while word2_last_index < text2_words.size():
-				string_buffer += "<SPAN style='BACKGROUND-COLOR:" + insert_color.to_html() + "'>" + text2_words[word2_last_index] + " </SPAN>"
-				word2_last_index += 1
-	return string_buffer

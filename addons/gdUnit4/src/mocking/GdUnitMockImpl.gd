@@ -1,29 +1,21 @@
 class_name DoubledMockClassSourceClassName
-# gdlint: disable=function-name,function-argument-name,function-variable-name,loop-variable-name,constant-name,class-variable-name
 
+
+# gdlint: disable=function-name,function-argument-name,function-variable-name,loop-variable-name,constant-name,class-variable-name
 ################################################################################
 # internal mocking stuff
 ################################################################################
 
 const __INSTANCE_ID := "gdunit_doubler_instance_id_{instance_id}"
 
-
-class GdUnitMockDoublerState:
-	const __SOURCE_CLASS := "{gdunit_source_class}"
-
-	var excluded_methods := PackedStringArray()
-	var working_mode := GdUnitMock.RETURN_DEFAULTS
-	var is_prepare_return := false
-	var return_values := Dictionary()
-	var return_value: Variant = null
-
-	func _init(mode := GdUnitMock.RETURN_DEFAULTS) -> void:
-		working_mode = mode
-
-
 var __mock_state := GdUnitMockDoublerState.new()
 @warning_ignore("unused_private_class_variable")
 var __verifier_instance := GdUnitObjectInteractionsVerifier.new()
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PREDELETE and Engine.has_meta(__INSTANCE_ID):
+		Engine.remove_meta(__INSTANCE_ID)
 
 
 func __init(__script: GDScript, mock_working_mode: String) -> void:
@@ -40,11 +32,6 @@ static func __doubler_state() -> GdUnitMockDoublerState:
 
 func __init_doubler() -> void:
 	Engine.set_meta(__INSTANCE_ID, self)
-
-
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_PREDELETE and Engine.has_meta(__INSTANCE_ID):
-		Engine.remove_meta(__INSTANCE_ID)
 
 
 static func __get_verifier() -> GdUnitObjectInteractionsVerifier:
@@ -138,7 +125,7 @@ static func __is_do_not_call_real_func(__func_name: String, __func_args := []) -
 		@warning_ignore("unsafe_method_access")
 		var __mocked_args: Array = doubler_state.return_values.get(__func_name).keys()
 		return __is_mocked_args_match(__func_args, __mocked_args)
-	return !__is_call_real_func
+	return not __is_call_real_func
 
 
 func __exclude_method_call(exluded_methods: PackedStringArray) -> void:
@@ -149,3 +136,16 @@ func __do_return(mock_do_return_value: Variant) -> Object:
 	__doubler_state().return_value = mock_do_return_value
 	__doubler_state().is_prepare_return = true
 	return self
+
+
+class GdUnitMockDoublerState:
+	const __SOURCE_CLASS := "{gdunit_source_class}"
+
+	var excluded_methods := PackedStringArray()
+	var working_mode := GdUnitMock.RETURN_DEFAULTS
+	var is_prepare_return := false
+	var return_values := Dictionary()
+	var return_value: Variant = null
+
+	func _init(mode := GdUnitMock.RETURN_DEFAULTS) -> void:
+		working_mode = mode

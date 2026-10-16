@@ -6,10 +6,6 @@ var _running_command: GdUnitBaseCommand = null
 var _wait_time := 0.0
 
 
-static func instance() -> GdUnitCommandHandler:
-	return GdUnitSingleton.instance("GdUnitCommandHandler", func() -> GdUnitCommandHandler: return GdUnitCommandHandler.new())
-
-
 func _init() -> void:
 	GdUnitSignals.instance().gdunit_event.connect(_on_event)
 	GdUnitSignals.instance().gdunit_client_disconnected.connect(_on_client_disconnected)
@@ -55,6 +51,10 @@ func _process(delta: float) -> void:
 		if GdUnitSettings.is_verbose_assert_warnings():
 			print_debug("Test Runner scene was stopped manually, force stopping the current test run!")
 		command_execute(GdUnitCommandStopTestSession.ID)
+
+
+static func instance() -> GdUnitCommandHandler:
+	return GdUnitSingleton.instance("GdUnitCommandHandler", func() -> GdUnitCommandHandler: return GdUnitCommandHandler.new())
 
 
 func is_debug_command_running() -> bool:
@@ -121,9 +121,9 @@ func cmd_discover_tests() -> void:
 	await GdUnitTestDiscoverer.run()
 
 
-################################################################################
+# ###############################################################################
 # signals handles
-################################################################################
+# ###############################################################################
 func _on_event(event: GdUnitEvent) -> void:
 	if (
 		event.type() == GdUnitEvent.SESSION_CLOSE
@@ -143,9 +143,9 @@ func _on_settings_changed(property: GdUnitProperty) -> void:
 		timer.timeout.connect(cmd_discover_tests)
 
 
-################################################################################
+# ###############################################################################
 # Network stuff
-################################################################################
+# ###############################################################################
 func _on_client_disconnected(_client_id: int) -> void:
 	if (_running_command != null
 		and _running_command.id != GdUnitCommandInspectorRerunTestsUntilFailure.ID):

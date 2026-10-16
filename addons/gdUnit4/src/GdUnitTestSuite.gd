@@ -1,4 +1,5 @@
 # gdlint: disable=max-public-methods
+
 ## The main class for all GdUnit test suites[br]
 ## This class is the main class to implement your unit tests[br]
 ## You have to extend and implement your test cases as described[br]
@@ -10,7 +11,6 @@
 ##       assert_that("value").is_equal("value")
 ## [/codeblock]
 ## @tutorial:  https://mikeschulze.github.io/gdUnit4/faq/test-suite/
-
 @icon("res://addons/gdUnit4/src/ui/settings/logo.png")
 class_name GdUnitTestSuite
 extends Node
@@ -23,7 +23,7 @@ const CALL_REAL_FUNC = GdUnitMock.CALL_REAL_FUNC
 ## builds full deep mocked object
 const RETURN_DEEP_STUB = GdUnitMock.RETURN_DEEP_STUB
 
-### internal runtime variables that must not be overwritten!!!
+# ## internal runtime variables that must not be overwritten!!!
 # gdlint: disable=class-variable-name
 @warning_ignore("unused_private_class_variable")
 var __is_skipped := false
@@ -33,9 +33,8 @@ var __active_test_case: String
 var __awaiter := __gdunit_awaiter()
 # gdlint: enable=class-variable-name
 
-
-### We now load all used asserts and tool scripts into the cache according to the principle of "lazy loading"
-### in order to noticeably reduce the loading time of the test suite.
+# ## We now load all used asserts and tool scripts into the cache according to the principle of "lazy loading"
+# ## in order to noticeably reduce the loading time of the test suite.
 # We go this hard way to increase the loading performance to avoid reparsing all the used scripts
 # for more detailed info -> https://github.com/godotengine/godot/issues/67400
 # gdlint: disable=function-name
@@ -336,13 +335,13 @@ func reset(obj: Variant) -> void:
 ## By default, the specified source is automatically released when the test ends.
 ## You can control this behavior by setting auto_free to false if you do not want the source to be automatically freed.[br]
 ## Usage:
-##	[codeblock]
-##		var emitter := monitor_signals(MyEmitter.new())
-##		# call the function to send the signal
-##		emitter.do_it()
-##		# verify the signial is emitted
-##		await assert_signal(emitter).is_emitted('my_signal')
-##	[/codeblock]
+## 	[codeblock]
+## 		var emitter := monitor_signals(MyEmitter.new())
+## 		# call the function to send the signal
+## 		emitter.do_it()
+## 		# verify the signial is emitted
+## 		await assert_signal(emitter).is_emitted('my_signal')
+## 	[/codeblock]
 func monitor_signals(source: Object, _auto_free := true) -> Object:
 	@warning_ignore("unsafe_method_access")
 	__lazy_load("res://addons/gdUnit4/src/core/thread/GdUnitThreadManager.gd")\
@@ -627,8 +626,8 @@ func assert_that(current: Variant) -> GdUnitAssert:
 			return assert_vector(current, false)
 		TYPE_DICTIONARY:
 			return assert_dict(current)
-		TYPE_ARRAY, TYPE_PACKED_BYTE_ARRAY, TYPE_PACKED_INT32_ARRAY, TYPE_PACKED_INT64_ARRAY,\
-		TYPE_PACKED_FLOAT32_ARRAY, TYPE_PACKED_FLOAT64_ARRAY, TYPE_PACKED_STRING_ARRAY,\
+		TYPE_ARRAY, TYPE_PACKED_BYTE_ARRAY, TYPE_PACKED_INT32_ARRAY, TYPE_PACKED_INT64_ARRAY, \
+		TYPE_PACKED_FLOAT32_ARRAY, TYPE_PACKED_FLOAT64_ARRAY, TYPE_PACKED_STRING_ARRAY, \
 		TYPE_PACKED_VECTOR2_ARRAY, TYPE_PACKED_VECTOR3_ARRAY, TYPE_PACKED_COLOR_ARRAY:
 			return assert_array(current, false)
 		TYPE_OBJECT, TYPE_NIL:
@@ -662,7 +661,7 @@ func assert_float(current: Variant) -> GdUnitFloatAssert:
 ## This assertion supports all vector types.[br]
 ## Usage:
 ##     [codeblock]
-##		assert_vector(Vector2(1.2, 1.000001)).is_equal(Vector2(1.2, 1.000001))
+## 		assert_vector(Vector2(1.2, 1.000001)).is_equal(Vector2(1.2, 1.000001))
 ##     [/codeblock]
 func assert_vector(current: Variant, type_check := true) -> GdUnitVectorAssert:
 	return __lazy_load("res://addons/gdUnit4/src/asserts/GdUnitVectorAssertImpl.gd").new(current, type_check)
@@ -706,8 +705,8 @@ func assert_signal(instance: Object) -> GdUnitSignalAssert:
 ## This assert is only designed for internal use to verify failing asserts working as expected.[br]
 ## Usage:
 ##     [codeblock]
-##		assert_failure(func(): assert_bool(true).is_not_equal(true)) \
-##		    .has_message("Expecting:\n 'true'\n not equal to\n 'true'")
+## 		assert_failure(func(): assert_bool(true).is_not_equal(true)) \
+## 		    .has_message("Expecting:\n 'true'\n not equal to\n 'true'")
 ##     [/codeblock]
 func assert_failure(assertion: Callable) -> GdUnitFailureAssert:
 	@warning_ignore("unsafe_method_access")
@@ -718,8 +717,8 @@ func assert_failure(assertion: Callable) -> GdUnitFailureAssert:
 ## This assert is only designed for internal use to verify failing asserts working as expected.[br]
 ## Usage:
 ##     [codeblock]
-##		await assert_failure_await(func(): assert_bool(true).is_not_equal(true)) \
-##		    .has_message("Expecting:\n 'true'\n not equal to\n 'true'")
+## 		await assert_failure_await(func(): assert_bool(true).is_not_equal(true)) \
+## 		    .has_message("Expecting:\n 'true'\n not equal to\n 'true'")
 ##     [/codeblock]
 func assert_failure_await(assertion: Callable) -> GdUnitFailureAssert:
 	@warning_ignore("unsafe_method_access")
@@ -730,13 +729,13 @@ func assert_failure_await(assertion: Callable) -> GdUnitFailureAssert:
 ## You can use to verify certain Godot errors like failing assertions, push_error, push_warn.[br]
 ## Usage:
 ##     [codeblock]
-##		# tests no error occurred during execution of the code
-##		await assert_error(func (): return 0 )\
-##		    .is_success()
+## 		# tests no error occurred during execution of the code
+## 		await assert_error(func (): return 0 )\
+## 		    .is_success()
 ##
-##		# tests a push_error('test error') occured during execution of the code
-##		await assert_error(func (): push_error('test error') )\
-##		    .is_push_error('test error')
+## 		# tests a push_error('test error') occured during execution of the code
+## 		await assert_error(func (): push_error('test error') )\
+## 		    .is_push_error('test error')
 ##     [/codeblock]
 func assert_error(current: Callable) -> GdUnitGodotErrorAssert:
 	return __lazy_load("res://addons/gdUnit4/src/asserts/GdUnitGodotErrorAssertImpl.gd").new(current)
@@ -747,9 +746,9 @@ func assert_error(current: Callable) -> GdUnitGodotErrorAssert:
 ## It provides a clear indication that the test failure is expected because the feature is still under development.[br]
 ## Usage:
 ##     [codeblock]
-##		# Test for a feature that will be implemented later
-##		func test_advanced_ai_behavior():
-##		    assert_not_yet_implemented()
+## 		# Test for a feature that will be implemented later
+## 		func test_advanced_ai_behavior():
+## 		    assert_not_yet_implemented()
 ##
 ##     [/codeblock]
 func assert_not_yet_implemented() -> void:
@@ -763,13 +762,13 @@ func assert_not_yet_implemented() -> void:
 ## Useful for complex conditional testing scenarios where standard assertions are insufficient.[br]
 ## Usage:
 ##     [codeblock]
-##		# Fail test when conditions are not met
-##		if !custom_check(player):
-##		    fail("Player should be alive but has %d health" % player.health)
-##		    return
+## 		# Fail test when conditions are not met
+## 		if !custom_check(player):
+## 		    fail("Player should be alive but has %d health" % player.health)
+## 		    return
 ##
-##		# Continue with test if conditions pass
-##		assert_that(player.health).is_greater(0)
+## 		# Continue with test if conditions pass
+## 		assert_that(player.health).is_greater(0)
 ##     [/codeblock]
 func fail(message: String) -> void:
 	@warning_ignore("unsafe_method_access")

@@ -1,7 +1,7 @@
-## The test case shutdown hook implementation.[br]
-## It executes the 'test_after()' block from the test-suite.
 class_name GdUnitTestCaseAfterStage
 extends IGdUnitExecutionStage
+## The test case shutdown hook implementation.[br]
+## It executes the 'test_after()' block from the test-suite.
 
 var _call_stage: bool
 

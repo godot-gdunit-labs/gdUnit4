@@ -51,7 +51,7 @@ func indentation() -> String:
 func to_xml() -> String:
 	var attributes := ""
 	for key in _attributes.keys() as Array[String]:
-		attributes += ' {attr}="{value}"'.format({"attr": key, "value": _attributes.get(key)})
+		attributes += ' {attr}="{value}"'.format({ "attr": key, "value": _attributes.get(key) })
 
 	var childs := ""
 	for child in _childs:
@@ -66,4 +66,4 @@ func to_xml() -> String:
 
 
 func cdata(p_text: String) -> String:
-	return "" if p_text.is_empty() else "<![CDATA[\n{text}]]>\n".format({"text": p_text})
+	return "" if p_text.is_empty() else "<![CDATA[\n{text}]]>\n".format({ "text": p_text })

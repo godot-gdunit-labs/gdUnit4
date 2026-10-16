@@ -24,16 +24,13 @@ var timeout: int = DEFAULT_TIMEOUT:
 			# get the default timeout from the settings
 			timeout = GdUnitSettings.test_timeout()
 		return timeout
-
 ## The seed used for random number generation in the test.[br]
 ## Ensures reproducible results for randomized test scenarios.[br]
 ## A value of -1 indicates no specific seed is set.
 var test_seed: int = -1
-
 ## Controls whether this test should be skipped during execution.[br]
 ## Useful for temporarily disabling tests without removing them.
 var is_skipped := false
-
 ## Documents why the test is being skipped.[br]
 ## [br]
 ## Should explain the reason for skipping and ideally include:[br]
@@ -41,18 +38,17 @@ var is_skipped := false
 ## - Under what conditions it should be re-enabled[br]
 ## - Any related issues or tickets
 var skip_reason := "Unknown"
-
 ## Number of iterations to run when using fuzzers.[br]
 ## [br]
 ## Fuzzers generate random test data to help find edge cases.[br]
 ## Higher values provide better coverage but increase test duration.
 var fuzzer_iterations: int = Fuzzer.ITERATION_DEFAULT_COUNT
-
 ## Array of fuzzer configurations for test parameters.[br]
 ## [br]
 ## Each [GdFunctionArgument] defines how random test data[br]
 ## should be generated for a particular parameter.
 var fuzzers: Array[GdFunctionArgument] = []
+
 
 # There is a bug in `duplicate` see https://github.com/godotengine/godot/issues/98644
 # we need in addition to overwrite default values with the source values

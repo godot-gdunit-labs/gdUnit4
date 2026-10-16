@@ -1,6 +1,6 @@
-## The single test case execution stage.[br]
 class_name GdUnitTestCaseSingleTestStage
 extends IGdUnitExecutionStage
+## The single test case execution stage.[br]
 
 
 ## Executes a single test case 'test_<name>()'.[br]

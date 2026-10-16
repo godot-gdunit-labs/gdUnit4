@@ -86,9 +86,9 @@ func _to_string() -> String:
 
 func serialize() -> Dictionary:
 	var serialized := {
-		"type"        : _type,
-		"line_number" : _line_number,
-		"message"     : _message
+		"type": _type,
+		"line_number": _line_number,
+		"message": _message,
 	}
 	var trace := stack_trace()
 	if trace != null:

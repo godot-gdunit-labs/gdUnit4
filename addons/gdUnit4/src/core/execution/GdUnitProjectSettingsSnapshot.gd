@@ -1,3 +1,5 @@
+class_name GdUnitProjectSettingsSnapshot
+extends RefCounted
 ## Captures and restores all in-memory [ProjectSettings] values around a single
 ## stage of test execution.[br]
 ## Each [GdUnitExecutionContext] owns one instance. Suite-level and test-level
@@ -8,8 +10,6 @@
 ##     GdUnitTestCaseExecutionStage -> restore() (after after_test())
 ##   GdUnitTestSuiteExecutionStage  -> restore() (after after())
 ## [/codeblock]
-class_name GdUnitProjectSettingsSnapshot
-extends RefCounted
 
 var _snapshot: Dictionary = {}
 

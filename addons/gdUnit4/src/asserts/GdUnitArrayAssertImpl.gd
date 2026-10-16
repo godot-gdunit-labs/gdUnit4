@@ -82,15 +82,15 @@ func _array_equals_div(current: Variant, expected: Variant, case_sensitive: bool
 				var length := max_length(c, e)
 				current_value[index] = GdAssertMessages.format_invalid(c.lpad(length))
 				expected_value[index] = e.lpad(length)
-				index_report.push_back({"index": index, "current": c, "expected": e})
+				index_report.push_back({ "index": index, "current": c, "expected": e })
 		else:
 			current_value[index] = GdAssertMessages.format_invalid(c)
-			index_report.push_back({"index": index, "current": c, "expected": "<N/A>"})
+			index_report.push_back({ "index": index, "current": c, "expected": "<N/A>" })
 
 	for index in range(current_value.size(), expected_value.size()):
 		var value := expected_value[index]
 		expected_value[index] = GdAssertMessages.format_invalid(value)
-		index_report.push_back({"index": index, "current": "<N/A>", "expected": value})
+		index_report.push_back({ "index": index, "current": "<N/A>", "expected": value })
 	return [current_value, expected_value, index_report]
 
 

@@ -81,7 +81,7 @@ static func free_instance(instance: Variant, use_call_deferred: bool = false, is
 	else:
 		@warning_ignore("unsafe_cast")
 		(instance as Object).free()
-	return !is_instance_valid(instance)
+	return not is_instance_valid(instance)
 
 
 static func _release_connections(instance: Object) -> void:

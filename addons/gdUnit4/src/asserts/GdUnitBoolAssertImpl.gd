@@ -78,6 +78,6 @@ func is_true() -> GdUnitBoolAssert:
 
 
 func is_false() -> GdUnitBoolAssert:
-	if current_value() == true || current_value() == null:
+	if current_value() == true or current_value() == null:
 		return report_error(GdAssertMessages.error_is_false(current_value()))
 	return report_success()

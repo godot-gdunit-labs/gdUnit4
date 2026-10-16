@@ -11,52 +11,6 @@ var _server: TCPServer
 var _server_name: String
 
 
-class TcpConnection extends GdUnitTcpNode:
-	var _id: int
-	var _stream: StreamPeerTCP
-
-	func _init(tcp_server: TCPServer) -> void:
-		_stream = tcp_server.take_connection()
-		#_stream.set_big_endian(true)
-		_id = _stream.get_instance_id()
-		rpc_send(_stream, RPCClientConnect.new().with_id(_id))
-
-	func _ready() -> void:
-		server().client_connected.emit(_id)
-
-	func close() -> void:
-		if _stream != null and _stream.get_status() == StreamPeerTCP.STATUS_CONNECTED:
-			_stream.disconnect_from_host()
-		queue_free()
-
-	func id() -> int:
-		return _id
-
-	func server() -> GdUnitTcpServer:
-		return get_parent()
-
-	func _process(_delta: float) -> void:
-		if _stream == null or _stream.get_status() != StreamPeerTCP.STATUS_CONNECTED:
-			return
-		receive_packages(
-			_stream,
-			func(rpc_data: RPC) -> void:
-				server().rpc_data.emit(rpc_data)
-				# is client disconnecting we close the server after a timeout of 1 second
-				if rpc_data is RPCClientDisconnect:
-					close()
-		)
-
-	func disconnect_from_server() -> void:
-		if _stream == null or _stream.get_status() != StreamPeerTCP.STATUS_CONNECTED:
-			return
-		rpc_send(_stream, RPCClientDisconnect.new().with_id(_id))
-
-	func console(_value: Variant) -> void:
-		#print_debug("TCP Server:		", value)
-		pass
-
-
 func _init(server_name := "GdUnit4 TCP Server") -> void:
 	_server_name = server_name
 	GdUnitSignals.instance().gdunit_test_session_terminate.connect(
@@ -76,6 +30,14 @@ func _ready() -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
 		stop()
+
+
+func _process(_delta: float) -> void:
+	if _server != null and not _server.is_listening():
+		return
+	# check if connection is ready to be used
+	if _server != null and _server.is_connection_available():
+		add_child(TcpConnection.new(_server))
 
 
 func start(server_port := GdUnitServerConstants.GD_TEST_SERVER_PORT) -> GdUnitResult:
@@ -111,14 +73,6 @@ func disconnect_client(client_id: int) -> void:
 	client_disconnected.emit(client_id)
 
 
-func _process(_delta: float) -> void:
-	if _server != null and not _server.is_listening():
-		return
-	# check if connection is ready to be used
-	if _server != null and _server.is_connection_available():
-		add_child(TcpConnection.new(_server))
-
-
 func _on_client_connected(client_id: int) -> void:
 	console("Client connected %d" % client_id)
 
@@ -134,3 +88,59 @@ func _on_client_disconnected(client_id: int) -> void:
 
 func console(value: Variant) -> void:
 	print(_server_name, ":	", value)
+
+
+class TcpConnection extends GdUnitTcpNode:
+	var _id: int
+
+
+	var _stream: StreamPeerTCP
+
+
+	func _init(tcp_server: TCPServer) -> void:
+		_stream = tcp_server.take_connection()
+		#_stream.set_big_endian(true)
+		_id = _stream.get_instance_id()
+		rpc_send(_stream, RPCClientConnect.new().with_id(_id))
+
+
+	func _ready() -> void:
+		server().client_connected.emit(_id)
+
+
+	func _process(_delta: float) -> void:
+		if _stream == null or _stream.get_status() != StreamPeerTCP.STATUS_CONNECTED:
+			return
+		receive_packages(
+			_stream,
+			func(rpc_data: RPC) -> void:
+				server().rpc_data.emit(rpc_data)
+				# is client disconnecting we close the server after a timeout of 1 second
+				if rpc_data is RPCClientDisconnect:
+					close()
+		)
+
+
+	func close() -> void:
+		if _stream != null and _stream.get_status() == StreamPeerTCP.STATUS_CONNECTED:
+			_stream.disconnect_from_host()
+		queue_free()
+
+
+	func id() -> int:
+		return _id
+
+
+	func server() -> GdUnitTcpServer:
+		return get_parent()
+
+
+	func disconnect_from_server() -> void:
+		if _stream == null or _stream.get_status() != StreamPeerTCP.STATUS_CONNECTED:
+			return
+		rpc_send(_stream, RPCClientDisconnect.new().with_id(_id))
+
+
+	func console(_value: Variant) -> void:
+		#print_debug("TCP Server:		", value)
+		pass

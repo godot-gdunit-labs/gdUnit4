@@ -1,3 +1,4 @@
+class_name CallableDoubler
 ## The helper class to allow to double Callable
 ## Is just a wrapper to the original callable with the same function signature.
 ##
@@ -7,8 +8,6 @@
 ## The Callable interface and the Object class have overlapping method signatures,
 ## which causes conflicts when attempting to stub these methods.
 ## As a result, you cannot create stubs for 'call' and 'call_deferred' methods.
-
-class_name CallableDoubler
 
 const DOUBLER_SCRIPT: Script = preload("res://addons/gdUnit4/src/doubler/CallableDoubler.gd")
 
@@ -31,16 +30,16 @@ static func excluded_functions() -> PackedStringArray:
 	return ClassDB.class_get_method_list("Object")\
 		.map(CallableDoubler.map_func_name)\
 		.filter(func (name: String) -> bool:
-			return !CallableDoubler.callable_functions().has(name))
+			return not CallableDoubler.callable_functions().has(name))
 
 
 static func non_callable_functions(name: String) -> bool:
-	return ![
+	return not [
 		# we allow "_init", is need to construct it,
 		"excluded_functions",
 		"non_callable_functions",
 		"callable_functions",
-		"map_func_name"
+		"map_func_name",
 		].has(name)
 
 
@@ -150,6 +149,7 @@ func rpc_id(peer_id: int, ...varargs: Array) -> void:
 		7: _cb.rpc_id(peer_id, varargs[0], varargs[1], varargs[2], varargs[3], varargs[4], varargs[5], varargs[6], varargs[7])
 		8: _cb.rpc_id(peer_id, varargs[0], varargs[1], varargs[2], varargs[3], varargs[4], varargs[5], varargs[6], varargs[7], varargs[8])
 		9: _cb.rpc_id(peer_id, varargs[0], varargs[1], varargs[2], varargs[3], varargs[4], varargs[5], varargs[6], varargs[7], varargs[8], varargs[9])
+
 
 func unbind(argcount: int) -> Callable:
 	_cb = _cb.unbind(argcount)

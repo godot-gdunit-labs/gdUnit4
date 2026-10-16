@@ -1,3 +1,5 @@
+class_name Fuzzers
+extends Resource
 ## Factory class providing convenient static methods to create various fuzzer instances.[br]
 ##
 ## Fuzzers is a utility class that simplifies the creation of different fuzzer types
@@ -9,8 +11,6 @@
 ## readability and reducing boilerplate in test cases.[br]
 ##
 ## @tutorial(Fuzzing Testing): https://en.wikipedia.org/wiki/Fuzzing
-class_name Fuzzers
-extends Resource
 
 
 ## Generates random strings with length between [param min_length] and

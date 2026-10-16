@@ -3,9 +3,7 @@ extends Resource
 
 const SUB_COLOR := Color(1, 0, 0, .15)
 const ADD_COLOR := Color(0, 1, 0, .15)
-
 const NO_ORPHAN_DETAILS := "⚠️No details available. Run tests in debug mode to collect details."
-
 # Dictionary of control characters and their readable representations
 const CONTROL_CHARS = {
 	"\n": "<LF>",  # Line Feed
@@ -17,7 +15,6 @@ const CONTROL_CHARS = {
 	"\a": "<BEL>",  # Bell
 	"": "<ESC>",  # Escape
 }
-
 
 static var _control_char_regex: RegEx = RegEx.create_from_string("[\\x00-\\x1F\\x7F]")
 static var _warn_color := GdUnitEditorColorTheme.state_warning.to_html()
@@ -176,7 +173,7 @@ static func orphan_warning(orphans_count: int, info: String) -> String:
 			""".dedent().trim_prefix("\n").trim_suffix("\n") % [
 				_warning("WARNING:"),
 				_colored_value(orphans_count),
-				_colored(info, Color.STEEL_BLUE)
+				_colored(info, Color.STEEL_BLUE),
 				]
 	return """
 		%s Detected %s possible orphan nodes.
@@ -184,7 +181,7 @@ static func orphan_warning(orphans_count: int, info: String) -> String:
 		""".dedent().trim_prefix("\n").trim_suffix("\n") % [
 			_warning("WARNING:"),
 			_colored_value(orphans_count),
-			_warning(NO_ORPHAN_DETAILS)
+			_warning(NO_ORPHAN_DETAILS),
 		]
 
 
@@ -192,21 +189,21 @@ static func orphan_detected(orphan_count: int) -> String:
 	if EngineDebugger.is_active():
 		return "%s Detected %s orphan nodes." % [
 				_warning("WARNING:"),
-				_colored_value(orphan_count)
+				_colored_value(orphan_count),
 			]
 	return """
 		%s Detected %s orphan nodes.
 			%s""".dedent().trim_prefix("\n") % [
 			_warning("WARNING:"),
 			_colored_value(orphan_count),
-			_warning(NO_ORPHAN_DETAILS)
+			_warning(NO_ORPHAN_DETAILS),
 		]
 
 
 static func orphan_node_info(orphan_info: GdUnitOrphanNodeInfo) -> String:
 	var message := "<%s> Id:%s" % [
 		_colored(orphan_info._type, GdUnitEditorColorTheme.engine_type_color),
-		_colored(orphan_info._id, GdUnitEditorColorTheme.engine_type_color)
+		_colored(orphan_info._id, GdUnitEditorColorTheme.engine_type_color),
 	]
 	if orphan_info._stack_element == null:
 		message += _warning("\n\tNo source info available")
@@ -305,7 +302,7 @@ static func error_not_same_error(current: Variant, expected: Variant) -> String:
 
 
 static func error_is_instanceof(current: GdUnitResult, expected: GdUnitResult) -> String:
-	return "%s\n %s\n But it was %s" % [_error("Expected instance of:"),\
+	return "%s\n %s\n But it was %s" % [_error("Expected instance of:"), \
 		_colored_value(expected.or_else(null)), _colored_value(current.or_else(null))]
 
 
@@ -704,7 +701,7 @@ static func format_chars(characters: String, type: Color) -> String:
 		found_control_chars[control_match.get_string()] = true
 	for control_char: String in found_control_chars:
 		var code := control_char.unicode_at(0)
-		formatted_text = formatted_text.replace(control_char, "<DEL>" if code == 0x7F else "<0x%02X>" % code)
+		formatted_text = formatted_text.replace(control_char, "<DEL>" if code == 0x7f else "<0x%02X>" % code)
 
 	return "[bgcolor=#%s][color=white]%s[/color][/bgcolor]" % [type.to_html(), formatted_text]
 

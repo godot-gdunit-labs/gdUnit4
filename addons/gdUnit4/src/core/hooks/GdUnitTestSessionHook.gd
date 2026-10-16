@@ -1,3 +1,5 @@
+class_name GdUnitTestSessionHook
+extends RefCounted
 ## @since GdUnit4 5.1.0
 ##
 ## Base class for creating custom test session hooks in GdUnit4.[br]
@@ -49,14 +51,11 @@
 ## - Access to test cases being executed[br]
 ## - Event emission capabilities for test progress tracking[br]
 ## - Message sending functionality for logging and communication[br]
-class_name GdUnitTestSessionHook
-extends RefCounted
 
 ## The display name of this hook.
 var name: String:
 	get:
 		return name
-
 ## A detailed description of what this hook does.
 var description: String:
 	get:

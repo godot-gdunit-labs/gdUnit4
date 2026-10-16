@@ -19,12 +19,10 @@ enum {
 	INIT,
 	RUN,
 	STOP,
-	EXIT
+	EXIT,
 }
 
-
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
-
 ## Overall test run status codes used by the runners
 const RETURN_SUCCESS = 0
 const RETURN_ERROR = 100
@@ -32,7 +30,6 @@ const RETURN_ERROR_HEADLESS_NOT_SUPPORTED = 103
 const RETURN_ERROR_GODOT_VERSION_NOT_SUPPORTED = 104
 const RETURN_ERROR_SCRIPT_ERRORS_DETECTED = 105
 const RETURN_WARNING = 101
-
 ## Specifies the Node name under which the runner is registered
 const GDUNIT_RUNNER = GdUnitSettings.GDUNIT_RUNNER
 
@@ -40,40 +37,32 @@ const GDUNIT_RUNNER = GdUnitSettings.GDUNIT_RUNNER
 var report_base_path: String = GdUnitFileAccess.current_dir() + "reports":
 	get:
 		return report_base_path
-
 ## Current session report path
 var report_path: String:
 	get:
 		return "%s/%s%d" % [report_base_path, GdUnitConstants.REPORT_DIR_PREFIX, current_report_history_index]
-
 ## Current report history index, if max_report_history > 1 we scan for the next index over the existing reports
 var current_report_history_index: int:
 	get:
 		if max_report_history > 1:
 			return GdUnitFileAccess.find_last_path_index(report_base_path, GdUnitConstants.REPORT_DIR_PREFIX) + 1
 		return 1
-
 ## Controls how many report historys will be hold
 var max_report_history: int = GdUnitConstants.DEFAULT_REPORT_HISTORY_COUNT:
 	get:
 		return max_report_history
 	set(value):
 		max_report_history = value
-
 ## The current runner configuration
 @warning_ignore("unused_private_class_variable")
 var _runner_config := GdUnitRunnerConfig.new()
-
 ## The test suite executor instance
 var _executor: GdUnitTestSuiteExecutor
 var _hooks: GdUnitTestSessionHookService
-
 ## Current runner state
 var _state := READY
-
 ## Current tests to be processed
 var _test_cases: Array[GdUnitTestCase] = []
-
 # holds the current test session context
 var _test_session: GdUnitTestSession
 var _is_editor_debug_run: bool
@@ -148,7 +137,7 @@ func cleanup_report_history() -> int:
 	return GdUnitFileAccess.delete_path_index_lower_equals_than(
 		report_path.get_base_dir(),
 		GdUnitConstants.REPORT_DIR_PREFIX,
-		current_report_history_index-1-max_report_history)
+		current_report_history_index - 1 - max_report_history)
 
 
 ## Returns the exit code when the test run is finished.[br]
@@ -161,7 +150,7 @@ func get_exit_code() -> int:
 func quit(_code: int) -> void:
 	await GdUnitMemoryObserver.gc_on_guarded_instances()
 
-	if !_is_editor_debug_run:
+	if not _is_editor_debug_run:
 		# Only dispose all resources when we not run embedded in the editor
 		GdUnitTools.dispose_all()
 		await get_tree().process_frame
@@ -183,6 +172,8 @@ func _on_gdunit_event(_event: GdUnitEvent) -> void:
 
 ## Event bridge from C# GdUnit4.ITestEventListener.cs[br]
 ## Used to handle test events from C# tests.
+
+
 # gdlint: disable=function-name
 func PublishEvent(data: Dictionary) -> void:
 	_on_gdunit_event(GdUnitEvent.new().deserialize(data))

@@ -24,7 +24,6 @@ const ENUM_FIX := [
 	"Variant.Type",
 	"Control.LayoutMode"]
 
-
 var _is_virtual: bool
 var _is_static: bool
 var _is_engine: bool

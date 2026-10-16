@@ -2,20 +2,16 @@
 extends RefCounted
 
 const GdUnitUpdateClient = preload("res://addons/gdUnit4/src/update/GdUnitUpdateClient.gd")
-
 const FONT_H1 := 22
 const FONT_H2 := 20
 const FONT_H3 := 18
 const FONT_H4 := 16
 const FONT_H5 := 14
 const FONT_H6 := 12
-
 const HORIZONTAL_RULE := "[img=4000x2]res://addons/gdUnit4/src/update/assets/horizontal-line2.png[/img]"
 const HEADER_RULE := "[font_size=%d]$1[/font_size]"
 const HEADER_CENTERED_RULE := "[font_size=%d][center]$1[/center][/font_size]"
-
 const IMAGE_DOWNLOAD_FOLDER := "res://addons/gdUnit4/tmp-update/"
-
 const EXCLUDE_FONT_SIZE := "\b(?!(?:(font_size))\b)"
 
 var md_replace_patterns := [
@@ -49,7 +45,7 @@ var md_replace_patterns := [
 	[regex("<h6[ ]*align[ ]*=[ ]*\"center\">((.*?\\R?)+)<\\/h6>"), HEADER_CENTERED_RULE % FONT_H6],
 
 	# asterics
-	#[regex("(\\*)"), "xxx$1xxx"],
+	# [regex("(\\*)"), "xxx$1xxx"],
 	# extract/compile image references
 	[regex("!\\[(.*?)\\]\\[(.*?)\\]"), process_image_references],
 	# extract images with path and optional tool tip
@@ -88,12 +84,10 @@ var md_replace_patterns := [
 	[regex("``([\\s\\S]*?)``"), code_block("$1")],
 	[regex("`([\\s\\S]*?)`{1,2}"), code_block("$1")],
 ]
-
 var code_block_patterns := [
 	# code blocks, code blocks looks not like code blocks in richtext
 	[regex("```(javascript|python|shell|gdscript|gd)([\\s\\S]*?\n)```"), code_block("$2", true)],
 ]
-
 var _img_replace_regex := RegEx.new()
 var _image_urls := PackedStringArray()
 var _on_table_tag := false
@@ -208,7 +202,50 @@ func process_tables(input: String) -> String:
 
 class GdUnitMDReaderTable:
 	var _columns: int
+
+
 	var _rows: Array[Row] = []
+
+
+	func _init(columns: int) -> void:
+		_columns = columns
+
+
+	func parse_row(line: String) -> bool:
+		# is line containing cells?
+		if line.find("|") == -1:
+			return false
+		_rows.append(Row.new(line.split("|"), _columns))
+		return true
+
+
+	func calculate_max_cell_sizes() -> PackedInt32Array:
+		var cells_size := PackedInt32Array()
+		for column in _columns:
+			@warning_ignore("return_value_discarded")
+			cells_size.append(0)
+
+		for row_index in _rows.size():
+			var row: Row = _rows[row_index]
+			for cell_index in row._cells.size():
+				var cell_size: int = cells_size[cell_index]
+				var size := row._cells[cell_index].length()
+				if size > cell_size:
+					cells_size[cell_index] = size
+		return cells_size
+
+
+	@warning_ignore("return_value_discarded")
+	func to_bbcode() -> PackedStringArray:
+		var cell_sizes := calculate_max_cell_sizes()
+		var bb_code := PackedStringArray()
+
+		bb_code.append("[table=%d]" % _columns)
+		for row_index in _rows.size():
+			bb_code.append(_rows[row_index].to_bbcode(cell_sizes, row_index == 0))
+		bb_code.append("[/table]\n")
+		return bb_code
+
 
 	class Row:
 		var _cells := PackedStringArray()
@@ -236,42 +273,6 @@ class GdUnitMDReaderTable:
 			for i in length:
 				line += "-"
 			return line
-
-	func _init(columns: int) -> void:
-		_columns = columns
-
-	func parse_row(line: String) -> bool:
-		# is line containing cells?
-		if line.find("|") == -1:
-			return false
-		_rows.append(Row.new(line.split("|"), _columns))
-		return true
-
-	func calculate_max_cell_sizes() -> PackedInt32Array:
-		var cells_size := PackedInt32Array()
-		for column in _columns:
-			@warning_ignore("return_value_discarded")
-			cells_size.append(0)
-
-		for row_index in _rows.size():
-			var row: Row = _rows[row_index]
-			for cell_index in row._cells.size():
-				var cell_size: int = cells_size[cell_index]
-				var size := row._cells[cell_index].length()
-				if size > cell_size:
-					cells_size[cell_index] = size
-		return cells_size
-
-	@warning_ignore("return_value_discarded")
-	func to_bbcode() -> PackedStringArray:
-		var cell_sizes := calculate_max_cell_sizes()
-		var bb_code := PackedStringArray()
-
-		bb_code.append("[table=%d]" % _columns)
-		for row_index in _rows.size():
-			bb_code.append(_rows[row_index].to_bbcode(cell_sizes, row_index == 0))
-		bb_code.append("[/table]\n")
-		return bb_code
 
 
 func parse_table(lines: Array) -> PackedStringArray:

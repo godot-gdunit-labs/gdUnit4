@@ -6,12 +6,11 @@ extends Control
 signal test_counters_changed(index: int, total: int, state: GdUnitInspectorTreeConstants.STATE)
 signal tree_item_selected(item: TreeItem)
 
-
 enum GdUnitType {
 	FOLDER,
 	TEST_SUITE,
 	TEST_CASE,
-	TEST_GROUP
+	TEST_GROUP,
 }
 
 const META_GDUNIT_PROGRESS_COUNT_MAX := "gdUnit_progress_count_max"
@@ -32,7 +31,6 @@ var _icon_spinner: Texture2D
 var _icon_gd_script: Texture2D
 var _icon_cs_script: Texture2D
 var _icon_folder: Texture2D
-
 var _tree_root: TreeItem
 var _current_selected_item: TreeItem = null
 var _current_tree_view_mode := GdUnitSettings.get_inspector_tree_view_mode()
@@ -43,6 +41,35 @@ var _run_test_recovery := true
 @onready var _context_menu: GdUnitInspectorContextMenu = %contextMenu
 @onready var _discover_hint: Control = %discover_hint
 @onready var _spinner: Button = %spinner
+
+
+@warning_ignore("return_value_discarded")
+func _ready() -> void:
+	if Engine.is_editor_hint():
+		var base_control := EditorInterface.get_base_control()
+		base_control.set_meta("GdUnit4Inspector", self)
+
+	_init_icons()
+	init_tree()
+	GdUnitSignals.instance().gdunit_settings_changed.connect(_on_settings_changed)
+	GdUnitSignals.instance().gdunit_event.connect(_on_gdunit_event)
+	GdUnitSignals.instance().gdunit_test_discover_added.connect(on_test_case_discover_added)
+	GdUnitSignals.instance().gdunit_test_discover_deleted.connect(on_test_case_discover_deleted)
+	GdUnitSignals.instance().gdunit_test_discover_modified.connect(on_test_case_discover_modified)
+	if _run_test_recovery:
+		GdUnitTestDiscoverer.restore_last_session()
+
+
+func _notification(what: int) -> void:
+	if what == EditorSettings.NOTIFICATION_EDITOR_SETTINGS_CHANGED:
+		_init_icons()
+
+
+# we need current to manually redraw bacause of the animation bug
+# https://github.com/godotengine/godot/issues/69330
+func _process(_delta: float) -> void:
+	if is_visible_in_tree():
+		queue_redraw()
 
 
 ## Used for debugging purposes only
@@ -182,40 +209,11 @@ func disable_test_recovery() -> void:
 	_run_test_recovery = false
 
 
-@warning_ignore("return_value_discarded")
-func _ready() -> void:
-	if Engine.is_editor_hint():
-		var base_control := EditorInterface.get_base_control()
-		base_control.set_meta("GdUnit4Inspector", self)
-
-	_init_icons()
-	init_tree()
-	GdUnitSignals.instance().gdunit_settings_changed.connect(_on_settings_changed)
-	GdUnitSignals.instance().gdunit_event.connect(_on_gdunit_event)
-	GdUnitSignals.instance().gdunit_test_discover_added.connect(on_test_case_discover_added)
-	GdUnitSignals.instance().gdunit_test_discover_deleted.connect(on_test_case_discover_deleted)
-	GdUnitSignals.instance().gdunit_test_discover_modified.connect(on_test_case_discover_modified)
-	if _run_test_recovery:
-		GdUnitTestDiscoverer.restore_last_session()
-
-
-func _notification(what: int) -> void:
-	if what == EditorSettings.NOTIFICATION_EDITOR_SETTINGS_CHANGED:
-		_init_icons()
-
-
 func _init_icons() -> void:
 	_spinner.icon = GdUnitUiTools.get_spinner()
 	_icon_gd_script = GdUnitUiTools.get_icon("GDScript", GdUnitEditorColorTheme.state_initial)
 	_icon_cs_script = GdUnitUiTools.get_icon("CSharpScript", GdUnitEditorColorTheme.state_initial)
 	_icon_folder = GdUnitUiTools.get_icon("Folder", GdUnitEditorColorTheme.folder_color)
-
-
-# we need current to manually redraw bacause of the animation bug
-# https://github.com/godotengine/godot/issues/69330
-func _process(_delta: float) -> void:
-	if is_visible_in_tree():
-		queue_redraw()
 
 
 func init_tree() -> void:
@@ -1153,9 +1151,9 @@ func test_session_stop() -> void:
 	select_item(failure_item if failure_item else _current_selected_item)
 
 
-################################################################################
+# ###############################################################################
 # Tree signal receiver
-################################################################################
+# ###############################################################################
 func _on_tree_item_mouse_selected(mouse_position: Vector2, mouse_button_index: int) -> void:
 	if mouse_button_index == MOUSE_BUTTON_RIGHT:
 		_context_menu.position = get_screen_position() + mouse_position
@@ -1192,11 +1190,9 @@ func _on_Tree_item_activated() -> void:
 		selected_item.collapsed = not selected_item.collapsed
 
 
-################################################################################
+# ###############################################################################
 # external signal receiver
-################################################################################
-
-
+# ###############################################################################
 func _on_gdunit_event(event: GdUnitEvent) -> void:
 	match event.type():
 		GdUnitEvent.DISCOVER_START:

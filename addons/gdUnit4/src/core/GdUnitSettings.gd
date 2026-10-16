@@ -7,12 +7,10 @@ enum GdScriptWarningMode {
 	WARN = 1,
 	ERROR = 2,
 }
-
 enum GdScriptWarningDirectoryMode {
 	EXCLUDE = 0,
 	INCLUDE = 1,
 }
-
 enum NamingConventions {
 	AUTO_DETECT,
 	SNAKE_CASE,
@@ -20,18 +18,14 @@ enum NamingConventions {
 }
 
 const GDUNIT_RUNNER = "GdUnitRunner"
-
 const MAIN_CATEGORY = "gdunit4"
 # Common Settings
 const COMMON_SETTINGS = MAIN_CATEGORY + "/settings"
-
 const GROUP_COMMON = COMMON_SETTINGS + "/common"
 const UPDATE_NOTIFICATION_ENABLED = GROUP_COMMON + "/update_notification_enabled"
 const SERVER_TIMEOUT = GROUP_COMMON + "/server_connection_timeout_minutes"
-
 const GROUP_HOOKS = MAIN_CATEGORY + "/hooks"
 const SESSION_HOOKS = GROUP_HOOKS + "/session_hooks"
-
 const GROUP_TEST = COMMON_SETTINGS + "/test"
 const TEST_TIMEOUT = GROUP_TEST + "/test_timeout_seconds"
 const TEST_LOOKUP_FOLDER = GROUP_TEST + "/test_lookup_folder"
@@ -41,7 +35,6 @@ const TEST_FLAKY_CHECK = GROUP_TEST + "/flaky_check_enable"
 const TEST_FLAKY_MAX_RETRIES = GROUP_TEST + "/flaky_max_retries"
 const TEST_RERUN_UNTIL_FAILURE_RETRIES = GROUP_TEST + "/rerun_until_failure_retries"
 const TEST_PROJECT_SETTINGS_AUTO_SAVE = GROUP_TEST + "/project_settings_auto_save"
-
 # Report Setiings
 const REPORT_SETTINGS = MAIN_CATEGORY + "/report"
 const GROUP_GODOT = REPORT_SETTINGS + "/godot"
@@ -52,30 +45,25 @@ const GROUP_ASSERT = REPORT_SETTINGS + "/assert"
 const REPORT_ASSERT_WARNINGS = GROUP_ASSERT + "/verbose_warnings"
 const REPORT_ASSERT_ERRORS = GROUP_ASSERT + "/verbose_errors"
 const REPORT_ASSERT_STRICT_NUMBER_TYPE_COMPARE = GROUP_ASSERT + "/strict_number_type_compare"
-
 # Godot debug stdout/logging settings
 const CATEGORY_LOGGING := "debug/file_logging/"
 const STDOUT_ENABLE_TO_FILE = CATEGORY_LOGGING + "enable_file_logging"
 const STDOUT_WITE_TO_FILE = CATEGORY_LOGGING + "log_path"
-
 # Godot GDScript warning settings
 const CATEGORY_GDSCRIPT_WARNINGS := "debug/gdscript/warnings/"
 const GDSCRIPT_WARNINGS_INFERRED_DECLARATION := CATEGORY_GDSCRIPT_WARNINGS + "inferred_declaration"
 const GDSCRIPT_WARNINGS_DIRECTORY_RULES := CATEGORY_GDSCRIPT_WARNINGS + "directory_rules"
-
 # GdUnit Templates
 const TEMPLATES = MAIN_CATEGORY + "/templates"
 const TEMPLATES_TS = TEMPLATES + "/testsuite"
 const TEMPLATE_TS_GD = TEMPLATES_TS + "/GDScript"
 const TEMPLATE_TS_CS = TEMPLATES_TS + "/CSharpScript"
-
 # UI Setiings
 const UI_SETTINGS = MAIN_CATEGORY + "/ui"
 const GROUP_UI_INSPECTOR = UI_SETTINGS + "/inspector"
 const INSPECTOR_NODE_COLLAPSE = GROUP_UI_INSPECTOR + "/node_collapse"
 const INSPECTOR_TREE_VIEW_MODE = GROUP_UI_INSPECTOR + "/tree_view_mode"
 const INSPECTOR_TREE_SORT_MODE = GROUP_UI_INSPECTOR + "/tree_sort_mode"
-
 # Shortcut Setiings
 const SHORTCUT_SETTINGS = MAIN_CATEGORY + "/Shortcuts"
 const GROUP_SHORTCUT_INSPECTOR = SHORTCUT_SETTINGS + "/inspector"
@@ -84,23 +72,18 @@ const SHORTCUT_INSPECTOR_RERUN_TEST_DEBUG = GROUP_SHORTCUT_INSPECTOR + "/rerun_t
 const SHORTCUT_INSPECTOR_RUN_TEST_OVERALL = GROUP_SHORTCUT_INSPECTOR + "/run_test_overall"
 const SHORTCUT_INSPECTOR_RUN_TEST_STOP = GROUP_SHORTCUT_INSPECTOR + "/run_test_stop"
 const SHORTCUT_INSPECTOR_RERUN_TEST_UNTIL_FAILURE = GROUP_SHORTCUT_INSPECTOR + "/rerun_test_until_failure"
-
 const GROUP_SHORTCUT_EDITOR = SHORTCUT_SETTINGS + "/editor"
 const SHORTCUT_EDITOR_RUN_TEST = GROUP_SHORTCUT_EDITOR + "/run_test"
 const SHORTCUT_EDITOR_RUN_TEST_DEBUG = GROUP_SHORTCUT_EDITOR + "/run_test_debug"
 const SHORTCUT_EDITOR_CREATE_TEST = GROUP_SHORTCUT_EDITOR + "/create_test"
-
 const GROUP_SHORTCUT_FILESYSTEM = SHORTCUT_SETTINGS + "/filesystem"
 const SHORTCUT_FILESYSTEM_RUN_TEST = GROUP_SHORTCUT_FILESYSTEM + "/run_test"
 const SHORTCUT_FILESYSTEM_RUN_TEST_DEBUG = GROUP_SHORTCUT_FILESYSTEM + "/run_test_debug"
-
 # Toolbar Setiings
 const GROUP_UI_TOOLBAR = UI_SETTINGS + "/toolbar"
 const INSPECTOR_TOOLBAR_BUTTON_RUN_OVERALL = GROUP_UI_TOOLBAR + "/run_overall"
-
 # Feature flags
 const GROUP_FEATURE = MAIN_CATEGORY + "/feature"
-
 # defaults
 # server connection timeout in minutes
 const DEFAULT_SERVER_TIMEOUT: int = 30
@@ -108,7 +91,6 @@ const DEFAULT_SERVER_TIMEOUT: int = 30
 const DEFAULT_TEST_TIMEOUT: int = 60 * 5
 # the folder to create new test-suites
 const DEFAULT_TEST_LOOKUP_FOLDER: String = "test"
-
 # help texts
 const HELP_TEST_LOOKUP_FOLDER := "Subfolder where test suites are located (or empty to use source folder directly)"
 
@@ -145,7 +127,7 @@ static func setup() -> void:
 		"Show 'Run overall Tests' button in the inspector toolbar")
 	create_property_if_need(TEMPLATE_TS_GD, GdUnitTestSuiteTemplate.default_gd_template(), "Test suite template to use")
 	create_shortcut_properties_if_need()
-	create_property_if_need(SESSION_HOOKS, {} as Dictionary[String,bool])
+	create_property_if_need(SESSION_HOOKS, {} as Dictionary[String, bool])
 
 
 static func create_shortcut_properties_if_need() -> void:

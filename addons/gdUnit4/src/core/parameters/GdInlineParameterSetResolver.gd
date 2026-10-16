@@ -1,14 +1,11 @@
 class_name GdInlineParameterSetResolver
 extends GdParameterSetResolver
 
-
 const EXCLUDE_PROPERTIES_TO_COPY := [
 	"script",
 	"type",
 	"Node",
 	"_import_path"]
-
-
 const EXPRESSION_TEMPLATE := """
 extends '${clazz_path}'
 
@@ -17,18 +14,18 @@ func __run_expression() -> Array:
 
 """
 
-var _parameter_sets: PackedStringArray
-var _preparsed_expressions: Array[Expression] = []
-var _bound_input_values: Array[Array] = []
-var _source_path := ""
-var _function_name := ""
-
 static var _native_class_mapping: Dictionary[String, Variant] = {}
 static var _user_class_paths: Dictionary[String, String] = {}
 static var _resolved_user_classes: Dictionary[String, Variant] = {}
 static var _constant_token_regex: RegEx
 static var _number_literal_regex: RegEx
 static var _script_variant_type_regex: RegEx
+
+var _parameter_sets: PackedStringArray
+var _preparsed_expressions: Array[Expression] = []
+var _bound_input_values: Array[Array] = []
+var _source_path := ""
+var _function_name := ""
 
 
 func _init(

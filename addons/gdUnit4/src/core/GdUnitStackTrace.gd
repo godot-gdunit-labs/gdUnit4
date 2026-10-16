@@ -1,9 +1,16 @@
-## Captures and holds the test-side call stack at the point of an assertion failure.[br]
-## Internal gdUnit4 frames are filtered out, leaving only user and test script frames.
 class_name GdUnitStackTrace
 extends RefCounted
+## Captures and holds the test-side call stack at the point of an assertion failure.[br]
+## Internal gdUnit4 frames are filtered out, leaving only user and test script frames.
 
 var _stack_trace: Array[GdUnitStackTraceElement]
+
+
+func _init(stack_trace := _extract_test_stack_trace()) -> void:
+	_stack_trace = stack_trace
+	# Verify stacktrace
+	for stack_element in stack_trace:
+		assert(stack_element != null)
 
 
 static func from_script_backtraces(script_backtraces: Array[ScriptBacktrace]) -> GdUnitStackTrace:
@@ -20,13 +27,6 @@ static func from_script_backtraces(script_backtraces: Array[ScriptBacktrace]) ->
 			var line := sb.get_frame_line(frame)
 			test_stack_trace.append(GdUnitStackTraceElement.new(source, line, function))
 	return GdUnitStackTrace.of(test_stack_trace)
-
-
-func _init(stack_trace := _extract_test_stack_trace()) -> void:
-	_stack_trace = stack_trace
-	# Verify stacktrace
-	for stack_element in stack_trace:
-		assert(stack_element != null)
 
 
 ## Returns a newline-separated string of all frames in the stack trace.
@@ -63,7 +63,7 @@ func print_stack_trace() -> String:
 func serialize() -> String:
 	var frames: Array[Dictionary] = []
 	for frame in _stack_trace:
-		frames.append({"source": frame._source, "line": frame._line, "function": frame._function})
+		frames.append({ "source": frame._source, "line": frame._line, "function": frame._function })
 	return JSON.stringify(frames)
 
 
@@ -106,7 +106,6 @@ static func _extract_test_stack_trace() -> Array[GdUnitStackTraceElement]:
 
 	test_stack_trace.reverse()
 	return test_stack_trace
-
 
 
 static func filter_sources(source: String) -> bool:

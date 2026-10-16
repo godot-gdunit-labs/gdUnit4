@@ -38,7 +38,7 @@ static func run() -> Array[GdUnitTestCase]:
 				)
 
 			console_log_discover_results(collected_tests)
-			if !recovered_tests.is_empty():
+			if not recovered_tests.is_empty():
 				console_log("Recovered last test session successfully, %d tests restored." % recovered_tests.size(), true)
 			return collected_tests
 	)

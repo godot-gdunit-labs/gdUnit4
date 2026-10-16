@@ -1,8 +1,8 @@
+class_name GdUnitGUID
+extends RefCounted
 ## A class representing a globally unique identifier for GdUnit test elements.
 ## Uses random values to generate unique identifiers that can be used
 ## to track and reference test cases and suites across the test framework.
-class_name GdUnitGUID
-extends RefCounted
 
 ## The internal string representation of the GUID.
 ## Generated using Godot's ResourceUID system when no existing GUID is provided.

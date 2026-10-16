@@ -7,14 +7,11 @@ func test_${func_name}() -> void:
 	# remove this line and complete your test
 	assert_not_yet_implemented()
 """
-
 # we exclude the gdunit source directorys by default
 const EXCLUDE_SCAN_DIRECTORIES = [
 	"res://addons/gdUnit4/bin",
 	"res://addons/gdUnit4/src",
 	"res://reports"]
-
-
 const ARGUMENT_TIMEOUT := "timeout"
 const ARGUMENT_SKIP := "do_skip"
 const ARGUMENT_SKIP_REASON := "skip_reason"
@@ -75,6 +72,7 @@ func _scan_test_suites_scripts(dir: DirAccess, collected_suites: Array[Script]) 
 
 	if EXCLUDE_SCAN_DIRECTORIES.has(dir.get_current_dir()):
 		return collected_suites
+
 
 	var err := dir.list_dir_begin()
 	if err != OK:
@@ -340,7 +338,7 @@ static func get_test_case_line_number(resource_path: String, func_name: String) 
 			var row := file.get_line()
 			line_number += 1
 			# ignore comments and empty lines and not test functions
-			if row.begins_with("#") || row.length() == 0 || row.find("func test_") == -1:
+			if row.begins_with("#") or row.length() == 0 or row.find("func test_") == -1:
 				continue
 			# abort if test case name found
 			if row.find("func") != -1 and row.find("test_" + func_name) != -1:
@@ -354,7 +352,7 @@ func get_extends_classname(resource_path: String) -> String:
 		while not file.eof_reached():
 			var row := file.get_line()
 			# skip comments and empty lines
-			if row.begins_with("#") || row.length() == 0:
+			if row.begins_with("#") or row.length() == 0:
 				continue
 			# Stop at first function
 			if row.contains("func"):
@@ -385,7 +383,7 @@ static func add_test_case(resource_path: String, func_name: String) -> GdUnitRes
 	var error := ResourceSaver.save(script, resource_path)
 	if error != OK:
 		return GdUnitResult.error("Can't add test case at: %s to '%s'. Error code %s" % [func_name, resource_path, error])
-	return GdUnitResult.success({"path": resource_path, "line": line_number})
+	return GdUnitResult.success({ "path": resource_path, "line": line_number })
 
 
 static func count_lines(script: Script) -> int:
@@ -409,7 +407,7 @@ static func test_case_exists(test_suite_path: String, func_name: String) -> bool
 static func create_test_case(test_suite_path: String, func_name: String, source_script_path: String) -> GdUnitResult:
 	if test_case_exists(test_suite_path, func_name):
 		var line_number := get_test_case_line_number(test_suite_path, func_name)
-		return GdUnitResult.success({"path": test_suite_path, "line": line_number})
+		return GdUnitResult.success({ "path": test_suite_path, "line": line_number })
 
 	if not test_suite_exists(test_suite_path):
 		var result := create_test_suite(test_suite_path, source_script_path)

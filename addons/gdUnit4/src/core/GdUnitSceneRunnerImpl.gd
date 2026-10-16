@@ -16,7 +16,6 @@ const MAP_MOUSE_BUTTON_MASKS := {
 }
 
 var _func_assert_impl: GDScript = ResourceLoader.load("res://addons/gdUnit4/src/asserts/GdUnitFuncAssertImpl.gd", "GDScript", ResourceLoader.CACHE_MODE_REUSE)
-
 var _is_disposed := false
 var _current_scene: Node = null
 var _awaiter: GdUnitAwaiter = GdUnitAwaiter.new()
@@ -32,7 +31,6 @@ var _curent_mouse_position: Vector2
 var _current_touch_position: Dictionary = {}
 # holds the curretn touch drag position
 var _current_touch_drag_position: Vector2 = Vector2.ZERO
-
 # time factor settings
 var _time_factor := 1.0
 var _scene_auto_free := false
@@ -45,11 +43,11 @@ func _init(p_scene: Variant, p_verbose: bool, p_hide_push_errors := false) -> vo
 	# handle scene loading by resource path
 	if typeof(p_scene) == TYPE_STRING:
 		@warning_ignore("unsafe_cast")
-		if !ResourceLoader.exists(p_scene as String):
+		if not ResourceLoader.exists(p_scene as String):
 			if not p_hide_push_errors:
 				push_error("GdUnitSceneRunner: Can't load scene by given resource path: '%s'. The resource does not exists." % p_scene)
 			return
-		if !str(p_scene).ends_with(".tscn") and !str(p_scene).ends_with(".scn") and !str(p_scene).begins_with("uid://"):
+		if not str(p_scene).ends_with(".tscn") and not str(p_scene).ends_with(".scn") and not str(p_scene).begins_with("uid://"):
 			if not p_hide_push_errors:
 				push_error("GdUnitSceneRunner: The given resource: '%s'. is not a scene." % p_scene)
 			return
@@ -418,12 +416,12 @@ func simulate_frames(frames: int, delta_milli: int = -1) -> GdUnitSceneRunner:
 
 
 func simulate_until_signal(signal_name: String, ...args: Array) -> GdUnitSceneRunner:
-	await _awaiter.await_signal_idle_frames(scene(), signal_name, args, 10000)
+	await _awaiter.await_signal_idle_frames(scene(), signal_name, args, 10_000)
 	return self
 
 
 func simulate_until_object_signal(source: Object, signal_name: String, ...args: Array) -> GdUnitSceneRunner:
-	await _awaiter.await_signal_idle_frames(source, signal_name, args, 10000)
+	await _awaiter.await_signal_idle_frames(source, signal_name, args, 10_000)
 	return self
 
 
@@ -579,9 +577,9 @@ func _handle_input_event(event: InputEvent) -> GdUnitSceneRunner:
 		if _current_scene.process_mode != Node.PROCESS_MODE_DISABLED:
 			Input.flush_buffered_events()
 		_print("	process event %s (%s) <- %s" % [current_scene, _scene_name(), event.as_text()])
-		if(current_scene.has_method("_gui_input")):
+		if current_scene.has_method("_gui_input"):
 			(current_scene as Control)._gui_input(event)
-		if(current_scene.has_method("_unhandled_input")):
+		if current_scene.has_method("_unhandled_input"):
 			current_scene._unhandled_input(event)
 		current_scene.get_viewport().set_input_as_handled()
 

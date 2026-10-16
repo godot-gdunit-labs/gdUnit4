@@ -11,10 +11,9 @@ extends GdUnitMessageWriter
 ## [br]
 ## Used primarily for console-based test execution and CI/CD environments.
 
-
 enum {
 	COLOR_TABLE,
-	COLOR_RGB
+	COLOR_RGB,
 }
 
 const CSI_BOLD = "[1m"
@@ -25,10 +24,8 @@ const CSI_RESET = "[0m"
 # Control Sequence Introducer
 var _debug_show_color_codes := false
 var _color_mode := COLOR_TABLE
-
 ## Current cursor position in the line
 var _current_pos := 0
-
 # Pre-compiled regex patterns for tag matching
 var _tag_regex: RegEx
 

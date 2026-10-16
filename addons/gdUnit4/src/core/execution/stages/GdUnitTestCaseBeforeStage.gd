@@ -1,7 +1,7 @@
-## The test case startup hook implementation.[br]
-## It executes the 'test_before()' block from the test-suite.
 class_name GdUnitTestCaseBeforeStage
 extends IGdUnitExecutionStage
+## The test case startup hook implementation.[br]
+## It executes the 'test_before()' block from the test-suite.
 
 var _call_stage: bool
 

@@ -6,7 +6,6 @@ const DEFAULT_TEMP_TS_GD = """
 	class_name ${suite_class_name}
 	extends GdUnitTestSuite
 """
-
 const DEFAULT_TEMP_TS_CS = """
 	// GdUnit generated TestSuite
 

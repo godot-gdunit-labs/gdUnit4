@@ -2,7 +2,6 @@ class_name GdScriptParser
 extends RefCounted
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
-
 const TYPE_VOID := GdObjects.TYPE_VOID
 const TYPE_VARIANT := GdObjects.TYPE_VARIANT
 const TYPE_VARARG := GdObjects.TYPE_VARARG
@@ -38,13 +37,11 @@ var _token_bracket_square_close := Token.new("]")
 var _token_bracket_curly_open := Token.new("{")
 var _token_bracket_curly_close := Token.new("}")
 var _token_backslash := Token.new("\\")
-
 var _operator_add := Operator.new("+")
 var _operator_sub := Operator.new("-")
 var _operator_mul := Operator.new("*")
 var _operator_div := Operator.new("/")
 var _operator_remainder := Operator.new("%")
-
 var _tokens: Array[Token] = [
 	_token_space,
 	_token_tabulator,
@@ -78,7 +75,6 @@ var _tokens: Array[Token] = [
 	_operator_div,
 	_operator_remainder,
 ]
-
 var _regex_strip_comments := GdUnitTools.to_regex("^([^#\"']|'[^']*'|\"[^\"]*\")*\\K#.*")
 var _scanned_inner_classes := PackedStringArray()
 var _script_constants := {}
@@ -102,23 +98,30 @@ class Token extends RefCounted:
 	func match(input: String, pos: int) -> bool:
 		return input.findn(_token, pos) == pos
 
+
 	func value() -> Variant:
 		return _token
+
 
 	func is_operator() -> bool:
 		return _is_operator
 
+
 	func is_inner_class() -> bool:
 		return _token == "class"
+
 
 	func is_variable() -> bool:
 		return false
 
+
 	func is_token(token_name: String) -> bool:
 		return _token == token_name
 
+
 	func is_skippable() -> bool:
 		return false
+
 
 	func _to_string() -> String:
 		return "Token{" + _token + "}"
@@ -171,7 +174,7 @@ class Variable extends Token:
 	func _cast_to_type(p_value: String, p_type: int) -> Variant:
 		match p_type:
 			TYPE_STRING:
-				return p_value  #.substr(1, p_value.length() - 2)
+				return p_value  # .substr(1, p_value.length() - 2)
 			TYPE_INT:
 				return p_value.to_int()
 			TYPE_FLOAT:
@@ -213,6 +216,7 @@ class RegExToken extends Token:
 		_consumed = matching.get_end() - matching.get_start()
 		return true
 
+
 	func value() -> String:
 		return _value
 
@@ -237,6 +241,11 @@ class FuzzerToken extends RegExToken:
 class TokenInnerClass extends RegExToken:
 	var _content := PackedStringArray()
 
+
+	func _init(token: String, p_regex: RegEx, extract_group_index: int = -1) -> void:
+		super(token, p_regex, extract_group_index)
+
+
 	static func _strip_leading_spaces(input: String) -> String:
 		var characters := input.to_utf8_buffer()
 		while not characters.is_empty():
@@ -245,17 +254,18 @@ class TokenInnerClass extends RegExToken:
 			characters.remove_at(0)
 		return characters.get_string_from_utf8()
 
+
 	static func _consumed_bytes(row: String) -> int:
 		return row.replace(" ", "").replace("	", "").length()
 
-	func _init(token: String, p_regex: RegEx, extract_group_index: int = -1) -> void:
-		super(token, p_regex, extract_group_index)
 
 	func is_class_name(clazz_name: String) -> bool:
 		return value() == clazz_name
 
+
 	func content() -> PackedStringArray:
 		return _content
+
 
 	func parse(source_rows: PackedStringArray, offset: int) -> void:
 		# add class signature
@@ -280,6 +290,7 @@ class TokenInnerClass extends RegExToken:
 			break
 		@warning_ignore_restore("return_value_discarded")
 		_consumed += TokenInnerClass._consumed_bytes("".join(_content))
+
 
 	func _to_string() -> String:
 		return "TokenInnerClass{%s}" % [value()]
@@ -315,7 +326,7 @@ func tokenize_value(input: String, current: int, token: Token, ignore_dots := fa
 		# if first charater a sign
 		# or allowend charset
 		# or is a float value
-		if (test_for_sign and next==0) \
+		if (test_for_sign and next == 0) \
 			or is_allowed_character(character) \
 			or (character == "." and (ignore_dots or current_token.is_valid_int())):
 			current_token += character
@@ -362,7 +373,7 @@ func parse_return_token(input: String) -> Variable:
 	# We scan for the return value exclusive '.' token because it could be referenced to a
 	# external or internal class e.g.  'func foo() -> InnerClass.Bar:'
 	var token := next_token(input, index, [_token_function])
-	while !token.is_variable() and token != _token_not_match:
+	while not token.is_variable() and token != _token_not_match:
 		index += token._consumed
 		token = next_token(input, index, [_token_function])
 	return token
@@ -431,9 +442,9 @@ func _parse_function_arguments(input: String) -> Array[Dictionary]:
 		if in_function:
 			var arg_value := ""
 			var current_argument := {
-				"name" : "",
-				"value" : GdFunctionArgument.UNDEFINED,
-				"type" : TYPE_VARIANT
+				"name": "",
+				"value": GdFunctionArgument.UNDEFINED,
+				"type": TYPE_VARIANT,
 			}
 
 			# parse type and default value
@@ -443,7 +454,7 @@ func _parse_function_arguments(input: String) -> Array[Dictionary]:
 				if token.is_skippable():
 					continue
 
-				if token.is_variable() && current_argument["name"] == "":
+				if token.is_variable() and current_argument["name"] == "":
 					arguments.append(current_argument)
 					current_argument["name"] = (token as Variable).plain_value()
 					continue
@@ -508,9 +519,9 @@ func _parse_function_arguments(input: String) -> Array[Dictionary]:
 						if bracket <= 1:
 							# next argument
 							current_argument = {
-								"name" : "",
-								"value" : GdFunctionArgument.UNDEFINED,
-								"type" : GdObjects.TYPE_VARIANT
+								"name": "",
+								"value": GdFunctionArgument.UNDEFINED,
+								"type": GdObjects.TYPE_VARIANT,
 							}
 							continue
 	return arguments

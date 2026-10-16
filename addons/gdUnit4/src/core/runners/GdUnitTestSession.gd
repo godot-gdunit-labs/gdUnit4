@@ -1,3 +1,5 @@
+class_name GdUnitTestSession
+extends RefCounted
 ##
 ## @since GdUnit4 5.1.0
 ##
@@ -38,8 +40,6 @@
 ## 3. During test execution, events are automatically forwarded to session listeners[br]
 ## 4. Hooks and other components can subscribe to session events[br]
 ## 5. Messages can be sent through the session for logging and communication[br]
-class_name GdUnitTestSession
-extends RefCounted
 
 ## Emitted when a test execution event occurs.[br]
 ## [br]
@@ -89,7 +89,6 @@ signal test_event(event: GdUnitEvent)
 var report_path: String:
 	get:
 		return report_path
-
 ## [b][color=red]@readonly: Should not be modified directly during test execution![/color][/b][br]
 ## Collection of test cases to be executed in this session.[br]
 ## [br]

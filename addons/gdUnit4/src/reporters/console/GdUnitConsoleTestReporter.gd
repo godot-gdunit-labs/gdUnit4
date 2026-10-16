@@ -12,7 +12,6 @@ var test_session: GdUnitTestSession:
 		test_session = value
 		if test_session != null:
 			test_session.test_event.connect(on_gdunit_event)
-
 var _writer: GdUnitMessageWriter
 var _reporter: GdUnitTestReporter = GdUnitTestReporter.new()
 var _status_indent := 86
@@ -106,7 +105,7 @@ func _print_status(event: GdUnitEvent, statistics: Dictionary) -> void:
 	var is_error := (event.is_error()
 		if event.type() == GdUnitEvent.TESTCASE_AFTER
 		else (statistics[GdUnitEvent.ERROR_COUNT] as int != 0))
-	var is_success := !is_failed and !is_error
+	var is_success := not is_failed and not is_error
 
 	if event.is_flaky() and event.is_success():
 		var retries: int = event.statistic(GdUnitEvent.RETRY_COUNT)
@@ -180,7 +179,7 @@ func _print_summary() -> void:
 			total_failure_count(),
 			total_flaky_count(),
 			total_skipped_count(),
-			total_orphan_count()
+			total_orphan_count(),
 		])
 
 

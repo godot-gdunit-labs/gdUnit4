@@ -27,7 +27,7 @@ func register_cb(cmd_name: String, cb: Callable) -> CmdCommandHandler:
 	if not _validate_cb_signature(cb, TYPE_STRING):
 		push_error(
 			("The callback '%s:%s' for command '%s' has invalid function signature. "
-			+"The callback signature must be 'func name(value: PackedStringArray)'")
+			+ "The callback signature must be 'func name(value: PackedStringArray)'")
 			% [cb.get_object().get_class(), cb.get_method(), cmd_name])
 		return null
 
@@ -47,7 +47,7 @@ func register_cbv(cmd_name: String, cb: Callable) -> CmdCommandHandler:
 	if not _validate_cb_signature(cb, TYPE_PACKED_STRING_ARRAY):
 		push_error(
 			("The callback '%s:%s' for command '%s' has invalid function signature. "
-			+"The callback signature must be 'func name(value: PackedStringArray)'")
+			+ "The callback signature must be 'func name(value: PackedStringArray)'")
 			% [cb.get_object().get_class(), cb.get_method(), cmd_name])
 		return null
 

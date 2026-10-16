@@ -192,7 +192,7 @@ func _filter_by_key(element: Variant, values: Array, compare_mode: GdObjects.Com
 	for key: Variant in values:
 		if GdObjects.equals(key, element, true, compare_mode):
 			return is_not
-	return !is_not
+	return not is_not
 
 
 ## Small helper to support the old expected arguments as single array and variadic arguments

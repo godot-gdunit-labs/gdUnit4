@@ -1,3 +1,5 @@
+class_name BoolFuzzer
+extends Fuzzer
 ## A fuzzer that generates random boolean values for testing.[br]
 ##
 ## This is useful for testing code paths that
@@ -10,8 +12,6 @@
 ##     my_feature.set_enabled(enabled)
 ##     assert_bool(my_feature.is_enabled()),is_equal(enabled)
 ## [/codeblock]
-class_name BoolFuzzer
-extends Fuzzer
 
 
 ## Generates a random boolean value.[br]

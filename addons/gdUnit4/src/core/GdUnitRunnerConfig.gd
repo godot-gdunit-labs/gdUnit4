@@ -2,13 +2,11 @@ class_name GdUnitRunnerConfig
 extends Resource
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
-
 const CONFIG_VERSION = "5.0"
 const VERSION = "version"
 const TESTS = "tests"
 const SERVER_PORT = "server_port"
 const EXIT_FAIL_FAST = "exit_on_first_fail"
-
 const CONFIG_FILE = "res://addons/gdUnit4/GdUnitRunner.cfg"
 
 var _config := {
@@ -18,7 +16,7 @@ var _config := {
 		# the port of running test server for this session
 		SERVER_PORT: -1,
 		# Exit on first failure
-		EXIT_FAIL_FAST: false
+		EXIT_FAIL_FAST: false,
 	}
 
 
@@ -68,7 +66,7 @@ func save_config(path: String = CONFIG_FILE) -> GdUnitResult:
 		VERSION: CONFIG_VERSION,
 		EXIT_FAIL_FAST: is_fail_fast(),
 		SERVER_PORT: server_port(),
-		TESTS: Array()
+		TESTS: Array(),
 	}
 
 	var tests: Array = to_save.get(TESTS)

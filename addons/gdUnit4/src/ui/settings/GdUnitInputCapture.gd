@@ -18,10 +18,6 @@ func _ready() -> void:
 	_tween.tween_property(%Label, "self_modulate", Color(1, 1, 1, .8), 1.0).from_current().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN_OUT)
 
 
-func reset() -> void:
-	_input_event = InputEventKey.new()
-
-
 func _input(event: InputEvent) -> void:
 	if not is_visible_in_tree():
 		return
@@ -44,6 +40,10 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and not event.is_pressed():
 		input_completed.emit(_input_event)
 		hide()
+
+
+func reset() -> void:
+	_input_event = InputEventKey.new()
 
 
 func _apply_input_modifiers(event: InputEvent) -> void:

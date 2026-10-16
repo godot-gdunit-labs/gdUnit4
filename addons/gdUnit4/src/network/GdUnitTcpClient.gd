@@ -25,30 +25,6 @@ func _ready() -> void:
 	#_stream.set_big_endian(true)
 
 
-func stop() -> void:
-	console("Disconnecting from server")
-	if _stream != null:
-		rpc_send(_stream, RPCClientDisconnect.new().with_id(_client_id))
-	if _stream != null:
-		_stream.disconnect_from_host()
-	_connected = false
-
-
-func start(host: String, port: int) -> GdUnitResult:
-	_host = host
-	_port = port
-	if _connected:
-		return GdUnitResult.warn("Client already connected ... %s:%d" % [_host, _port])
-
-	# Connect client to server
-	if _stream.get_status() != StreamPeerTCP.STATUS_CONNECTED:
-		var err := _stream.connect_to_host(host, port)
-		#prints("connect_to_host", host, port, err)
-		if err != OK:
-			return GdUnitResult.error("GdUnit4: Can't establish client, error code: %s" % err)
-	return GdUnitResult.success("GdUnit4: Client connected checked port %d" % port)
-
-
 func _process(_delta: float) -> void:
 	match _stream.get_status():
 		StreamPeerTCP.STATUS_NONE:
@@ -90,6 +66,30 @@ func _process(_delta: float) -> void:
 			_stream.disconnect_from_host()
 			connection_failed.emit("Connect to TCP Server %s:%d faild!" % [_host, _port])
 			return
+
+
+func stop() -> void:
+	console("Disconnecting from server")
+	if _stream != null:
+		rpc_send(_stream, RPCClientDisconnect.new().with_id(_client_id))
+	if _stream != null:
+		_stream.disconnect_from_host()
+	_connected = false
+
+
+func start(host: String, port: int) -> GdUnitResult:
+	_host = host
+	_port = port
+	if _connected:
+		return GdUnitResult.warn("Client already connected ... %s:%d" % [_host, _port])
+
+	# Connect client to server
+	if _stream.get_status() != StreamPeerTCP.STATUS_CONNECTED:
+		var err := _stream.connect_to_host(host, port)
+		#prints("connect_to_host", host, port, err)
+		if err != OK:
+			return GdUnitResult.error("GdUnit4: Can't establish client, error code: %s" % err)
+	return GdUnitResult.success("GdUnit4: Client connected checked port %d" % port)
 
 
 func is_client_connected() -> bool:

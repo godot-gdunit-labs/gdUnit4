@@ -69,4 +69,5 @@ func update_shortcut() -> void:
 
 @abstract func execute(...parameters: Array) -> void
 
+
 @abstract func _do_stop() -> void

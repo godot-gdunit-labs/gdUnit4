@@ -2,6 +2,7 @@
 class_name GdUnitAssertions
 extends RefCounted
 
+
 @warning_ignore("return_value_discarded")
 func _init() -> void:
 	# preload all gdunit assertions to speedup testsuite loading time
@@ -27,6 +28,8 @@ func _init() -> void:
 
 ### We now load all used asserts and tool scripts into the cache according to the principle of "lazy loading"
 ### in order to noticeably reduce the loading time of the test suite.
+
+
 # We go this hard way to increase the loading performance to avoid reparsing all the used scripts
 # for more detailed info -> https://github.com/godotengine/godot/issues/67400
 # gdlint:disable=function-name

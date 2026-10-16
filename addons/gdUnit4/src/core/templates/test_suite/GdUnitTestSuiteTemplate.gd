@@ -3,7 +3,6 @@ extends RefCounted
 
 const TEMPLATE_ID_GD = 1000
 const TEMPLATE_ID_CS = 2000
-
 const SUPPORTED_TAGS_GD = """
 	GdScript Tags are replaced when the test-suite is created.
 
@@ -35,7 +34,6 @@ const SUPPORTED_TAGS_GD = """
 		# will be result in
 		var my_script := load("res://folder/my_class.gd")
 """
-
 const SUPPORTED_TAGS_CS = """
 	C# Tags are replaced when the test-suite is created.
 
@@ -70,7 +68,6 @@ const SUPPORTED_TAGS_CS = """
 		// will be result in
 		private object myScript = GD.Load("res://folder/MyClass.cs");
 """
-
 const TAG_TEST_SUITE_CLASS = "${suite_class_name}"
 const TAG_SOURCE_CLASS_NAME = "${source_class}"
 const TAG_SOURCE_CLASS_VARNAME = "${source_var}"
@@ -90,7 +87,7 @@ static func build_template(source_path: String) -> String:
 	var template: String = GdUnitSettings.get_setting(GdUnitSettings.TEMPLATE_TS_GD, default_gd_template())
 
 	return template\
-		.replace(TAG_TEST_SUITE_CLASS, clazz_name+"Test")\
+		.replace(TAG_TEST_SUITE_CLASS, clazz_name + "Test")\
 		.replace(TAG_SOURCE_RESOURCE_PATH, source_path)\
 		.replace(TAG_SOURCE_CLASS_NAME, clazz_name)\
 		.replace(TAG_SOURCE_CLASS_VARNAME, GdObjects.to_snake_case(clazz_name))

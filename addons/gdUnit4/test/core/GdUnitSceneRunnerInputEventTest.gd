@@ -874,11 +874,9 @@ func test_simulate_mouse_button_press_and_release() -> void:
 		assert_bool(Input.is_mouse_button_pressed(mouse_button)).is_false()
 
 
-#####################################################################################################################
-
-
-# Tests of simulate touch screen inputs                                                                             #
-#####################################################################################################################
+# ####################################################################################################################
+# Tests of simulate touch screen inputs                                                                              #
+# ####################################################################################################################
 func test_simulate_screen_touch_press() -> void:
 	# simulate pressing the touching screen
 	_runner.simulate_screen_touch_press(0, Vector2(683, 339))

@@ -1,4 +1,3 @@
-# GdUnit generated TestSuite
 class_name GdUnitFuncAssertImplTest
 extends GdUnitTestSuite
 

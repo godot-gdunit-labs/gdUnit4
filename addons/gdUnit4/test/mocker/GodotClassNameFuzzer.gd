@@ -24,6 +24,8 @@ const EXCLUDED_CLASSES = [
 	# Godot-4-4_dev7 get_class issues
 	"UPNPDevice",
 	"UPNP",
+	# requires an active OpenXR session, freeing it logs `Parameter "render_model_extension" is null`
+	"OpenXRRenderModelManager",
 ]
 
 var class_names: Array[String] = []

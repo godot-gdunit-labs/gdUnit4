@@ -56,3 +56,21 @@ func test_double_coroutine_func() -> void:
 			await super(button_id_)
 		""".dedent().trim_prefix("\n")
 	assert_str("\n".join(doubler.build())).is_equal(expected)
+
+
+func test_default_return_value_engine_class_enum() -> void:
+	var fd := get_function_description("Node", "get_process_mode")
+	var doubler := GdUnitFunctionDoublerBuilder.new(fd)
+	assert_str(doubler.default_return_value()).is_equal("Node.PROCESS_MODE_INHERIT")
+
+
+func test_default_return_value_script_class_enum() -> void:
+	var fd := get_function_description_from(ClassWithEnumReturnTypes, "get_enum")
+	var doubler := GdUnitFunctionDoublerBuilder.new(fd)
+	assert_str(doubler.default_return_value()).is_equal("1")
+
+
+func test_default_return_value_inner_class_enum() -> void:
+	var fd := get_function_description_from(ClassWithEnumReturnTypes, "get_inner_class_enum")
+	var doubler := GdUnitFunctionDoublerBuilder.new(fd)
+	assert_str(doubler.default_return_value()).is_equal("111")

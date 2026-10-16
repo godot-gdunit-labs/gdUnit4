@@ -95,7 +95,7 @@ func _ready() -> void:
 
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_PREDELETE and Engine.get_meta(GDUNIT_RUNNER, null) == self:
+	if what == NOTIFICATION_PREDELETE and Engine.has_meta(GDUNIT_RUNNER) and Engine.get_meta(GDUNIT_RUNNER) == self:
 		Engine.remove_meta(GDUNIT_RUNNER)
 
 

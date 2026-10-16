@@ -230,9 +230,10 @@ func default_return_value() -> String:
 
 		var enum_path := enum_class.split(".")
 		if enum_path.size() >= 2:
-			var keys := ClassDB.class_get_enum_constants(enum_path[0], enum_path[1])
-			if not keys.is_empty():
-				return "%s.%s" % [enum_path[0], keys[0]]
+			if ClassDB.class_exists(enum_path[0]):
+				var keys := ClassDB.class_get_enum_constants(enum_path[0], enum_path[1])
+				if not keys.is_empty():
+					return "%s.%s" % [enum_path[0], keys[0]]
 			var enum_value: Variant = get_enum_default(enum_class)
 			if enum_value != null:
 				return str(enum_value)

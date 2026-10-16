@@ -201,4 +201,15 @@ func test_new_runner_does_not_replace_the_session_runner() -> void:
 	assert_object(Engine.get_meta(GdUnitSettings.GDUNIT_RUNNER)).is_same(session_runner)
 	runner.free()
 	assert_object(Engine.get_meta(GdUnitSettings.GDUNIT_RUNNER, null)).is_same(session_runner)
+
+
+func test_free_runner_without_registered_session_runner() -> void:
+	var session_runner: Object = Engine.get_meta(GdUnitSettings.GDUNIT_RUNNER)
+	var runner := GdUnitTestCIRunner.new()
+	Engine.remove_meta(GdUnitSettings.GDUNIT_RUNNER)
+
+	await assert_error(func() -> void: runner.free()).is_success()
+	var has_runner := Engine.has_meta(GdUnitSettings.GDUNIT_RUNNER)
+	Engine.set_meta(GdUnitSettings.GDUNIT_RUNNER, session_runner)
+	assert_bool(has_runner).is_false()
 #endregion

@@ -124,15 +124,15 @@ cleanup needed.
 
 ### Setup GDScript Linting
 
-GDScript linting uses `gdtoolkit` (`gdlint`).
+GDScript linting uses `gdstyle` 0.3.3, configured by [gdstyle.toml](./gdstyle.toml).
 
-[Install GDlint](https://github.com/Scony/godot-gdscript-toolkit)
+[Install gdstyle](https://github.com/atelico/gdstyle#installation)
 
-You can optionally run `gdlint` locally to check your changes before submitting a PR.  
-Linting is enforced by CI for all plugin sources and tests:
+You can optionally run `gdstyle check` locally to check your changes before submitting a PR.  
+Linting is enforced by CI for all plugin sources and tests, any warning fails the check:
 
 ```bash
-gdlint addons/gdUnit4/
+gdstyle check --max-warnings 0 addons/gdUnit4/
 ```
 
 ### Project Structure
@@ -152,10 +152,10 @@ In short: We eliminate the clutter so the AI can find the right answers faster.
 
 - Basic understanding of object-oriented concepts (interfaces, inheritance) is recommended
 - C# knowledge is helpful but not required for GDScript-only contributions
-- The goal is to apply linting across the entire project, but currently only part of the source tree is fully lint-clean
+- All plugin sources and tests must pass `gdstyle check` without warnings
 - Please follow existing project rules and CI expectations for the files you modify
 - Never commit changes to `project.godot` unless we need to update the C# API dependencies
-- Follow the repository configuration and formatting rules defined in files such as [.gdlintrc](./.gdlintrc), [.editorconfig](./.editorconfig),
+- Follow the repository configuration and formatting rules defined in files such as [gdstyle.toml](./gdstyle.toml), [.editorconfig](./.editorconfig),
   [.markdownlint.jsonc](./.github/actions/formatting_checks/.markdownlint.jsonc), and [.yamllint.yml](./.github/actions/formatting_checks/.yamllint.yml)
 
 ## License

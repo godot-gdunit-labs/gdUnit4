@@ -55,13 +55,14 @@ dotnet format gdUnit4.csproj --verify-no-changes --verbosity diagnostic
 
 ### GDScript Linting
 
-Requires `gdlint` (gdscript-toolkit 4.5.0):
+Requires [gdstyle](https://github.com/atelico/gdstyle) 0.3.3, configured by `gdstyle.toml` in the repository root:
 
 ```bash
-gdlint addons/gdUnit4/
+gdstyle check --max-warnings 0 addons/gdUnit4/
 ```
 
-CI lints the whole plugin, sources and tests. Directories named `resources` are excluded by `.gdlintrc`.
+CI lints the whole plugin, sources and tests, and fails on any warning. Directories named `resources` and the
+intentionally malformed scanner test suite are excluded in `gdstyle.toml`.
 
 ### Markdown Linting
 
@@ -123,30 +124,35 @@ C#-specific tests live under `test/dotnet/`.
 ## Coding Style
 
 **GDScript:** Follow the shared rule `../ai-harness-core/shared-rules/gdscript-style.md`.
-Enforced by gdlint with these key limits (`.gdlintrc`):
+Enforced by `gdstyle check` with these key limits (`gdstyle.toml`):
 
 - Max line length: 180
 - Max file lines: 1000
 - Max public methods: 40
 - Function argument count: 11
 
-After every GDScript change, lint the modified file with gdlint before considering the task done:
+After every GDScript change, lint the modified file with gdstyle before considering the task done:
 
 ```bash
-gdlint path/to/changed_file.gd
+gdstyle check --max-warnings 0 path/to/changed_file.gd
 ```
 
-Before running gdlint, verify it is installed:
+Suppress a finding only when it cannot be fixed, with `# gdstyle:ignore=<rule>` on the reported line or
+`# gdstyle:ignore-file=<rule>` appended to the `extends` line. Never insert extra lines for a suppression, tests assert
+hardcoded source line numbers.
+
+Before running gdstyle, verify it is installed:
 
 ```bash
-gdlint --version
+gdstyle --version
 ```
 
-If gdlint is not installed, **stop and tell the user** to install it:
+If gdstyle is not installed, **stop and tell the user** to install it:
 
 ```text
-gdlint is not installed. Please install it with:
-  pip install gdtoolkit==4.5.0
+gdstyle is not installed. Please install it with:
+  cargo install gdstyle --version 0.3.3 --locked
+or download the release binary from https://github.com/atelico/gdstyle/releases/tag/v0.3.3
 ```
 
 Do not skip linting or proceed without it.
@@ -212,7 +218,7 @@ The `current_version` in `documentation/_config.yml` should be updated when rele
 - Main branch: `master`
 - Feature branches should be named after the issue number (e.g., `GD-111`)
 - PRs must link to an issue and pass all CI checks before merging
-- CI runs format checks, gdlint, and tests against Godot 4.5, 4.5.1, and 4.6
+- CI runs format checks, `gdstyle check`, and tests against Godot 4.5, 4.5.1, and 4.6
 
 ### Git Hooks
 
@@ -234,8 +240,8 @@ When editing or creating `.tscn` files, do not manually remove uid attributes â€
 Run all linting locally before pushing to avoid CI failures:
 
 ```bash
-# GDScript lint (mirrors .github/workflows/gdlint.yml)
-gdlint addons/gdUnit4/
+# GDScript lint (mirrors .github/workflows/gdstyle.yml)
+gdstyle check --max-warnings 0 addons/gdUnit4/
 
 # Markdown lint
 markdownlint-cli2 --config .github/actions/formatting_checks/.markdownlint.jsonc "**/*.md"

@@ -126,9 +126,9 @@ Minimum test coverage: supported types, unsupported types (type-check error mess
 `is_null`, `is_not_null`, `is_equal` (pass + each failure variant), `is_not_equal`,
 every type-specific method, `assert_that` dispatch, method chaining.
 
-**Lint scope:** CI gdlint checks both `src/asserts/` and `test/asserts/`.
+**Lint scope:** CI `gdstyle check` checks both `src/asserts/` and `test/asserts/`.
 Always lint both after changes:
 
 ```bash
-gdlint addons/gdUnit4/src/asserts/ addons/gdUnit4/test/asserts/
+gdstyle check --max-warnings 0 addons/gdUnit4/src/asserts/ addons/gdUnit4/test/asserts/
 ```

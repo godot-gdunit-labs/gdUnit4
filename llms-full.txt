@@ -39,7 +39,7 @@ dotnet format gdUnit4.csproj --verify-no-changes --verbosity diagnostic
 
 ## Coding Conventions
 
-**GDScript** — enforced by gdlint (gdscript-toolkit 4.5.0):
+**GDScript** — enforced by `gdstyle check` (gdstyle 0.3.3, configured by `gdstyle.toml`):
 - Max line length: 180 characters
 - Max file lines: 1000
 - Max public methods: 40
@@ -50,7 +50,7 @@ dotnet format gdUnit4.csproj --verify-no-changes --verbosity diagnostic
 ## GDScript Linting
 
 ```bash
-gdlint addons/gdUnit4/
+gdstyle check --max-warnings 0 addons/gdUnit4/
 ```
 
 ## Branch and PR Conventions
@@ -58,5 +58,5 @@ gdlint addons/gdUnit4/
 - Main branch: `master`
 - Feature branches named after issue number (e.g. `GD-111`)
 - PRs must link to an issue and pass all CI checks
-- CI runs format checks, gdlint, and tests against Godot 4.5, 4.5.1, and 4.6
+- CI runs format checks, `gdstyle check`, and tests against Godot 4.5, 4.5.1, and 4.6
 - PR descriptions must include `# Why` and `# What` sections

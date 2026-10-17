@@ -26,7 +26,6 @@ const RETURN_DEEP_STUB = GdUnitMock.RETURN_DEEP_STUB
 var __is_skipped := false
 @warning_ignore("unused_private_class_variable")
 var __skip_reason := "Unknow."
-var __active_test_case: String
 var __awaiter := __gdunit_awaiter()
 
 
@@ -88,10 +87,6 @@ func after_test() -> void:
 
 func is_failure() -> bool:
 	return Engine.get_meta("GD_TEST_FAILURE") if Engine.has_meta("GD_TEST_FAILURE") else false
-
-
-func set_active_test_case(test_case: String) -> void:
-	__active_test_case = test_case
 
 
 # === Tools ====================================================================

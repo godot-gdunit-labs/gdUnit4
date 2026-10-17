@@ -54,13 +54,13 @@ func after() -> void:
 
 
 func before_test() -> void:
-	if _metrics.has(__active_test_case):
-		_metrics[__active_test_case].count_test_before_test()
+	if _metrics.has(GdUnitThreadManager.get_current_context().get_execution_context().test_case.test_name()):
+		_metrics[GdUnitThreadManager.get_current_context().get_execution_context().test_case.test_name()].count_test_before_test()
 
 
 func after_test() -> void:
-	if _metrics.has(__active_test_case):
-		_metrics[__active_test_case].count_test_after_test()
+	if _metrics.has(GdUnitThreadManager.get_current_context().get_execution_context().test_case.test_name()):
+		_metrics[GdUnitThreadManager.get_current_context().get_execution_context().test_case.test_name()].count_test_after_test()
 
 
 @warning_ignore('unused_parameter')

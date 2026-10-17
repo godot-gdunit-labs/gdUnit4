@@ -56,18 +56,18 @@ func after() -> void:
 
 
 func before_test() -> void:
-	_metrics[__active_test_case].count_test_before_test()
+	_metrics[GdUnitThreadManager.get_current_context().get_execution_context().test_case.test_name()].count_test_before_test()
 
 
 func after_test() -> void:
-	_metrics[__active_test_case].count_test_after_test()
+	_metrics[GdUnitThreadManager.get_current_context().get_execution_context().test_case.test_name()].count_test_after_test()
 
 
 func test_parameterized_2times(_value: int, _expected: bool, _test_parameters := [
 	[0, false],
 	[1, true]]) -> void:
 
-	_metrics[__active_test_case].count_test()
+	_metrics[GdUnitThreadManager.get_current_context().get_execution_context().test_case.test_name()].count_test()
 
 
 func test_parameterized_5times(_value: int, _expected: bool, _test_parameters := [
@@ -77,4 +77,4 @@ func test_parameterized_5times(_value: int, _expected: bool, _test_parameters :=
 	[1, true],
 	[1, true]]) -> void:
 
-	_metrics[__active_test_case].count_test()
+	_metrics[GdUnitThreadManager.get_current_context().get_execution_context().test_case.test_name()].count_test()

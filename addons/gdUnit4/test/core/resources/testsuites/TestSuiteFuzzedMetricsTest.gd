@@ -61,18 +61,18 @@ func after() -> void:
 
 
 func before_test() -> void:
-	_metrics[__active_test_case].count_test_before_test()
+	_metrics[GdUnitThreadManager.get_current_context().get_execution_context().test_case.test_name()].count_test_before_test()
 	# clean the stack before every test run
 	_stack.clear()
 
 
 func after_test() -> void:
-	_metrics[__active_test_case].count_test_after_test()
+	_metrics[GdUnitThreadManager.get_current_context().get_execution_context().test_case.test_name()].count_test_after_test()
 
 
 func test_execute_3times(_fuzzer := Fuzzers.rangei(0, 1000), _fuzzer_iterations := 3) -> void:
-	_metrics[__active_test_case].count_test()
+	_metrics[GdUnitThreadManager.get_current_context().get_execution_context().test_case.test_name()].count_test()
 
 
 func test_execute_5times(_fuzzer := Fuzzers.rangei(0, 1000), _fuzzer_iterations := 5) -> void:
-	_metrics[__active_test_case].count_test()
+	_metrics[GdUnitThreadManager.get_current_context().get_execution_context().test_case.test_name()].count_test()

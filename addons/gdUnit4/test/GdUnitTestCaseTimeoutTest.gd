@@ -3,6 +3,7 @@ extends GdUnitTestSuite
 
 const SECOND: int = 1000
 const MINUTE: int = SECOND * 60
+const GdUnitTools = preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
 var _before_arg: String
 var _test_arg: String
@@ -15,7 +16,7 @@ func before() -> void:
 
 func before_test() -> void:
 	# set failing test to success if failed by timeout
-	discard_error_interupted_by_timeout()
+	GdUnitTools.discard_error_interrupted_by_timeout()
 	_test_arg = "abc"
 
 
@@ -109,7 +110,7 @@ func test_timeout_long_running_test_abort(_timeout := 4000) -> void:
 
 
 func test_timeout_fuzzer(fuzzer := Fuzzers.rangei(-23, 22), _timeout := 2000) -> void:
-	discard_error_interupted_by_timeout()
+	GdUnitTools.discard_error_interrupted_by_timeout()
 	fuzzer.next_value()
 	# wait each iteration 200ms
 	await await_millis(200)

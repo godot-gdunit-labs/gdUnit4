@@ -82,7 +82,7 @@ The following matchers are available:<br>
 |any_packed_vector2_array | Argument matcher to match any PackedVector2Array value |
 |any_packed_vector3_array | Argument matcher to match any PackedVector3Array value |
 |any_plane | Argument matcher to match any Plane value |
-|any_quat | Argument matcher to match any Quaternion value |
+|any_quaternion | Argument matcher to match any Quaternion value |
 |any_rect2 | Argument matcher to match any Rect2 value |
 |any_rid | Argument matcher to match any RID value |
 |any_string | Argument matcher to match any string value |

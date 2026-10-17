@@ -136,7 +136,8 @@ static func find_test_case(test_suite: Node, test_case_name: String, index := -1
 	return null
 
 
-static func register_expect_interupted_by_timeout(test_suite: Node, test_case_name: String) -> void:
-	var test_case := find_test_case(test_suite, test_case_name)
+## Discard the error message triggered by a timeout (interruption) of the current running test case.
+static func discard_error_interrupted_by_timeout() -> void:
+	var test_case := GdUnitThreadManager.get_current_context().get_execution_context().test_case
 	if test_case:
 		test_case.expect_to_interupt()

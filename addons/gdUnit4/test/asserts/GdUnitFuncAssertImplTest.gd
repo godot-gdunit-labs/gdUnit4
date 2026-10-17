@@ -142,7 +142,7 @@ func test_is_equal_wiht_func_arg(_timeout := 1300) -> void:
 # abort test after 500ms to fail
 func test_timeout_and_assert_fails(_timeout := 500) -> void:
 	# disable temporary the timeout errors for this test
-	discard_error_interupted_by_timeout()
+	GdUnitTools.discard_error_interrupted_by_timeout()
 	var value_provider := TestIterativeValueProvider.new(1, 10, 10)
 	# wait longer than test timeout, the value will be never '42'
 	await assert_func(value_provider, "int_value").wait_until(1000).is_equal(42)

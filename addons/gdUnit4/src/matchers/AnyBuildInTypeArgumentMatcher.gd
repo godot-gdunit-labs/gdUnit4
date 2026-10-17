@@ -28,7 +28,7 @@ func _to_string() -> String:
 		TYPE_RECT2: return "any_rect2()"
 		TYPE_RECT2I: return "any_rect2i()"
 		TYPE_PLANE: return "any_plane()"
-		TYPE_QUATERNION: return "any_quat()"
+		TYPE_QUATERNION: return "any_quaternion()"
 		TYPE_AABB: return "any_aabb()"
 		TYPE_BASIS: return "any_basis()"
 		TYPE_TRANSFORM2D: return "any_transform_2d()"

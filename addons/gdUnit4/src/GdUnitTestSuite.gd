@@ -145,14 +145,6 @@ func add_child(node: Node, force_readable_name := false, internal := Node.INTERN
 		execution_context.orphan_monitor_start()
 
 
-## Discard the error message triggered by a timeout (interruption).[br]
-## By default, an interrupted test is reported as an error.[br]
-## This function allows you to change the message to Success when an interrupted error is reported.
-func discard_error_interupted_by_timeout() -> void:
-	@warning_ignore("unsafe_method_access")
-	__gdunit_tools().register_expect_interupted_by_timeout(self, __active_test_case)
-
-
 ## Creates a new directory under the temporary directory *user://tmp*[br]
 ## Useful for storing data during test execution. [br]
 ## The directory is automatically deleted after test suite execution
@@ -445,7 +437,7 @@ func any_plane() -> GdUnitArgumentMatcher:
 
 
 ## Argument matcher to match any Quaternion value
-func any_quat() -> GdUnitArgumentMatcher:
+func any_quaternion() -> GdUnitArgumentMatcher:
 	@warning_ignore("unsafe_method_access")
 	return __gdunit_argument_matchers().by_type(TYPE_QUATERNION)
 

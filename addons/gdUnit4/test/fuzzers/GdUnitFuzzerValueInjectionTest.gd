@@ -1,5 +1,7 @@
 extends GdUnitTestSuite
 
+const GdUnitTools = preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
+
 var expected_value: Array[int] = [22, 3, -14, -16, 21, 20, 4, -23, -19, -5]
 var expected_value_a: Array[int] = [22, -14, 21, 4, -19, -11, 5, 21, -6, -9]
 var expected_value_b: Array[int] = [35, 38, 34, 39, 35, 41, 37, 35, 34, 39]
@@ -74,7 +76,7 @@ func test_fuzzer_inject_value(fuzzer := Fuzzers.rangei(-23, 22), _fuzzer_iterati
 
 
 func test_fuzzer_with_timeout(fuzzer := Fuzzers.rangei(-23, 22), _fuzzer_iterations := 20, _timeout := 100) -> void:
-	discard_error_interupted_by_timeout()
+	GdUnitTools.discard_error_interrupted_by_timeout()
 	assert_int(fuzzer.next_value()).is_between(-23, 22)
 
 	if fuzzer.iteration_index() == 10:

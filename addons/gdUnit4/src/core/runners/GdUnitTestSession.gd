@@ -102,6 +102,7 @@ var report_path: String:
 ## The collection is typically populated before session startup and remains
 ## constant during test execution.
 var _test_cases: Array[GdUnitTestCase] = []
+var _test_cases_by_id: Dictionary[String, GdUnitTestCase] = {}
 
 
 ## Initializes the test session and sets up event forwarding.[br]
@@ -113,6 +114,8 @@ var _test_cases: Array[GdUnitTestCase] = []
 func _init(test_cases: Array[GdUnitTestCase], session_report_path: String) -> void:
 	# We build a copy to prevent a user is modifing the tests
 	_test_cases = test_cases.duplicate(true)
+	for test in _test_cases:
+		_test_cases_by_id[test.guid._guid] = test
 	report_path = session_report_path
 	GdUnitSignals.instance().gdunit_event.connect(func(event: GdUnitEvent) -> void:
 		test_event.emit(event)
@@ -121,16 +124,10 @@ func _init(test_cases: Array[GdUnitTestCase], session_report_path: String) -> vo
 
 ## Finds a test case by its unique identifier.[br]
 ## [br]
-## [i]Searches through all test cases to find a test with the matching GUID.[/i][br]
-## [br]
 ## [param id] The GUID of the test to find[br]
 ## Returns the matching test case or null if not found.
 func find_test_by_id(id: GdUnitGUID) -> GdUnitTestCase:
-	for test in _test_cases:
-		if test.guid.equals(id):
-			return test
-
-	return null
+	return _test_cases_by_id.get(id._guid)
 
 
 ## Sends a message through the GdUnit messaging system.[br]

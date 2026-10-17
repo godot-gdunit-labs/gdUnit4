@@ -169,7 +169,7 @@ It sets up a signal monitoring system for the specified object, which enables yo
 {% tabs monitor_signals-overview %}
 {% tab monitor_signals-overview GdScript %}
 ```gd
-func monitor_signals(source: Object, _auto_free := true) -> Object:
+func monitor_signals(source: Object, use_auto_free := true) -> Object:
 ```
 {% endtab %}
 {% tab monitor_signals-overview C# %}

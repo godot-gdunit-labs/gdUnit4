@@ -53,7 +53,7 @@ extends GdUnitAssert
 
 
 ## Verifies that the current Array has a size of given value.
-@abstract func has_size(expectd: int) -> GdUnitArrayAssert
+@abstract func has_size(expected: int) -> GdUnitArrayAssert
 
 
 ## Verifies that the current Array contains the given values, in any order.[br]

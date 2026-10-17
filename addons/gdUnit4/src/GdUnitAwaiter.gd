@@ -7,7 +7,7 @@ extends RefCounted
 # signal_name: signal name
 # args: the expected signal arguments as an array
 # timeout: the timeout in ms, default is set to 2000ms
-func await_signal_on(source: Object, signal_name: String, args: Array = [], timeout_millis: int = 2000) -> Variant:
+func await_signal_on(source: Object, signal_name: String, args: Array = [], timeout: int = 2000) -> Variant:
 	# fail fast if the given source instance invalid
 	var assert_that := GdUnitAssertImpl.new(signal_name)
 	var stack_trace := GdUnitStackTrace.new()
@@ -21,10 +21,10 @@ func await_signal_on(source: Object, signal_name: String, args: Array = [], time
 		@warning_ignore("return_value_discarded")
 		assert_that.report_error(GdAssertMessages.error_await_signal_on_invalid_instance(source, signal_name, args), line_number)
 		return await await_idle_frame()
-	var awaiter := GdUnitSignalAwaiter.new(timeout_millis)
+	var awaiter := GdUnitSignalAwaiter.new(timeout)
 	var value: Variant = await awaiter.on_signal(source, signal_name, args)
 	if awaiter.is_interrupted():
-		var failure := "await_signal_on(%s, %s) timed out after %sms" % [signal_name, args, timeout_millis]
+		var failure := "await_signal_on(%s, %s) timed out after %sms" % [signal_name, args, timeout]
 		@warning_ignore("return_value_discarded")
 		assert_that.report_error(failure, line_number)
 	return value
@@ -35,7 +35,7 @@ func await_signal_on(source: Object, signal_name: String, args: Array = [], time
 # signal_name: signal name
 # args: the expected signal arguments as an array
 # timeout: the timeout in ms, default is set to 2000ms
-func await_signal_idle_frames(source: Object, signal_name: String, args: Array = [], timeout_millis: int = 2000) -> Variant:
+func await_signal_idle_frames(source: Object, signal_name: String, args: Array = [], timeout: int = 2000) -> Variant:
 	var line_number := GdUnitStackTrace.new().get_line_number()
 	# fail fast if the given source instance invalid
 	if not is_instance_valid(source):
@@ -43,10 +43,10 @@ func await_signal_idle_frames(source: Object, signal_name: String, args: Array =
 		GdUnitAssertImpl.new(signal_name)\
 			.report_error(GdAssertMessages.error_await_signal_on_invalid_instance(source, signal_name, args), line_number)
 		return await await_idle_frame()
-	var awaiter := GdUnitSignalAwaiter.new(timeout_millis, true)
+	var awaiter := GdUnitSignalAwaiter.new(timeout, true)
 	var value: Variant = await awaiter.on_signal(source, signal_name, args)
 	if awaiter.is_interrupted():
-		var failure := "await_signal_idle_frames(%s, %s) timed out after %sms" % [signal_name, args, timeout_millis]
+		var failure := "await_signal_idle_frames(%s, %s) timed out after %sms" % [signal_name, args, timeout]
 		@warning_ignore("return_value_discarded")
 		GdUnitAssertImpl.new(signal_name).report_error(failure, line_number)
 	return value

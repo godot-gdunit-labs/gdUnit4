@@ -318,13 +318,13 @@ func reset(obj: Variant) -> void:
 ## 		# verify the signial is emitted
 ## 		await assert_signal(emitter).is_emitted('my_signal')
 ## 	[/codeblock]
-func monitor_signals(source: Object, _auto_free := true) -> Object:
+func monitor_signals(source: Object, use_auto_free := true) -> Object:
 	@warning_ignore("unsafe_method_access")
 	__lazy_load("res://addons/gdUnit4/src/core/thread/GdUnitThreadManager.gd")\
 		.get_current_context()\
 		.get_signal_collector()\
 		.register_emitter(source, true) # force recreate to start with a fresh monitoring
-	return auto_free(source) if _auto_free else source
+	return auto_free(source) if use_auto_free else source
 
 
 # === Argument matchers ========================================================

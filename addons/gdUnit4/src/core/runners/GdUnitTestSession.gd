@@ -90,9 +90,9 @@ var report_path: String:
 	get:
 		return report_path
 ## [b][color=red]@readonly: Should not be modified directly during test execution![/color][/b][br]
-## Collection of test cases to be executed in this session.[br]
+## Collection of test cases to be executed in this session, by their GUID.[br]
 ## [br]
-## This array contains all the test cases that will be run during the session.
+## This dictionary contains all the test cases that will be run during the session.
 ## Test hooks can access this collection to:
 ## - Get the total number of tests to be executed
 ## - Access individual test case metadata
@@ -101,7 +101,6 @@ var report_path: String:
 ##
 ## The collection is typically populated before session startup and remains
 ## constant during test execution.
-var _test_cases: Array[GdUnitTestCase] = []
 var _test_cases_by_id: Dictionary[String, GdUnitTestCase] = {}
 
 
@@ -112,9 +111,7 @@ var _test_cases_by_id: Dictionary[String, GdUnitTestCase] = {}
 ## session-specific components to listen for test events without managing
 ## global signal connections.[/i]
 func _init(test_cases: Array[GdUnitTestCase], session_report_path: String) -> void:
-	# We build a copy to prevent a user is modifing the tests
-	_test_cases = test_cases.duplicate(true)
-	for test in _test_cases:
+	for test in test_cases:
 		_test_cases_by_id[test.guid._guid] = test
 	report_path = session_report_path
 	GdUnitSignals.instance().gdunit_event.connect(func(event: GdUnitEvent) -> void:

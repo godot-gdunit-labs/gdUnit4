@@ -7,15 +7,15 @@ func test_find_test_by_id() -> void:
 	var test_cases := _test_cases()
 	var session := GdUnitTestSession.new(test_cases, "res://reports")
 
-	assert_that(session.find_test_by_id(test_cases[0].guid)).is_equal(test_cases[0])
-	assert_that(session.find_test_by_id(test_cases[1].guid)).is_equal(test_cases[1])
+	assert_that(session.find_test_by_id(test_cases[0].guid)).is_same(test_cases[0])
+	assert_that(session.find_test_by_id(test_cases[1].guid)).is_same(test_cases[1])
 
 
 func test_find_test_by_id_with_equal_guid() -> void:
 	var test_cases := _test_cases()
 	var session := GdUnitTestSession.new(test_cases, "res://reports")
 
-	assert_that(session.find_test_by_id(GdUnitGUID.new(str(test_cases[1].guid)))).is_equal(test_cases[1])
+	assert_that(session.find_test_by_id(GdUnitGUID.new(str(test_cases[1].guid)))).is_same(test_cases[1])
 
 
 func test_find_test_by_id_not_found() -> void:

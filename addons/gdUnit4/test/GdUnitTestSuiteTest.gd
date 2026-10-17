@@ -87,3 +87,15 @@ func test_flaky_success() -> void:
 	if _retry_count <= 2:
 		fail("failure 1: at retry %d" % _retry_count)
 		fail("failure 2: at retry %d" % _retry_count)
+
+
+#region documented examples
+# The following tests verify the examples of the migration guide page
+# documentation/doc/_first_steps/migration-v7.md
+
+
+func test_doc_migration_error_string_example() -> void:
+	var message := error_string(ERR_FILE_NOT_FOUND)
+
+	assert_str(message).is_equal("File not found")
+#endregion

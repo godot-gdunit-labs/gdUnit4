@@ -10,6 +10,11 @@ GdUnit4 is a Godot plugin that needs to be installed before it can be used.
 To install GdUnit4, you can either use the AssetLib within the Godot application or manually download the latest build from the GdUnit4 GitHub
 repository and install it yourself.
 
+{% include advice.html
+content="GdUnit4 v7 requires at least Godot 4.7.<br>
+If you upgrade from GdUnit4 v6, <a href=\"../migration-v7/\">see the migration guide</a>"
+%}
+
 ## Installing GdUnit4 from the AssetLib
 
 To install GdUnit4 from the AssetLib, please follow these steps:

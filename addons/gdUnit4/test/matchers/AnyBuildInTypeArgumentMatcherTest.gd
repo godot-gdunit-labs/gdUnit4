@@ -223,3 +223,18 @@ func test_to_string() -> void:
 	assert_str(str(any_packed_vector2_array())).is_equal("any_packed_vector2_array()")
 	assert_str(str(any_packed_vector3_array())).is_equal("any_packed_vector3_array()")
 	assert_str(str(any_packed_color_array())).is_equal("any_packed_color_array()")
+
+
+#region documented examples
+# The following tests verify the examples of the migration guide page
+# documentation/doc/_first_steps/migration-v7.md
+
+
+func test_doc_migration_any_quaternion_example() -> void:
+	var mocked_node: Variant = mock(Node3D)
+	@warning_ignore("unsafe_method_access")
+	mocked_node.set_quaternion(Quaternion.IDENTITY)
+
+	@warning_ignore("unsafe_method_access")
+	verify(mocked_node).set_quaternion(any_quaternion())
+#endregion

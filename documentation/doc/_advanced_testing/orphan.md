@@ -34,7 +34,7 @@ report itemizes every detected orphan node instead, including its class, instanc
 
 ![orphan-nodes-detailed]({{site.baseurl}}/assets/images/monitoring/orphan-nodes-detailed.png){:.centered}
 
-Orphan detection reports a full **stack trace** for each orphan node (requires Godot 4.5+), including the variable name, script path, and line number
+Orphan detection reports a full **stack trace** for each orphan node, including the variable name, script path, and line number
 where the node was created. This makes it significantly easier to locate the source of a leak without manual investigation.
 
 Godot's API doesn't expose creation-site information for every kind of object, so a stack trace isn't always available. In that case the report shows

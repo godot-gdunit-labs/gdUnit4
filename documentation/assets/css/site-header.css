@@ -54,6 +54,36 @@ img.centered {
     /* webkit text rendering fix */
 }
 
+.upgrade-banner {
+    margin: 1.5rem 0;
+    padding: 1.25rem 1.5rem;
+    border-left: 6px solid #7253ed;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #f3efff 0%, #edf2fe 100%);
+    box-shadow: 0 2px 8px rgba(114, 83, 237, 0.15);
+}
+
+.upgrade-banner-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    background: #7253ed;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.upgrade-banner .upgrade-banner-title {
+    margin: 0.6rem 0 1rem;
+    color: #27264d;
+}
+
+.upgrade-banner-actions .btn {
+    margin: 0 0.5rem 0.5rem 0;
+}
+
 footer {
   padding-left: 2rem;
 }

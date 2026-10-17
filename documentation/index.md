@@ -6,10 +6,7 @@ has_toc: false
 ---
 
 # GdUnit4 {{site.current_version}}
-{% include advice.html
-content="GdUnit4 v6.x+ requires at least Godot 4.5!<br>
-<a href=\"https://github.com/MikeSchulze/gdUnit4#compatibility-overview\" target=\"_blank\">Compatiblility Overview</a>"
-%}
+{% include upgrade_banner.html %}
 
 ![GdUnit4](./assets/images/background.png)
 build on (v4.7.stable.official [5b4e0cb0f])

@@ -1196,6 +1196,21 @@ func test_mock_with_await_function() -> void:
 	verify(mocked_instance, 1).await_function()
 
 
+#region documented examples
+# The following tests verify the examples of the migration guide page
+# documentation/doc/_first_steps/migration-v7.md
+
+
+func test_doc_migration_mock_on_example() -> void:
+	var mocked_node: Variant = mock(Node)
+	@warning_ignore("unsafe_method_access")
+	do_return(true).on(mocked_node).is_inside_tree()
+
+	@warning_ignore("unsafe_method_access")
+	assert_bool(mocked_node.is_inside_tree()).is_true()
+#endregion
+
+
 class ClassWithSignal:
 	signal test_signal_a
 	signal test_signal_b

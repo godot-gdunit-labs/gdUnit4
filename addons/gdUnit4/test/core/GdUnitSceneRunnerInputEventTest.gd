@@ -1101,3 +1101,26 @@ func test_text_input_processing() -> void:
 
 	# Verify text accumulation
 	assert_that(line_edit.text).is_equal("HI")
+
+
+#region documented examples
+# The following tests verify the examples of the migration guide page
+# documentation/doc/_first_steps/migration-v7.md
+
+
+func test_doc_migration_key_modifier_example() -> void:
+	_runner.simulate_key_press(KEY_SHIFT)
+	await _runner.simulate_key_pressed(KEY_A)
+	_runner.simulate_key_release(KEY_SHIFT)
+	await _runner.await_input_processed()
+
+	# the key A is pressed with the modifier shift (Shift+A)
+	var event := InputEventKey.new()
+	event.keycode = KEY_A
+	event.physical_keycode = KEY_A
+	event.unicode = KEY_A as int
+	event.pressed = true
+	event.shift_pressed = true
+	verify(_scene_spy, 1)._input(event)
+	assert_bool(Input.is_key_pressed(KEY_SHIFT)).is_false()
+#endregion

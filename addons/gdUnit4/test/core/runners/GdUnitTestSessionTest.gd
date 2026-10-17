@@ -25,15 +25,25 @@ func test_find_test_by_id_not_found() -> void:
 #endregion
 
 
+#region test_count
+func test_test_count() -> void:
+	assert_int(GdUnitTestSession.new(_test_cases(), "res://reports").test_count()).is_equal(2)
+
+
+func test_test_count_without_tests() -> void:
+	assert_int(GdUnitTestSession.new([], "res://reports").test_count()).is_equal(0)
+#endregion
+
+
 #region documented examples
 # The following tests verify the examples of the migration guide page
 # documentation/doc/_first_steps/migration-v7.md
 
 
-func test_doc_migration_test_cases_by_id_example() -> void:
+func test_doc_migration_test_count_example() -> void:
 	var session := GdUnitTestSession.new(_test_cases(), "res://reports")
 
-	var test_count := session._test_cases_by_id.size()
+	var test_count := session.test_count()
 
 	assert_int(test_count).is_equal(2)
 #endregion

@@ -111,13 +111,13 @@ The `GdUnitTestSession` object passed to your hooks provides several useful prop
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `_test_cases_by_id` | `Dictionary[String, GdUnitTestCase]` | Collection of test cases to be executed, by their GUID (read-only) |
 | `report_path` | `String` | File system path where test reports will be generated |
 
 ### Methods
 
 | Method | Description |
 |--------|-------------|
+| `test_count()` | Returns the number of test cases to be executed |
 | `send_message(message: String)` | Sends a message through the GdUnit messaging system |
 | `find_test_by_id(id: GdUnitGUID)` | Finds a test case by its unique identifier |
 
@@ -205,7 +205,7 @@ func startup(session: GdUnitTestSession) -> GdUnitResult:
     # Subscribe to test events
     session.test_event.connect(_on_test_event)
     
-    session.send_message("Performance monitoring started for %d test cases" % session._test_cases_by_id.size())
+    session.send_message("Performance monitoring started for %d test cases" % session.test_count())
     return GdUnitResult.success()
 
 func shutdown(session: GdUnitTestSession) -> GdUnitResult:
@@ -315,7 +315,7 @@ func startup(session: GdUnitTestSession) -> GdUnitResult:
     session.send_message("Initializing test environment...")
     
     # Access test configuration
-    var test_count = session._test_cases_by_id.size()
+    var test_count = session.test_count()
     session.send_message("Preparing to run %d test cases" % test_count)
     
     # Use report path for output files

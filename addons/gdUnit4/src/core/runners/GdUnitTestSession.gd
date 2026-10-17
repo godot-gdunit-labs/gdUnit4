@@ -20,7 +20,7 @@ extends RefCounted
 ## [codeblock]
 ## func startup(session: GdUnitTestSession) -> GdUnitResult:
 ##     # Access test cases
-##     print("Running %d test cases" % session._test_cases_by_id.size())
+##     print("Running %d test cases" % session.test_count())
 ##
 ##     # Send status messages
 ##     session.send_message("Custom hook initialized")
@@ -117,6 +117,11 @@ func _init(test_cases: Array[GdUnitTestCase], session_report_path: String) -> vo
 	GdUnitSignals.instance().gdunit_event.connect(func(event: GdUnitEvent) -> void:
 		test_event.emit(event)
 	)
+
+
+## Returns the number of test cases to be executed in this session.
+func test_count() -> int:
+	return _test_cases_by_id.size()
 
 
 ## Finds a test case by its unique identifier.[br]

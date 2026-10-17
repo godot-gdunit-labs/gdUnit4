@@ -77,16 +77,16 @@ var message := error_as_string(ERR_FILE_NOT_FOUND)
 var message := error_string(ERR_FILE_NOT_FOUND)
 ```
 
-## Replaced `_test_cases` on the Test Session
+## Removed `_test_cases` on the Test Session
 
-The test session holds its test cases in `_test_cases_by_id`, a dictionary by the test GUID, instead of the `_test_cases` array.
+The `_test_cases` array of the test session is removed, use `test_count()` instead.
 
 ```gd
 # v6
 var test_count := session._test_cases.size()
 
 # v7
-var test_count := session._test_cases_by_id.size()
+var test_count := session.test_count()
 ```
 
 ## Test Suite Template

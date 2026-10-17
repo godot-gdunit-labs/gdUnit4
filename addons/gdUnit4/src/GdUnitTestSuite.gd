@@ -90,12 +90,6 @@ func is_failure() -> bool:
 
 
 # === Tools ====================================================================
-# Mapps Godot error number to a readable error message. See at ERROR
-# https://docs.godotengine.org/de/stable/classes/class_@globalscope.html#enum-globalscope-error
-func error_as_string(error_number: int) -> String:
-	return error_string(error_number)
-
-
 ## A litle helper to auto freeing your created objects after test execution
 func auto_free(obj: Variant) -> Variant:
 	var execution_context := GdUnitExecutionContext.current()

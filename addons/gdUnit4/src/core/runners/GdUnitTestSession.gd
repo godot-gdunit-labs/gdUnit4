@@ -20,7 +20,7 @@ extends RefCounted
 ## [codeblock]
 ## func startup(session: GdUnitTestSession) -> GdUnitResult:
 ##     # Access test cases
-##     print("Running %d test cases" % session.test_cases.size())
+##     print("Running %d test cases" % session._test_cases_by_id.size())
 ##
 ##     # Send status messages
 ##     session.send_message("Custom hook initialized")

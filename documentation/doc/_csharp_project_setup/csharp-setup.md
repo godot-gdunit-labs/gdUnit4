@@ -35,14 +35,14 @@ GdUnit4 utilizes the C# language standard 12.0. To ensure seamless integration, 
 
    GdUnit4Net C# API supports the frameworks **net8.0** and **net9.0** to support the latest language standard<br>
    Open you project file (\*.csproj), and check you have added the gdunit4 dependencies.
-   The **gdUnit4.api** should be used with version `5.1.0-rc1` to be best fit to Godot 4.5.
+   GdUnit4 v7 requires at least Godot 4.7, use **gdUnit4.api** `5.1.0-rc5` and **gdUnit4.test.adapter** `3.1.1` which support it.
 
     ```cs
       <!-- gdUnit4 package dependencies --> 
       <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.0"/>
-        <PackageReference Include="gdUnit4.api" Version="5.1.0-rc1"/>
-        <PackageReference Include="gdUnit4.test.adapter" Version="3.0.0"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1"/>
+        <PackageReference Include="gdUnit4.api" Version="5.1.0-rc5"/>
+        <PackageReference Include="gdUnit4.test.adapter" Version="3.1.1"/>
         <PackageReference Include="gdUnit4.analyzers" Version="1.0.0">
           <PrivateAssets>none</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -69,7 +69,7 @@ GdUnit4 utilizes the C# language standard 12.0. To ensure seamless integration, 
    Here is a complete example of what your project should look like.
 
    ```cs
-    <Project Sdk="Godot.NET.Sdk/4.5">
+    <Project Sdk="Godot.NET.Sdk/4.7.0">
       <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
         <LangVersion>13.0</LangVersion>
@@ -82,9 +82,9 @@ GdUnit4 utilizes the C# language standard 12.0. To ensure seamless integration, 
       
       <!-- gdUnit4 package dependencies --> 
       <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.0"/>
-        <PackageReference Include="gdUnit4.api" Version="5.1.0-rc1"/>
-        <PackageReference Include="gdUnit4.test.adapter" Version="3.0.0"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1"/>
+        <PackageReference Include="gdUnit4.api" Version="5.1.0-rc5"/>
+        <PackageReference Include="gdUnit4.test.adapter" Version="3.1.1"/>
         <PackageReference Include="gdUnit4.analyzers" Version="1.0.0">
           <PrivateAssets>none</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

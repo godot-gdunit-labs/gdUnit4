@@ -52,7 +52,7 @@ You must configure the `GODOT_BIN` environment variable pointing to your Godot e
 
 |Platform|Environment Variable|Example Path|
 |---|---|---|
-|Windows|**%GODOT_BIN%**|`d:\development\Godot_v4.4.1-stable_mono_win64\Godot_v4.4.1-stable_mono_win64.exe`|
+|Windows|**%GODOT_BIN%**|`d:\development\Godot_v4.7-stable_mono_win64\Godot_v4.7-stable_mono_win64.exe`|
 |Linux/Unix/Mac|**$GODOT_BIN**|`/Users/MisterX/Documents/develop/GodotMono.app/Contents/MacOS/Godot`|
 
 Or define it in the **.runsettings** under `EnvironmentVariables` see below.
@@ -74,7 +74,7 @@ Below is an example:
         <TestSessionTimeout>180000</TestSessionTimeout>
         <TreatNoTestsAsError>true</TreatNoTestsAsError>
         <EnvironmentVariables>
-            <GODOT_BIN>d:\development\Godot_v4.5-stable_mono_win64\Godot_v4.5-stable_mono_win64.exe</GODOT_BIN>
+            <GODOT_BIN>d:\development\Godot_v4.7-stable_mono_win64\Godot_v4.7-stable_mono_win64.exe</GODOT_BIN>
         </EnvironmentVariables>
     </RunConfiguration>
 

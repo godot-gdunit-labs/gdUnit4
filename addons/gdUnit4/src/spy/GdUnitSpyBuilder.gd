@@ -150,4 +150,4 @@ static func copy_properties(source: Object, dest: Object) -> void:
 
 
 static func register_auto_free(obj: Variant) -> Variant:
-	return GdUnitThreadManager.get_current_context().get_execution_context().register_auto_free(obj)
+	return GdUnitExecutionContext.current().register_auto_free(obj)

@@ -41,7 +41,7 @@ func _report_error(error_message: String, failure_line_number: int = -1) -> GdUn
 func _has_log_entry(log_entries: Array[ErrorLogEntry], type: ErrorLogEntry.Type, error: Variant) -> bool:
 	for entry in log_entries:
 		if entry._type == type and GdObjects.equals(entry._message, error):
-			GdUnitThreadManager.get_current_context().get_execution_context().error_monitor.erase_log_entry(entry)
+			GdUnitExecutionContext.current().error_monitor.erase_log_entry(entry)
 			return true
 	return false
 

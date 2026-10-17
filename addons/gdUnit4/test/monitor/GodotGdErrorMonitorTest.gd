@@ -60,7 +60,7 @@ func test_monitor_push_waring() -> void:
 
 
 func test_fail_by_push_error(_do_skip := true, _skip_reason := "disabled to not produce errors, enable only for direct testing") -> void:
-	GdUnitThreadManager.get_current_context().get_execution_context().error_monitor._logger._is_report_push_errors = true
+	GdUnitExecutionContext.current().error_monitor._logger._is_report_push_errors = true
 	push_error("test error")
 
 

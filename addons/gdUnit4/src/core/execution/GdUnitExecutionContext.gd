@@ -88,6 +88,10 @@ func terminate() -> void:
 		test_case.do_terminate()
 
 
+static func current() -> GdUnitExecutionContext:
+	return GdUnitThreadManager.get_current_context().get_execution_context()
+
+
 static func of(pe: GdUnitExecutionContext) -> GdUnitExecutionContext:
 	var context := GdUnitExecutionContext.new(pe._test_case_name, pe)
 	context._test_case_name = pe._test_case_name

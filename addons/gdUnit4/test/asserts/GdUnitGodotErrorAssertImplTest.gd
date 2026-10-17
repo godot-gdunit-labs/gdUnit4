@@ -12,7 +12,7 @@ func before() -> void:
 
 func after_test() -> void:
 	# Cleanup report artifacts
-	GdUnitThreadManager.get_current_context().get_execution_context().error_monitor.clear_logs()
+	GdUnitExecutionContext.current().error_monitor.clear_logs()
 
 
 func test_invalid_callable() -> void:

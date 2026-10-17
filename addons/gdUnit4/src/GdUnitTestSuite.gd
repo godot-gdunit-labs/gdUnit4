@@ -98,7 +98,7 @@ func error_as_string(error_number: int) -> String:
 
 ## A litle helper to auto freeing your created objects after test execution
 func auto_free(obj: Variant) -> Variant:
-	var execution_context := GdUnitThreadManager.get_current_context().get_execution_context()
+	var execution_context := GdUnitExecutionContext.current()
 
 	# If the execution context is null, we are not in the execution call stack, so we mark the object as “queued free.”
 	if execution_context == null:
@@ -116,7 +116,7 @@ func auto_free(obj: Variant) -> Variant:
 ## Call this in [code]before()[/code]/[code]before_test()[/code] to snapshot the settings a test
 ## is about to change, to restore see [method restore_project_settings].
 func save_project_settings() -> void:
-	var execution_context := GdUnitThreadManager.get_current_context().get_execution_context()
+	var execution_context := GdUnitExecutionContext.current()
 	if execution_context == null:
 		return
 	execution_context.save_project_settings()
@@ -126,7 +126,7 @@ func save_project_settings() -> void:
 ## [br]
 ## Call this in [code]after()[/code]/[code]after_test()[/code] to undo any settings a test changed.
 func restore_project_settings() -> void:
-	var execution_context := GdUnitThreadManager.get_current_context().get_execution_context()
+	var execution_context := GdUnitExecutionContext.current()
 	if execution_context == null:
 		return
 	execution_context.restore_project_settings()
@@ -135,7 +135,7 @@ func restore_project_settings() -> void:
 @warning_ignore("native_method_override")
 func add_child(node: Node, force_readable_name := false, internal := Node.INTERNAL_MODE_DISABLED) -> void:
 	super.add_child(node, force_readable_name, internal)
-	var execution_context := GdUnitThreadManager.get_current_context().get_execution_context()
+	var execution_context := GdUnitExecutionContext.current()
 	if execution_context != null:
 		execution_context.orphan_monitor_start()
 
@@ -245,7 +245,7 @@ func await_millis(timeout: int) -> void:
 ## [b]Note:[/b] This is a debugging utility function that should be removed
 ## or commented out once orphan issues are resolved.
 func collect_orphan_node_details() -> void:
-	GdUnitThreadManager.get_current_context().get_execution_context().orphan_monitor_collect()
+	GdUnitExecutionContext.current().orphan_monitor_collect()
 
 
 ## Creates a new scene runner to allow simulate interactions checked a scene.[br]

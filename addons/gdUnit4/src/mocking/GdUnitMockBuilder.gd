@@ -182,4 +182,4 @@ static func is_mockable(clazz: Variant, push_errors: bool = false) -> bool:  # g
 
 
 static func register_auto_free(obj: Variant) -> Variant:
-	return GdUnitThreadManager.get_current_context().get_execution_context().register_auto_free(obj)
+	return GdUnitExecutionContext.current().register_auto_free(obj)

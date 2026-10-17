@@ -111,7 +111,7 @@ func do_interrupt() -> void:
 	# We need to dispose manually the function state here
 	GdObjects.dispose_function_state(_func_state)
 	if not is_expect_interupted():
-		var execution_context := GdUnitThreadManager.get_current_context().get_execution_context()
+		var execution_context := GdUnitExecutionContext.current()
 		if is_fuzzed():
 			execution_context.add_report(GdUnitReport.new()\
 				.create(GdUnitReport.INTERUPTED, line_number(), GdAssertMessages.fuzzer_interuped(_current_iteration, "timedout")))
@@ -125,7 +125,7 @@ func do_terminate() -> void:
 	_terminated = true
 	# We need to dispose manually the function state here
 	GdObjects.dispose_function_state(_func_state)
-	var execution_context := GdUnitThreadManager.get_current_context().get_execution_context()
+	var execution_context := GdUnitExecutionContext.current()
 	execution_context.add_report(GdUnitReport.new()\
 		.create(GdUnitReport.TERMINATED, line_number(), GdAssertMessages.test_session_terminated()))
 	test_completed.call_deferred()

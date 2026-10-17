@@ -21,7 +21,7 @@ static func report_error(error: GdUnitError) -> void:
 	GdAssertReports.set_last_error_line_number(error._line_number)
 	Engine.set_meta(LAST_ERROR, error._message)
 	Engine.set_meta("GD_TEST_FAILURE", true)
-	GdUnitThreadManager.get_current_context().get_execution_context().set_error(error)
+	GdUnitExecutionContext.current().set_error(error)
 
 	# if we expect to fail we handle as success test
 	if _do_expect_assert_failing():
@@ -54,4 +54,4 @@ static func current_failure() -> String:
 
 
 static func send_report(report: GdUnitReport) -> void:
-	GdUnitThreadManager.get_current_context().get_execution_context().add_report(report)
+	GdUnitExecutionContext.current().add_report(report)

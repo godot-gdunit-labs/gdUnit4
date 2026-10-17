@@ -18,7 +18,7 @@ By implementing the VSTest adapter interface, GdUnit4Net allows IDEs that suppor
 
 This approach ensures a consistent testing experience across different IDEs while maintaining full compatibility with existing .NET testing workflows.
 
-The project repository can be found here [gdunit4.test.adapter](https://github.com/MikeSchulze/gdUnit4Net/blob/master/TestAdapter/README.md){:target="_blank"}.
+The project repository can be found here [gdunit4.test.adapter](https://github.com/godot-gdunit-labs/gdUnit4Net/blob/master/TestAdapter/README.md){:target="_blank"}.
 
 ## Preconditions
 
@@ -42,7 +42,7 @@ Before configuring your IDE, ensure you have completed the following setup requi
 Your Godot C# project must be properly configured with GdUnit4Net dependencies as described in the
 [Setup Documentation]({{site.baseurl}}/csharp_project_setup/csharp-setup/). This includes:
 
-- Correct .NET framework targeting (net8.0 or net9.0)
+- Correct .NET framework targeting (a framework supported by GdUnit4Net)
 - Required NuGet package references (gdUnit4.api, gdUnit4.test.adapter, etc.)
 - Proper project file structure
 
@@ -60,7 +60,7 @@ Or define it in the **.runsettings** under `EnvironmentVariables` see below.
 ### 3. RunSettings Configuration
 
 Create a `.runsettings` file in your project to configure test execution.
-The full guide to configure the settings [can be found here](https://github.com/MikeSchulze/gdUnit4Net/blob/master/TestAdapter/README.md#configuration-with-runsettings){:target="_blank"}.
+The full guide to configure the settings [can be found here](https://github.com/godot-gdunit-labs/gdUnit4Net/blob/master/TestAdapter/README.md#configuration-with-runsettings){:target="_blank"}.
 
 Below is an example:
 
@@ -70,7 +70,7 @@ Below is an example:
     <RunConfiguration>
         <MaxCpuCount>1</MaxCpuCount>
         <ResultsDirectory>./TestResults</ResultsDirectory>
-        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+        <TargetFrameworks>net8.0</TargetFrameworks>
         <TestSessionTimeout>180000</TestSessionTimeout>
         <TreatNoTestsAsError>true</TreatNoTestsAsError>
         <EnvironmentVariables>

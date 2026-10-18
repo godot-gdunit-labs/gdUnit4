@@ -47,8 +47,6 @@ exclude = [
 	".godot",
 	# test fixtures, kept as they are
 	"**/resources/**",
-	# intentionally badly formatted test declaration, verifies the test scanner still finds it
-	"**/GdUnitScanTestSuiteTest.gd",
 	# temporary: `gdstyle fmt` splits doc comments after bodyless @abstract functions
 	# https://github.com/atelico/gdstyle/issues/47
 	"addons/gdUnit4/src/GdUnitArrayAssert.gd",

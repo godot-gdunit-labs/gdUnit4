@@ -41,8 +41,6 @@ exclude = [
 	".godot",
 	# test fixtures, kept as they are
 	"**/resources/**",
-	# intentionally badly formatted test declaration, verifies the test scanner still finds it
-	"**/GdUnitScanTestSuiteTest.gd",
 ]
 
 # Patterns to force-include even when `exclude` matches them. An include always

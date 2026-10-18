@@ -18,6 +18,7 @@ func test_b2() -> void:
 
 
 # test scanning success with invalid formatting
+# gdstyle:ignore
 func  	 test_b21 		 ( 	 ) 	 	  -> void:
 	pass
 

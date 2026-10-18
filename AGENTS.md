@@ -55,7 +55,7 @@ dotnet format gdUnit4.csproj --verify-no-changes --verbosity diagnostic
 
 ### GDScript Linting
 
-Requires [gdstyle](https://github.com/atelico/gdstyle) 0.3.3, configured by `gdstyle.toml` in the repository root:
+Requires [gdstyle](https://github.com/atelico/gdstyle) 0.4.0, configured by `gdstyle.toml` in the repository root:
 
 ```bash
 gdstyle check --max-warnings 0 addons/gdUnit4/
@@ -151,8 +151,8 @@ If gdstyle is not installed, **stop and tell the user** to install it:
 
 ```text
 gdstyle is not installed. Please install it with:
-  cargo install gdstyle --version 0.3.3 --locked
-or download the release binary from https://github.com/atelico/gdstyle/releases/tag/v0.3.3
+  cargo install gdstyle --version 0.4.0 --locked
+or download the release binary from https://github.com/atelico/gdstyle/releases/tag/v0.4.0
 ```
 
 Do not skip linting or proceed without it.

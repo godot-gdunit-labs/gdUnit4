@@ -225,9 +225,9 @@ func test_append_failure_message() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			\u0020equal to 0 but is 314
+			 equal to 0 but is 314
 			Additional info:
-			\u0020custom failure data""".dedent().trim_prefix("\n"))
+			 custom failure data""".dedent().trim_prefix("\n"))
 
 
 # tests if an assert fails the 'is_failure' reflects the failure status

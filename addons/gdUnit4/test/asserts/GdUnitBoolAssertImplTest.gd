@@ -101,7 +101,7 @@ func test_append_failure_message() -> void:
 		.has_message("""
 			Expecting: 'false' but is 'true'
 			Additional info:
-			\u0020custom failure data""".dedent().trim_prefix("\n"))
+			 custom failure data""".dedent().trim_prefix("\n"))
 
 
 # tests if an assert fails the 'is_failure' reflects the failure status

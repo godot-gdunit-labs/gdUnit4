@@ -142,4 +142,4 @@ func test_append_failure_message() -> void:
 		.has_message("""
 			Expecting: not to be '<null>'
 			Additional info:
-			\u0020custom failure data""".dedent().trim_prefix("\n"))
+			 custom failure data""".dedent().trim_prefix("\n"))

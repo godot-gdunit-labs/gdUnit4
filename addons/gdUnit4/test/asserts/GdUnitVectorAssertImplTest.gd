@@ -135,9 +135,9 @@ func test_is_equal_approx() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			\u0020'(0.878431, 0.505882)'
-			\u0020in range between
-			\u0020'(0.87843, 0.105881)' <> '(0.878432, 0.105883)'"""
+			 '(0.878431, 0.505882)'
+			 in range between
+			 '(0.87843, 0.105881)' <> '(0.878432, 0.105883)'"""
 			.dedent().trim_prefix("\n")
 		)
 	var current_v3 := Vector3(0.0, 0.878431, 0.505882)
@@ -145,9 +145,9 @@ func test_is_equal_approx() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			\u0020'$v0'
-			\u0020in range between
-			\u0020'(-0.000001, 0.87843, 0.105881)' <> '(0.000001, 0.878432, 0.105883)'"""
+			 '$v0'
+			 in range between
+			 '(-0.000001, 0.87843, 0.105881)' <> '(0.000001, 0.878432, 0.105883)'"""
 			.dedent().trim_prefix("\n")
 			.replace("$v0", str(current_v3))
 		)
@@ -390,11 +390,11 @@ func test_append_failure_message() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			\u0020'$v0'
-			\u0020but was
-			\u0020'$v1'
+			 '$v0'
+			 but was
+			 '$v1'
 			Additional info:
-			\u0020custom failure data"""
+			 custom failure data"""
 			.dedent()
 			.trim_prefix("\n")
 			.replace("$v0", str(Vector2.ZERO))

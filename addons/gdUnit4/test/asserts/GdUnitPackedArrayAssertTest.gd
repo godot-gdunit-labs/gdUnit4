@@ -76,9 +76,9 @@ func test_is_equal(_test: String, array: Variant, _test_parameters := [
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			\u0020'%s'
-			\u0020but was
-			\u0020'%s'
+			 '%s'
+			 but was
+			 '%s'
 
 			Differences found:
 			Index	Current	Expected	5	<N/A>	$value	"""
@@ -107,9 +107,9 @@ func test_is_not_equal(_test: String, array: Variant, _test_parameters := [
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			\u0020'%s'
-			\u0020not equal to
-			\u0020'%s'"""
+			 '%s'
+			 not equal to
+			 '%s'"""
 			.dedent()
 			.trim_prefix("\n") % [GdDefaultValueDecoder.decode(array), GdDefaultValueDecoder.decode(array)])
 
@@ -134,8 +134,8 @@ func test_is_empty(_test: String, array: Variant, _test_parameters := [
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			\u0020must be empty but was
-			\u0020'%s'"""
+			 must be empty but was
+			 '%s'"""
 			.dedent()
 			.trim_prefix("\n") % GdDefaultValueDecoder.decode(array))
 
@@ -180,9 +180,9 @@ func test_is_same(value: Variant, _test_parameters := [
 		.is_failed()\
 		.has_message("""
 			Expecting:
-			\u0020'%s'
-			\u0020to refer to the same object
-			\u0020'%s'"""
+			 '%s'
+			 to refer to the same object
+			 '%s'"""
 			.dedent()
 			.trim_prefix("\n") % [v, v])
 
@@ -224,9 +224,9 @@ func test_has_size(_test: String, array: Variant, _test_parameters := [
 		.is_failed() \
 		.has_message("""
 			Expecting size:
-			\u00204
-			\u0020but was
-			\u00205"""
+			 4
+			 but was
+			 5"""
 			.dedent()
 			.trim_prefix("\n"))
 
@@ -250,11 +250,11 @@ func test_contains(_test: String, array: Variant, _test_parameters := [
 		.is_failed() \
 		.has_message("""
 			Expecting contains elements:
-			\u0020'$source'
-			\u0020do contains (in any order)
-			\u0020'$contains'
+			 '$source'
+			 do contains (in any order)
+			 '$contains'
 			but could not find elements:
-			\u0020'[7, 6]'"""
+			 '[7, 6]'"""
 			.dedent()
 			.trim_prefix("\n")
 			.replace("$source", GdDefaultValueDecoder.decode(array))
@@ -283,11 +283,11 @@ func test_contains_exactly(_test: String, array: Variant, _test_parameters := [
 		.is_failed() \
 		.has_message("""
 			Expecting contains exactly elements:
-			\u0020'$source'
-			\u0020do contains (in same order)
-			\u0020'$contains'
-			\u0020but has different order at position 1
-			\u0020'$A' vs '$B'"""
+			 '$source'
+			 do contains (in same order)
+			 '$contains'
+			 but has different order at position 1
+			 '$A' vs '$B'"""
 			.dedent()
 			.trim_prefix("\n")
 			.replace("$A", GdDefaultValueDecoder.decode(array[1]))
@@ -325,6 +325,6 @@ func test_append_failure_message() -> void:
 		.is_failed() \
 		.has_message("""
 			Expecting:
-			\u0020must not be empty
+			 must not be empty
 			Additional info:
-			\u0020custom failure data""".dedent().trim_prefix("\n"))
+			 custom failure data""".dedent().trim_prefix("\n"))

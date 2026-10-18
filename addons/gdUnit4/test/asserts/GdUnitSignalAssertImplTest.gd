@@ -180,7 +180,7 @@ func test_append_failure_message() -> void:
 	).has_message("""
 		Expecting emit signal: 'test_signal_unused()' but timed out after 100ms
 		Additional info:
-		\u0020custom failure data""".dedent().trim_prefix("\n"))
+		 custom failure data""".dedent().trim_prefix("\n"))
 
 
 func test_node_changed_emitting_signals() -> void:

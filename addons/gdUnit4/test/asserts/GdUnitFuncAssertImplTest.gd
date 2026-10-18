@@ -228,7 +228,7 @@ func test_append_failure_message() -> void:
 		.contains_message("Expected: is equal 42 but timed out after") \
 		.contains_message("""
 			Additional info:
-			\u0020custom failure data""".dedent().trim_prefix("\n"))
+			 custom failure data""".dedent().trim_prefix("\n"))
 
 
 func test_invalid_function(_timeout := 100) -> void:

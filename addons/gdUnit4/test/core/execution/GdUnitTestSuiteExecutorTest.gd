@@ -833,18 +833,18 @@ func test_execute_test_suite_is_skipped() -> void:
 			[],
 			["""
 				This test is skipped!
-				\u0020\u0020Reason: 'Skipped from the entire test suite'
+				  Reason: 'Skipped from the entire test suite'
 				""".dedent().trim_prefix("\n")],
 			[],
 			["""
 				This test is skipped!
-				\u0020\u0020Reason: 'Skipped from the entire test suite'
+				  Reason: 'Skipped from the entire test suite'
 				""".dedent().trim_prefix("\n")],
 			# must fail after three iterations
 			["""
 				The Entire test-suite is skipped!
-				\u0020\u0020Skipped 2 tests
-				\u0020\u0020Reason: 'do not run this'
+				  Skipped 2 tests
+				  Reason: 'do not run this'
 				""".dedent().trim_prefix("\n")],
 		])
 
@@ -878,7 +878,7 @@ func test_execute_test_case_is_skipped() -> void:
 			[],
 			["""
 				This test is skipped!
-				\u0020\u0020Reason: 'do not run this'
+				  Reason: 'do not run this'
 				""".dedent().trim_prefix("\n")],
 			[],
 			[],

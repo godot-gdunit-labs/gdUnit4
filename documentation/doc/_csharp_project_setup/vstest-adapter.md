@@ -116,8 +116,8 @@ Below is an example:
         <!-- The maximum duration allowed for a Godot project compilation process in milliseconds.
                          After this timeout period expires, the compilation process is forcefully terminated.
                          For large or complex Godot projects, you may need to increase this value.
-                         Default: 20000 (20 seconds) -->
-        <CompileProcessTimeout>20000</CompileProcessTimeout>
+                         Default: 120000 (2 minutes) -->
+        <CompileProcessTimeout>120000</CompileProcessTimeout>
 
         <!-- The maximum duration allowed to connect to the Godot runtime host in milliseconds.
                          Increase this value for environments where the Godot host needs more time to start.

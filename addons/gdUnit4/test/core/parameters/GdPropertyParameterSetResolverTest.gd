@@ -113,6 +113,17 @@ func test_get_parameters_of_global_class_constant() -> void:
 	var resolver := GdPropertyParameterSetResolver.new(self, "ClassWithParameterSetConstants.PARAMETER_SETS")
 
 	assert_array(_get_all_parameters(resolver)).is_equal([["test_a", 1, []], ["test_b", 2, []]])
+
+
+func test_get_parameters_of_unresolvable_property_path(property_name: String, _test_parameters := [
+		["Unknown.PARAMETER_SETS"],
+		["ParameterSets.MISSING"],
+		["ClassWithParameterSetConstants.MISSING"],
+		["ClassWithParameterSetConstants.PARAMETER_SETS.MISSING"],
+	]) -> void:
+	var resolver := GdPropertyParameterSetResolver.new(self, property_name)
+
+	assert_int(resolver.get_max_index()).is_equal(0)
 #endregion
 
 

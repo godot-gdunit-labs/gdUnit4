@@ -3,7 +3,7 @@
 changelog:
   exclude:
     labels:
-      - "Exclude from release nodes"
+      - "Exclude from release notes"
 
   categories:
     - title: Improvements

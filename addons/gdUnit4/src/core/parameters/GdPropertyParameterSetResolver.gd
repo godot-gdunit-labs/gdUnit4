@@ -21,6 +21,9 @@ func get_parameters(instance: Node, index: int) -> Array:
 
 func _resolve_property(instance: Node, property_name: String) -> Array[Array]:
 	var result: Variant = instance.get(property_name)
+	# A dotted name like `Preloaded.CONSTANT` or `ClassName.CONSTANT` refers to a constant of another script
+	if result == null and property_name.contains("."):
+		result = _resolve_property_path(instance, property_name)
 
 	if result == null:
 		prints("The property `%s` do not exists." % property_name)
@@ -38,3 +41,12 @@ func _resolve_property(instance: Node, property_name: String) -> Array[Array]:
 	if not parameter_set.is_typed():
 		return Array(parameter_set, TYPE_ARRAY, "", null)
 	return parameter_set
+
+
+static func _resolve_property_path(instance: Node, property_name: String) -> Variant:
+	var result: Variant = instance.get_indexed(property_name.replace(".", ":"))
+	var clazz_name := property_name.get_slice(".", 0)
+	if result != null or not GdInlineParameterSetResolver._get_user_class_paths().has(clazz_name):
+		return result
+	var clazz: Script = GdInlineParameterSetResolver._lazily_loaded_user_class(clazz_name)
+	return clazz.get_indexed(property_name.trim_prefix(clazz_name + ".").replace(".", ":"))

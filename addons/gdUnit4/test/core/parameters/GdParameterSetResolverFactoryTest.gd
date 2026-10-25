@@ -1,5 +1,7 @@
 extends GdUnitTestSuite
 
+const ParameterSets := preload("res://addons/gdUnit4/test/core/parameters/resources/ClassWithParameterSetConstants.gd")
+
 var _test_properties := [
 	["test_a"],
 	["test_b"],
@@ -19,6 +21,14 @@ func _callable_parameters_with_args(_a: int, _b: int, _test_parameters := _param
 	pass
 
 func _properties_parameters(_a: int, _b: int, _test_parameters := _test_properties) -> void:
+	pass
+
+
+func _preloaded_script_constant_parameters(_a: String, _b: int, _test_parameters := ParameterSets.PARAMETER_SETS) -> void:
+	pass
+
+
+func _global_class_constant_parameters(_a: String, _b: int, _test_parameters := ClassWithParameterSetConstants.PARAMETER_SETS) -> void:
 	pass
 
 
@@ -68,5 +78,17 @@ func test_create_returns_property_resolver() -> void:
 	var resolver := GdParameterSetResolverFactory.create(_descriptor("_properties_parameters"), self)
 	assert_object(resolver).is_instanceof(GdPropertyParameterSetResolver)
 	assert_int(resolver.get_max_index()).is_equal(3)
+
+
+func test_create_returns_property_resolver_for_preloaded_script_constant() -> void:
+	var resolver := GdParameterSetResolverFactory.create(_descriptor("_preloaded_script_constant_parameters"), self)
+	assert_object(resolver).is_instanceof(GdPropertyParameterSetResolver)
+	assert_int(resolver.get_max_index()).is_equal(2)
+
+
+func test_create_returns_property_resolver_for_global_class_constant() -> void:
+	var resolver := GdParameterSetResolverFactory.create(_descriptor("_global_class_constant_parameters"), self)
+	assert_object(resolver).is_instanceof(GdPropertyParameterSetResolver)
+	assert_int(resolver.get_max_index()).is_equal(2)
 
 #endregion

@@ -1,6 +1,7 @@
 # GdUnit generated TestSuite
 extends GdUnitTestSuite
 
+const ParameterSets := preload("res://addons/gdUnit4/test/core/parameters/resources/ClassWithParameterSetConstants.gd")
 
 var _x := 42
 var _obj: Node2D
@@ -33,6 +34,7 @@ func before() -> void:
 	]
 
 
+#region get_parameters
 func test_get_parameters() -> void:
 	var resolver := GdPropertyParameterSetResolver.new(self, "_parameters_with_references_typed")
 
@@ -109,6 +111,30 @@ func test_get_parameters() -> void:
 	assert_object(parameters[3]).is_equal([])
 
 
+func test_get_parameters_of_preloaded_script_constant() -> void:
+	var resolver := GdPropertyParameterSetResolver.new(self, "ParameterSets.PARAMETER_SETS")
+
+	assert_array(_get_all_parameters(resolver)).is_equal([["test_a", 1, []], ["test_b", 2, []]])
+
+
+func test_get_parameters_of_global_class_constant() -> void:
+	var resolver := GdPropertyParameterSetResolver.new(self, "ClassWithParameterSetConstants.PARAMETER_SETS")
+
+	assert_array(_get_all_parameters(resolver)).is_equal([["test_a", 1, []], ["test_b", 2, []]])
+
+
+func test_get_parameters_of_unresolvable_property_path(property_name: String, _test_parameters := [
+		["Unknown.PARAMETER_SETS"],
+		["ParameterSets.MISSING"],
+		["ClassWithParameterSetConstants.MISSING"],
+		["ClassWithParameterSetConstants.PARAMETER_SETS.MISSING"],
+	]) -> void:
+	var resolver := GdPropertyParameterSetResolver.new(self, property_name)
+
+	assert_int(resolver.get_max_index()).is_equal(0)
+#endregion
+
+
 #region performance
 
 func test_performance_single() -> void:
@@ -144,3 +170,10 @@ func test_performance_get_parameters_overall() -> void:
 	@warning_ignore_restore("integer_division")
 
 #endregion
+
+
+func _get_all_parameters(resolver: GdPropertyParameterSetResolver) -> Array[Array]:
+	var parameters: Array[Array] = []
+	for index in resolver.get_max_index():
+		parameters.append(resolver.get_parameters(self, index))
+	return parameters

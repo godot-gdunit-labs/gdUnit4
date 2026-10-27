@@ -6,21 +6,18 @@ var command_id: String:
 	get:
 		return command_id
 
-#
 var name: StringName:
 	set(value):
 		name = value
 	get:
 		return name
 
-#
 var visible: Callable:
 	set(value):
 		visible = value
 	get:
 		return visible
 
-#
 var icon: Texture2D:
 	get:
 		return GdUnitCommandHandler.instance().command_icon(command_id)

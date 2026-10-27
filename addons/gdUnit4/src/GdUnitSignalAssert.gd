@@ -1,6 +1,6 @@
-## An Assertion Tool to verify for emitted signals until a waiting time
 @abstract class_name GdUnitSignalAssert
 extends GdUnitAssert
+## An Assertion Tool to verify for emitted signals until a waiting time
 
 
 ## Verifies that the current value is null.

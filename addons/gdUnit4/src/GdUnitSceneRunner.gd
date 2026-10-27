@@ -1,8 +1,8 @@
+@abstract class_name GdUnitSceneRunner
+extends RefCounted
 ## The Scene Runner is a tool used for simulating interactions on a scene.
 ## With this tool, you can simulate input events such as keyboard or mouse input and/or simulate scene processing over a certain number of frames.
 ## This tool is typically used for integration testing a scene.
-@abstract class_name GdUnitSceneRunner
-extends RefCounted
 
 
 ## Simulates that an action has been pressed.[br]

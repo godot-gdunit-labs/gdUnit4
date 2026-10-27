@@ -1,6 +1,6 @@
-## An Assertion Tool to verify function callback values
 @abstract class_name GdUnitFuncAssert
 extends GdUnitAssert
+## An Assertion Tool to verify function callback values
 
 
 ## Verifies that the current value is null.

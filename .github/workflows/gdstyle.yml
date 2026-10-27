@@ -44,14 +44,13 @@ jobs:
           gdstyle --version
           gdstyle check --no-color --max-warnings 0 addons/gdUnit4/ 2>&1 | tee reports/gdstyle/gdstyle-check.txt
 
-      # uses its own config until https://github.com/atelico/gdstyle/issues/47 is fixed, see .github/gdstyle-fmt.toml
       - name: Run gdstyle fmt check
         id: run-gdstyle-fmt-check
         if: ${{ success() || failure() }}
         shell: bash
         run: |
           mkdir -p reports/gdstyle/
-          gdstyle fmt --check --no-color -c .github/gdstyle-fmt.toml addons/gdUnit4/ 2>&1 | tee reports/gdstyle/gdstyle-fmt-check.txt
+          gdstyle fmt --check --no-color addons/gdUnit4/ 2>&1 | tee reports/gdstyle/gdstyle-fmt-check.txt
 
       - name: Upload gdstyle Report
         if: failure()

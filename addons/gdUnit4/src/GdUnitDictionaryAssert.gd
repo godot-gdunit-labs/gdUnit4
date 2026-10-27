@@ -1,6 +1,6 @@
-## An Assertion Tool to verify dictionary
 @abstract class_name GdUnitDictionaryAssert
 extends GdUnitAssert
+## An Assertion Tool to verify dictionary
 
 
 ## Verifies that the current value is null.

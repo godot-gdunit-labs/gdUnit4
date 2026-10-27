@@ -1,6 +1,6 @@
-## An Assertion Tool to verify boolean values
 @abstract class_name GdUnitBoolAssert
 extends GdUnitAssert
+## An Assertion Tool to verify boolean values
 
 
 ## Verifies that the current value is null.

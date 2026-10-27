@@ -1,6 +1,6 @@
-## An Assertion Tool to verify float values
 @abstract class_name GdUnitFloatAssert
 extends GdUnitAssert
+## An Assertion Tool to verify float values
 
 
 ## Verifies that the current value is null.

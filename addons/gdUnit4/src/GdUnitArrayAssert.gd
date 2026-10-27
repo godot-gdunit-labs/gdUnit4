@@ -1,6 +1,6 @@
-## An Assertion Tool to verify array values
 @abstract class_name GdUnitArrayAssert
 extends GdUnitAssert
+## An Assertion Tool to verify array values
 
 
 ## Verifies that the current value is null.
@@ -41,6 +41,7 @@ extends GdUnitAssert
 
 ## Verifies that the current Array is not empty, it has a size of minimum 1.
 @abstract func is_not_empty() -> GdUnitArrayAssert
+
 
 ## Verifies that the current Array is the same. [br]
 ## Compares the current by object reference equals

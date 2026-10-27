@@ -1,6 +1,6 @@
-## Base interface of all GdUnit asserts
 @abstract class_name GdUnitAssert
 extends RefCounted
+## Base interface of all GdUnit asserts
 
 
 ## Verifies that the current value is null.

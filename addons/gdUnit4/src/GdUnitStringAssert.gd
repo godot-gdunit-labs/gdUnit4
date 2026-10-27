@@ -1,6 +1,6 @@
-## An Assertion Tool to verify String values
 @abstract class_name GdUnitStringAssert
 extends GdUnitAssert
+## An Assertion Tool to verify String values
 
 
 ## Verifies that the current value is null.

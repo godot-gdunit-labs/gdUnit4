@@ -1,6 +1,6 @@
-## An Assertion Tool to verify integer values
 @abstract class_name GdUnitIntAssert
 extends GdUnitAssert
+## An Assertion Tool to verify integer values
 
 
 ## Verifies that the current value is null.

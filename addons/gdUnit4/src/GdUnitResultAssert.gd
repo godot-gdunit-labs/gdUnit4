@@ -1,6 +1,6 @@
-## An Assertion Tool to verify Results
 @abstract class_name GdUnitResultAssert
 extends GdUnitAssert
+## An Assertion Tool to verify Results
 
 
 ## Verifies that the current value is null.

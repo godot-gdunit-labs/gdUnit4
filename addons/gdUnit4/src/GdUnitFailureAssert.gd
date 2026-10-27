@@ -1,7 +1,7 @@
-## An assertion tool to verify GDUnit asserts.
-## This assert is for internal use only, to verify that failed asserts work as expected.
 @abstract class_name GdUnitFailureAssert
 extends GdUnitAssert
+## An assertion tool to verify GDUnit asserts.
+## This assert is for internal use only, to verify that failed asserts work as expected.
 
 
 ## Verifies that the current value is null.

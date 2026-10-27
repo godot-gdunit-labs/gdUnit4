@@ -1,6 +1,6 @@
-## An Assertion Tool to verify Vector values
 @abstract class_name GdUnitVectorAssert
 extends GdUnitAssert
+## An Assertion Tool to verify Vector values
 
 
 ## Verifies that the current value is null.

@@ -1,6 +1,6 @@
-## An Assertion Tool to verify Object values
 @abstract class_name GdUnitObjectAssert
 extends GdUnitAssert
+## An Assertion Tool to verify Object values
 
 
 ## Verifies that the current value is null.

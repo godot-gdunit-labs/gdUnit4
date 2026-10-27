@@ -56,6 +56,7 @@ extends RefCounted
 var name: String:
 	get:
 		return name
+
 ## A detailed description of what this hook does.
 var description: String:
 	get:

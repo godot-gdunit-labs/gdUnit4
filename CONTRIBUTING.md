@@ -124,7 +124,7 @@ cleanup needed.
 
 ### Setup GDScript Linting
 
-GDScript linting uses [`gdstyle` 0.4.0](https://github.com/atelico/gdstyle/releases/tag/v0.4.0), configured by [gdstyle.toml](./gdstyle.toml).
+GDScript linting uses [`gdstyle` 0.5.0](https://github.com/atelico/gdstyle/releases/tag/v0.5.0), configured by [gdstyle.toml](./gdstyle.toml).
 
 [Install gdstyle](https://github.com/atelico/gdstyle#installation)
 

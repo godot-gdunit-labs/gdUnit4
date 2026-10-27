@@ -1,8 +1,8 @@
+@abstract class_name IGdUnitExecutionStage
+extends RefCounted
 ## The interface of execution stage.[br]
 ## An execution stage is defined as an encapsulated task that can execute 1-n substages covered by its own execution context.[br]
 ## Execution stage are always called synchronously.
-@abstract class_name IGdUnitExecutionStage
-extends RefCounted
 
 var _debug_mode := false
 

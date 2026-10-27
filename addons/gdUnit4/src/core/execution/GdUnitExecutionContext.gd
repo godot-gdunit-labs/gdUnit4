@@ -16,16 +16,19 @@ var error_monitor: GodotGdErrorMonitor = null:
 		if error_monitor == null:
 			error_monitor = GodotGdErrorMonitor.new()
 		return error_monitor
+
 var test_suite: GdUnitTestSuite = null:
 	get:
 		if _parent_context != null:
 			return _parent_context.test_suite
 		return test_suite
+
 var test_case: GdUnitTestCaseImpl = null:
 	get:
 		if test_case == null and _parent_context != null:
 			return _parent_context.test_case
 		return test_case
+
 var _parent_context: GdUnitExecutionContext
 var _sub_context: Array[GdUnitExecutionContext] = []
 var _orphan_monitor: GdUnitOrphanNodesMonitor

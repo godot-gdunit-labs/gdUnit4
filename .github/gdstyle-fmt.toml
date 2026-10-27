@@ -113,7 +113,7 @@ exclude = [
 # "format/blank-lines" = "warn"
 # "format/trailing-comma" = "warn"
 # "format/operator-spacing" = "warn"
-# "format/float-literal-zeros" = "warn"
+"format/float-literal-zeros" = "off"
 # "format/large-number-underscores" = "warn"
 # "format/enum-one-per-line" = "warn"
 

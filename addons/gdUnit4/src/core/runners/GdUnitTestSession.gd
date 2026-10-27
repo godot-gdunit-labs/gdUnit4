@@ -89,6 +89,7 @@ signal test_event(event: GdUnitEvent)
 var report_path: String:
 	get:
 		return report_path
+
 ## [b][color=red]@readonly: Should not be modified directly during test execution![/color][/b][br]
 ## Collection of test cases to be executed in this session, by their GUID.[br]
 ## [br]

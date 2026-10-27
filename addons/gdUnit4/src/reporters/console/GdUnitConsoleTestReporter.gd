@@ -12,6 +12,7 @@ var test_session: GdUnitTestSession:
 		test_session = value
 		if test_session != null:
 			test_session.test_event.connect(on_gdunit_event)
+
 var _writer: GdUnitMessageWriter
 var _reporter: GdUnitTestReporter = GdUnitTestReporter.new()
 var _status_indent := 86

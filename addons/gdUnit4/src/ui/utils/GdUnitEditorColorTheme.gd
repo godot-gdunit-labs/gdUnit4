@@ -1,9 +1,9 @@
-## Provides editor theme colors sourced from [EditorSettings].
-## Add this node to the scene tree so it auto-refreshes colors when the
-## editor theme changes ([constant EditorSettings.NOTIFICATION_EDITOR_SETTINGS_CHANGED]).
 @tool
 class_name GdUnitEditorColorTheme
 extends Node
+## Provides editor theme colors sourced from [EditorSettings].
+## Add this node to the scene tree so it auto-refreshes colors when the
+## editor theme changes ([constant EditorSettings.NOTIFICATION_EDITOR_SETTINGS_CHANGED]).
 
 # Literal value of EditorSettings.NOTIFICATION_EDITOR_SETTINGS_CHANGED.
 # The editor classes must not be referenced by name anywhere in this script:

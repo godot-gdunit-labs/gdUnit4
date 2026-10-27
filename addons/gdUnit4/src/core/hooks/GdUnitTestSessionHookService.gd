@@ -6,6 +6,7 @@ var enigne_hooks: Array[GdUnitTestSessionHook] = []:
 		return enigne_hooks
 	set(value):
 		enigne_hooks.append(value)
+
 var _save_settings: bool = false
 
 

@@ -1,3 +1,6 @@
+@icon("res://addons/gdUnit4/src/ui/settings/logo.png")
+class_name GdUnitTestSuite
+extends Node  # gdstyle:ignore-file=quality/max-public-methods
 ## The main class for all GdUnit test suites[br]
 ## This class is the main class to implement your unit tests[br]
 ## You have to extend and implement your test cases as described[br]
@@ -9,9 +12,6 @@
 ##       assert_that("value").is_equal("value")
 ## [/codeblock]
 ## @tutorial:  https://mikeschulze.github.io/gdUnit4/faq/test-suite/
-@icon("res://addons/gdUnit4/src/ui/settings/logo.png")
-class_name GdUnitTestSuite
-extends Node  # gdstyle:ignore-file=quality/max-public-methods
 
 ## do return a default value for primitive types or null
 const RETURN_DEFAULTS = GdUnitMock.RETURN_DEFAULTS

@@ -24,6 +24,7 @@ var timeout: int = DEFAULT_TIMEOUT:
 			# get the default timeout from the settings
 			timeout = GdUnitSettings.test_timeout()
 		return timeout
+
 ## The seed used for random number generation in the test.[br]
 ## Ensures reproducible results for randomized test scenarios.[br]
 ## A value of -1 indicates no specific seed is set.

@@ -117,11 +117,6 @@ func snapshot_project_settings() -> void:
 	execution_context.snapshot_project_settings(true)
 
 
-## @deprecated: Use [method snapshot_project_settings] instead, will be removed in v7.0.0.
-func save_project_settings() -> void:
-	snapshot_project_settings()
-
-
 ## Restores the project settings previously captured by [method snapshot_project_settings].[br]
 ## [br]
 ## Has no effect and pushes an error while the "Auto Save Project Settings" setting is enabled.[br]

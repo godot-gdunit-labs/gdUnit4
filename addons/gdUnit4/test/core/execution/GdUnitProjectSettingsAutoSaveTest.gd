@@ -56,19 +56,6 @@ func test_snapshot_restore_isolates_setting_change_with_auto_save_disabled() -> 
 	assert_that(ProjectSettings.get_setting(key)).is_equal(original)
 
 
-func test_deprecated_save_project_settings_takes_a_snapshot() -> void:
-	var key := GdUnitSettings.GDSCRIPT_WARNINGS_INFERRED_DECLARATION
-	var original: Variant = ProjectSettings.get_setting(key, IGNORE)
-	var auto_save: Variant = ProjectSettings.get_setting(GdUnitSettings.TEST_PROJECT_SETTINGS_AUTO_SAVE, true)
-	ProjectSettings.set_setting(GdUnitSettings.TEST_PROJECT_SETTINGS_AUTO_SAVE, false)
-
-	save_project_settings()
-	ProjectSettings.set_setting(key, ERROR)
-	restore_project_settings()
-	ProjectSettings.set_setting(GdUnitSettings.TEST_PROJECT_SETTINGS_AUTO_SAVE, auto_save)
-	assert_that(ProjectSettings.get_setting(key)).is_equal(original)
-
-
 #endregion
 
 #region execution stage gating

@@ -152,10 +152,6 @@ func snapshot_project_settings() -> void:
 func restore_project_settings() -> void:
 ```
 
-{% include advice.html
-content="save_project_settings() is deprecated, use snapshot_project_settings() instead. It will be removed in v7.0.0."
-%}
-
 Here's a small example:
 
 ```gd

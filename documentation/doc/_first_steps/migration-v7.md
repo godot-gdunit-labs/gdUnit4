@@ -89,6 +89,22 @@ var test_count := session._test_cases.size()
 var test_count := session.test_count()
 ```
 
+## Renamed `save_project_settings()`
+
+The test suite function `save_project_settings()` is removed, use `snapshot_project_settings()` instead.
+While **Auto Save Project Settings** is enabled, `snapshot_project_settings()` and `restore_project_settings()` have no effect
+and push an error, because the settings are already saved and restored automatically.
+
+```gd
+# v6
+func before_test() -> void:
+    save_project_settings()
+
+# v7
+func before_test() -> void:
+    snapshot_project_settings()
+```
+
 ## Test Suite Template
 
 New test suites created from the default GDScript template no longer contain the `const __source` declaration.

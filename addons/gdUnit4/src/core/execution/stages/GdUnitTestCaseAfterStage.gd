@@ -23,4 +23,5 @@ func _execute(context: GdUnitExecutionContext) -> void:
 		await test_case_context.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_CASE)
 
 	await context.gc(GdUnitExecutionContext.GC_ORPHANS_CHECK.TEST_HOOK_AFTER)
+	context.restore_project_settings()
 	context.error_monitor_stop()

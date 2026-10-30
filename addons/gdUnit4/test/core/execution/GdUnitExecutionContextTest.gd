@@ -356,6 +356,106 @@ func test_dispose_releases_error_monitor_logger() -> void:
 	assert_object(logger_ref.get_ref()).is_null()
 
 
+func test_project_settings_auto_save_is_passed_to_the_sub_contexts(auto_save: bool, _test_parameters := [[true], [false]]) -> void:
+	var probe_key := "gdunit4/test/__context_settings_probe__"
+	var ctx_suite := GdUnitExecutionContext.new("", null, auto_save)
+	var tc: _TestCase = auto_free(create_test_case("test_case1", 0, ""))
+	var ctx_test := GdUnitExecutionContext.of_test_case(ctx_suite, tc)
+	var ctx_attempt := GdUnitExecutionContext.of(ctx_test)
+	for ctx: GdUnitExecutionContext in [ctx_suite, ctx_test, ctx_attempt]:
+		ProjectSettings.set_setting(probe_key, "__saved__")
+		ctx.snapshot_project_settings()
+		ProjectSettings.set_setting(probe_key, "__changed__")
+		ctx.restore_project_settings()
+		assert_str(ProjectSettings.get_setting(probe_key)).is_equal("__saved__" if auto_save else "__changed__")
+
+	ctx_suite.dispose()
+	ProjectSettings.set_setting(probe_key, null)
+
+
+func test_sub_contexts_inherit_the_settings_snapshot_of_the_test_case() -> void:
+	var probe_key := "gdunit4/test/__context_settings_probe__"
+	var ctx_suite := GdUnitExecutionContext.new("")
+	var tc: _TestCase = auto_free(create_test_case("test_case1", 0, ""))
+	ProjectSettings.set_setting(probe_key, "__shared__")
+	var shared := GdUnitProjectSettingsSnapshot.new()
+	shared.save()
+	var ctx_test := GdUnitExecutionContext.of_test_case(ctx_suite, tc, shared)
+	var ctx_attempt := GdUnitExecutionContext.of(ctx_test)
+	var ctx_test_call := GdUnitExecutionContext.of(ctx_attempt)
+
+	for ctx: GdUnitExecutionContext in [ctx_attempt, ctx_test_call]:
+		ProjectSettings.set_setting(probe_key, "__changed__")
+		ctx.restore_project_settings()
+		assert_str(ProjectSettings.get_setting(probe_key)).is_equal("__shared__")
+
+	ctx_suite.dispose()
+	ProjectSettings.set_setting(probe_key, null)
+
+
+func test_manual_snapshot_in_the_attempt_keeps_the_settings_snapshot_of_the_test_case() -> void:
+	var probe_key := "gdunit4/test/__context_settings_probe__"
+	var ctx_suite := GdUnitExecutionContext.new("")
+	var tc: _TestCase = auto_free(create_test_case("test_case1", 0, ""))
+	ProjectSettings.set_setting(probe_key, "__shared__")
+	var shared := GdUnitProjectSettingsSnapshot.new()
+	shared.save()
+	var ctx_test := GdUnitExecutionContext.of_test_case(ctx_suite, tc, shared)
+	var ctx_attempt := GdUnitExecutionContext.of(ctx_test)
+
+	ProjectSettings.set_setting(probe_key, "__manual__")
+	ctx_attempt.snapshot_project_settings(true)
+	ProjectSettings.set_setting(probe_key, "__changed__")
+	ctx_attempt.restore_project_settings()
+	assert_str(ProjectSettings.get_setting(probe_key)).is_equal("__manual__")
+
+	GdUnitExecutionContext.of(ctx_test).restore_project_settings()
+	assert_str(ProjectSettings.get_setting(probe_key)).is_equal("__shared__")
+
+	ctx_suite.dispose()
+	ProjectSettings.set_setting(probe_key, null)
+
+
+func test_snapshot_project_settings_needs_auto_save_or_force() -> void:
+	var probe_key := "gdunit4/test/__context_settings_probe__"
+	var ctx_suite := GdUnitExecutionContext.new("")
+	ProjectSettings.set_setting(probe_key, "__saved__")
+	ctx_suite.snapshot_project_settings()
+	ProjectSettings.set_setting(probe_key, "__changed__")
+	ctx_suite.restore_project_settings()
+	assert_str(ProjectSettings.get_setting(probe_key)).is_equal("__changed__")
+
+	ctx_suite.snapshot_project_settings(true)
+	ProjectSettings.set_setting(probe_key, "__changed_again__")
+	ctx_suite.restore_project_settings()
+	assert_str(ProjectSettings.get_setting(probe_key)).is_equal("__changed__")
+
+	ctx_suite.dispose()
+	ProjectSettings.set_setting(probe_key, null)
+
+
+func test_create_settings_snapshot_with_auto_save() -> void:
+	var probe_key := "gdunit4/test/__context_settings_probe__"
+	var ctx_suite := GdUnitExecutionContext.new("", null, true)
+	ProjectSettings.set_setting(probe_key, "__saved__")
+	var snapshot := ctx_suite.create_settings_snapshot()
+	assert_object(snapshot).is_not_null()
+
+	ProjectSettings.set_setting(probe_key, "__changed__")
+	snapshot.restore()
+	assert_str(ProjectSettings.get_setting(probe_key)).is_equal("__saved__")
+
+	ctx_suite.dispose()
+	ProjectSettings.set_setting(probe_key, null)
+
+
+func test_create_settings_snapshot_without_auto_save() -> void:
+	var ctx_suite := GdUnitExecutionContext.new("")
+	assert_object(ctx_suite.create_settings_snapshot()).is_null()
+
+	ctx_suite.dispose()
+
+
 static func create_test_case(p_name: String, p_line_number: int, p_script_path: String) -> _TestCase:
 	var test_case := GdUnitTestCase.new()
 	test_case.test_name = p_name

@@ -17,7 +17,6 @@ var _memory_observer: GdUnitMemoryObserver
 var _report_collector: GdUnitTestReportCollector
 var _timer: LocalTime
 var _test_case_name: StringName
-var _test_case_parameter_set: Array
 var _name: String
 var _test_execution_iteration: int = 0
 var _flaky_test_check := GdUnitSettings.is_test_flaky_check_enabled()
@@ -26,6 +25,7 @@ var _last_error: GdUnitError = null
 
 
 var _settings_snapshot: GdUnitProjectSettingsSnapshot = null
+var _project_settings_auto_save := false
 
 
 var error_monitor: GodotGdErrorMonitor = null:
@@ -51,13 +51,16 @@ var test_case: _TestCase = null:
 		return test_case
 
 
-func _init(name: StringName, parent_context: GdUnitExecutionContext = null) -> void:
+func _init(name: StringName, parent_context: GdUnitExecutionContext = null, project_settings_auto_save_enabled := false) -> void:
 	_name = name
 	_parent_context = parent_context
 	_timer = LocalTime.now()
 	_orphan_monitor = GdUnitOrphanNodesMonitor.new(name)
+	_project_settings_auto_save = project_settings_auto_save_enabled
 
 	if parent_context != null:
+		_project_settings_auto_save = parent_context._project_settings_auto_save
+		_settings_snapshot = parent_context._settings_snapshot
 		parent_context._orphan_monitor.add_child_monitor(_orphan_monitor)
 		orphan_monitor_start()
 
@@ -104,17 +107,12 @@ static func of(pe: GdUnitExecutionContext) -> GdUnitExecutionContext:
 	return context
 
 
-static func of_test_case(pe: GdUnitExecutionContext, p_test_case: _TestCase) -> GdUnitExecutionContext:
+static func of_test_case(pe: GdUnitExecutionContext, p_test_case: _TestCase,
+	settings_snapshot: GdUnitProjectSettingsSnapshot = null) -> GdUnitExecutionContext:
 	assert(p_test_case, "test_case is null")
 	var context := GdUnitExecutionContext.new(p_test_case.test_name(), pe)
 	context.test_case = p_test_case
-	return context
-
-
-static func of_parameterized_test(pe: GdUnitExecutionContext, test_case_name: String, test_case_parameter_set: Array) -> GdUnitExecutionContext:
-	var context := GdUnitExecutionContext.new(test_case_name, pe)
-	context._test_case_name = test_case_name
-	context._test_case_parameter_set = test_case_parameter_set
+	context._settings_snapshot = settings_snapshot
 	return context
 
 
@@ -132,16 +130,23 @@ func get_test_case_name() -> StringName:
 	return _test_case_name
 
 
-func save_project_settings() -> void:
-	if _settings_snapshot == null:
+func snapshot_project_settings(force := false) -> void:
+	if _project_settings_auto_save or force:
 		_settings_snapshot = GdUnitProjectSettingsSnapshot.new()
-	_settings_snapshot.save()
+		_settings_snapshot.save()
 
 
 func restore_project_settings() -> void:
-	if _settings_snapshot == null:
-		return
-	_settings_snapshot.restore()
+	if _settings_snapshot != null:
+		_settings_snapshot.restore()
+
+
+func create_settings_snapshot() -> GdUnitProjectSettingsSnapshot:
+	if not _project_settings_auto_save:
+		return null
+	var snapshot := GdUnitProjectSettingsSnapshot.new()
+	snapshot.save()
+	return snapshot
 
 
 func error_monitor_start() -> void:

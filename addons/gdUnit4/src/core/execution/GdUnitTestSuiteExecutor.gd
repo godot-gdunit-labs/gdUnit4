@@ -40,7 +40,7 @@ func run_and_wait(tests: Array[GdUnitTestCase]) -> void:
 		var suite_tests: Array[GdUnitTestCase] = Array(grouped_by_suites[suite_path], TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 		var script := GdUnitTestSuiteScanner.load_with_disabled_warnings(suite_path)
 		if script.get_class() == "GDScript":
-			var context := GdUnitExecutionContext.new(suite_path)
+			var context := GdUnitExecutionContext.new(suite_path, null, GdUnitSettings.is_project_settings_auto_save())
 			GdUnitThreadManager.get_current_context().set_execution_context(context)
 			var test_suite := scanner.load_suite(script as GDScript, suite_tests)
 			context.test_suite = test_suite

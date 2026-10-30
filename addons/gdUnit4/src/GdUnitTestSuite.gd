@@ -109,26 +109,42 @@ func auto_free(obj: Variant) -> Variant:
 	return execution_context.register_auto_free(obj)
 
 
-## Saves the current project settings into the active execution context.[br]
+## Takes a snapshot of the current project settings into the active execution context.[br]
 ## Useful when the "Auto Save Project Settings" setting is disabled and a test needs settings isolation on demand.[br]
+## Has no effect and pushes an error while the setting is enabled, the settings are then already saved and restored automatically.[br]
 ## [br]
 ## Call this in [code]before()[/code]/[code]before_test()[/code] to snapshot the settings a test
 ## is about to change, to restore see [method restore_project_settings].
-func save_project_settings() -> void:
+func snapshot_project_settings() -> void:
 	var execution_context := GdUnitThreadManager.get_current_context().get_execution_context()
-	if execution_context == null:
+	if execution_context == null or __ignore_on_project_settings_auto_save("snapshot_project_settings"):
 		return
-	execution_context.save_project_settings()
+	execution_context.snapshot_project_settings(true)
 
 
-## Restores the project settings previously captured by [method save_project_settings].[br]
+## @deprecated: Use [method snapshot_project_settings] instead, will be removed in v7.0.0.
+func save_project_settings() -> void:
+	snapshot_project_settings()
+
+
+## Restores the project settings previously captured by [method snapshot_project_settings].[br]
+## [br]
+## Has no effect and pushes an error while the "Auto Save Project Settings" setting is enabled.[br]
 ## [br]
 ## Call this in [code]after()[/code]/[code]after_test()[/code] to undo any settings a test changed.
 func restore_project_settings() -> void:
 	var execution_context := GdUnitThreadManager.get_current_context().get_execution_context()
-	if execution_context == null:
+	if execution_context == null or __ignore_on_project_settings_auto_save("restore_project_settings"):
 		return
 	execution_context.restore_project_settings()
+
+
+func __ignore_on_project_settings_auto_save(function_name: String) -> bool:
+	if not GdUnitSettings.is_project_settings_auto_save():
+		return false
+	push_error(("'%s()' has no effect while 'Auto Save Project Settings' is enabled,"
+		+ " the project settings are already saved and restored automatically.") % function_name)
+	return true
 
 
 @warning_ignore("native_method_override")

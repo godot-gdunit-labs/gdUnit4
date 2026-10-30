@@ -88,6 +88,42 @@ func test_parse_function_arguments() -> void:
 			{"name" : "test_parameters", "type" : TYPE_VARIANT, "value" : "[[Vector2.ONE,Vector2.ONE,Vector2(1,1)]]"},
 		])
 
+	# signature split over lines, the closing bracket on a line of its own
+	assert_array(_parser._parse_function_arguments("""
+		func test_values(
+			value: int, _test_parameters: Array = CASES
+		) -> void:""".dedent().trim_prefix("\n")))\
+		.contains_exactly([
+			{ "name": "value", "type": TYPE_INT, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "_test_parameters", "type": TYPE_ARRAY, "value": "CASES" },
+		])
+	assert_array(_parser._parse_function_arguments("""
+		func test_values(
+			value: int, _test_parameters := cases()
+		) -> void:""".dedent().trim_prefix("\n")))\
+		.contains_exactly([
+			{ "name": "value", "type": TYPE_INT, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "_test_parameters", "type": TYPE_VARIANT, "value": "cases()" },
+		])
+	assert_array(_parser._parse_function_arguments("""
+		func test_values(
+			value: int,
+			_test_parameters := CASES,
+		) -> void:""".dedent().trim_prefix("\n")))\
+		.contains_exactly([
+			{ "name": "value", "type": TYPE_INT, "value": GdFunctionArgument.UNDEFINED },
+			{ "name": "_test_parameters", "type": TYPE_VARIANT, "value": "CASES" },
+		])
+	assert_array(_parser._parse_function_arguments("""
+		func test_values(
+			do_skip := true,
+			skip_reason := "reason"
+		) -> void:""".dedent().trim_prefix("\n")))\
+		.contains_exactly([
+			{ "name": "do_skip", "type": TYPE_VARIANT, "value": "true" },
+			{ "name": "skip_reason", "type": TYPE_VARIANT, "value": '"reason"' },
+		])
+
 
 func test_parse_arguments_with_super_constructor() -> void:
 	assert_array(_parser._parse_function_arguments('func foo().foo("abc"):')).is_empty()
@@ -316,6 +352,22 @@ func test_parse_arguments_fuzzers() -> void:
 			{"name" : "fuzzer_c", "type" : TYPE_FUZZER, "value" : 'fuzz_c()'},
 			{"name" : "fuzzer_iterations", "type" : TYPE_VARIANT, "value" : '234'},
 			{"name" : "fuzzer_seed", "type" : TYPE_VARIANT, "value" : '100'},
+		])
+	assert_array(_parser._parse_function_arguments("""
+		func test_foo(
+			fuzzer := Fuzzers.rangei(0, 10)
+		) -> void:""".dedent().trim_prefix("\n")))\
+		.contains_exactly([
+			{ "name": "fuzzer", "type": TYPE_FUZZER, "value": "Fuzzers.rangei(0, 10)" },
+		])
+	assert_array(_parser._parse_function_arguments("""
+		func test_foo(
+			fuzzer := Fuzzers.rangei(0, 10),
+			fuzzer_iterations := 5,
+		) -> void:""".dedent().trim_prefix("\n")))\
+		.contains_exactly([
+			{ "name": "fuzzer", "type": TYPE_FUZZER, "value": "Fuzzers.rangei(0, 10)" },
+			{ "name": "fuzzer_iterations", "type": TYPE_VARIANT, "value": "5" },
 		])
 
 

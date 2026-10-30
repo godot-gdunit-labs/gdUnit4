@@ -213,6 +213,36 @@ func test_discover_tests_with_static_parameterset() -> void:
 		)
 
 
+func test_discover_tests_with_split_signature_parameterset() -> void:
+	# Setup
+	var script: GDScript = load("res://addons/gdUnit4/test/core/parse/resources/TestSuiteWithSplitSignatureParameterSet.gd")
+
+	# Act
+	var tests := GdUnitTestDiscoverer.discover_tests_from_gd_script(script)
+
+	# Verify
+	assert_array(tests)\
+		.extractv(
+			extr("suite_name"),
+			extr("test_name"),
+			extr("source_file"),
+			extr("line_number"),
+			extr("attribute_index"))\
+		.contains_exactly(
+			tuple("TestSuiteWithSplitSignatureParameterSet", "test_with_constant", script.resource_path, 7, 0),
+			tuple("TestSuiteWithSplitSignatureParameterSet", "test_with_constant", script.resource_path, 7, 1),
+			tuple("TestSuiteWithSplitSignatureParameterSet", "test_with_constant", script.resource_path, 7, 2),
+			tuple("TestSuiteWithSplitSignatureParameterSet", "test_with_typed_constant", script.resource_path, 14, 0),
+			tuple("TestSuiteWithSplitSignatureParameterSet", "test_with_typed_constant", script.resource_path, 14, 1),
+			tuple("TestSuiteWithSplitSignatureParameterSet", "test_with_typed_constant", script.resource_path, 14, 2),
+			tuple("TestSuiteWithSplitSignatureParameterSet", "test_with_trailing_comma", script.resource_path, 22, 0),
+			tuple("TestSuiteWithSplitSignatureParameterSet", "test_with_trailing_comma", script.resource_path, 22, 1),
+			tuple("TestSuiteWithSplitSignatureParameterSet", "test_with_trailing_comma", script.resource_path, 22, 2),
+			tuple("TestSuiteWithSplitSignatureParameterSet", "test_with_function", script.resource_path, 30, 0),
+			tuple("TestSuiteWithSplitSignatureParameterSet", "test_with_function", script.resource_path, 30, 1),
+		)
+
+
 func test_discover_tests_with_dynamic_parameterset() -> void:
 	# Setup
 	var script: GDScript = load("res://addons/gdUnit4/test/core/parse/resources/TestSuiteWithDynamicParameterSet.gd")

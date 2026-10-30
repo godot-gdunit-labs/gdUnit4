@@ -323,7 +323,8 @@ static func is_test_flaky_check_enabled() -> bool:
 
 
 ## Returns whether the framework automatically saves and restores the project settings
-## around each test execution. When disabled, use [method GdUnitTestSuite.save_project_settings]
+## around each test suite, and sets back the settings [code]before()[/code] left behind after
+## every test case attempt. When disabled, use [method GdUnitTestSuite.snapshot_project_settings]
 ## and [method GdUnitTestSuite.restore_project_settings] to snapshot settings on demand.
 static func is_project_settings_auto_save() -> bool:
 	return get_setting(TEST_PROJECT_SETTINGS_AUTO_SAVE, true)

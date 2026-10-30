@@ -23,16 +23,18 @@ func _execute(context :GdUnitExecutionContext) -> void:
 		await (Engine.get_main_loop() as SceneTree).process_frame
 		@warning_ignore("return_value_discarded")
 		GdUnitMemoryObserver.guard_instance(context.test_suite.__awaiter)
-		if GdUnitSettings.is_project_settings_auto_save():
-			context.save_project_settings()
 		await _stage_before.execute(context)
+
+		# settings as left by before(), restored after every test case so tests can't leak changes into each other
+		var before_hook_settings_snapshot := context.create_settings_snapshot()
+
 		for test_case_index in context.test_suite.get_child_count():
 			# iterate only over test cases
 			var test_case := context.test_suite.get_child(test_case_index) as _TestCase
 			if not is_instance_valid(test_case):
 				continue
 			context.test_suite.set_active_test_case(test_case.test_name())
-			var test_case_context := GdUnitExecutionContext.of_test_case(context, test_case)
+			var test_case_context := GdUnitExecutionContext.of_test_case(context, test_case, before_hook_settings_snapshot)
 			await _stage_test.execute(test_case_context)
 			# stop on first error or if fail fast is enabled
 			if test_case.is_terminated() or (_fail_fast and not test_case_context.is_success()):
@@ -43,8 +45,6 @@ func _execute(context :GdUnitExecutionContext) -> void:
 				# and replace it by a clone without function state
 				context.test_suite = await clone_test_suite(context.test_suite)
 		await _stage_after.execute(context)
-		if GdUnitSettings.is_project_settings_auto_save():
-			context.restore_project_settings()
 		GdUnitMemoryObserver.unguard_instance(context.test_suite.__awaiter)
 
 	await (Engine.get_main_loop() as SceneTree).process_frame

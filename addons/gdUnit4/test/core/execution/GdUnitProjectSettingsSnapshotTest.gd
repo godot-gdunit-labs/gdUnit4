@@ -10,6 +10,7 @@ const WARN := GdUnitSettings.GdScriptWarningMode.WARN
 const ERROR := GdUnitSettings.GdScriptWarningMode.ERROR
 const EXCLUDE := GdUnitSettings.GdScriptWarningDirectoryMode.EXCLUDE
 const INCLUDE := GdUnitSettings.GdScriptWarningDirectoryMode.INCLUDE
+const NESTED_PROBE_KEY := "gdunit4/test/__snapshot_nested_probe__"
 
 
 #region save / restore
@@ -61,5 +62,35 @@ func test_restore_without_save_does_nothing() -> void:
 	snapshot.restore()
 	# Verify — no error, no crash
 	assert_bool(true).is_true()
+
+
+func test_restore_can_be_repeated() -> void:
+	# Setup
+	var snapshot := GdUnitProjectSettingsSnapshot.new()
+	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_INFERRED_DECLARATION, IGNORE)
+	snapshot.save()
+	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_INFERRED_DECLARATION, ERROR)
+	snapshot.restore()
+	# Act
+	ProjectSettings.set_setting(GdUnitSettings.GDSCRIPT_WARNINGS_INFERRED_DECLARATION, ERROR)
+	snapshot.restore()
+	# Verify
+	assert_int(ProjectSettings.get_setting(GdUnitSettings.GDSCRIPT_WARNINGS_INFERRED_DECLARATION))\
+		.is_equal(IGNORE)
+
+
+func test_restore_keeps_the_saved_values_of_a_setting_edited_in_place() -> void:
+	# Setup
+	var snapshot := GdUnitProjectSettingsSnapshot.new()
+	ProjectSettings.set_setting(NESTED_PROBE_KEY, { "paths": ["res://addons"] })
+	snapshot.save()
+	# Act
+	((ProjectSettings.get_setting(NESTED_PROBE_KEY) as Dictionary)["paths"] as Array).append("res://first")
+	snapshot.restore()
+	((ProjectSettings.get_setting(NESTED_PROBE_KEY) as Dictionary)["paths"] as Array).append("res://second")
+	snapshot.restore()
+	# Verify
+	assert_dict(ProjectSettings.get_setting(NESTED_PROBE_KEY)).is_equal({ "paths": ["res://addons"] })
+	ProjectSettings.set_setting(NESTED_PROBE_KEY, null)
 
 #endregion

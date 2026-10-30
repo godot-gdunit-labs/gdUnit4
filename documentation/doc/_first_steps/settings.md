@@ -37,9 +37,9 @@ To access these settings, simply press the 'tools' button located in the GdUnit 
     Once the limit is reached or a failure occurs, the run stops. The default value is **10**.
 
   * **Auto Save Project Settings**<br>
-    When enabled (the default), GdUnit automatically saves your project settings before each test execution and restores them afterwards,
-    so a test that changes a setting cannot leak that change into later tests. Disable it to skip this snapshot when your suites rarely
-    touch the project settings, and instead snapshot on demand with `save_project_settings()` / `restore_project_settings()`
+    When enabled (the default), GdUnit automatically saves your project settings before each test suite and restores them after it.
+    It also saves them after the suite's `before()` and sets them back after every test case and every retry attempt, so a test that changes a setting cannot leak that change into later tests. Disable it to skip this snapshot when your suites rarely
+    touch the project settings, and instead snapshot on demand with `snapshot_project_settings()` / `restore_project_settings()`
     (see [Tools and Helpers]({{site.baseurl}}/advanced_testing/tools/)) in only the tests that need it.
 
   * **Test Discovery**<br>

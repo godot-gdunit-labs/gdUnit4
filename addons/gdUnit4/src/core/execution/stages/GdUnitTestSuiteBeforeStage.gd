@@ -10,5 +10,7 @@ func _execute(context: GdUnitExecutionContext) -> void:
 	fire_event(GdUnitEvent.new()\
 		.suite_before(context.get_test_suite_path(), test_suite.get_name(), test_suite.get_child_count()))
 
+	context.snapshot_project_settings()
+
 	@warning_ignore("redundant_await")
 	await test_suite.before()

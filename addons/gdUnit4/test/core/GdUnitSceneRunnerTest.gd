@@ -393,8 +393,9 @@ func test_mouse_drag_and_drop() -> void:
 	root_event.global_position = root_pos
 	verify(spy_scene, 1)._gui_input(root_event)
 
+	reset(spy_scene)
+
 	# set inital mouse pos over the left slot, its container has laid it out by now
-	# the slot passes the mouse motion to the left panel, which consumes it, so the root receives nothing
 	monitor_signals(slot_left, false)
 	var mouse_pos := slot_left.global_position + Vector2(50, 50)
 	runner.set_mouse_position(mouse_pos)
@@ -405,10 +406,8 @@ func test_mouse_drag_and_drop() -> void:
 	slot_event.position = Vector2(50, 50)
 	slot_event.global_position = mouse_pos
 	await assert_signal(slot_left).wait_until(500).is_emitted("gui_input", slot_event)
-	var event := InputEventMouseMotion.new()
-	event.position = mouse_pos
-	event.global_position = mouse_pos
-	verify(spy_scene, 0)._gui_input(event)
+	# the slot passes the mouse motion to the left panel, which consumes it, so the root receives nothing
+	verify(spy_scene, 0)._gui_input(any())
 
 	runner.simulate_mouse_button_press(MOUSE_BUTTON_LEFT)
 	await await_idle_frame()

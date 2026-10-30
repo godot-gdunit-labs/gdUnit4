@@ -384,7 +384,14 @@ func test_mouse_drag_and_drop() -> void:
 	var slot_left: TextureRect = $"/root/DragAndDropScene/left/TextureRect"
 	var slot_right: TextureRect = $"/root/DragAndDropScene/right/TextureRect"
 
-	var save_mouse_pos := get_tree().root.get_mouse_position()
+	var root_pos := Vector2(100, 400)
+	runner.set_mouse_position(root_pos)
+	await await_idle_frame()
+	var root_event := InputEventMouseMotion.new()
+	root_event.position = root_pos
+	root_event.global_position = root_pos
+	verify(spy_scene, 1)._gui_input(root_event)
+
 	# set inital mouse pos over the left slot
 	var mouse_pos := slot_left.global_position + Vector2(50, 50)
 	runner.set_mouse_position(mouse_pos)
@@ -393,7 +400,7 @@ func test_mouse_drag_and_drop() -> void:
 	await await_idle_frame()
 	var event := InputEventMouseMotion.new()
 	event.position = mouse_pos
-	event.global_position = save_mouse_pos
+	event.global_position = mouse_pos
 	verify(spy_scene, 0)._gui_input(event)
 
 	runner.simulate_mouse_button_press(MOUSE_BUTTON_LEFT)

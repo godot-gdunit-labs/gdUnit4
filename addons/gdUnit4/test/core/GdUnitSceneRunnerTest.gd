@@ -1,4 +1,4 @@
-# GdUnit generated TestSuite
+# GdUnit generated TestSuite  # gdlint: disable=max-public-methods
 @warning_ignore_start("redundant_await", "unsafe_method_access")
 class_name GdUnitSceneRunnerTest
 extends GdUnitTestSuite  # gdstyle:ignore-file=quality/max-public-methods

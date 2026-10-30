@@ -1,7 +1,7 @@
-# GdUnit generated TestSuite
+# GdUnit generated TestSuite  # gdlint: disable=max-public-methods
 @warning_ignore_start("redundant_await", "unsafe_method_access")
 class_name GdUnitSceneRunnerTest
-extends GdUnitTestSuite
+extends GdUnitTestSuite  # gdstyle:ignore-file=quality/max-public-methods
 
 # TestSuite generated from
 const __source = 'res://addons/gdUnit4/src/core/GdUnitSceneRunnerImpl.gd'
@@ -390,17 +390,29 @@ func test_mouse_drag_and_drop() -> void:
 	var slot_left :TextureRect = $"/root/DragAndDropScene/left/TextureRect"
 	var slot_right :TextureRect = $"/root/DragAndDropScene/right/TextureRect"
 
-	var save_mouse_pos := get_tree().root.get_mouse_position()
-	# set inital mouse pos over the left slot
+	# the root receives the mouse motion when the mouse is over its own area
+	var root_pos := Vector2(100, 400)
+	runner.set_mouse_position(root_pos)
+	await await_idle_frame()
+	var root_event := InputEventMouseMotion.new()
+	root_event.position = root_pos
+	root_event.global_position = root_pos
+	verify(spy_scene, 1)._gui_input(root_event)
+
+	reset(spy_scene)
+
+	# set inital mouse pos over the left slot, its container has laid it out by now
+	monitor_signals(slot_left, false)
 	var mouse_pos := slot_left.global_position + Vector2(50, 50)
 	runner.set_mouse_position(mouse_pos)
-	#await await_millis(1000)
-
 	await await_idle_frame()
-	var event := InputEventMouseMotion.new()
-	event.position = mouse_pos
-	event.global_position = save_mouse_pos
-	verify(spy_scene, 1)._gui_input(event)
+
+	var slot_event := InputEventMouseMotion.new()
+	slot_event.position = Vector2(50, 50)
+	slot_event.global_position = mouse_pos
+	await assert_signal(slot_left).wait_until(500).is_emitted("gui_input", slot_event)
+	# the slot passes the mouse motion to the left panel, which consumes it, so the root receives nothing
+	verify(spy_scene, 0)._gui_input(any())
 
 	runner.simulate_mouse_button_press(MOUSE_BUTTON_LEFT)
 	await await_idle_frame()
@@ -522,6 +534,53 @@ func test_load_scene_with_audio_player() -> void:
 	await runner.simulate_frames(1)
 
 
+func test_simulate_key_reaches_each_handler_once() -> void:
+	var scene: InputCounterNode = auto_free(InputCounterNode.new())
+	var runner := scene_runner(scene)
+
+	runner.simulate_key_pressed(KEY_A)
+	await runner.await_input_processed()
+
+	assert_int(scene.input_keys).is_equal(2)
+	assert_int(scene.unhandled_keys).is_equal(2)
+
+
+func test_simulate_mouse_click_on_control() -> void:
+	var scene: InputCounterControl = auto_free(InputCounterControl.new())
+	var runner := scene_runner(scene)
+	scene.size = Vector2(400, 400)
+
+	runner.set_mouse_position(Vector2(50, 50))
+	runner.simulate_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+	await runner.await_input_processed()
+
+	assert_int(scene.gui_mouse_buttons).is_equal(2)
+	assert_int(scene.unhandled_mouse_buttons).is_equal(0)
+
+
+func test_simulate_key_on_unfocused_control() -> void:
+	var scene: InputCounterControl = auto_free(InputCounterControl.new())
+	var runner := scene_runner(scene)
+
+	runner.simulate_key_pressed(KEY_A)
+	await runner.await_input_processed()
+
+	assert_bool(scene.has_focus()).is_false()
+	assert_int(scene.gui_keys).is_equal(0)
+
+
+func test_simulate_key_on_disabled_scene() -> void:
+	var scene: InputCounterNode = auto_free(InputCounterNode.new())
+	var runner := scene_runner(scene)
+	scene.process_mode = Node.PROCESS_MODE_DISABLED
+
+	runner.simulate_key_press(KEY_A)
+
+	assert_bool(Input.is_key_pressed(KEY_A)).is_true()
+	runner.simulate_key_release(KEY_A)
+	assert_bool(Input.is_key_pressed(KEY_A)).is_false()
+
+
 # we override the scene runner function for test purposes to hide push_error notifications
 func scene_runner(scene :Variant, verbose := false) -> GdUnitSceneRunner:
 	return auto_free(GdUnitSceneRunnerImpl.new(scene, verbose, true))
@@ -535,3 +594,32 @@ static func _create_example_scene() -> Node:
 	var scene := packed_scene.instantiate()
 	scene.queue_free()
 	return scene
+
+
+class InputCounterNode extends Node:
+	var input_keys := 0
+	var unhandled_keys := 0
+
+	func _input(event: InputEvent) -> void:
+		if event is InputEventKey:
+			input_keys += 1
+
+	func _unhandled_input(event: InputEvent) -> void:
+		if event is InputEventKey:
+			unhandled_keys += 1
+
+
+class InputCounterControl extends Control:
+	var gui_keys := 0
+	var gui_mouse_buttons := 0
+	var unhandled_mouse_buttons := 0
+
+	func _gui_input(event: InputEvent) -> void:
+		if event is InputEventKey:
+			gui_keys += 1
+		if event is InputEventMouseButton:
+			gui_mouse_buttons += 1
+
+	func _unhandled_input(event: InputEvent) -> void:
+		if event is InputEventMouseButton:
+			unhandled_mouse_buttons += 1

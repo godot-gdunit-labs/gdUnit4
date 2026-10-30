@@ -105,7 +105,7 @@ func _scene_tree() -> SceneTree:
 
 
 func await_input_processed() -> void:
-	if scene() != null and scene().process_mode != Node.PROCESS_MODE_DISABLED:
+	if scene() != null:
 		Input.flush_buffered_events()
 	await (Engine.get_main_loop() as SceneTree).process_frame
 	await (Engine.get_main_loop() as SceneTree).physics_frame
@@ -572,15 +572,8 @@ func _handle_input_event(event: InputEvent) -> GdUnitSceneRunner:
 
 	var current_scene := scene()
 	if is_instance_valid(current_scene):
-		# do not flush events if node processing disabled otherwise we run into errors at tree removed
-		if _current_scene.process_mode != Node.PROCESS_MODE_DISABLED:
-			Input.flush_buffered_events()
+		Input.flush_buffered_events()
 		_print("	process event %s (%s) <- %s" % [current_scene, _scene_name(), event.as_text()])
-		if current_scene.has_method("_gui_input"):
-			(current_scene as Control)._gui_input(event)
-		if current_scene.has_method("_unhandled_input"):
-			current_scene._unhandled_input(event)
-		current_scene.get_viewport().set_input_as_handled()
 
 	# save last input event needs to be merged with next InputEventMouseButton
 	_last_input_event = event
@@ -605,7 +598,7 @@ func _reset_input_to_default() -> void:
 			simulate_action_release(action)
 	_action_on_press.clear()
 
-	if is_instance_valid(_current_scene) and _current_scene.process_mode != Node.PROCESS_MODE_DISABLED:
+	if is_instance_valid(_current_scene):
 		Input.flush_buffered_events()
 	_last_input_event = null
 

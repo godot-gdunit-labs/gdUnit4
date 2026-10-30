@@ -384,6 +384,7 @@ func test_mouse_drag_and_drop() -> void:
 	var slot_left: TextureRect = $"/root/DragAndDropScene/left/TextureRect"
 	var slot_right: TextureRect = $"/root/DragAndDropScene/right/TextureRect"
 
+	# the root receives the mouse motion when the mouse is over its own area
 	var root_pos := Vector2(100, 400)
 	runner.set_mouse_position(root_pos)
 	await await_idle_frame()
@@ -392,12 +393,18 @@ func test_mouse_drag_and_drop() -> void:
 	root_event.global_position = root_pos
 	verify(spy_scene, 1)._gui_input(root_event)
 
-	# set inital mouse pos over the left slot
+	# set inital mouse pos over the left slot, its container has laid it out by now
+	# the slot passes the mouse motion to the left panel, which consumes it, so the root receives nothing
+	monitor_signals(slot_left, false)
 	var mouse_pos := slot_left.global_position + Vector2(50, 50)
 	runner.set_mouse_position(mouse_pos)
 	#await await_millis(1000)
 
 	await await_idle_frame()
+	var slot_event := InputEventMouseMotion.new()
+	slot_event.position = Vector2(50, 50)
+	slot_event.global_position = mouse_pos
+	await assert_signal(slot_left).wait_until(500).is_emitted("gui_input", slot_event)
 	var event := InputEventMouseMotion.new()
 	event.position = mouse_pos
 	event.global_position = mouse_pos

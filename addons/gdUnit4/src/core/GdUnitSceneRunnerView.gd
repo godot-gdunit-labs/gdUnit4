@@ -1,7 +1,7 @@
-## Displays the scene runner viewport in the window and draws the simulated mouse cursor on top of it.[br]
-## The cursor is drawn on the view only, so it never appears in the scene viewport texture.
 class_name GdUnitSceneRunnerView
 extends TextureRect
+## Displays the scene runner viewport in the window and draws the simulated mouse cursor on top of it.[br]
+## The cursor is drawn on the view only, so it never appears in the scene viewport texture.
 
 static var _arrow_polygon := PackedVector2Array([
 	Vector2(0, 0),

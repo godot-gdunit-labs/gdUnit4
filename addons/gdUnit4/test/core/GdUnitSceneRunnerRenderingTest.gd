@@ -1,7 +1,6 @@
 # GdUnit generated TestSuite
 class_name GdUnitSceneRunnerRenderingTest
 extends GdUnitTestSuite
-
 ## Verifies which rendering dependent features work in a scene runner with a display and in headless mode.[br]
 ## Headless Godot uses a dummy renderer, it does not render anything.
 

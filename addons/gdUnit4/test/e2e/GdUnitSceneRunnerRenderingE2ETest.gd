@@ -2,7 +2,6 @@
 @warning_ignore_start("redundant_await")
 class_name GdUnitSceneRunnerRenderingE2ETest
 extends GdUnitTestSuite
-
 ## End-to-end tests that need rendered output, they only pass with a display and run in their own CI job.
 
 const GREEN_SHADER := """

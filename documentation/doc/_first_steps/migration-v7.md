@@ -110,6 +110,7 @@ func before_test() -> void:
 The scene runner no longer adds the scene under test directly to the scene tree root, it runs the scene in its own viewport.
 Access the scene and its nodes with `scene()` instead of absolute node paths, and use the viewport of the scene instead of the root window.
 Simulated mouse and touch positions are scene coordinates, when your project uses a stretch mode they are no longer converted from window coordinates.
+The global position of simulated mouse events is in window coordinates, like Godot reports it for the game window, in headless mode it is equal to the position.
 
 ```gd
 # v6

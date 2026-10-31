@@ -35,6 +35,7 @@ var _current_touch_drag_position: Vector2 = Vector2.ZERO
 # time factor settings
 var _time_factor := 1.0
 var _scene_auto_free := false
+var _is_mouse_emulated := false
 
 
 func _init(p_scene: Variant, p_verbose: bool, p_hide_push_errors := false) -> void:
@@ -134,8 +135,9 @@ func _create_scene_viewport(current_scene: Node) -> SubViewport:
 
 
 static func _viewport_size(root: Window) -> Vector2i:
-	if root.content_scale_mode != Window.CONTENT_SCALE_MODE_DISABLED:
-		return root.content_scale_size
+	var content_scale_size := root.content_scale_size
+	if root.content_scale_mode != Window.CONTENT_SCALE_MODE_DISABLED and content_scale_size.x > 0 and content_scale_size.y > 0:
+		return content_scale_size
 	@warning_ignore("unsafe_call_argument")
 	var window_override := Vector2i(
 		ProjectSettings.get_setting("display/window/size/window_width_override", 0),
@@ -222,6 +224,7 @@ func simulate_key_release(key_code: int) -> GdUnitSceneRunner:
 func set_mouse_position(pos: Vector2) -> GdUnitSceneRunner:
 	var event := InputEventMouseMotion.new()
 	event.position = pos
+	event.global_position = _to_global_position(pos)
 	_apply_input_modifiers(event)
 	return _handle_input_event(event)
 
@@ -236,14 +239,17 @@ func get_mouse_position() -> Vector2:
 
 
 func get_global_mouse_position() -> Vector2:
+	if _last_input_event is InputEventMouse:
+		return (_last_input_event as InputEventMouse).global_position
 	if is_instance_valid(_viewport):
-		return _viewport.get_mouse_position()
+		return _to_global_position(_viewport.get_mouse_position())
 	return Vector2.ZERO
 
 
 func simulate_mouse_move(position: Vector2) -> GdUnitSceneRunner:
 	var event := InputEventMouseMotion.new()
 	event.position = position
+	event.global_position = _to_global_position(position)
 	event.relative = position - get_mouse_position()
 	_apply_input_mouse_mask(event)
 	_apply_input_modifiers(event)
@@ -318,8 +324,10 @@ func simulate_screen_touch_pressed(index: int, position: Vector2, double_tap := 
 func simulate_screen_touch_press(index: int, position: Vector2, double_tap := false) -> GdUnitSceneRunner:
 	if is_emulate_mouse_from_touch():
 		# we need to simulate in addition to the touch the mouse events
+		_is_mouse_emulated = true
 		set_mouse_position(position)
 		simulate_mouse_button_press(MOUSE_BUTTON_LEFT)
+		_is_mouse_emulated = false
 	# push touch press event at position
 	var event := InputEventScreenTouch.new()
 	event.window_id = scene().get_window().get_window_id()
@@ -337,7 +345,9 @@ func simulate_screen_touch_press(index: int, position: Vector2, double_tap := fa
 func simulate_screen_touch_release(index: int, double_tap := false) -> GdUnitSceneRunner:
 	if is_emulate_mouse_from_touch():
 		# we need to simulate in addition to the touch the mouse events
+		_is_mouse_emulated = true
 		simulate_mouse_button_release(MOUSE_BUTTON_LEFT)
+		_is_mouse_emulated = false
 	# push touch release event at position
 	var event := InputEventScreenTouch.new()
 	event.window_id = scene().get_window().get_window_id()
@@ -373,7 +383,9 @@ func simulate_screen_touch_drag_drop(
 @warning_ignore("return_value_discarded")
 func simulate_screen_touch_drag(index: int, position: Vector2) -> GdUnitSceneRunner:
 	if is_emulate_mouse_from_touch():
+		_is_mouse_emulated = true
 		simulate_mouse_move(position)
+		_is_mouse_emulated = false
 	var event := InputEventScreenDrag.new()
 	event.window_id = scene().get_window().get_window_id()
 	event.index = index
@@ -420,7 +432,9 @@ func _do_touch_drag_at(index: int, drag_position: Vector2, time: float, trans_ty
 	while not _current_touch_drag_position.is_equal_approx(drag_position):
 		if is_emulate_mouse_from_touch():
 			# we need to simulate in addition to the drag the mouse move events
+			_is_mouse_emulated = true
 			simulate_mouse_move(event.position)
+			_is_mouse_emulated = false
 		# send touche drag event to new position
 		event.relative = _current_touch_drag_position - event.position
 		event.velocity = event.relative / _scene_tree().root.get_process_delta_time()
@@ -430,8 +444,10 @@ func _do_touch_drag_at(index: int, drag_position: Vector2, time: float, trans_ty
 
 	# finaly drop it
 	if is_emulate_mouse_from_touch():
+		_is_mouse_emulated = true
 		simulate_mouse_move(drag_position)
 		simulate_mouse_button_release(MOUSE_BUTTON_LEFT)
+		_is_mouse_emulated = false
 	var touch_drop_event := InputEventScreenTouch.new()
 	touch_drop_event.window_id = event.window_id
 	touch_drop_event.index = event.index
@@ -591,7 +607,17 @@ func _apply_input_mouse_mask(event: InputEvent) -> void:
 # copy over last mouse position if need
 func _apply_input_mouse_position(event: InputEvent) -> void:
 	if _last_input_event is InputEventMouse and event is InputEventMouseButton:
-		(event as InputEventMouseButton).position = (_last_input_event as InputEventMouse).position
+		var last_input_event := _last_input_event as InputEventMouse
+		var mouse_event := event as InputEventMouseButton
+		mouse_event.position = last_input_event.position
+		mouse_event.global_position = last_input_event.global_position
+
+
+## The scene viewport is shown scaled in the window, Godot reports the global position of mouse events in window coordinates
+func _to_global_position(viewport_position: Vector2) -> Vector2:
+	if is_instance_valid(_viewport_view):
+		return _viewport_view.position + _viewport_view.to_view_position(viewport_position)
+	return viewport_position
 
 
 ## handle input action via Input modifieres
@@ -609,9 +635,8 @@ func _handle_actions(event: InputEventAction) -> bool:
 # for handling read https://docs.godotengine.org/en/stable/tutorials/inputs/inputevent.html?highlight=inputevent#how-does-it-work
 @warning_ignore("return_value_discarded")
 func _handle_input_event(event: InputEvent) -> GdUnitSceneRunner:
-	if event is InputEventMouse:
-		var mouse_event := event as InputEventMouse
-		mouse_event.global_position = mouse_event.position
+	if _is_mouse_emulated and event is InputEventMouse:
+		event.device = InputEvent.DEVICE_ID_EMULATION
 	Input.parse_input_event(event)
 
 	if event is InputEventAction:
@@ -633,21 +658,29 @@ func _handle_input_event(event: InputEvent) -> GdUnitSceneRunner:
 
 ## Godot sends the touch events emulated from mouse input to the root window only, the scene viewport needs its own
 static func _emulated_touch_event(event: InputEvent) -> InputEvent:
-	if not Input.is_emulating_touch_from_mouse():
+	if not Input.is_emulating_touch_from_mouse() or event.device == InputEvent.DEVICE_ID_EMULATION:
 		return null
 	if event is InputEventMouseButton and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT:
 		var mouse_button := event as InputEventMouseButton
 		var touch := InputEventScreenTouch.new()
+		touch.device = InputEvent.DEVICE_ID_EMULATION
 		touch.position = mouse_button.position
 		touch.pressed = mouse_button.pressed
+		touch.canceled = mouse_button.canceled
 		touch.double_tap = mouse_button.double_click
 		return touch
 	if event is InputEventMouseMotion and (event as InputEventMouseMotion).button_mask & MOUSE_BUTTON_MASK_LEFT:
 		var mouse_motion := event as InputEventMouseMotion
 		var drag := InputEventScreenDrag.new()
+		drag.device = InputEvent.DEVICE_ID_EMULATION
 		drag.position = mouse_motion.position
 		drag.relative = mouse_motion.relative
+		drag.screen_relative = mouse_motion.screen_relative
 		drag.velocity = mouse_motion.velocity
+		drag.screen_velocity = mouse_motion.screen_velocity
+		drag.pressure = mouse_motion.pressure
+		drag.tilt = mouse_motion.tilt
+		drag.pen_inverted = mouse_motion.pen_inverted
 		return drag
 	return null
 

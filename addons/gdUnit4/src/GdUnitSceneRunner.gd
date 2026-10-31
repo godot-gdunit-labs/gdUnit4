@@ -71,16 +71,17 @@ extends RefCounted
 @abstract func simulate_key_release(key_code: int) -> GdUnitSceneRunner
 
 
-## Sets the mouse position to the specified vector, provided in pixels and relative to an origin at the upper left corner of the currently focused Window Manager game window.[br]
+## Sets the mouse position to the specified vector, provided in pixels and relative to an origin at the upper left corner of the scene viewport.[br]
 ## [member position] : The absolute position in pixels as Vector2
 @abstract func set_mouse_position(position: Vector2) -> GdUnitSceneRunner
 
 
-## Returns the mouse's position in this Viewport using the coordinate system of this Viewport.
+## Returns the mouse's position in the scene viewport using the coordinate system of the scene viewport.
 @abstract func get_mouse_position() -> Vector2
 
 
-## Gets the current global mouse position of the current window
+## Returns the global mouse position in window coordinates, the scene viewport is shown scaled in the window.[br]
+## In headless mode there is no window and it is equal to [method get_mouse_position].
 @abstract func get_global_mouse_position() -> Vector2
 
 

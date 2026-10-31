@@ -697,6 +697,37 @@ func test_scene_receives_touch_emulated_from_mouse() -> void:
 	])
 
 
+func test_scene_receives_touch_once_with_touch_and_mouse_emulation() -> void:
+	var emulate_touch := Input.emulate_touch_from_mouse
+	Input.emulate_touch_from_mouse = true
+	ProjectSettings.set_setting("input_devices/pointing/emulate_mouse_from_touch", true)
+	var scene: InputCounterNode = auto_free(InputCounterNode.new())
+	var runner := scene_runner(scene)
+
+	runner.simulate_screen_touch_press(0, Vector2(100, 100))
+	runner.simulate_screen_touch_release(0)
+	Input.emulate_touch_from_mouse = emulate_touch
+
+	assert_array(scene.touch_events).extractv(extr("get_class"), extr("is_pressed")).contains_exactly([
+		tuple("InputEventScreenTouch", true),
+		tuple("InputEventScreenTouch", false),
+	])
+
+
+func test_global_mouse_position_is_in_window_coordinates() -> void:
+	var runner := scene_runner("res://addons/gdUnit4/test/core/resources/scenes/simple_scene.tscn")
+
+	runner.set_mouse_position(Vector2(100, 50))
+
+	var views := get_tree().root.get_children().filter(func(node: Node) -> bool: return node is GdUnitSceneRunnerView)
+	if views.is_empty():
+		assert_vector(runner.get_global_mouse_position()).is_equal(Vector2(100, 50))
+	else:
+		var view: GdUnitSceneRunnerView = views[0]
+		assert_vector(runner.get_global_mouse_position()).is_equal(view.position + view.to_view_position(Vector2(100, 50)))
+	assert_vector(runner.get_mouse_position()).is_equal(Vector2(100, 50))
+
+
 func test_scene_moved_out_of_runner_is_kept_on_dispose() -> void:
 	var scene: Node2D = auto_free(Node2D.new())
 	var runner := scene_runner(scene)
@@ -715,6 +746,16 @@ func test_scene_viewport_size_from_content_scale_size() -> void:
 	window.content_scale_size = Vector2i(320, 180)
 
 	assert_that(GdUnitSceneRunnerImpl._viewport_size(window)).is_equal(Vector2i(320, 180))
+
+
+func test_scene_viewport_size_without_content_scale_size() -> void:
+	var window: Window = auto_free(Window.new())
+	window.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
+	window.content_scale_size = Vector2i.ZERO
+	ProjectSettings.set_setting("display/window/size/window_width_override", 800)
+	ProjectSettings.set_setting("display/window/size/window_height_override", 600)
+
+	assert_that(GdUnitSceneRunnerImpl._viewport_size(window)).is_equal(Vector2i(800, 600))
 
 
 func test_scene_viewport_size_from_window_override() -> void:

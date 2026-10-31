@@ -13,21 +13,6 @@ const MAP_MOUSE_BUTTON_MASKS := {
 	MOUSE_BUTTON_XBUTTON1: MOUSE_BUTTON_MASK_MB_XBUTTON1,
 	MOUSE_BUTTON_XBUTTON2: MOUSE_BUTTON_MASK_MB_XBUTTON2,
 }
-const VIEWPORT_PROPERTIES_FROM_ROOT: Array[String] = [
-	"physics_object_picking",
-	"canvas_item_default_texture_filter",
-	"canvas_item_default_texture_repeat",
-	"snap_2d_transforms_to_pixel",
-	"snap_2d_vertices_to_pixel",
-	"msaa_2d",
-	"msaa_3d",
-	"screen_space_aa",
-	"use_taa",
-	"use_debanding",
-	"use_hdr_2d",
-	"scaling_3d_mode",
-	"scaling_3d_scale",
-]
 
 var _func_assert_impl: GDScript = ResourceLoader.load("res://addons/gdUnit4/src/asserts/GdUnitFuncAssertImpl.gd", "GDScript", ResourceLoader.CACHE_MODE_REUSE)
 var _is_disposed := false
@@ -84,7 +69,7 @@ func _init(p_scene: Variant, p_verbose: bool, p_hide_push_errors := false) -> vo
 
 	_viewport = _create_viewport()
 	_scene_tree().root.add_child(_viewport)
-	_viewport.notification(Node.NOTIFICATION_VP_MOUSE_ENTER)
+
 	if DisplayServer.get_name() != "headless":
 		_viewport_view = GdUnitSceneRunnerView.new(_viewport)
 		_scene_tree().root.add_child(_viewport_view)
@@ -107,7 +92,8 @@ func _notification(what: int) -> void:
 		_deactivate_time_factor()
 		if is_instance_valid(_current_scene):
 			move_window_to_background()
-			_viewport.remove_child(_current_scene)
+			if is_instance_valid(_viewport) and _current_scene.get_parent() == _viewport:
+				_viewport.remove_child(_current_scene)
 			# do only free scenes instanciated by this runner
 			if _scene_auto_free:
 				_current_scene.free()
@@ -134,24 +120,31 @@ func _create_viewport() -> SubViewport:
 	viewport.name = "GdUnitSceneRunnerViewport"
 	viewport.size = _viewport_size(root)
 	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	# the scene must run like in the game, Godot applies the project settings to the root viewport only, so take over all its settings
+	for property: Dictionary in ClassDB.class_get_property_list("Viewport", true):
+		var property_name: StringName = property["name"]
+		var usage: int = property["usage"]
+		if usage & PROPERTY_USAGE_STORAGE:
+			viewport.set(property_name, root.get(property_name))
 	viewport.gui_embed_subwindows = true
-	for property: String in VIEWPORT_PROPERTIES_FROM_ROOT:
-		viewport.set(property, root.get(property))
+	viewport.notification(Node.NOTIFICATION_VP_MOUSE_ENTER)
 	return viewport
 
 
 static func _viewport_size(root: Window) -> Vector2i:
 	if root.content_scale_mode != Window.CONTENT_SCALE_MODE_DISABLED:
 		return root.content_scale_size
+	@warning_ignore("unsafe_call_argument")
 	var window_override := Vector2i(
-		ProjectSettings.get_setting("display/window/size/window_width_override", 0) as int,
-		ProjectSettings.get_setting("display/window/size/window_height_override", 0) as int
+		ProjectSettings.get_setting("display/window/size/window_width_override", 0),
+		ProjectSettings.get_setting("display/window/size/window_height_override", 0)
 	)
 	if window_override.x > 0 and window_override.y > 0:
 		return window_override
+	@warning_ignore("unsafe_call_argument")
 	return Vector2i(
-		ProjectSettings.get_setting("display/window/size/viewport_width") as int,
-		ProjectSettings.get_setting("display/window/size/viewport_height") as int
+		ProjectSettings.get_setting("display/window/size/viewport_width"),
+		ProjectSettings.get_setting("display/window/size/viewport_height")
 	)
 
 
@@ -625,12 +618,36 @@ func _handle_input_event(event: InputEvent) -> GdUnitSceneRunner:
 	var current_scene := scene()
 	if is_instance_valid(current_scene):
 		Input.flush_buffered_events()
+		var touch_event := _emulated_touch_event(event)
+		if touch_event != null:
+			_viewport.push_input(touch_event)
 		_viewport.push_input(event)
 		_print("	process event %s (%s) <- %s" % [current_scene, _scene_name(), event.as_text()])
 
 	# save last input event needs to be merged with next InputEventMouseButton
 	_last_input_event = event
 	return self
+
+
+## Godot sends the touch events emulated from mouse input to the root window only, the scene viewport needs its own
+static func _emulated_touch_event(event: InputEvent) -> InputEvent:
+	if not Input.is_emulating_touch_from_mouse():
+		return null
+	if event is InputEventMouseButton and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT:
+		var mouse_button := event as InputEventMouseButton
+		var touch := InputEventScreenTouch.new()
+		touch.position = mouse_button.position
+		touch.pressed = mouse_button.pressed
+		touch.double_tap = mouse_button.double_click
+		return touch
+	if event is InputEventMouseMotion and (event as InputEventMouseMotion).button_mask & MOUSE_BUTTON_MASK_LEFT:
+		var mouse_motion := event as InputEventMouseMotion
+		var drag := InputEventScreenDrag.new()
+		drag.position = mouse_motion.position
+		drag.relative = mouse_motion.relative
+		drag.velocity = mouse_motion.velocity
+		return drag
+	return null
 
 
 @warning_ignore("return_value_discarded")

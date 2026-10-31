@@ -647,6 +647,7 @@ func test_scene_popup_is_embedded_in_scene_viewport() -> void:
 	option.size = Vector2(120, 30)
 	scene.add_child(option)
 	var runner := scene_runner(scene)
+	await runner.simulate_frames(10)
 
 	runner.set_mouse_position(Vector2(150, 115))
 	await runner.simulate_mouse_button_pressed(MOUSE_BUTTON_LEFT)
@@ -664,20 +665,48 @@ func test_scene_popup_is_embedded_in_scene_viewport() -> void:
 	assert_bool(popup.visible).is_false()
 
 
-func test_scene_viewport_uses_root_rendering_settings() -> void:
-	var root := get_tree().root
-	var texture_filter := root.canvas_item_default_texture_filter
-	var snap_to_pixel := root.snap_2d_transforms_to_pixel
-	root.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST
-	root.snap_2d_transforms_to_pixel = true
-
+func test_scene_viewport_takes_over_all_root_viewport_properties() -> void:
 	var runner := scene_runner("res://addons/gdUnit4/test/core/resources/scenes/simple_scene.tscn")
 	var viewport := runner.scene().get_viewport()
-	root.canvas_item_default_texture_filter = texture_filter
-	root.snap_2d_transforms_to_pixel = snap_to_pixel
+	var root := get_tree().root
 
-	assert_int(viewport.canvas_item_default_texture_filter).is_equal(Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST)
-	assert_bool(viewport.snap_2d_transforms_to_pixel).is_true()
+	for property: Dictionary in ClassDB.class_get_property_list("Viewport", true):
+		var property_name: StringName = property["name"]
+		var usage: int = property["usage"]
+		if usage & PROPERTY_USAGE_STORAGE and property_name != &"gui_embed_subwindows":
+			assert_that(viewport.get(property_name)).append_failure_message(property_name).is_equal(root.get(property_name))
+	assert_bool(viewport.gui_embed_subwindows).is_true()
+
+
+func test_scene_receives_touch_emulated_from_mouse() -> void:
+	var emulate_touch := Input.emulate_touch_from_mouse
+	Input.emulate_touch_from_mouse = true
+	var scene: InputCounterNode = auto_free(InputCounterNode.new())
+	var runner := scene_runner(scene)
+
+	runner.set_mouse_position(Vector2(100, 100))
+	runner.simulate_mouse_button_press(MOUSE_BUTTON_LEFT)
+	runner.simulate_mouse_move(Vector2(120, 100))
+	runner.simulate_mouse_button_release(MOUSE_BUTTON_LEFT)
+	Input.emulate_touch_from_mouse = emulate_touch
+
+	assert_array(scene.touch_events).extractv(extr("get_class"), extr("get_position")).contains_exactly([
+		tuple("InputEventScreenTouch", Vector2(100, 100)),
+		tuple("InputEventScreenDrag", Vector2(120, 100)),
+		tuple("InputEventScreenTouch", Vector2(120, 100)),
+	])
+
+
+func test_scene_moved_out_of_runner_is_kept_on_dispose() -> void:
+	var scene: Node2D = auto_free(Node2D.new())
+	var runner := scene_runner(scene)
+	var viewport := scene.get_viewport()
+	scene.reparent(self)
+
+	runner._notification(NOTIFICATION_PREDELETE)
+
+	assert_object(scene.get_parent()).is_same(self)
+	assert_bool(is_instance_valid(viewport)).is_false()
 
 
 func test_scene_viewport_size_from_content_scale_size() -> void:
@@ -701,9 +730,10 @@ func test_scene_viewport_size_from_project_viewport_size() -> void:
 	ProjectSettings.set_setting("display/window/size/window_width_override", 0)
 	ProjectSettings.set_setting("display/window/size/window_height_override", 0)
 
+	@warning_ignore("unsafe_call_argument")
 	assert_that(GdUnitSceneRunnerImpl._viewport_size(window)).is_equal(Vector2i(
-		ProjectSettings.get_setting("display/window/size/viewport_width") as int,
-		ProjectSettings.get_setting("display/window/size/viewport_height") as int
+		ProjectSettings.get_setting("display/window/size/viewport_width"),
+		ProjectSettings.get_setting("display/window/size/viewport_height")
 	))
 
 
@@ -723,10 +753,13 @@ func test_scene_screenshot(_do_skip := DisplayServer.get_name() == "headless", _
 class InputCounterNode extends Node:
 	var input_keys := 0
 	var unhandled_keys := 0
+	var touch_events: Array[InputEvent] = []
 
 	func _input(event: InputEvent) -> void:
 		if event is InputEventKey:
 			input_keys += 1
+		if event is InputEventScreenTouch or event is InputEventScreenDrag:
+			touch_events.append(event)
 
 	func _unhandled_input(event: InputEvent) -> void:
 		if event is InputEventKey:

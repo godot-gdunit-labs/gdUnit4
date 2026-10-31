@@ -67,21 +67,15 @@ func _init(p_scene: Variant, p_verbose: bool, p_hide_push_errors := false) -> vo
 			push_error("GdUnitSceneRunner: Scene must be not null!")
 		return
 
-	_viewport = _create_viewport()
+	_viewport = _create_scene_viewport(_current_scene)
 	_scene_tree().root.add_child(_viewport)
 
 	if DisplayServer.get_name() != "headless":
 		_viewport_view = GdUnitSceneRunnerView.new(_viewport)
 		_scene_tree().root.add_child(_viewport_view)
-	_viewport.add_child(_current_scene)
+
 	Engine.set_meta("GdUnitSceneRunner", self)
-	# do finally reset all open input events when the scene is removed
-	@warning_ignore("return_value_discarded")
-	_viewport.child_exiting_tree.connect(
-		func f(child: Node) -> void:
-			if child == _current_scene:
-				_reset_input_to_default()
-	)
+
 	_simulate_start_time = LocalTime.now()
 	move_window_to_foreground()
 
@@ -114,7 +108,7 @@ func _scene_tree() -> SceneTree:
 	return Engine.get_main_loop() as SceneTree
 
 
-func _create_viewport() -> SubViewport:
+func _create_scene_viewport(current_scene: Node) -> SubViewport:
 	var root := _scene_tree().root
 	var viewport := SubViewport.new()
 	viewport.name = "GdUnitSceneRunnerViewport"
@@ -128,6 +122,14 @@ func _create_viewport() -> SubViewport:
 			viewport.set(property_name, root.get(property_name))
 	viewport.gui_embed_subwindows = true
 	viewport.notification(Node.NOTIFICATION_VP_MOUSE_ENTER)
+	# do finally reset all open input events when the scene is removed
+	@warning_ignore("return_value_discarded")
+	viewport.child_exiting_tree.connect(
+		func f(child: Node) -> void:
+			if child == current_scene:
+				_reset_input_to_default()
+	)
+	viewport.add_child(current_scene)
 	return viewport
 
 

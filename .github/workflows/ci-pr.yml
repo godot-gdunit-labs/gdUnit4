@@ -72,6 +72,7 @@ jobs:
           version: installed
           paths: |
             res://addons/gdUnit4/test/
+          # the e2e tests need rendered output, they are excluded here and run in the `e2e-tests` job with a display
           arguments: '--verbose --headless -i res://addons/gdUnit4/test/e2e/'
           timeout: 10
           warnings-as-errors: true

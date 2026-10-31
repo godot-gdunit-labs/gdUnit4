@@ -13,6 +13,21 @@ const MAP_MOUSE_BUTTON_MASKS := {
 	MOUSE_BUTTON_XBUTTON1: MOUSE_BUTTON_MASK_MB_XBUTTON1,
 	MOUSE_BUTTON_XBUTTON2: MOUSE_BUTTON_MASK_MB_XBUTTON2,
 }
+const VIEWPORT_PROPERTIES_FROM_ROOT: Array[String] = [
+	"physics_object_picking",
+	"canvas_item_default_texture_filter",
+	"canvas_item_default_texture_repeat",
+	"snap_2d_transforms_to_pixel",
+	"snap_2d_vertices_to_pixel",
+	"msaa_2d",
+	"msaa_3d",
+	"screen_space_aa",
+	"use_taa",
+	"use_debanding",
+	"use_hdr_2d",
+	"scaling_3d_mode",
+	"scaling_3d_scale",
+]
 
 var _func_assert_impl: GDScript = ResourceLoader.load("res://addons/gdUnit4/src/asserts/GdUnitFuncAssertImpl.gd", "GDScript", ResourceLoader.CACHE_MODE_REUSE)
 var _is_disposed := false
@@ -117,14 +132,27 @@ func _create_viewport() -> SubViewport:
 	var root := _scene_tree().root
 	var viewport := SubViewport.new()
 	viewport.name = "GdUnitSceneRunnerViewport"
-	@warning_ignore("unsafe_call_argument")
-	viewport.size = Vector2i(
-		ProjectSettings.get_setting("display/window/size/viewport_width"),
-		ProjectSettings.get_setting("display/window/size/viewport_height")
-	)
+	viewport.size = _viewport_size(root)
 	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
-	viewport.physics_object_picking = root.physics_object_picking
+	viewport.gui_embed_subwindows = true
+	for property: String in VIEWPORT_PROPERTIES_FROM_ROOT:
+		viewport.set(property, root.get(property))
 	return viewport
+
+
+static func _viewport_size(root: Window) -> Vector2i:
+	if root.content_scale_mode != Window.CONTENT_SCALE_MODE_DISABLED:
+		return root.content_scale_size
+	var window_override := Vector2i(
+		ProjectSettings.get_setting("display/window/size/window_width_override", 0) as int,
+		ProjectSettings.get_setting("display/window/size/window_height_override", 0) as int
+	)
+	if window_override.x > 0 and window_override.y > 0:
+		return window_override
+	return Vector2i(
+		ProjectSettings.get_setting("display/window/size/viewport_width") as int,
+		ProjectSettings.get_setting("display/window/size/viewport_height") as int
+	)
 
 
 func await_input_processed() -> void:
@@ -199,7 +227,6 @@ func simulate_key_release(key_code: int) -> GdUnitSceneRunner:
 func set_mouse_position(pos: Vector2) -> GdUnitSceneRunner:
 	var event := InputEventMouseMotion.new()
 	event.position = pos
-	event.global_position = get_global_mouse_position()
 	_apply_input_modifiers(event)
 	return _handle_input_event(event)
 
@@ -223,7 +250,6 @@ func simulate_mouse_move(position: Vector2) -> GdUnitSceneRunner:
 	var event := InputEventMouseMotion.new()
 	event.position = position
 	event.relative = position - get_mouse_position()
-	event.global_position = get_global_mouse_position()
 	_apply_input_mouse_mask(event)
 	_apply_input_modifiers(event)
 	return _handle_input_event(event)

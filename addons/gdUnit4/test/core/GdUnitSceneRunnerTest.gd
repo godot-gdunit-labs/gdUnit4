@@ -638,6 +638,75 @@ func test_scene_with_project_custom_cursor() -> void:
 	assert_bool(GdUnitSceneRunnerView.is_cursor_visible(Input.mouse_mode)).is_true()
 
 
+func test_scene_popup_is_embedded_in_scene_viewport() -> void:
+	var scene: Control = auto_free(Control.new())
+	var option := OptionButton.new()
+	option.add_item("first")
+	option.add_item("second")
+	option.position = Vector2(100, 100)
+	option.size = Vector2(120, 30)
+	scene.add_child(option)
+	var runner := scene_runner(scene)
+
+	runner.set_mouse_position(Vector2(150, 115))
+	await runner.simulate_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+	await runner.simulate_frames(2)
+
+	var popup := option.get_popup()
+	assert_bool(popup.visible).is_true()
+	assert_bool(popup.is_embedded()).is_true()
+
+	runner.set_mouse_position(Vector2(popup.position) + Vector2(popup.size) * Vector2(0.5, 0.75))
+	await runner.simulate_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+	await runner.simulate_frames(2)
+
+	assert_int(option.selected).is_equal(1)
+	assert_bool(popup.visible).is_false()
+
+
+func test_scene_viewport_uses_root_rendering_settings() -> void:
+	var root := get_tree().root
+	var texture_filter := root.canvas_item_default_texture_filter
+	var snap_to_pixel := root.snap_2d_transforms_to_pixel
+	root.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST
+	root.snap_2d_transforms_to_pixel = true
+
+	var runner := scene_runner("res://addons/gdUnit4/test/core/resources/scenes/simple_scene.tscn")
+	var viewport := runner.scene().get_viewport()
+	root.canvas_item_default_texture_filter = texture_filter
+	root.snap_2d_transforms_to_pixel = snap_to_pixel
+
+	assert_int(viewport.canvas_item_default_texture_filter).is_equal(Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST)
+	assert_bool(viewport.snap_2d_transforms_to_pixel).is_true()
+
+
+func test_scene_viewport_size_from_content_scale_size() -> void:
+	var window: Window = auto_free(Window.new())
+	window.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
+	window.content_scale_size = Vector2i(320, 180)
+
+	assert_that(GdUnitSceneRunnerImpl._viewport_size(window)).is_equal(Vector2i(320, 180))
+
+
+func test_scene_viewport_size_from_window_override() -> void:
+	var window: Window = auto_free(Window.new())
+	ProjectSettings.set_setting("display/window/size/window_width_override", 800)
+	ProjectSettings.set_setting("display/window/size/window_height_override", 600)
+
+	assert_that(GdUnitSceneRunnerImpl._viewport_size(window)).is_equal(Vector2i(800, 600))
+
+
+func test_scene_viewport_size_from_project_viewport_size() -> void:
+	var window: Window = auto_free(Window.new())
+	ProjectSettings.set_setting("display/window/size/window_width_override", 0)
+	ProjectSettings.set_setting("display/window/size/window_height_override", 0)
+
+	assert_that(GdUnitSceneRunnerImpl._viewport_size(window)).is_equal(Vector2i(
+		ProjectSettings.get_setting("display/window/size/viewport_width") as int,
+		ProjectSettings.get_setting("display/window/size/viewport_height") as int
+	))
+
+
 #region documented examples
 # The following tests verify the examples of the command line tool page
 # documentation/doc/_advanced_testing/cmd.md

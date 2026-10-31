@@ -105,6 +105,19 @@ func before_test() -> void:
     snapshot_project_settings()
 ```
 
+## Scene Runner Uses Its Own Viewport
+
+The scene runner no longer adds the scene under test directly to the scene tree root, it runs the scene in its own viewport.
+Access the scene and its nodes with `scene()` instead of absolute node paths, and use the viewport of the scene instead of the root window.
+
+```gd
+# v6
+var player := get_node("/root/Game/Player")
+
+# v7
+var player := runner.scene().get_node("Player")
+```
+
 ## Headless Mode Is Supported
 
 The command line tool supports headless mode by default, the option `--ignoreHeadlessMode` is deprecated and has no effect anymore.

@@ -26,7 +26,6 @@ const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 ## Overall test run status codes used by the runners
 const RETURN_SUCCESS = 0
 const RETURN_ERROR = 100
-const RETURN_ERROR_HEADLESS_NOT_SUPPORTED = 103
 const RETURN_ERROR_GODOT_VERSION_NOT_SUPPORTED = 104
 const RETURN_ERROR_SCRIPT_ERRORS_DETECTED = 105
 const RETURN_WARNING = 101

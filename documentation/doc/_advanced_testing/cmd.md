@@ -206,6 +206,35 @@ You can control the created reports by advanced options.
 
 To get an overview of all advanced options use `--help-advanced`.
 
+## Headless Mode
+
+You can run your tests in headless mode, for example on a CI server without a display.
+Start Godot with `--headless` and the command line tool, the scene runner simulates keyboard, mouse, touch and action input in headless mode too.
+
+```bash
+godot --headless --path . -s -d --remote-debug tcp://127.0.0.1:0 res://addons/gdUnit4/bin/GdUnitCmdTool.gd -a res://test
+```
+
+In headless mode Godot does not render anything, so tests that depend on rendered output do not work.
+A viewport texture returns an empty image and the signal `RenderingServer.frame_post_draw` is never emitted.
+The output of shaders can't be checked, and `VisibleOnScreenNotifier2D` and `VisibleOnScreenNotifier3D` never report a node as on screen.
+Run these tests with a display, on Linux you can use a virtual display with `xvfb-run`, or skip them in headless mode.
+
+```gd
+func test_scene_screenshot(_do_skip := DisplayServer.get_name() == "headless", _skip_reason := "Needs a display to render") -> void:
+    var runner := scene_runner("res://my_scene.tscn")
+    await runner.simulate_frames(1)
+    await RenderingServer.frame_post_draw
+
+    var image := runner.scene().get_viewport().get_texture().get_image()
+    assert_bool(image.is_empty()).is_false()
+```
+
+To run these tests in CI, keep them in their own folder and run it in a separate job with a display,
+see [Separate Tests That Need a Display]({{site.baseurl}}/faq/ci/#separate-tests-that-need-a-display).
+
+The option `--ignoreHeadlessMode` is deprecated and has no effect anymore, headless mode is supported by default.
+
 ## Return Codes
 
 The tool ends with a certain return code, where you can check if the tests were completed successfully.

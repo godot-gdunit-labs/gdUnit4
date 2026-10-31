@@ -105,6 +105,51 @@ func before_test() -> void:
     snapshot_project_settings()
 ```
 
+## Scene Runner Uses Its Own Viewport
+
+The scene runner no longer adds the scene under test directly to the scene tree root, it runs the scene in its own viewport.
+Access the scene and its nodes with `scene()` instead of absolute node paths, and use the viewport of the scene instead of the root window.
+Simulated mouse and touch positions are scene coordinates, when your project uses a stretch mode they are no longer converted from window coordinates.
+The global position of simulated mouse events is in window coordinates, like Godot reports it for the game window, in headless mode it is equal to the position.
+
+```gd
+# v6
+var player := get_node("/root/Game/Player")
+
+# v7
+var player := runner.scene().get_node("Player")
+```
+
+## Headless Mode Is Supported
+
+The command line tool supports headless mode by default, the option `--ignoreHeadlessMode` is deprecated and has no effect anymore.
+Remove it from your CI scripts, the tool no longer ends with the return code `103` in headless mode.
+
+```bash
+# v6
+godot --headless --path . -s res://addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -a res://test
+
+# v7
+godot --headless --path . -s res://addons/gdUnit4/bin/GdUnitCmdTool.gd -a res://test
+```
+
+Godot does not render anything in headless mode, tests that depend on rendered output still need a display,
+see [Headless Mode]({{site.baseurl}}/advanced_testing/cmd/#headless-mode) for more details.
+
+### Headless Mode With the gdUnit4-action
+
+The gdUnit4-action runs your tests with a virtual display. To run them in headless mode, pass `--headless` as argument
+and run the tests that need rendered output in a separate job without it,
+see [Separate Tests That Need a Display]({{site.baseurl}}/faq/ci/#separate-tests-that-need-a-display).
+
+```yaml
+- uses: godot-gdunit-labs/gdUnit4-action@v1
+  with:
+    godot-version: '4.7'
+    paths: 'res://test/unit'
+    arguments: '--headless'
+```
+
 ## Test Suite Template
 
 New test suites created from the default GDScript template no longer contain the `const __source` declaration.

@@ -33,7 +33,7 @@ jobs:
       pull-requests: write
       statuses: write
 
-    name: GdUnit4 | Godot_${{ matrix.godot-version }}-${{ matrix.godot-status }}${{ matrix.godot-net }}
+    name: '@Godot_${{ matrix.godot-version }}-${{ matrix.godot-status }}${{ matrix.godot-net }}'
 
     steps:
       - name: 'Checkout'
@@ -46,7 +46,7 @@ jobs:
           # enable selftest on gdUnit4-action
           echo "GDUNIT_SELFTEST=true" >> "$GITHUB_ENV"
 
-      - name: 'Test GdUnit4 (master) - Godot_${{ matrix.godot-version }}-${{ matrix.godot-status }}'
+      - name: 'Run tests'
         if: ${{ matrix.godot-net == '' }}
         uses: godot-gdunit-labs/gdUnit4-action@v1
         with:
@@ -55,11 +55,27 @@ jobs:
           version: master
           paths: |
             res://addons/gdUnit4/test/
-          timeout: 10
+          # the e2e tests need rendered output, they are excluded here and run in the next step with a display
+          arguments: '--verbose --headless -i res://addons/gdUnit4/test/e2e/'
+          timeout: 5
           warnings-as-errors: true
           report-name: report_gdUnit4_Godot${{ matrix.godot-version }}-${{ matrix.godot-status }}
 
-      - name: 'Test GdUnit4 (master) - Godot_${{ matrix.godot-version }}-${{ matrix.godot-status }}-net'
+      # the e2e tests need rendered output, they run with a display after the headless tests
+      - name: 'Run E2E tests'
+        if: ${{ !cancelled() && matrix.godot-net == '' }}
+        uses: godot-gdunit-labs/gdUnit4-action@v1
+        with:
+          godot-version: ${{ matrix.godot-version }}
+          godot-status: ${{ matrix.godot-status }}
+          version: master
+          paths: |
+            res://addons/gdUnit4/test/e2e/
+          timeout: 5
+          warnings-as-errors: true
+          report-name: report_gdUnit4_Godot${{ matrix.godot-version }}-${{ matrix.godot-status }}-e2e
+
+      - name: 'Run .Net tests'
         if: ${{ matrix.godot-net == '.Net' }}
         uses: godot-gdunit-labs/gdUnit4-action@v1
         with:

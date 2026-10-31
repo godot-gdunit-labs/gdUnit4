@@ -20,6 +20,78 @@ GdUnit4 provides a command line tool that allows you to automate your testing wo
 
 For more details please show at [Command Line Tool]({{site.baseurl}}/advanced_testing/cmd){:target="_blank"}
 
+## Separate Tests That Need a Display
+
+Most tests run in [headless mode]({{site.baseurl}}/advanced_testing/cmd/#headless-mode), including scene runner tests that simulate input.
+Tests that depend on rendered output, like screenshots, shader output or `VisibleOnScreenNotifier2D`/`VisibleOnScreenNotifier3D`, need a display.
+Keep these end-to-end tests in their own folder and run each folder in its own CI job.
+
+```text
+res://test/
+├── unit/   # runs headless
+└── e2e/    # needs a display
+```
+
+When you start Godot yourself, the headless job runs fast and needs no graphics setup:
+
+```bash
+godot --headless --path . -s -d --remote-debug tcp://127.0.0.1:0 res://addons/gdUnit4/bin/GdUnitCmdTool.gd -c -a res://test/unit
+```
+
+The end-to-end job runs Godot with a display. On a Linux CI server without a display, `xvfb-run` provides a virtual one,
+and the OpenGL renderer of Mesa renders without a GPU:
+
+```bash
+xvfb-run --auto-servernum godot --rendering-driver opengl3 --path . -s -d --remote-debug tcp://127.0.0.1:0 res://addons/gdUnit4/bin/GdUnitCmdTool.gd -c -a res://test/e2e
+```
+
+With the [gdUnit4-action](https://github.com/marketplace/actions/gdunit4-test-runner-action){:target="_blank"} you use one job per folder.
+The action runs Godot with a virtual display, the argument `--headless` switches the unit test job to headless mode.
+Example workflow, adapt the Godot version and paths to your project:
+{% raw %}
+```yaml
+name: tests
+
+on: [push, pull_request]
+
+jobs:
+  unit-tests:
+    name: "Unit tests"
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      checks: write
+      contents: write
+      pull-requests: write
+      statuses: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: godot-gdunit-labs/gdUnit4-action@v1
+        with:
+          godot-version: '4.7'
+          paths: 'res://test/unit'
+          arguments: '--headless'
+          report-name: unit-tests.xml
+
+  e2e-tests:
+    name: "End-to-end tests"
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      checks: write
+      contents: write
+      pull-requests: write
+      statuses: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: godot-gdunit-labs/gdUnit4-action@v1
+        with:
+          godot-version: '4.7'
+          paths: 'res://test/e2e'
+          report-name: e2e-tests.xml
+```
+{% endraw %}
+
 ## Howto deploy with GitHub Action
 
 To deploy with GitHub Actions, you need to create a new workflow file in the *\.github/workflows/* directory and name it *ci\.yml*.

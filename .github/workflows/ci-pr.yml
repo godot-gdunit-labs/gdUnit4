@@ -72,7 +72,7 @@ jobs:
           version: installed
           paths: |
             res://addons/gdUnit4/test/
-          arguments: '--verbose -i res://addons/gdUnit4/test/e2e/'
+          arguments: '--verbose --headless -i res://addons/gdUnit4/test/e2e/'
           timeout: 10
           warnings-as-errors: true
           publish-report: false

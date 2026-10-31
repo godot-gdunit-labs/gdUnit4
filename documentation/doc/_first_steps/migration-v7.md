@@ -105,6 +105,36 @@ func before_test() -> void:
     snapshot_project_settings()
 ```
 
+## Headless Mode Is Supported
+
+The command line tool supports headless mode by default, the option `--ignoreHeadlessMode` is deprecated and has no effect anymore.
+Remove it from your CI scripts, the tool no longer ends with the return code `103` in headless mode.
+
+```bash
+# v6
+godot --headless --path . -s res://addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -a res://test
+
+# v7
+godot --headless --path . -s res://addons/gdUnit4/bin/GdUnitCmdTool.gd -a res://test
+```
+
+Godot does not render anything in headless mode, tests that depend on rendered output still need a display,
+see [Headless Mode]({{site.baseurl}}/advanced_testing/cmd/#headless-mode) for more details.
+
+### Headless Mode With the gdUnit4-action
+
+The gdUnit4-action runs your tests with a virtual display. To run them in headless mode, pass `--headless` as argument
+and run the tests that need rendered output in a separate job without it,
+see [Separate Tests That Need a Display]({{site.baseurl}}/faq/ci/#separate-tests-that-need-a-display).
+
+```yaml
+- uses: godot-gdunit-labs/gdUnit4-action@v1
+  with:
+    godot-version: '4.7'
+    paths: 'res://test/unit'
+    arguments: '--headless'
+```
+
 ## Test Suite Template
 
 New test suites created from the default GDScript template no longer contain the `const __source` declaration.

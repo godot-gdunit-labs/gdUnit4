@@ -72,8 +72,7 @@ jobs:
           version: installed
           paths: |
             res://addons/gdUnit4/test/
-          arguments: |
-            --verbose
+          arguments: '--verbose -i res://addons/gdUnit4/test/e2e/'
           timeout: 10
           warnings-as-errors: true
           publish-report: false
@@ -96,11 +95,41 @@ jobs:
           publish-report: false
           report-name: gdUnit4_Godot${{ matrix.godot-version }}-${{ matrix.godot-status }}-net
 
+  # end-to-end tests need rendered output, they run in their own job with a display
+  e2e-tests:
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: write
+      checks: write
+      contents: write
+      pull-requests: write
+      statuses: write
+
+    name: GdUnit4 e2e | Godot_4.7-stable
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v7
+        with:
+          lfs: true
+
+      - name: 'Test GdUnit4 dev e2e - Godot_4.7-stable'
+        uses: godot-gdunit-labs/gdUnit4-action@v1
+        with:
+          godot-version: '4.7'
+          version: installed
+          paths: |
+            res://addons/gdUnit4/test/e2e/
+          timeout: 5
+          warnings-as-errors: true
+          publish-report: false
+          report-name: gdUnit4_Godot4.7-stable-e2e
+
   finalize:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     name: 'Final Results'
-    needs: [format-checks, gdstyle, unit-tests]
+    needs: [format-checks, gdstyle, unit-tests, e2e-tests]
     steps:
       - run: exit 1
         if: >-

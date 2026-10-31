@@ -17,6 +17,8 @@ const MAP_MOUSE_BUTTON_MASKS := {
 var _func_assert_impl: GDScript = ResourceLoader.load("res://addons/gdUnit4/src/asserts/GdUnitFuncAssertImpl.gd", "GDScript", ResourceLoader.CACHE_MODE_REUSE)
 var _is_disposed := false
 var _current_scene: Node = null
+var _viewport: SubViewport = null
+var _viewport_view: GdUnitSceneRunnerView = null
 var _awaiter: GdUnitAwaiter = GdUnitAwaiter.new()
 var _verbose: bool
 var _simulate_start_time: LocalTime
@@ -65,24 +67,23 @@ func _init(p_scene: Variant, p_verbose: bool, p_hide_push_errors := false) -> vo
 			push_error("GdUnitSceneRunner: Scene must be not null!")
 		return
 
-	_scene_tree().root.add_child(_current_scene)
+	_viewport = _create_viewport()
+	_scene_tree().root.add_child(_viewport)
+	_viewport.notification(Node.NOTIFICATION_VP_MOUSE_ENTER)
+	if DisplayServer.get_name() != "headless":
+		_viewport_view = GdUnitSceneRunnerView.new(_viewport)
+		_scene_tree().root.add_child(_viewport_view)
+	_viewport.add_child(_current_scene)
 	Engine.set_meta("GdUnitSceneRunner", self)
 	# do finally reset all open input events when the scene is removed
 	@warning_ignore("return_value_discarded")
-	_scene_tree().root.child_exiting_tree.connect(
+	_viewport.child_exiting_tree.connect(
 		func f(child: Node) -> void:
 			if child == _current_scene:
 				_reset_input_to_default()
 	)
 	_simulate_start_time = LocalTime.now()
-	# we need to set inital a valid window otherwise the warp_mouse() is not handled
 	move_window_to_foreground()
-
-	# set inital mouse pos to 0,0
-	var max_iteration_to_wait := 0
-	while get_global_mouse_position() != Vector2.ZERO and max_iteration_to_wait < 100:
-		Input.warp_mouse(Vector2.ZERO)
-		max_iteration_to_wait += 1
 
 
 func _notification(what: int) -> void:
@@ -91,17 +92,39 @@ func _notification(what: int) -> void:
 		_deactivate_time_factor()
 		if is_instance_valid(_current_scene):
 			move_window_to_background()
-			_scene_tree().root.remove_child(_current_scene)
+			_viewport.remove_child(_current_scene)
 			# do only free scenes instanciated by this runner
 			if _scene_auto_free:
 				_current_scene.free()
+		if is_instance_valid(_viewport_view):
+			_scene_tree().root.remove_child(_viewport_view)
+			_viewport_view.free()
+		if is_instance_valid(_viewport):
+			_scene_tree().root.remove_child(_viewport)
+			_viewport.free()
 		_is_disposed = true
 		_current_scene = null
+		_viewport = null
+		_viewport_view = null
 		Engine.remove_meta("GdUnitSceneRunner")
 
 
 func _scene_tree() -> SceneTree:
 	return Engine.get_main_loop() as SceneTree
+
+
+func _create_viewport() -> SubViewport:
+	var root := _scene_tree().root
+	var viewport := SubViewport.new()
+	viewport.name = "GdUnitSceneRunnerViewport"
+	@warning_ignore("unsafe_call_argument")
+	viewport.size = Vector2i(
+		ProjectSettings.get_setting("display/window/size/viewport_width"),
+		ProjectSettings.get_setting("display/window/size/viewport_height")
+	)
+	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	viewport.physics_object_picking = root.physics_object_picking
+	return viewport
 
 
 func await_input_processed() -> void:
@@ -191,7 +214,9 @@ func get_mouse_position() -> Vector2:
 
 
 func get_global_mouse_position() -> Vector2:
-	return (Engine.get_main_loop() as SceneTree).root.get_mouse_position()
+	if is_instance_valid(_viewport):
+		return _viewport.get_mouse_position()
+	return Vector2.ZERO
 
 
 func simulate_mouse_move(position: Vector2) -> GdUnitSceneRunner:
@@ -441,14 +466,14 @@ func await_signal_on(source: Object, signal_name: String, args := [], timeout :=
 
 
 func move_window_to_foreground() -> GdUnitSceneRunner:
-	if not Engine.is_embedded_in_editor():
+	if not Engine.is_embedded_in_editor() and DisplayServer.get_name() != "headless":
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		DisplayServer.window_move_to_foreground()
 	return self
 
 
 func move_window_to_background() -> GdUnitSceneRunner:
-	if not Engine.is_embedded_in_editor():
+	if not Engine.is_embedded_in_editor() and DisplayServer.get_name() != "headless":
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MINIMIZED)
 	return self
@@ -564,7 +589,8 @@ func _handle_actions(event: InputEventAction) -> bool:
 @warning_ignore("return_value_discarded")
 func _handle_input_event(event: InputEvent) -> GdUnitSceneRunner:
 	if event is InputEventMouse:
-		Input.warp_mouse((event as InputEventMouse).position as Vector2)
+		var mouse_event := event as InputEventMouse
+		mouse_event.global_position = mouse_event.position
 	Input.parse_input_event(event)
 
 	if event is InputEventAction:
@@ -573,6 +599,7 @@ func _handle_input_event(event: InputEvent) -> GdUnitSceneRunner:
 	var current_scene := scene()
 	if is_instance_valid(current_scene):
 		Input.flush_buffered_events()
+		_viewport.push_input(event)
 		_print("	process event %s (%s) <- %s" % [current_scene, _scene_name(), event.as_text()])
 
 	# save last input event needs to be merged with next InputEventMouseButton

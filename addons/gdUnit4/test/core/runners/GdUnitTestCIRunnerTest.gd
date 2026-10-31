@@ -193,6 +193,18 @@ func test_cleanup_report_history_on_relative_report_dir() -> void:
 #endregion
 
 
+#region headless mode
+func test_deprecated_ignore_headless_mode_option_is_accepted() -> void:
+	var runner: GdUnitTestCIRunner = auto_free(GdUnitTestCIRunner.new())
+	var parser := CmdArgumentParser.new(runner._cmd_options, "GdUnitCmdTool.gd")
+
+	var result := parser.parse(["-d", "res://addons/gdUnit4/bin/GdUnitCmdTool.gd", "--ignoreHeadlessMode"])
+
+	assert_result(result).is_success()
+	assert_array(result.value()).contains_exactly([CmdCommand.new("--ignoreHeadlessMode")])
+#endregion
+
+
 #region session runner registration
 func test_new_runner_does_not_replace_the_session_runner() -> void:
 	var session_runner: Object = Engine.get_meta(GdUnitSettings.GDUNIT_RUNNER)

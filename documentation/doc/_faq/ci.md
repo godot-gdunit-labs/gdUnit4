@@ -46,7 +46,7 @@ xvfb-run --auto-servernum godot --rendering-driver opengl3 --path . -s -d --remo
 ```
 
 With the [gdUnit4-action](https://github.com/marketplace/actions/gdunit4-test-runner-action){:target="_blank"} you use one job per folder.
-The action runs Godot with a virtual display, the argument `--headless` switches the unit test job to headless mode.
+The action runs Godot with a virtual display, since gdUnit4-action v1.4.0 the input `headless: true` runs the unit test job in headless mode without it.
 Example workflow, adapt the Godot version and paths to your project:
 {% raw %}
 ```yaml
@@ -70,7 +70,7 @@ jobs:
         with:
           godot-version: '4.7'
           paths: 'res://test/unit'
-          arguments: '--headless'
+          headless: true
           report-name: unit-tests.xml
 
   e2e-tests:

@@ -138,7 +138,7 @@ see [Headless Mode]({{site.baseurl}}/advanced_testing/cmd/#headless-mode) for mo
 
 ### Headless Mode With the gdUnit4-action
 
-The gdUnit4-action runs your tests with a virtual display. To run them in headless mode, pass `--headless` as argument
+The gdUnit4-action runs your tests with a virtual display. To run them in headless mode, set the input `headless: true`, available since gdUnit4-action v1.4.0,
 and run the tests that need rendered output in a separate job without it,
 see [Separate Tests That Need a Display]({{site.baseurl}}/faq/ci/#separate-tests-that-need-a-display).
 
@@ -147,7 +147,7 @@ see [Separate Tests That Need a Display]({{site.baseurl}}/faq/ci/#separate-tests
   with:
     godot-version: '4.7'
     paths: 'res://test/unit'
-    arguments: '--headless'
+    headless: true
 ```
 
 ## Test Suite Template

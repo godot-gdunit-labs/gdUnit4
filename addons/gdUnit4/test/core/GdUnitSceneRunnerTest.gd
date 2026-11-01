@@ -381,8 +381,8 @@ func test_mouse_drag_and_drop() -> void:
 	var spy_scene: Variant = spy("res://addons/gdUnit4/test/core/resources/scenes/drag_and_drop/DragAndDropTestScene.tscn")
 	var runner := scene_runner(spy_scene)
 
-	var slot_left: TextureRect = $"/root/DragAndDropScene/left/TextureRect"
-	var slot_right: TextureRect = $"/root/DragAndDropScene/right/TextureRect"
+	var slot_left: TextureRect = runner.scene().get_node("left/TextureRect")
+	var slot_right: TextureRect = runner.scene().get_node("right/TextureRect")
 
 	# the root receives the mouse motion when the mouse is over its own area
 	var root_pos := Vector2(100, 400)
@@ -426,15 +426,15 @@ func test_touch_drag_and_drop_relative() -> void:
 	var spy_scene: Variant = spy("res://addons/gdUnit4/test/core/resources/scenes/drag_and_drop/DragAndDropTestScene.tscn")
 	var runner := scene_runner(spy_scene)
 
-	var slot_left: TextureRect = $"/root/DragAndDropScene/left/TextureRect"
-	var slot_right: TextureRect = $"/root/DragAndDropScene/right/TextureRect"
+	var slot_left: TextureRect = runner.scene().get_node("left/TextureRect")
+	var slot_right: TextureRect = runner.scene().get_node("right/TextureRect")
 	var drag_start := slot_left.global_position + Vector2(50, 50)
 
 	# set inital mouse pos over the left touch button
 	runner.simulate_screen_touch_press(0, drag_start)
 	await await_idle_frame()
 	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_true()
-	assert_that(get_tree().root.get_mouse_position()).is_equal(drag_start)
+	assert_that(runner.get_global_mouse_position()).is_equal(drag_start)
 
 	# enable only for a small wait to for manual testing
 	#await await_millis(1000)
@@ -444,7 +444,7 @@ func test_touch_drag_and_drop_relative() -> void:
 	await runner.simulate_screen_touch_drag_relative(0, Vector2(140, 0))
 	# verify
 	assert_that(slot_right.texture).is_equal(slot_left.texture)
-	assert_that(get_tree().root.get_mouse_position()).is_equal(drag_end)
+	assert_that(runner.get_global_mouse_position()).is_equal(drag_end)
 	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_false()
 
 
@@ -452,15 +452,15 @@ func test_touch_drag_and_drop_absolute() -> void:
 	var spy_scene: Variant = spy("res://addons/gdUnit4/test/core/resources/scenes/drag_and_drop/DragAndDropTestScene.tscn")
 	var runner := scene_runner(spy_scene)
 
-	var slot_left: TextureRect = $"/root/DragAndDropScene/left/TextureRect"
-	var slot_right: TextureRect = $"/root/DragAndDropScene/right/TextureRect"
+	var slot_left: TextureRect = runner.scene().get_node("left/TextureRect")
+	var slot_right: TextureRect = runner.scene().get_node("right/TextureRect")
 	var drag_start := slot_left.global_position + Vector2(50, 50)
 
 	# set inital mouse pos over the left touch button
 	runner.simulate_screen_touch_press(0, drag_start)
 	await await_idle_frame()
 	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_true()
-	assert_that(get_tree().root.get_mouse_position()).is_equal(drag_start)
+	assert_that(runner.get_global_mouse_position()).is_equal(drag_start)
 
 	# enable only for a small wait to for manual testing
 	#await await_millis(1000)
@@ -470,15 +470,15 @@ func test_touch_drag_and_drop_absolute() -> void:
 	await runner.simulate_screen_touch_drag_absolute(0, drag_end)
 	# verify
 	assert_that(slot_right.texture).is_equal(slot_left.texture)
-	assert_that(get_tree().root.get_mouse_position()).is_equal(drag_end)
+	assert_that(runner.get_global_mouse_position()).is_equal(drag_end)
 	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_false()
 
 
 func test_touch_drag_and_drop() -> void:
 	var spy_scene: Variant = spy("res://addons/gdUnit4/test/core/resources/scenes/drag_and_drop/DragAndDropTestScene.tscn")
 	var runner := scene_runner(spy_scene)
-	var slot_left: TextureRect = $"/root/DragAndDropScene/left/TextureRect"
-	var slot_right: TextureRect = $"/root/DragAndDropScene/right/TextureRect"
+	var slot_left: TextureRect = runner.scene().get_node("left/TextureRect")
+	var slot_right: TextureRect = runner.scene().get_node("right/TextureRect")
 	var drag_start := slot_left.global_position + Vector2(50, 50)
 
 	# start drag&drop to right touch button
@@ -486,7 +486,7 @@ func test_touch_drag_and_drop() -> void:
 	await runner.simulate_screen_touch_drag_drop(0, drag_start, drag_end)
 	# verify
 	assert_that(slot_right.texture).is_equal(slot_left.texture)
-	assert_that(get_tree().root.get_mouse_position()).is_equal(drag_end)
+	assert_that(runner.get_global_mouse_position()).is_equal(drag_end)
 	assert_bool(Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)).is_false()
 
 
@@ -504,7 +504,7 @@ func test_runner_gd_356() -> void:
 	assert_that(runner.scene()).is_not_null()
 
 
-func test_move_window_to_foreground() -> void:
+func test_move_window_to_foreground(_do_skip := DisplayServer.get_name() == "headless", _skip_reason := "No window in headless mode") -> void:
 	var runner := scene_runner("res://addons/gdUnit4/test/core/resources/scenes/simple_scene.tscn")
 	# we set inital to background
 	runner.move_window_to_background()
@@ -590,13 +590,217 @@ static func _create_example_scene() -> Node:
 	return scene
 
 
+func test_scene_is_displayed_in_window() -> void:
+	var runner := scene_runner("res://addons/gdUnit4/test/core/resources/scenes/simple_scene.tscn")
+	var viewport_texture := runner.scene().get_viewport().get_texture()
+	var find_views := func() -> Array:
+		return get_tree().root\
+			.get_children()\
+			.filter(func(node: Node) -> bool:
+				return node is TextureRect and (node as TextureRect).texture == viewport_texture
+		)
+
+	assert_array(find_views.call()).has_size(0 if DisplayServer.get_name() == "headless" else 1)
+
+	runner._notification(NOTIFICATION_PREDELETE)
+	assert_array(find_views.call()).is_empty()
+
+
+func test_scene_with_own_cursor() -> void:
+	var runner := scene_runner("res://addons/gdUnit4/test/core/resources/scenes/custom_cursor/CustomCursorTestScene.tscn")
+	var cursor: Sprite2D = runner.find_child("Cursor")
+
+	runner.set_mouse_position(Vector2(200, 150))
+	await runner.simulate_frames(2)
+
+	assert_vector(cursor.position).is_equal(Vector2(200, 150))
+	if DisplayServer.get_name() != "headless":
+		assert_bool(GdUnitSceneRunnerView.is_cursor_visible(Input.mouse_mode)).is_false()
+
+
+func test_scene_with_project_custom_cursor() -> void:
+	var cursor_image := "res://addons/gdUnit4/test/core/resources/scenes/custom_cursor/cursor.png"
+	ProjectSettings.set_setting("display/mouse_cursor/custom_image", cursor_image)
+	ProjectSettings.set_setting("display/mouse_cursor/custom_image_hotspot", Vector2(1, 1))
+	var runner := scene_runner("res://addons/gdUnit4/test/core/resources/scenes/simple_scene.tscn")
+
+	runner.set_mouse_position(Vector2(200, 150))
+	await runner.simulate_frames(2)
+
+	var views := get_tree().root.get_children().filter(func(node: Node) -> bool: return node is GdUnitSceneRunnerView)
+	if DisplayServer.get_name() == "headless":
+		assert_array(views).is_empty()
+		return
+	assert_array(views).has_size(1)
+	var view: GdUnitSceneRunnerView = views[0]
+	assert_object(view._cursor_image).is_equal(load(cursor_image))
+	assert_vector(view._cursor_hotspot).is_equal(Vector2(1, 1))
+	assert_bool(GdUnitSceneRunnerView.is_cursor_visible(Input.mouse_mode)).is_true()
+
+
+func test_scene_popup_is_embedded_in_scene_viewport() -> void:
+	var scene: Control = auto_free(Control.new())
+	var option := OptionButton.new()
+	option.add_item("first")
+	option.add_item("second")
+	option.position = Vector2(100, 100)
+	option.size = Vector2(120, 30)
+	scene.add_child(option)
+	var runner := scene_runner(scene)
+	await runner.simulate_frames(10)
+
+	runner.set_mouse_position(Vector2(150, 115))
+	await runner.simulate_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+	await runner.simulate_frames(2)
+
+	var popup := option.get_popup()
+	assert_bool(popup.visible).is_true()
+	assert_bool(popup.is_embedded()).is_true()
+
+	runner.set_mouse_position(Vector2(popup.position) + Vector2(popup.size) * Vector2(0.5, 0.75))
+	await runner.simulate_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+	await runner.simulate_frames(2)
+
+	assert_int(option.selected).is_equal(1)
+	assert_bool(popup.visible).is_false()
+
+
+func test_scene_viewport_takes_over_all_root_viewport_properties() -> void:
+	var runner := scene_runner("res://addons/gdUnit4/test/core/resources/scenes/simple_scene.tscn")
+	var viewport := runner.scene().get_viewport()
+	var root := get_tree().root
+
+	for property: Dictionary in ClassDB.class_get_property_list("Viewport", true):
+		var property_name: StringName = property["name"]
+		var usage: int = property["usage"]
+		if usage & PROPERTY_USAGE_STORAGE and property_name != &"gui_embed_subwindows":
+			assert_that(viewport.get(property_name)).append_failure_message(property_name).is_equal(root.get(property_name))
+	assert_bool(viewport.gui_embed_subwindows).is_true()
+
+
+func test_scene_receives_touch_emulated_from_mouse() -> void:
+	var emulate_touch := Input.emulate_touch_from_mouse
+	Input.emulate_touch_from_mouse = true
+	var scene: InputCounterNode = auto_free(InputCounterNode.new())
+	var runner := scene_runner(scene)
+
+	runner.set_mouse_position(Vector2(100, 100))
+	runner.simulate_mouse_button_press(MOUSE_BUTTON_LEFT)
+	runner.simulate_mouse_move(Vector2(120, 100))
+	runner.simulate_mouse_button_release(MOUSE_BUTTON_LEFT)
+	Input.emulate_touch_from_mouse = emulate_touch
+
+	assert_array(scene.touch_events).extractv(extr("get_class"), extr("get_position")).contains_exactly([
+		tuple("InputEventScreenTouch", Vector2(100, 100)),
+		tuple("InputEventScreenDrag", Vector2(120, 100)),
+		tuple("InputEventScreenTouch", Vector2(120, 100)),
+	])
+
+
+func test_scene_receives_touch_once_with_touch_and_mouse_emulation() -> void:
+	var emulate_touch := Input.emulate_touch_from_mouse
+	Input.emulate_touch_from_mouse = true
+	ProjectSettings.set_setting("input_devices/pointing/emulate_mouse_from_touch", true)
+	var scene: InputCounterNode = auto_free(InputCounterNode.new())
+	var runner := scene_runner(scene)
+
+	runner.simulate_screen_touch_press(0, Vector2(100, 100))
+	runner.simulate_screen_touch_release(0)
+	Input.emulate_touch_from_mouse = emulate_touch
+
+	assert_array(scene.touch_events).extractv(extr("get_class"), extr("is_pressed")).contains_exactly([
+		tuple("InputEventScreenTouch", true),
+		tuple("InputEventScreenTouch", false),
+	])
+
+
+func test_global_mouse_position_is_in_window_coordinates() -> void:
+	var runner := scene_runner("res://addons/gdUnit4/test/core/resources/scenes/simple_scene.tscn")
+
+	runner.set_mouse_position(Vector2(100, 50))
+
+	var views := get_tree().root.get_children().filter(func(node: Node) -> bool: return node is GdUnitSceneRunnerView)
+	if views.is_empty():
+		assert_vector(runner.get_global_mouse_position()).is_equal(Vector2(100, 50))
+	else:
+		var view: GdUnitSceneRunnerView = views[0]
+		assert_vector(runner.get_global_mouse_position()).is_equal(view.position + view.to_view_position(Vector2(100, 50)))
+	assert_vector(runner.get_mouse_position()).is_equal(Vector2(100, 50))
+
+
+func test_scene_moved_out_of_runner_is_kept_on_dispose() -> void:
+	var scene: Node2D = auto_free(Node2D.new())
+	var runner := scene_runner(scene)
+	var viewport := scene.get_viewport()
+	scene.reparent(self)
+
+	runner._notification(NOTIFICATION_PREDELETE)
+
+	assert_object(scene.get_parent()).is_same(self)
+	assert_bool(is_instance_valid(viewport)).is_false()
+
+
+func test_scene_viewport_size_from_content_scale_size() -> void:
+	var window: Window = auto_free(Window.new())
+	window.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
+	window.content_scale_size = Vector2i(320, 180)
+
+	assert_that(GdUnitSceneRunnerImpl._viewport_size(window)).is_equal(Vector2i(320, 180))
+
+
+func test_scene_viewport_size_without_content_scale_size() -> void:
+	var window: Window = auto_free(Window.new())
+	window.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
+	window.content_scale_size = Vector2i.ZERO
+	ProjectSettings.set_setting("display/window/size/window_width_override", 800)
+	ProjectSettings.set_setting("display/window/size/window_height_override", 600)
+
+	assert_that(GdUnitSceneRunnerImpl._viewport_size(window)).is_equal(Vector2i(800, 600))
+
+
+func test_scene_viewport_size_from_window_override() -> void:
+	var window: Window = auto_free(Window.new())
+	ProjectSettings.set_setting("display/window/size/window_width_override", 800)
+	ProjectSettings.set_setting("display/window/size/window_height_override", 600)
+
+	assert_that(GdUnitSceneRunnerImpl._viewport_size(window)).is_equal(Vector2i(800, 600))
+
+
+func test_scene_viewport_size_from_project_viewport_size() -> void:
+	var window: Window = auto_free(Window.new())
+	ProjectSettings.set_setting("display/window/size/window_width_override", 0)
+	ProjectSettings.set_setting("display/window/size/window_height_override", 0)
+
+	@warning_ignore("unsafe_call_argument")
+	assert_that(GdUnitSceneRunnerImpl._viewport_size(window)).is_equal(Vector2i(
+		ProjectSettings.get_setting("display/window/size/viewport_width"),
+		ProjectSettings.get_setting("display/window/size/viewport_height")
+	))
+
+
+#region documented examples
+# The following tests verify the examples of the command line tool page
+# documentation/doc/_advanced_testing/cmd.md
+func test_scene_screenshot(_do_skip := DisplayServer.get_name() == "headless", _skip_reason := "Needs a display to render") -> void:
+	var runner := scene_runner("res://addons/gdUnit4/test/core/resources/scenes/simple_scene.tscn")
+	await runner.simulate_frames(1)
+	await RenderingServer.frame_post_draw
+
+	var image := runner.scene().get_viewport().get_texture().get_image()
+	assert_bool(image.is_empty()).is_false()
+#endregion
+
+
 class InputCounterNode extends Node:
 	var input_keys := 0
 	var unhandled_keys := 0
+	var touch_events: Array[InputEvent] = []
 
 	func _input(event: InputEvent) -> void:
 		if event is InputEventKey:
 			input_keys += 1
+		if event is InputEventScreenTouch or event is InputEventScreenDrag:
+			touch_events.append(event)
 
 	func _unhandled_input(event: InputEvent) -> void:
 		if event is InputEventKey:

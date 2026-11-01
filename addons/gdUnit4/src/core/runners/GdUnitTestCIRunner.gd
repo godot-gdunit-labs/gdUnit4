@@ -22,7 +22,6 @@ extends "res://addons/gdUnit4/src/core/runners/GdUnitTestSessionRunner.gd"
 
 var _console := GdUnitCSIMessageWriter.new()
 var _console_reporter: GdUnitConsoleTestReporter
-var _headless_mode_ignore := false
 var _runner_config_file := ""
 var _debug_cmd_args := PackedStringArray()
 var _included_tests := PackedStringArray()
@@ -91,7 +90,7 @@ var _cmd_options := CmdOptions.new([
 		CmdOption.new(
 			"--ignoreHeadlessMode",
 			"--ignoreHeadlessMode",
-			"By default, running GdUnit4 in headless mode is not allowed. You can switch off the headless mode check by set this property."
+			"Deprecated, has no effect anymore. Headless mode is supported by default."
 		),
 	])
 
@@ -217,10 +216,9 @@ func show_version() -> void:
 	quit(RETURN_SUCCESS)
 
 
-## Ignores headless mode restrictions.[br]
-## Allows tests to run in headless mode despite limitations.
+## Deprecated option '--ignoreHeadlessMode', headless mode is supported by default.
 func check_headless_mode() -> void:
-	_headless_mode_ignore = true
+	console_warning("The option '--ignoreHeadlessMode' is deprecated and has no effect anymore, headless mode is supported by default.")
 
 
 ## Shows available command line options.[br]
@@ -350,31 +348,11 @@ func init_gd_unit() -> void:
 		return
 
 	if DisplayServer.get_name() == "headless":
-		if _headless_mode_ignore:
-			console_warning("""
-				Headless mode is ignored by option '--ignoreHeadlessMode'"
-
-				Please note that tests that use UI interaction do not work correctly in headless mode.
-				Godot 'InputEvents' are not transported by the Godot engine in headless mode and therefore
-				have no effect in the test!
-				""".dedent()
-			)
-		else:
-			console_error("""
-				Headless mode is not supported!
-
-				Please note that tests that use UI interaction do not work correctly in headless mode.
-				Godot 'InputEvents' are not transported by the Godot engine in headless mode and therefore
-				have no effect in the test!
-
-				You can run with '--ignoreHeadlessMode' to swtich off this check.
-				""".dedent()
-			)
-			console_error(
-				"Abnormal exit with %d" % RETURN_ERROR_HEADLESS_NOT_SUPPORTED
-			)
-			quit(RETURN_ERROR_HEADLESS_NOT_SUPPORTED)
-			return
+		console_warning("""
+			Running in headless mode, Godot does not render anything.
+			Tests that depend on rendered output, e.g. screenshots or viewport textures, will not work.
+			""".dedent()
+		)
 
 	var script_error_collector := GdUnitScriptErrorCollector.new()
 	_test_cases = discover_tests()

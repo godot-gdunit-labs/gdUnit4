@@ -26,10 +26,13 @@ jobs:
       matrix:
         godot-version: ['4.7', '4.7.1']
         godot-status: ['stable']
-        godot-net: ['-net', '']
+        report-suffix: ['-net', '', '-e2e']
         include:
           - godot-version: '4.8'
             godot-status: 'dev7'
+          - godot-version: '4.8'
+            godot-status: 'dev7'
+            report-suffix: '-e2e'
 
     steps:
       - uses: actions/checkout@v7
@@ -39,7 +42,7 @@ jobs:
       - name: 'Download artifacts'
         uses: actions/download-artifact@v8
         with:
-          name: artifact_gdUnit4_Godot${{ matrix.godot-version }}-${{ matrix.godot-status }}${{ matrix.godot-net }}
+          name: artifact_gdUnit4_Godot${{ matrix.godot-version }}-${{ matrix.godot-status }}${{ matrix.report-suffix }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: godot-gdunit-labs/gdUnit4
           run-id: ${{ github.event.inputs.workflow_run_id || github.event.workflow_run.id }}
@@ -49,10 +52,10 @@ jobs:
         with:
           # using artifact to download is broken since download-artifact@v4 see https://github.com/dorny/test-reporter/issues/363
           # We do the download manually on step `Download artifacts`
-          # artifact: artifact_gdUnit4_Godot${{ matrix.godot-version }}-${{ matrix.godot-status }}${{ matrix.godot-net }}
-          name: report_gdUnit4_Godot${{ matrix.godot-version }}-${{ matrix.godot-status }}${{ matrix.godot-net }}
+          # artifact: artifact_gdUnit4_Godot${{ matrix.godot-version }}-${{ matrix.godot-status }}${{ matrix.report-suffix }}
+          name: report_gdUnit4_Godot${{ matrix.godot-version }}-${{ matrix.godot-status }}${{ matrix.report-suffix }}
           path: './home/runner/work/gdUnit4/gdUnit4/reports/**/*.xml'
-          reporter: ${{ matrix.godot-net == '-net' && 'dotnet-trx' || 'java-junit' }}
+          reporter: ${{ matrix.report-suffix == '-net' && 'dotnet-trx' || 'java-junit' }}
           fail-on-error: 'false'
           fail-on-empty: 'false'
           use-actions-summary: 'false'

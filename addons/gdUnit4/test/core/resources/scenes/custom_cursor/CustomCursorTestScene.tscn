@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://dm3lk31g17ysl"]
+
+[ext_resource type="Script" path="res://addons/gdUnit4/test/core/resources/scenes/custom_cursor/CustomCursorTestScene.gd" id="1"]
+[ext_resource type="Texture2D" path="res://addons/gdUnit4/test/core/resources/scenes/custom_cursor/cursor.png" id="2"]
+
+[node name="CustomCursorScene" type="Node2D" unique_id=1978936831]
+script = ExtResource("1")
+
+[node name="Cursor" type="Sprite2D" parent="." unique_id=293940049]
+texture = ExtResource("2")
+centered = false

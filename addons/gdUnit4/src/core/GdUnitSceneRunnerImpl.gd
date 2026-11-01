@@ -17,6 +17,8 @@ const MAP_MOUSE_BUTTON_MASKS := {
 var _func_assert_impl: GDScript = ResourceLoader.load("res://addons/gdUnit4/src/asserts/GdUnitFuncAssertImpl.gd", "GDScript", ResourceLoader.CACHE_MODE_REUSE)
 var _is_disposed := false
 var _current_scene: Node = null
+var _viewport: SubViewport = null
+var _viewport_view: GdUnitSceneRunnerView = null
 var _awaiter: GdUnitAwaiter = GdUnitAwaiter.new()
 var _verbose: bool
 var _simulate_start_time: LocalTime
@@ -33,6 +35,7 @@ var _current_touch_drag_position: Vector2 = Vector2.ZERO
 # time factor settings
 var _time_factor := 1.0
 var _scene_auto_free := false
+var _is_mouse_emulated := false
 
 
 func _init(p_scene: Variant, p_verbose: bool, p_hide_push_errors := false) -> void:
@@ -65,24 +68,17 @@ func _init(p_scene: Variant, p_verbose: bool, p_hide_push_errors := false) -> vo
 			push_error("GdUnitSceneRunner: Scene must be not null!")
 		return
 
-	_scene_tree().root.add_child(_current_scene)
-	Engine.set_meta("GdUnitSceneRunner", self)
-	# do finally reset all open input events when the scene is removed
-	@warning_ignore("return_value_discarded")
-	_scene_tree().root.child_exiting_tree.connect(
-		func f(child: Node) -> void:
-			if child == _current_scene:
-				_reset_input_to_default()
-	)
-	_simulate_start_time = LocalTime.now()
-	# we need to set inital a valid window otherwise the warp_mouse() is not handled
-	move_window_to_foreground()
+	_viewport = _create_scene_viewport(_current_scene)
+	_scene_tree().root.add_child(_viewport)
 
-	# set inital mouse pos to 0,0
-	var max_iteration_to_wait := 0
-	while get_global_mouse_position() != Vector2.ZERO and max_iteration_to_wait < 100:
-		Input.warp_mouse(Vector2.ZERO)
-		max_iteration_to_wait += 1
+	if DisplayServer.get_name() != "headless":
+		_viewport_view = GdUnitSceneRunnerView.new(_viewport)
+		_scene_tree().root.add_child(_viewport_view)
+
+	Engine.set_meta("GdUnitSceneRunner", self)
+
+	_simulate_start_time = LocalTime.now()
+	move_window_to_foreground()
 
 
 func _notification(what: int) -> void:
@@ -91,17 +87,69 @@ func _notification(what: int) -> void:
 		_deactivate_time_factor()
 		if is_instance_valid(_current_scene):
 			move_window_to_background()
-			_scene_tree().root.remove_child(_current_scene)
+			if is_instance_valid(_viewport) and _current_scene.get_parent() == _viewport:
+				_viewport.remove_child(_current_scene)
 			# do only free scenes instanciated by this runner
 			if _scene_auto_free:
 				_current_scene.free()
+		if is_instance_valid(_viewport_view):
+			_scene_tree().root.remove_child(_viewport_view)
+			_viewport_view.free()
+		if is_instance_valid(_viewport):
+			_scene_tree().root.remove_child(_viewport)
+			_viewport.free()
 		_is_disposed = true
 		_current_scene = null
+		_viewport = null
+		_viewport_view = null
 		Engine.remove_meta("GdUnitSceneRunner")
 
 
 func _scene_tree() -> SceneTree:
 	return Engine.get_main_loop() as SceneTree
+
+
+func _create_scene_viewport(current_scene: Node) -> SubViewport:
+	var root := _scene_tree().root
+	var viewport := SubViewport.new()
+	viewport.name = "GdUnitSceneRunnerViewport"
+	viewport.size = _viewport_size(root)
+	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	# the scene must run like in the game, Godot applies the project settings to the root viewport only, so take over all its settings
+	for property: Dictionary in ClassDB.class_get_property_list("Viewport", true):
+		var property_name: StringName = property["name"]
+		var usage: int = property["usage"]
+		if usage & PROPERTY_USAGE_STORAGE:
+			viewport.set(property_name, root.get(property_name))
+	viewport.gui_embed_subwindows = true
+	viewport.notification(Node.NOTIFICATION_VP_MOUSE_ENTER)
+	# do finally reset all open input events when the scene is removed
+	@warning_ignore("return_value_discarded")
+	viewport.child_exiting_tree.connect(
+		func f(child: Node) -> void:
+			if child == current_scene:
+				_reset_input_to_default()
+	)
+	viewport.add_child(current_scene)
+	return viewport
+
+
+static func _viewport_size(root: Window) -> Vector2i:
+	var content_scale_size := root.content_scale_size
+	if root.content_scale_mode != Window.CONTENT_SCALE_MODE_DISABLED and content_scale_size.x > 0 and content_scale_size.y > 0:
+		return content_scale_size
+	@warning_ignore("unsafe_call_argument")
+	var window_override := Vector2i(
+		ProjectSettings.get_setting("display/window/size/window_width_override", 0),
+		ProjectSettings.get_setting("display/window/size/window_height_override", 0)
+	)
+	if window_override.x > 0 and window_override.y > 0:
+		return window_override
+	@warning_ignore("unsafe_call_argument")
+	return Vector2i(
+		ProjectSettings.get_setting("display/window/size/viewport_width"),
+		ProjectSettings.get_setting("display/window/size/viewport_height")
+	)
 
 
 func await_input_processed() -> void:
@@ -176,7 +224,7 @@ func simulate_key_release(key_code: int) -> GdUnitSceneRunner:
 func set_mouse_position(pos: Vector2) -> GdUnitSceneRunner:
 	var event := InputEventMouseMotion.new()
 	event.position = pos
-	event.global_position = get_global_mouse_position()
+	event.global_position = _to_global_position(pos)
 	_apply_input_modifiers(event)
 	return _handle_input_event(event)
 
@@ -191,14 +239,18 @@ func get_mouse_position() -> Vector2:
 
 
 func get_global_mouse_position() -> Vector2:
-	return (Engine.get_main_loop() as SceneTree).root.get_mouse_position()
+	if _last_input_event is InputEventMouse:
+		return (_last_input_event as InputEventMouse).global_position
+	if is_instance_valid(_viewport):
+		return _to_global_position(_viewport.get_mouse_position())
+	return Vector2.ZERO
 
 
 func simulate_mouse_move(position: Vector2) -> GdUnitSceneRunner:
 	var event := InputEventMouseMotion.new()
 	event.position = position
+	event.global_position = _to_global_position(position)
 	event.relative = position - get_mouse_position()
-	event.global_position = get_global_mouse_position()
 	_apply_input_mouse_mask(event)
 	_apply_input_modifiers(event)
 	return _handle_input_event(event)
@@ -272,8 +324,10 @@ func simulate_screen_touch_pressed(index: int, position: Vector2, double_tap := 
 func simulate_screen_touch_press(index: int, position: Vector2, double_tap := false) -> GdUnitSceneRunner:
 	if is_emulate_mouse_from_touch():
 		# we need to simulate in addition to the touch the mouse events
+		_is_mouse_emulated = true
 		set_mouse_position(position)
 		simulate_mouse_button_press(MOUSE_BUTTON_LEFT)
+		_is_mouse_emulated = false
 	# push touch press event at position
 	var event := InputEventScreenTouch.new()
 	event.window_id = scene().get_window().get_window_id()
@@ -291,7 +345,9 @@ func simulate_screen_touch_press(index: int, position: Vector2, double_tap := fa
 func simulate_screen_touch_release(index: int, double_tap := false) -> GdUnitSceneRunner:
 	if is_emulate_mouse_from_touch():
 		# we need to simulate in addition to the touch the mouse events
+		_is_mouse_emulated = true
 		simulate_mouse_button_release(MOUSE_BUTTON_LEFT)
+		_is_mouse_emulated = false
 	# push touch release event at position
 	var event := InputEventScreenTouch.new()
 	event.window_id = scene().get_window().get_window_id()
@@ -327,7 +383,9 @@ func simulate_screen_touch_drag_drop(
 @warning_ignore("return_value_discarded")
 func simulate_screen_touch_drag(index: int, position: Vector2) -> GdUnitSceneRunner:
 	if is_emulate_mouse_from_touch():
+		_is_mouse_emulated = true
 		simulate_mouse_move(position)
+		_is_mouse_emulated = false
 	var event := InputEventScreenDrag.new()
 	event.window_id = scene().get_window().get_window_id()
 	event.index = index
@@ -374,7 +432,9 @@ func _do_touch_drag_at(index: int, drag_position: Vector2, time: float, trans_ty
 	while not _current_touch_drag_position.is_equal_approx(drag_position):
 		if is_emulate_mouse_from_touch():
 			# we need to simulate in addition to the drag the mouse move events
+			_is_mouse_emulated = true
 			simulate_mouse_move(event.position)
+			_is_mouse_emulated = false
 		# send touche drag event to new position
 		event.relative = _current_touch_drag_position - event.position
 		event.velocity = event.relative / _scene_tree().root.get_process_delta_time()
@@ -384,8 +444,10 @@ func _do_touch_drag_at(index: int, drag_position: Vector2, time: float, trans_ty
 
 	# finaly drop it
 	if is_emulate_mouse_from_touch():
+		_is_mouse_emulated = true
 		simulate_mouse_move(drag_position)
 		simulate_mouse_button_release(MOUSE_BUTTON_LEFT)
+		_is_mouse_emulated = false
 	var touch_drop_event := InputEventScreenTouch.new()
 	touch_drop_event.window_id = event.window_id
 	touch_drop_event.index = event.index
@@ -441,14 +503,14 @@ func await_signal_on(source: Object, signal_name: String, args := [], timeout :=
 
 
 func move_window_to_foreground() -> GdUnitSceneRunner:
-	if not Engine.is_embedded_in_editor():
+	if not Engine.is_embedded_in_editor() and DisplayServer.get_name() != "headless":
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		DisplayServer.window_move_to_foreground()
 	return self
 
 
 func move_window_to_background() -> GdUnitSceneRunner:
-	if not Engine.is_embedded_in_editor():
+	if not Engine.is_embedded_in_editor() and DisplayServer.get_name() != "headless":
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MINIMIZED)
 	return self
@@ -545,7 +607,17 @@ func _apply_input_mouse_mask(event: InputEvent) -> void:
 # copy over last mouse position if need
 func _apply_input_mouse_position(event: InputEvent) -> void:
 	if _last_input_event is InputEventMouse and event is InputEventMouseButton:
-		(event as InputEventMouseButton).position = (_last_input_event as InputEventMouse).position
+		var last_input_event := _last_input_event as InputEventMouse
+		var mouse_event := event as InputEventMouseButton
+		mouse_event.position = last_input_event.position
+		mouse_event.global_position = last_input_event.global_position
+
+
+## The scene viewport is shown scaled in the window, Godot reports the global position of mouse events in window coordinates
+func _to_global_position(viewport_position: Vector2) -> Vector2:
+	if is_instance_valid(_viewport_view):
+		return _viewport_view.position + _viewport_view.to_view_position(viewport_position)
+	return viewport_position
 
 
 ## handle input action via Input modifieres
@@ -563,8 +635,8 @@ func _handle_actions(event: InputEventAction) -> bool:
 # for handling read https://docs.godotengine.org/en/stable/tutorials/inputs/inputevent.html?highlight=inputevent#how-does-it-work
 @warning_ignore("return_value_discarded")
 func _handle_input_event(event: InputEvent) -> GdUnitSceneRunner:
-	if event is InputEventMouse:
-		Input.warp_mouse((event as InputEventMouse).position as Vector2)
+	if _is_mouse_emulated and event is InputEventMouse:
+		event.device = InputEvent.DEVICE_ID_EMULATION
 	Input.parse_input_event(event)
 
 	if event is InputEventAction:
@@ -573,11 +645,44 @@ func _handle_input_event(event: InputEvent) -> GdUnitSceneRunner:
 	var current_scene := scene()
 	if is_instance_valid(current_scene):
 		Input.flush_buffered_events()
+		var touch_event := _emulated_touch_event(event)
+		if touch_event != null:
+			_viewport.push_input(touch_event)
+		_viewport.push_input(event)
 		_print("	process event %s (%s) <- %s" % [current_scene, _scene_name(), event.as_text()])
 
 	# save last input event needs to be merged with next InputEventMouseButton
 	_last_input_event = event
 	return self
+
+
+## Godot sends the touch events emulated from mouse input to the root window only, the scene viewport needs its own
+static func _emulated_touch_event(event: InputEvent) -> InputEvent:
+	if not Input.is_emulating_touch_from_mouse() or event.device == InputEvent.DEVICE_ID_EMULATION:
+		return null
+	if event is InputEventMouseButton and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT:
+		var mouse_button := event as InputEventMouseButton
+		var touch := InputEventScreenTouch.new()
+		touch.device = InputEvent.DEVICE_ID_EMULATION
+		touch.position = mouse_button.position
+		touch.pressed = mouse_button.pressed
+		touch.canceled = mouse_button.canceled
+		touch.double_tap = mouse_button.double_click
+		return touch
+	if event is InputEventMouseMotion and (event as InputEventMouseMotion).button_mask & MOUSE_BUTTON_MASK_LEFT:
+		var mouse_motion := event as InputEventMouseMotion
+		var drag := InputEventScreenDrag.new()
+		drag.device = InputEvent.DEVICE_ID_EMULATION
+		drag.position = mouse_motion.position
+		drag.relative = mouse_motion.relative
+		drag.screen_relative = mouse_motion.screen_relative
+		drag.velocity = mouse_motion.velocity
+		drag.screen_velocity = mouse_motion.screen_velocity
+		drag.pressure = mouse_motion.pressure
+		drag.tilt = mouse_motion.tilt
+		drag.pen_inverted = mouse_motion.pen_inverted
+		return drag
+	return null
 
 
 @warning_ignore("return_value_discarded")

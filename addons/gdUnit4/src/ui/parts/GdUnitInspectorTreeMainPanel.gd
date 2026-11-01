@@ -49,6 +49,7 @@ func _ready() -> void:
 
 	_init_icons()
 	init_tree()
+	set_process(false)
 	GdUnitSignals.instance().gdunit_settings_changed.connect(_on_settings_changed)
 	GdUnitSignals.instance().gdunit_event.connect(_on_gdunit_event)
 	GdUnitSignals.instance().gdunit_test_discover_added.connect(on_test_case_discover_added)
@@ -1197,12 +1198,14 @@ func _on_gdunit_event(event: GdUnitEvent) -> void:
 			_tree_root.visible = false
 			_discover_hint.visible = true
 			init_tree()
+			set_process(true)
 
 		GdUnitEvent.DISCOVER_END:
 			sort_tree_items(_tree_root)
 			select_item(_tree_root.get_first_child())
 			_discover_hint.visible = false
 			_tree_root.visible = true
+			set_process(false)
 			#_dump_tree_as_json("tree_example_discovered")
 
 		GdUnitEvent.TESTCASE_BEFORE:
@@ -1216,9 +1219,11 @@ func _on_gdunit_event(event: GdUnitEvent) -> void:
 
 		GdUnitEvent.SESSION_START:
 			test_session_start()
+			set_process(true)
 
 		GdUnitEvent.SESSION_CLOSE:
 			await test_session_stop()
+			set_process(false)
 
 
 func _on_settings_changed(property: GdUnitProperty) -> void:

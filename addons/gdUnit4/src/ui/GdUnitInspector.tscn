@@ -65,4 +65,3 @@ layout_mode = 2
 [connection signal="select_orphan_prevous" from="VBoxContainer/Header/StatusBar" to="VBoxContainer/MainPanel" method="_on_select_previous_item_by_state" binds= [9]]
 [connection signal="select_skipped_next" from="VBoxContainer/Header/StatusBar" to="VBoxContainer/MainPanel" method="_on_select_next_item_by_state" binds= [2]]
 [connection signal="select_skipped_prevous" from="VBoxContainer/Header/StatusBar" to="VBoxContainer/MainPanel" method="_on_select_previous_item_by_state" binds= [2]]
-[connection signal="tree_view_mode_changed" from="VBoxContainer/Header/StatusBar" to="VBoxContainer/MainPanel" method="_on_status_bar_tree_view_mode_changed"]

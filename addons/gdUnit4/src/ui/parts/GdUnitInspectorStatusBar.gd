@@ -11,8 +11,6 @@ signal select_skipped_next()
 signal select_skipped_prevous()
 signal select_orphan_next()
 signal select_orphan_prevous()
-@warning_ignore("unused_signal")
-signal tree_view_mode_changed(flat: bool)
 
 const STATE = GdUnitInspectorTreeConstants.STATE
 

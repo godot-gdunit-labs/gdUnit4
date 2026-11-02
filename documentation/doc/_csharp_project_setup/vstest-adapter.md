@@ -26,11 +26,11 @@ Before configuring your IDE, ensure you have completed the following setup requi
 
 ### Supported IDE's
 
-|IDE               |Test Discovery|Test Run|Test Debug|Jump to Failure|Solution test config file|Test Filter|Parallel Test Execution|
-|---|---|---|---|---|---|---|---|
-|Visual Studio     |✅|✅|✅|✅|✅|✅|❌|
-|Visual Studio Code|✅|✅|✅|✅|✅|✅|❌|
-|JetBrains Rider version 2024.2 |✅|✅|✅|✅|✅|✅|❌|
+| IDE                            | Test Discovery | Test Run | Test Debug | Jump to Failure | Solution test config file | Test Filter | Parallel Test Execution |
+| ------------------------------ | -------------- | -------- | ---------- | --------------- | ------------------------- | ----------- | ----------------------- |
+| Visual Studio                  | ✅             | ✅       | ✅         | ✅              | ✅                        | ✅          | ❌                      |
+| Visual Studio Code             | ✅             | ✅       | ✅         | ✅              | ✅                        | ✅          | ❌                      |
+| JetBrains Rider version 2024.2 | ✅             | ✅       | ✅         | ✅              | ✅                        | ✅          | ❌                      |
 
 > ✅ - supported<br>
 > ☑️ - supported by a workaround (link)<br>
@@ -50,10 +50,10 @@ Your Godot C# project must be properly configured with GdUnit4Net dependencies a
 
 You must configure the `GODOT_BIN` environment variable pointing to your Godot executable.
 
-|Platform|Environment Variable|Example Path|
-|---|---|---|
-|Windows|**%GODOT_BIN%**|`d:\development\Godot_v4.7-stable_mono_win64\Godot_v4.7-stable_mono_win64.exe`|
-|Linux/Unix/Mac|**$GODOT_BIN**|`/Users/MisterX/Documents/develop/GodotMono.app/Contents/MacOS/Godot`|
+| Platform       | Environment Variable | Example Path                                                                   |
+| -------------- | -------------------- | ------------------------------------------------------------------------------ |
+| Windows        | **%GODOT_BIN%**      | `d:\development\Godot_v4.7-stable_mono_win64\Godot_v4.7-stable_mono_win64.exe` |
+| Linux/Unix/Mac | **$GODOT_BIN**       | `/Users/MisterX/Documents/develop/GodotMono.app/Contents/MacOS/Godot`          |
 
 Or define it in the **.runsettings** under `EnvironmentVariables` see below.
 
@@ -194,6 +194,6 @@ content="We recommend to use Rider <b>2024.2</b> or higher to enable test debugg
 
 ### Issues and Workarounds
 
-|Issue| Solution                                                                                |
-|-|-----------------------------------------------------------------------------------------|
-|The test discovery is aborted and not all tests are found| Increase the `<TestSessionTimeout>` in your [RunSettings](#3-runsettings-configuration) |
+| Issue                                                     | Solution                                                                                |
+| --------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| The test discovery is aborted and not all tests are found | Increase the `<TestSessionTimeout>` in your [RunSettings](#3-runsettings-configuration) |

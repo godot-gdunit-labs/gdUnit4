@@ -38,8 +38,9 @@ To access these settings, simply press the 'tools' button located in the GdUnit 
 
   * **Auto Save Project Settings**<br>
     When enabled (the default), GdUnit automatically saves your project settings before each test suite and restores them after it.
-    It also saves them after the suite's `before()` and sets them back after every test case and every retry attempt, so a test that changes a setting cannot leak that change into later tests. Disable it to skip this snapshot when your suites rarely
-    touch the project settings, and instead snapshot on demand with `snapshot_project_settings()` / `restore_project_settings()`
+    It also saves them after the suite's `before()` and sets them back after every test case and every retry attempt, so a test that changes a setting cannot
+    leak that change into later tests. Disable it to skip this snapshot when your suites rarely touch the project settings, and instead snapshot on demand with
+    `snapshot_project_settings()` / `restore_project_settings()`
     (see [Tools and Helpers]({{site.baseurl}}/advanced_testing/tools/)) in only the tests that need it.
 
   * **Test Discovery**<br>
@@ -92,7 +93,6 @@ public async Task foo() {
 
 ---
 
-
 ## Hooks Settings
 
 Configure test session hooks and reporting mechanisms for automated test lifecycle management.
@@ -102,34 +102,37 @@ Configure test session hooks and reporting mechanisms for automated test lifecyc
 ### Overview
 
 Test session hooks execute custom logic at the beginning and end of test sessions, enabling:
-- Automated test environment setup and teardown
-- Custom test report generation in various formats
-- Integration with external systems and CI/CD pipelines
-- Resource management across multiple test suites
+
+* Automated test environment setup and teardown
+* Custom test report generation in various formats
+* Integration with external systems and CI/CD pipelines
+* Resource management across multiple test suites
 
 ### Built-in System Hooks
 
 GdUnit4 includes two pre-installed system hooks that provide essential reporting functionality:
 
 * **GdUnitHtmlTestReporter** `SYSTEM`  
-  Generates interactive HTML test reports with detailed results, execution times, and statistics. Reports include collapsible sections and visual charts for easy analysis.
+  Generates interactive HTML test reports with detailed results, execution times, and statistics.
+  Reports include collapsible sections and visual charts for easy analysis.
 
 * **GdUnitXMLTestReporter** `SYSTEM`  
   Produces JUnit-compatible XML reports for CI/CD integration. Compatible with Jenkins, GitLab CI, GitHub Actions, and other continuous integration tools.
 
 ### Hook Management Controls
 
-| Control | Function | Description |
-|---------|----------|-------------|
-| ☑️ **Checkbox** | Enable/Disable | Toggle hook activation without removing it from the list |
-| ⬆️ **Up Arrow** | Increase Priority | Move hook higher in execution order (executes earlier) |
-| ⬇️ **Down Arrow** | Decrease Priority | Move hook lower in execution order (executes later) |
-| ➕ **Add** | Register Hook | Add a new custom hook to the system |
-| 🗑️ **Remove** | Delete Hook | Remove custom hooks (system hooks cannot be deleted) |
+| Control           | Function          | Description                                              |
+| ----------------- | ----------------- | -------------------------------------------------------- |
+| ☑️ **Checkbox**   | Enable/Disable    | Toggle hook activation without removing it from the list |
+| ⬆️ **Up Arrow**   | Increase Priority | Move hook higher in execution order (executes earlier)   |
+| ⬇️ **Down Arrow** | Decrease Priority | Move hook lower in execution order (executes later)      |
+| ➕ **Add**        | Register Hook     | Add a new custom hook to the system                      |
+| 🗑️ **Remove**     | Delete Hook       | Remove custom hooks (system hooks cannot be deleted)     |
 
 ### Execution Order
 
 Hooks execute in the priority order shown in the list:
+
 1. **Startup Phase**: Hooks initialize in top-to-bottom order before tests begin
 2. **Test Execution**: All test suites run if startup succeeds
 3. **Shutdown Phase**: Hooks cleanup in reverse order after tests complete
@@ -144,7 +147,8 @@ Hooks execute in the priority order shown in the list:
 
 ### Status Information
 
-The text field at the bottom displays contextual information about the selected hook, including its description and current configuration status. For system hooks, it shows "The Html test reporting hook" or "The XML test reporting hook" respectively.
+The text field at the bottom displays contextual information about the selected hook, including its description and current configuration status.
+For system hooks, it shows "The Html test reporting hook" or "The XML test reporting hook" respectively.
 
 ---
 

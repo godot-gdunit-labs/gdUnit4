@@ -48,10 +48,10 @@ Right-click any item in the tree to open the context menu.
 
 ![inspector-context-menu]({{site.baseurl}}/assets/images/inspector/inspector-context-menu.png){:.centered}
 
-| Command | Description |
-| ------- | ----------- |
-| **Run Tests** | Runs the selected test or test suite in runtime mode. |
-| **Debug Tests** | Runs the selected test or test suite in debug mode. |
+| Command                  | Description                                                                                                                                                                                                                                              |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Run Tests**            | Runs the selected test or test suite in runtime mode.                                                                                                                                                                                                    |
+| **Debug Tests**          | Runs the selected test or test suite in debug mode.                                                                                                                                                                                                      |
 | **Run Tests Until Fail** | Repeatedly runs the selected test or test suite until a failure occurs. Useful for investigating flaky tests. The number of retries is configured via [Rerun Until Failure Retries]({{site.baseurl}}/first_steps/settings/#common-settings) in settings. |
-| **Expand All** | Expands all nodes in the test run overview tree. |
-| **Collapse All** | Collapses all nodes in the test run overview tree. |
+| **Expand All**           | Expands all nodes in the test run overview tree.                                                                                                                                                                                                         |
+| **Collapse All**         | Collapses all nodes in the test run overview tree.                                                                                                                                                                                                       |

@@ -6,6 +6,7 @@ has_toc: false
 ---
 
 # GdUnit4 {{site.current_version}}
+
 {% include upgrade_banner.html %}
 
 ![GdUnit4](./assets/images/background.png)
@@ -20,7 +21,6 @@ create and run unit tests to verify the functionality and performance of your co
 GdUnit4 is a powerful tool that supports Test-Driven Development ([TDD](https://en.wikipedia.org/wiki/Test-driven_development){:target="_blank"}),
 a popular software development approach that emphasizes creating automated tests before writing any code. By using GdUnit4 for TDD,
 you can ensure that your code is thoroughly tested and free of bugs, which can save you time and effort in the long run.
-
 
 ## Features
 
@@ -59,16 +59,16 @@ you can ensure that your code is thoroughly tested and free of bugs, which can s
 * **Test Session Hooks**  
   Set up and tear down test resources at the session level for efficient test management
 * **Mocking & Spying**
-    * Mock classes to simulate behavior and define output for specific functions
-    * Spy on functions to verify they were called with expected parameters
-    * Mock or spy on scenes to simulate behavior and verify function calls
+  * Mock classes to simulate behavior and define output for specific functions
+  * Spy on functions to verify they were called with expected parameters
+  * Mock or spy on scenes to simulate behavior and verify function calls
 * **Scene Runner**  
   Simulate different kinds of inputs and actions:
-    * Mouse clicks and movements
-    * Keyboard inputs
-    * Touch screen interactions
-    * Custom input actions
-    * Wait for specific signals or function return values
+  * Mouse clicks and movements
+  * Keyboard inputs
+  * Touch screen interactions
+  * Custom input actions
+  * Wait for specific signals or function return values
 * **Flaky Test Handling**  
   Detect and handle flaky tests by rerunning failed tests  
   Configure retry count and mark non-deterministic failures in test results
@@ -95,9 +95,9 @@ you can ensure that your code is thoroughly tested and free of bugs, which can s
   Full support for writing tests in C#
 * **VSTest Integration** - [gdunit4.test.adapter](https://github.com/MikeSchulze/gdUnit4Net/blob/master/TestAdapter/README.md)  
   Run and debug tests in:
-    * Visual Studio
-    * Visual Studio Code
-    * JetBrains Rider
+  * Visual Studio
+  * Visual Studio Code
+  * JetBrains Rider
 
 ## You are welcome to
 <!-- markdownlint-capture -->

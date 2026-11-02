@@ -34,12 +34,12 @@ Follow the steps outlined in the
    Open your project file (\*.csproj) and add the GdUnit4Net package dependencies.
    GdUnit4Net is released independently of GdUnit4, use the latest versions listed on nuget.org:
 
-   |Package|Latest version|
-   |---|---|
-   |[gdUnit4.api](https://www.nuget.org/packages/gdUnit4.api/#versions-body-tab){:target="_blank"}|![gdUnit4.api](https://img.shields.io/nuget/vpre/gdUnit4.api)|
-   |[gdUnit4.test.adapter](https://www.nuget.org/packages/gdUnit4.test.adapter/#versions-body-tab){:target="_blank"}|![gdUnit4.test.adapter](https://img.shields.io/nuget/vpre/gdUnit4.test.adapter)|
-   |[gdUnit4.analyzers](https://www.nuget.org/packages/gdUnit4.analyzers/#versions-body-tab){:target="_blank"}|![gdUnit4.analyzers](https://img.shields.io/nuget/vpre/gdUnit4.analyzers)|
-   |[Microsoft.NET.Test.Sdk](https://www.nuget.org/packages/Microsoft.NET.Test.Sdk/#versions-body-tab){:target="_blank"}|![Microsoft.NET.Test.Sdk](https://img.shields.io/nuget/v/Microsoft.NET.Test.Sdk)|
+   | Package                                                                                                              | Latest version                                                                   |
+   | -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+   | [gdUnit4.api](https://www.nuget.org/packages/gdUnit4.api/#versions-body-tab){:target="_blank"}                       | ![gdUnit4.api](https://img.shields.io/nuget/vpre/gdUnit4.api)                    |
+   | [gdUnit4.test.adapter](https://www.nuget.org/packages/gdUnit4.test.adapter/#versions-body-tab){:target="_blank"}     | ![gdUnit4.test.adapter](https://img.shields.io/nuget/vpre/gdUnit4.test.adapter)  |
+   | [gdUnit4.analyzers](https://www.nuget.org/packages/gdUnit4.analyzers/#versions-body-tab){:target="_blank"}           | ![gdUnit4.analyzers](https://img.shields.io/nuget/vpre/gdUnit4.analyzers)        |
+   | [Microsoft.NET.Test.Sdk](https://www.nuget.org/packages/Microsoft.NET.Test.Sdk/#versions-body-tab){:target="_blank"} | ![Microsoft.NET.Test.Sdk](https://img.shields.io/nuget/v/Microsoft.NET.Test.Sdk) |
 
 2. Ensure a .NET SDK supported by GdUnit4Net is installed.
 

@@ -64,12 +64,19 @@ gdstyle check --max-warnings 0 addons/gdUnit4/
 CI lints the whole plugin, sources and tests, and fails on any warning. Directories named `resources` and the
 intentionally malformed scanner test suite are excluded in `gdstyle.toml`.
 
-### Markdown Linting
+### Formatting Checks
 
-Run markdownlint-cli2 locally before pushing to catch formatting issues early:
+Pull requests are checked by the organization formatting checks of
+[godot-gdunit-labs/global-workflows](https://github.com/godot-gdunit-labs/global-workflows), which cover Markdown, YAML, JSON,
+GitHub Actions workflows, `.editorconfig` rules and GDScript with the central configuration. To run the Markdown check locally
+(needs Node.js 22 or later), clone the central repository next to this one once and run the check:
 
 ```bash
-markdownlint-cli2 --config .github/actions/formatting_checks/.markdownlint.jsonc "**/*.md"
+git clone https://github.com/godot-gdunit-labs/global-workflows ../global-workflows
+npm ci --ignore-scripts --prefix ../global-workflows/formatting
+export REPOSITORY_NAME=gdUnit4
+node ../global-workflows/formatting/scripts/run.mjs collect . ../formatting-lists
+node ../global-workflows/formatting/scripts/run.mjs markdown . ../formatting-lists
 ```
 
 ## Architecture
@@ -218,7 +225,8 @@ The `current_version` in `documentation/_config.yml` should be updated when rele
 - Main branch: `master`
 - Feature branches should be named after the issue number (e.g., `GD-111`)
 - PRs must link to an issue and pass all CI checks before merging
-- CI runs format checks, `gdstyle check`, and tests against Godot 4.7, 4.7.1, and 4.8 (dev), see the Compatibility Overview in `README.md`
+- CI runs the organization formatting checks (including `gdstyle`), `dotnet format`, and tests
+  against Godot 4.7, 4.7.1, and 4.8 (dev), see the Compatibility Overview in `README.md`
 
 ### Git Hooks
 
@@ -240,11 +248,12 @@ When editing or creating `.tscn` files, do not manually remove uid attributes â€
 Run all linting locally before pushing to avoid CI failures:
 
 ```bash
-# GDScript lint (mirrors .github/workflows/gdstyle.yml)
+# GDScript lint (same configuration as the organization formatting checks)
 gdstyle check --max-warnings 0 addons/gdUnit4/
 
-# Markdown lint
-markdownlint-cli2 --config .github/actions/formatting_checks/.markdownlint.jsonc "**/*.md"
+# Markdown lint (organization formatting checks, see "Formatting Checks" above)
+REPOSITORY_NAME=gdUnit4 node ../global-workflows/formatting/scripts/run.mjs collect . ../formatting-lists
+node ../global-workflows/formatting/scripts/run.mjs markdown . ../formatting-lists
 
 # C# format check (if C# files changed)
 dotnet format gdUnit4.csproj --verify-no-changes --verbosity diagnostic

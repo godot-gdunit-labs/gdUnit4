@@ -98,12 +98,12 @@ or an exact number of times. This way, you can check if a particular function wa
 content="Since spying on core functions is not supported, all following examples use the class <b>TestClass</b> defined above."
 %}
 
-|Function |Description |
-|---|---|
-|[verify]({{site.baseurl}}/advanced_testing/spy/#verify) | Verifies that certain behavior happened at least once or an exact number of times.|
-|[verify_no_interactions]({{site.baseurl}}/advanced_testing/spy/#verify_no_interactions) | Verifies that no interactions happened on the spy.|
-|[verify_no_more_interactions]({{site.baseurl}}/advanced_testing/spy/#verify_no_more_interactions) | Verifies that the given spy has no unverified interactions.|
-|[reset]({{site.baseurl}}/advanced_testing/spy/#reset) | Resets the saved function call counters on a spy.|
+| Function                                                                                          | Description                                                                        |
+| ------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| [verify]({{site.baseurl}}/advanced_testing/spy/#verify)                                           | Verifies that certain behavior happened at least once or an exact number of times. |
+| [verify_no_interactions]({{site.baseurl}}/advanced_testing/spy/#verify_no_interactions)           | Verifies that no interactions happened on the spy.                                 |
+| [verify_no_more_interactions]({{site.baseurl}}/advanced_testing/spy/#verify_no_more_interactions) | Verifies that the given spy has no unverified interactions.                        |
+| [reset]({{site.baseurl}}/advanced_testing/spy/#reset)                                             | Resets the saved function call counters on a spy.                                  |
 
 ### verify
 

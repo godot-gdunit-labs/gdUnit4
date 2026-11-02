@@ -35,14 +35,14 @@ content="Fuzzing is current only supported for GdScripts."
 
 For now GdUnit provides only this very small set of Fuzzer implementations and will be extend later!
 
-|Fuzzer|Description|
-|---|---|
-|`rangei(from, to)`                          | Generates a random integer in the range from `from` to `to`, inclusive. |
-|`eveni(from, to)`                           | Generates an even integer in the range from `from` to `to`, inclusive.|
-|`oddi(from, to)`                            | Generates an odd integer in the range from `from` to `to`, inclusive. |
-|`rangev2(from, to)`                         | Generates a random 2D vector with each component in the range from `from` to `to`, inclusive.  |
-|`rangev3(from, to)`                         | Generates a random 3D vector with each component in the range from `from` to `to`, inclusive. |
-|`rand_str(min_length, max_length, charset)` | Generates a random string with a length between `min_length` and `max_length`, inclusive, using characters from the specified `charset`. |
+| Fuzzer                                      | Description                                                                                                                              |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `rangei(from, to)`                          | Generates a random integer in the range from `from` to `to`, inclusive.                                                                  |
+| `eveni(from, to)`                           | Generates an even integer in the range from `from` to `to`, inclusive.                                                                   |
+| `oddi(from, to)`                            | Generates an odd integer in the range from `from` to `to`, inclusive.                                                                    |
+| `rangev2(from, to)`                         | Generates a random 2D vector with each component in the range from `from` to `to`, inclusive.                                            |
+| `rangev3(from, to)`                         | Generates a random 3D vector with each component in the range from `from` to `to`, inclusive.                                            |
+| `rand_str(min_length, max_length, charset)` | Generates a random string with a length between `min_length` and `max_length`, inclusive, using characters from the specified `charset`. |
 
 ---
 
@@ -84,7 +84,7 @@ func test_name(fuzzer := <Fuzzer>, <fuzzer_iterations>, <fuzzer_seed>):
       assert_int(fuzzer_a.next_value()).is_between(-23, 22)
       assert_int(fuzzer_b.next_value()).is_between(-23, 22)
   ```
-    
+
   💡 To avoid warnings about unused arguments, use the underscore prefix `_` or use `@warning_ignore(“unused_parameter”)`.
 
 * **fuzzer_iterations**

@@ -58,43 +58,43 @@ Argument matchers can be employed in various scenarios, such as:
 
 The following matchers are available:<br>
 
-|Argument Matcher|Description|
-|---|---|
-|any | Argument matcher to match any argument|
-|any_aabb | Argument matcher to match any AABB value |
-|any_array | Argument matcher to match any Array value |
-|any_basis | Argument matcher to match any Basis value |
-|any_bool | Argument matcher to match any boolean value |
-|any_class | Argument matcher to match any instance of given class |
-|any_color | Argument matcher to match any Color value |
-|any_dictionary | Argument matcher to match any Dictionary value |
-|any_float | Argument matcher to match any float value |
-|any_int | Argument matcher to match any integer value |
-|any_node_path | Argument matcher to match any NodePath value |
-|any_object | Argument matcher to match any Object value |
-|any_packed_byte_array | Argument matcher to match any PackedByteArray value |
-|any_packed_color_array | Argument matcher to match any PackedColorArray value |
-|any_packed_float32_array | Argument matcher to match any PackedFloat32Array value |
-|any_packed_float64_array | Argument matcher to match any PackedFloat64Array value |
-|any_packed_int32_array | Argument matcher to match any PackedInt32Array value |
-|any_packed_int64_array | Argument matcher to match any PackedInt64Array value |
-|any_packed_string_array | Argument matcher to match any PackedStringArray value |
-|any_packed_vector2_array | Argument matcher to match any PackedVector2Array value |
-|any_packed_vector3_array | Argument matcher to match any PackedVector3Array value |
-|any_plane | Argument matcher to match any Plane value |
-|any_quaternion | Argument matcher to match any Quaternion value |
-|any_rect2 | Argument matcher to match any Rect2 value |
-|any_rid | Argument matcher to match any RID value |
-|any_string | Argument matcher to match any string value |
-|any_transform_2d | Argument matcher to match any Transform2D value |
-|any_transform_3d | Argument matcher to match any Transform3D value |
-|any_vector | Argument matcher to match any Vector typed value |
-|any_vector2 | Argument matcher to match any Vector2 value |
-|any_vector2i | Argument matcher to match any Vector2i value |
-|any_vector3 | Argument matcher to match any Vector3 value |
-|any_vector3i | Argument matcher to match any Vector3i value |
-|any_vector4 | Argument matcher to match any Vector4 value |
-|any_vector4i | Argument matcher to match any Vector3i valu |
+| Argument Matcher         | Description                                            |
+| ------------------------ | ------------------------------------------------------ |
+| any                      | Argument matcher to match any argument                 |
+| any_aabb                 | Argument matcher to match any AABB value               |
+| any_array                | Argument matcher to match any Array value              |
+| any_basis                | Argument matcher to match any Basis value              |
+| any_bool                 | Argument matcher to match any boolean value            |
+| any_class                | Argument matcher to match any instance of given class  |
+| any_color                | Argument matcher to match any Color value              |
+| any_dictionary           | Argument matcher to match any Dictionary value         |
+| any_float                | Argument matcher to match any float value              |
+| any_int                  | Argument matcher to match any integer value            |
+| any_node_path            | Argument matcher to match any NodePath value           |
+| any_object               | Argument matcher to match any Object value             |
+| any_packed_byte_array    | Argument matcher to match any PackedByteArray value    |
+| any_packed_color_array   | Argument matcher to match any PackedColorArray value   |
+| any_packed_float32_array | Argument matcher to match any PackedFloat32Array value |
+| any_packed_float64_array | Argument matcher to match any PackedFloat64Array value |
+| any_packed_int32_array   | Argument matcher to match any PackedInt32Array value   |
+| any_packed_int64_array   | Argument matcher to match any PackedInt64Array value   |
+| any_packed_string_array  | Argument matcher to match any PackedStringArray value  |
+| any_packed_vector2_array | Argument matcher to match any PackedVector2Array value |
+| any_packed_vector3_array | Argument matcher to match any PackedVector3Array value |
+| any_plane                | Argument matcher to match any Plane value              |
+| any_quaternion           | Argument matcher to match any Quaternion value         |
+| any_rect2                | Argument matcher to match any Rect2 value              |
+| any_rid                  | Argument matcher to match any RID value                |
+| any_string               | Argument matcher to match any string value             |
+| any_transform_2d         | Argument matcher to match any Transform2D value        |
+| any_transform_3d         | Argument matcher to match any Transform3D value        |
+| any_vector               | Argument matcher to match any Vector typed value       |
+| any_vector2              | Argument matcher to match any Vector2 value            |
+| any_vector2i             | Argument matcher to match any Vector2i value           |
+| any_vector3              | Argument matcher to match any Vector3 value            |
+| any_vector3i             | Argument matcher to match any Vector3i value           |
+| any_vector4              | Argument matcher to match any Vector4 value            |
+| any_vector4i             | Argument matcher to match any Vector3i valu            |
 
 ---
 

@@ -17,18 +17,18 @@ This is particularly useful in scenarios where you want to test or ensure the re
 {% tabs scene-runner-await-functions %}
 {% tab scene-runner-await-functions GdScript %}
 
-|Function|Description|
-|---|---|
-|[await_func](#await_func) |Waits for a function in the scene to return a value. Returns a GdUnitFuncAssert object, which allows you to verify the result of the function call.|
-|[await_func_on](#await_func_on) |Waits for a function of a specific source node to return a value. Returns a GdUnitFuncAssert object, which allows you to verify the result of the function call.|
+| Function                        | Description                                                                                                                                                      |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [await_func](#await_func)       | Waits for a function in the scene to return a value. Returns a GdUnitFuncAssert object, which allows you to verify the result of the function call.              |
+| [await_func_on](#await_func_on) | Waits for a function of a specific source node to return a value. Returns a GdUnitFuncAssert object, which allows you to verify the result of the function call. |
 
 {% endtab %}
 {% tab scene-runner-await-functions C# %}
 
-|Function|Description|
-|---|---|
-|[AwaitMethod](#await_func) |Waits for a function in the scene to return a value. Returns a GdUnitFuncAssert object, which allows you to verify the result of the function call.|
-|[AwaitMethodOn](#await_func_on) |Waits for a function of a specific source node to return a value. Returns a GdUnitFuncAssert object, which allows you to verify the result of the function call.|
+| Function                        | Description                                                                                                                                                      |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [AwaitMethod](#await_func)      | Waits for a function in the scene to return a value. Returns a GdUnitFuncAssert object, which allows you to verify the result of the function call.              |
+| [AwaitMethodOn](#await_func_on) | Waits for a function of a specific source node to return a value. Returns a GdUnitFuncAssert object, which allows you to verify the result of the function call. |
 
 {% endtab %}
 {% endtabs %}

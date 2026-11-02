@@ -7,11 +7,13 @@ nav_order: 2
 
 # Testing with Hooks
 
-Test hooks provide powerful extension points in GdUnit4 that allow you to execute custom logic at specific moments during the test lifecycle. They enable sophisticated test environment management, custom reporting, and integration with external systems.
+Test hooks provide powerful extension points in GdUnit4 that allow you to execute custom logic at specific moments during the test lifecycle.
+They enable sophisticated test environment management, custom reporting, and integration with external systems.
 
 ## What are Test Hooks?
 
-Test hooks are classes that extend `GdUnitTestSessionHook` and implement methods that run at the beginning and end of test sessions. Unlike test fixtures (`before` and `after` methods) that run for individual tests, hooks operate at the session level, making them ideal for:
+Test hooks are classes that extend `GdUnitTestSessionHook` and implement methods that run at the beginning and end of test sessions.
+Unlike test fixtures (`before` and `after` methods) that run for individual tests, hooks operate at the session level, making them ideal for:
 
 - Setting up and tearing down shared test environments
 - Managing database connections or external services
@@ -102,32 +104,29 @@ public class MyCustomHook : GdUnitTestSessionHook
 {% endtab %}
 {% endtabs %}
 
-
 ## GdUnitTestSession API
 
 The `GdUnitTestSession` object passed to your hooks provides several useful properties and methods:
 
 ### Properties
 
-| Property | Type | Description |
-|----------|------|-------------|
+| Property      | Type     | Description                                           |
+| ------------- | -------- | ----------------------------------------------------- |
 | `report_path` | `String` | File system path where test reports will be generated |
 
 ### Methods
 
-| Method | Description |
-|--------|-------------|
-| `test_count()` | Returns the number of test cases to be executed |
-| `send_message(message: String)` | Sends a message through the GdUnit messaging system |
-| `find_test_by_id(id: GdUnitGUID)` | Finds a test case by its unique identifier |
+| Method                            | Description                                         |
+| --------------------------------- | --------------------------------------------------- |
+| `test_count()`                    | Returns the number of test cases to be executed     |
+| `send_message(message: String)`   | Sends a message through the GdUnit messaging system |
+| `find_test_by_id(id: GdUnitGUID)` | Finds a test case by its unique identifier          |
 
 ### Signals
 
-| Signal | Description |
-|--------|-------------|
+| Signal                           | Description                              |
+| -------------------------------- | ---------------------------------------- |
 | `test_event(event: GdUnitEvent)` | Emitted when test execution events occur |
-
-
 
 ## Practical Examples
 
@@ -252,7 +251,6 @@ func _generate_report(total_time: int) -> Dictionary:
 {% endtab %}
 {% endtabs %}
 
-
 ## Registering Hooks
 
 To use your custom hooks, you need to register them in the GdUnit4 settings:
@@ -349,14 +347,18 @@ func _on_test_event(event: GdUnitEvent) -> void:
 GdUnit4 includes built-in system hooks that cannot be removed:
 
 ### GdUnitHtmlTestReporter
+
 Extends `GdUnitBaseReporterTestSessionHook` to generate interactive HTML test reports with:
+
 - Detailed test results and execution times
 - Collapsible sections for easy navigation
 - Visual charts and statistics
 - Failure details with stack traces
 
 ### GdUnitXMLTestReporter
+
 Extends `GdUnitBaseReporterTestSessionHook` to generate JUnit-compatible XML reports for:
+
 - CI/CD pipeline integration
 - Test result aggregation tools
 - Automated build systems
@@ -365,14 +367,14 @@ Extends `GdUnitBaseReporterTestSessionHook` to generate JUnit-compatible XML rep
 
 ### Common Issues
 
-| Issue | Solution |
-|-------|----------|
-| Hook not executing | Ensure the hook is enabled in settings and the class extends `GdUnitTestSessionHook` |
-| Startup failures | Check console output for error messages; startup must return `GdUnitResult.success()` |
-| Cleanup not running | Shutdown always runs; check for errors in your shutdown implementation |
-| Priority conflicts | Adjust hook order in settings; hooks execute top-to-bottom |
-| Missing test events | Ensure you're connected to `session.test_event` signal |
-| Report path issues | Use `session.report_path.get_base_dir()` to get the directory |
+| Issue               | Solution                                                                              |
+| ------------------- | ------------------------------------------------------------------------------------- |
+| Hook not executing  | Ensure the hook is enabled in settings and the class extends `GdUnitTestSessionHook`  |
+| Startup failures    | Check console output for error messages; startup must return `GdUnitResult.success()` |
+| Cleanup not running | Shutdown always runs; check for errors in your shutdown implementation                |
+| Priority conflicts  | Adjust hook order in settings; hooks execute top-to-bottom                            |
+| Missing test events | Ensure you're connected to `session.test_event` signal                                |
+| Report path issues  | Use `session.report_path.get_base_dir()` to get the directory                         |
 
 ### Debug Tips
 

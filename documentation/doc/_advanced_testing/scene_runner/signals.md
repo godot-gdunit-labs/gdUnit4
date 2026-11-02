@@ -17,18 +17,18 @@ These functions allow you to synchronize your tests or operations with events oc
 {% tabs scene-runner-signals %}
 {% tab scene-runner-signals GdScript %}
 
-|Function|Description|
-|---|---|
-|[await_signal](#await_signal) | Waits for the specified signal to be emitted by the scene. If the signal is not emitted within the given timeout, the operation fails. |
-|[await_signal_on](#await_signal_on) | Waits for the specified signal to be emitted by a particular source node. If the signal is not emitted within the given timeout, the operation fails. |
+| Function                            | Description                                                                                                                                           |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [await_signal](#await_signal)       | Waits for the specified signal to be emitted by the scene. If the signal is not emitted within the given timeout, the operation fails.                |
+| [await_signal_on](#await_signal_on) | Waits for the specified signal to be emitted by a particular source node. If the signal is not emitted within the given timeout, the operation fails. |
 
 {% endtab %}
 {% tab scene-runner-signals C# %}
 
-|Function|Description|
-|---|---|
-|[AwaitSignal](#await_signal) | Waits for the specified signal to be emitted by the scene. If the signal is not emitted within the given timeout, the operation fails. |
-|[AwaitSignalOn](#await_signal_on) | Waits for the specified signal to be emitted by a particular source node. If the signal is not emitted within the given timeout, the operation fails. |
+| Function                          | Description                                                                                                                                           |
+| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [AwaitSignal](#await_signal)      | Waits for the specified signal to be emitted by the scene. If the signal is not emitted within the given timeout, the operation fails.                |
+| [AwaitSignalOn](#await_signal_on) | Waits for the specified signal to be emitted by a particular source node. If the signal is not emitted within the given timeout, the operation fails. |
 
 {% endtab %}
 {% endtabs %}

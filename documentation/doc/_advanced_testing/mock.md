@@ -163,12 +163,12 @@ assert_object(node1).is_instanceof(Area)
 A mock keeps track of all the function calls and their arguments. Use **verify()** on the mock to check if a certain function
 is called and how often it was called.
 
-|Function |Description |
-|---|---|
-|[verify]({{site.baseurl}}/advanced_testing/mock/#verify) | Verifies that certain behavior happened at least once or an exact number of times.|
-|[verify_no_interactions]({{site.baseurl}}/advanced_testing/mock/#verify_no_interactions) |Verifies that no interactions happened on the mock.|
-|[verify_no_more_interactions]({{site.baseurl}}/advanced_testing/mock/#verify_no_more_interactions) | Verifies that the given mock has no unverified interactions.|
-|[reset]({{site.baseurl}}/advanced_testing/mock/#reset) | Resets the saved function call counters on a mock.|
+| Function                                                                                           | Description                                                                        |
+| -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| [verify]({{site.baseurl}}/advanced_testing/mock/#verify)                                           | Verifies that certain behavior happened at least once or an exact number of times. |
+| [verify_no_interactions]({{site.baseurl}}/advanced_testing/mock/#verify_no_interactions)           | Verifies that no interactions happened on the mock.                                |
+| [verify_no_more_interactions]({{site.baseurl}}/advanced_testing/mock/#verify_no_more_interactions) | Verifies that the given mock has no unverified interactions.                       |
+| [reset]({{site.baseurl}}/advanced_testing/mock/#reset)                                             | Resets the saved function call counters on a mock.                                 |
 
 ### verify
 
@@ -224,7 +224,7 @@ mocked_node.get_name()
 verify_no_interactions(mocked_node)
 ```
 
-###  verify_no_more_interactions
+### verify_no_more_interactions
 
 This method checks if the specified mock has any unverified interactions.
 If the mock has recorded more interactions than you verified with **verify()**, an error is reported.
@@ -307,35 +307,35 @@ The available working modes are:
 
     The default return values for various types are:
 
-    |Type| Default value|
-    |---|---|
-    | TYPE_NIL | null |
-    | TYPE_BOOL | false |
-    | TYPE_INT | 0 |
-    | TYPE_REAL | 0.0 |
-    | TYPE_STRING | "" |
-    | TYPE_VECTOR2 | Vector2.ZERO |
-    | TYPE_RECT2 | Rect2() |
-    | TYPE_VECTOR3 | Vector3.ZERO |
-    | TYPE_TRANSFORM2D | Transform2D() |
-    | TYPE_PLANE | Plane() |
-    | TYPE_QUAT | Quat() |
-    | TYPE_AABB | AABB() |
-    | TYPE_BASIS | Basis() |
-    | TYPE_TRANSFORM | Transform() |
-    | TYPE_COLOR | Color() |
-    | TYPE_NODE_PATH | NodePath() |
-    | TYPE_RID | RID() |
-    | TYPE_OBJECT | null |
-    | TYPE_DICTIONARY | Dictionary() |
-    | TYPE_ARRAY | Array() |
-    | TYPE_RAW_ARRAY | PackedByteArray() |
-    | TYPE_INT_ARRAY | PackedIntArray() |
-    | TYPE_REAL_ARRAY | PackedRealArray() |
-    | TYPE_STRING_ARRAY | PackedStringArray() |
+    | Type               | Default value        |
+    | ------------------ | -------------------- |
+    | TYPE_NIL           | null                 |
+    | TYPE_BOOL          | false                |
+    | TYPE_INT           | 0                    |
+    | TYPE_REAL          | 0.0                  |
+    | TYPE_STRING        | ""                   |
+    | TYPE_VECTOR2       | Vector2.ZERO         |
+    | TYPE_RECT2         | Rect2()              |
+    | TYPE_VECTOR3       | Vector3.ZERO         |
+    | TYPE_TRANSFORM2D   | Transform2D()        |
+    | TYPE_PLANE         | Plane()              |
+    | TYPE_QUAT          | Quat()               |
+    | TYPE_AABB          | AABB()               |
+    | TYPE_BASIS         | Basis()              |
+    | TYPE_TRANSFORM     | Transform()          |
+    | TYPE_COLOR         | Color()              |
+    | TYPE_NODE_PATH     | NodePath()           |
+    | TYPE_RID           | RID()                |
+    | TYPE_OBJECT        | null                 |
+    | TYPE_DICTIONARY    | Dictionary()         |
+    | TYPE_ARRAY         | Array()              |
+    | TYPE_RAW_ARRAY     | PackedByteArray()    |
+    | TYPE_INT_ARRAY     | PackedIntArray()     |
+    | TYPE_REAL_ARRAY    | PackedRealArray()    |
+    | TYPE_STRING_ARRAY  | PackedStringArray()  |
     | TYPE_VECTOR2_ARRAY | PackedVector2Array() |
     | TYPE_VECTOR3_ARRAY | PackedVector3Array() |
-    | TYPE_COLOR_ARRAY | PackedColorArray() |
+    | TYPE_COLOR_ARRAY   | PackedColorArray()   |
 
     You can customize these default values by configuring the mock object to return a different value for unconfigured function calls using the<br>
     `when(<mock>).<function>().thenReturn(<value>)` method.

@@ -23,30 +23,30 @@ All functions listed below utilize the listed classes to simulate mouse input ev
 {% tabs scene-runner-overview %}
 {% tab scene-runner-overview GdScript %}
 
-|Function|Description|
-|---|---|
-|[set_mouse_position]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#set_mouse_position) | Sets the mouse cursor position for the current Viewport.|
-|[get_mouse_position]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#get_mouse_position) | Returns the mouse's position in this Viewport using the coordinate system of this Viewport.|
-|[simulate_mouse_move]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_move) | Simulates a mouse moved to final position. |
-|[simulate_mouse_move_relative]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_move_relative) | Simulates a mouse move to the relative coordinates (offset). |
-|[simulate_mouse_move_absolute]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_move_absolute) | Simulates a mouse move to the absolute coordinates. |
-|[simulate_mouse_button_pressed]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_button_pressed) | Simulates a mouse button pressed. |
-|[simulate_mouse_button_press]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_button_press) | Simulates a mouse button press (holding). |
-|[simulate_mouse_button_release]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_button_release) | Simulates a mouse button released. |
+| Function                                                                                                             | Description                                                                                 |
+| -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| [set_mouse_position]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#set_mouse_position)                       | Sets the mouse cursor position for the current Viewport.                                    |
+| [get_mouse_position]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#get_mouse_position)                       | Returns the mouse's position in this Viewport using the coordinate system of this Viewport. |
+| [simulate_mouse_move]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_move)                     | Simulates a mouse moved to final position.                                                  |
+| [simulate_mouse_move_relative]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_move_relative)   | Simulates a mouse move to the relative coordinates (offset).                                |
+| [simulate_mouse_move_absolute]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_move_absolute)   | Simulates a mouse move to the absolute coordinates.                                         |
+| [simulate_mouse_button_pressed]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_button_pressed) | Simulates a mouse button pressed.                                                           |
+| [simulate_mouse_button_press]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_button_press)     | Simulates a mouse button press (holding).                                                   |
+| [simulate_mouse_button_release]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_button_release) | Simulates a mouse button released.                                                          |
 
 {% endtab %}
 {% tab scene-runner-overview C# %}
 
-|Function|Description|
-|---|---|
-|[SetMousePos]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#set_mouse_pos) | Sets the mouse cursor to given position relative to the viewport.|
-|[GetMousePosition]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#get_mouse_position) | Returns the mouse's position in this Viewport using the coordinate system of this Viewport.|
-|[SimulateMouseMove]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_move) | Simulates a mouse moved to final position. |
-|[SimulateMouseMoveRelative]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_move_relative) | Simulates a mouse move to the relative coordinates (offset). |
-|[SimulateMouseMoveAbsolute]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_move_absolute) | Simulates a mouse move to the absolute coordinates. |
-|[SimulateMouseButtonPressed]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_button_pressed) | Simulates a mouse button pressed. |
-|[SimulateMouseButtonPress]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_button_press) | Simulates a mouse button press (holding). |
-|[SimulateMouseButtonRelease]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_button_release) | Simulates a mouse button released. |
+| Function                                                                                                          | Description                                                                                 |
+| ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| [SetMousePos]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#set_mouse_pos)                                | Sets the mouse cursor to given position relative to the viewport.                           |
+| [GetMousePosition]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#get_mouse_position)                      | Returns the mouse's position in this Viewport using the coordinate system of this Viewport. |
+| [SimulateMouseMove]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_move)                    | Simulates a mouse moved to final position.                                                  |
+| [SimulateMouseMoveRelative]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_move_relative)   | Simulates a mouse move to the relative coordinates (offset).                                |
+| [SimulateMouseMoveAbsolute]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_move_absolute)   | Simulates a mouse move to the absolute coordinates.                                         |
+| [SimulateMouseButtonPressed]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_button_pressed) | Simulates a mouse button pressed.                                                           |
+| [SimulateMouseButtonPress]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_button_press)     | Simulates a mouse button press (holding).                                                   |
+| [SimulateMouseButtonRelease]({{site.baseurl}}/advanced_testing/scene_runner/mouse/#simulate_mouse_button_release) | Simulates a mouse button released.                                                          |
 
 {% endtab %}
 {% endtabs %}

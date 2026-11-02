@@ -1,6 +1,6 @@
 name: Deploy-GdUnit4-GitHub-Pages
 
-on:
+on: # yamllint disable-line rule:truthy
   release:
     types:
       - published

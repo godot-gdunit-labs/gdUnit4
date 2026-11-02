@@ -22,7 +22,7 @@ jobs:
     permissions:
       actions: write
       contents: read
-#timeout-minutes: 60
+    # timeout-minutes: 60
 
     steps:
       - name: Delete outdated release workflow runs

@@ -87,22 +87,22 @@ addons/gdUnit4/
 
 ### Source Modules (`addons/gdUnit4/src/`)
 
-| Directory | Purpose |
-| --------- | ------- |
-| `asserts/` | Fluent assertion implementations (one file per type: Array, String, Signal, etc.) |
-| `core/` | Test case execution, discovery, events, attributes, versioning |
-| `doubler/` | Test double (mock/stub) code generation |
-| `mocking/` | Mock framework logic |
-| `spy/` | Spy/verification implementation |
-| `matchers/` | Argument matchers used in mock assertions |
-| `fuzzers/` | Fuzzy/parameterized test support |
-| `extractors/` | Value extraction utilities for assertions |
-| `monitor/` | Error and signal monitoring during test execution |
-| `network/` | Client/server for distributed test reporting |
-| `reporters/` | HTML and JUnit XML report generation |
-| `ui/` | Godot editor UI — Test Inspector panel |
-| `cmd/` | Command-line argument parsing (CmdArgumentParser, CmdCommandHandler) |
-| `dotnet/` | C#-specific integration layer |
+| Directory     | Purpose                                                                           |
+| ------------- | --------------------------------------------------------------------------------- |
+| `asserts/`    | Fluent assertion implementations (one file per type: Array, String, Signal, etc.) |
+| `core/`       | Test case execution, discovery, events, attributes, versioning                    |
+| `doubler/`    | Test double (mock/stub) code generation                                           |
+| `mocking/`    | Mock framework logic                                                              |
+| `spy/`        | Spy/verification implementation                                                   |
+| `matchers/`   | Argument matchers used in mock assertions                                         |
+| `fuzzers/`    | Fuzzy/parameterized test support                                                  |
+| `extractors/` | Value extraction utilities for assertions                                         |
+| `monitor/`    | Error and signal monitoring during test execution                                 |
+| `network/`    | Client/server for distributed test reporting                                      |
+| `reporters/`  | HTML and JUnit XML report generation                                              |
+| `ui/`         | Godot editor UI — Test Inspector panel                                            |
+| `cmd/`        | Command-line argument parsing (CmdArgumentParser, CmdCommandHandler)              |
+| `dotnet/`     | C#-specific integration layer                                                     |
 
 ### Test Organization
 
@@ -187,14 +187,14 @@ All documentation content must follow the shared rule `../ai-harness-core/shared
 
 Markdown source files live under `documentation/doc/` in Jekyll collections:
 
-| Collection | Path | Content |
-| ---------- | ---- | ------- |
-| `first_steps` | `doc/_first_steps/` | Installation, running tests, settings |
-| `csharp_project_setup` | `doc/_csharp_project_setup/` | C# setup, VSTest adapter |
-| `testing` | `doc/_testing/` | Test suites, test cases, all assert types |
-| `advanced_testing` | `doc/_advanced_testing/` | Mocking, spying, scene runner, signals, fuzzing, etc. |
-| `tutorials` | `doc/_tutorials/` | TDD and scene runner examples |
-| `faq` | `doc/_faq/` | CI setup, common solutions |
+| Collection             | Path                         | Content                                               |
+| ---------------------- | ---------------------------- | ----------------------------------------------------- |
+| `first_steps`          | `doc/_first_steps/`          | Installation, running tests, settings                 |
+| `csharp_project_setup` | `doc/_csharp_project_setup/` | C# setup, VSTest adapter                              |
+| `testing`              | `doc/_testing/`              | Test suites, test cases, all assert types             |
+| `advanced_testing`     | `doc/_advanced_testing/`     | Mocking, spying, scene runner, signals, fuzzing, etc. |
+| `tutorials`            | `doc/_tutorials/`            | TDD and scene runner examples                         |
+| `faq`                  | `doc/_faq/`                  | CI setup, common solutions                            |
 
 ### Building Locally
 

@@ -49,15 +49,15 @@ Match the assert to the type of the value under test. Type-specific asserts unlo
 richer failure messages and type-appropriate matchers. Fall back to `assert_that` only
 for custom objects and variants that have no dedicated assert.
 
-| Value type | Use |
-| ---------- | --- |
-| `bool` | `assert_bool(value)` |
-| `int` | `assert_int(value)` |
-| `float` | `assert_float(value)` |
-| `String` | `assert_str(value)` |
-| `Array` | `assert_array(value)` |
-| `Dictionary` | `assert_dict(value)` |
-| Custom object / variant | `assert_that(value)` |
+| Value type              | Use                   |
+| ----------------------- | --------------------- |
+| `bool`                  | `assert_bool(value)`  |
+| `int`                   | `assert_int(value)`   |
+| `float`                 | `assert_float(value)` |
+| `String`                | `assert_str(value)`   |
+| `Array`                 | `assert_array(value)` |
+| `Dictionary`            | `assert_dict(value)`  |
+| Custom object / variant | `assert_that(value)`  |
 
 Pick the assert based on the type of the value — whether that comes from an explicit
 annotation, `:=` inference, or the return type of the called function.

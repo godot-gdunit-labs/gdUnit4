@@ -22,23 +22,23 @@ The functions listed below use the following classes to simulate touchscreen inp
 {% tabs scene-runner-overview %}
 {% tab scene-runner-overview GdScript %}
 
-|Function|Description|
-|---|---|
-|[get_screen_touch_drag_position](#get_screen_touch_drag_position)| Returns the actual position of the touch drag position by given index. |
-|[simulate_screen_touch_drag](#simulate_screen_touch_drag)| Simulates a touch screen drag event to given position. |
-|[simulate_screen_touch_pressed](#simulate_screen_touch_pressed)| Simulates a screen touch is pressed. |
-|[simulate_screen_touch_press](#simulate_screen_touch_press)|Simulates a screen touch is press (holding). |
-|[simulate_screen_touch_release](#simulate_screen_touch_release)| Simulates a screen touch is released. |
-|[simulate_screen_touch_drag_relative](#simulate_screen_touch_drag_relative)| Simulates a touch screen drag&drop to the relative coordinates (offset). |
-|[simulate_screen_touch_drag_absolute](#simulate_screen_touch_drag_absolute)| Simulates a touch screen drop to the absolute coordinates. |
-|[simulate_screen_touch_drag_drop](#simulate_screen_touch_drag_drop)| Simulates a touch screen drop&drop to the absolute coordinates. |
+| Function                                                                    | Description                                                              |
+| --------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| [get_screen_touch_drag_position](#get_screen_touch_drag_position)           | Returns the actual position of the touch drag position by given index.   |
+| [simulate_screen_touch_drag](#simulate_screen_touch_drag)                   | Simulates a touch screen drag event to given position.                   |
+| [simulate_screen_touch_pressed](#simulate_screen_touch_pressed)             | Simulates a screen touch is pressed.                                     |
+| [simulate_screen_touch_press](#simulate_screen_touch_press)                 | Simulates a screen touch is press (holding).                             |
+| [simulate_screen_touch_release](#simulate_screen_touch_release)             | Simulates a screen touch is released.                                    |
+| [simulate_screen_touch_drag_relative](#simulate_screen_touch_drag_relative) | Simulates a touch screen drag&drop to the relative coordinates (offset). |
+| [simulate_screen_touch_drag_absolute](#simulate_screen_touch_drag_absolute) | Simulates a touch screen drop to the absolute coordinates.               |
+| [simulate_screen_touch_drag_drop](#simulate_screen_touch_drag_drop)         | Simulates a touch screen drop&drop to the absolute coordinates.          |
 
 {% endtab %}
 {% tab scene-runner-overview C# %}
 
-|Function|Description|
-|---|---|
-|||
+| Function | Description |
+| -------- | ----------- |
+|          |             |
 
 ### Not yet implemented
 

@@ -21,20 +21,20 @@ All functions listed below utilize the
 {% tabs scene-runner-overview %}
 {% tab scene-runner-overview GdScript %}
 
-|Function|Description|
-|---|---|
-|[simulate_action_pressed](#simulate_action_pressed) | Simulates that an action has been pressed. |
-|[simulate_action_press](#simulate_action_press) | Simulates that an action is press. |
-|[simulate_action_release](#simulate_action_release) | Simulates that an action has been released. |
+| Function                                            | Description                                 |
+| --------------------------------------------------- | ------------------------------------------- |
+| [simulate_action_pressed](#simulate_action_pressed) | Simulates that an action has been pressed.  |
+| [simulate_action_press](#simulate_action_press)     | Simulates that an action is press.          |
+| [simulate_action_release](#simulate_action_release) | Simulates that an action has been released. |
 
 {% endtab %}
 {% tab scene-runner-overview C# %}
 
-|Function|Description|
-|---|---|
-|[SimulateActionPressed](#simulate_action_pressed) | Simulates that an action has been pressed. |
-|[SimulateActionPress](#simulate_action_press) | Simulates that an action is press. |
-|[SimulateActionRelease](#simulate_action_release) | Simulates that an action has been released. |
+| Function                                          | Description                                 |
+| ------------------------------------------------- | ------------------------------------------- |
+| [SimulateActionPressed](#simulate_action_pressed) | Simulates that an action has been pressed.  |
+| [SimulateActionPress](#simulate_action_press)     | Simulates that an action is press.          |
+| [SimulateActionRelease](#simulate_action_release) | Simulates that an action has been released. |
 
 {% endtab %}
 {% endtabs %}

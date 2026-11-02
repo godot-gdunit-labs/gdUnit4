@@ -248,7 +248,6 @@ runner.Invoke("start_color_cycle");
 {% endtab %}
 {% endtabs %}
 
-
 ### scene
 
 The **scene** function gets access to current loaded and managed scene by the SceneRunner.

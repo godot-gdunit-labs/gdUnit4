@@ -21,20 +21,20 @@ All functions listed below utilize the
 {% tabs scene-runner-overview %}
 {% tab scene-runner-overview GdScript %}
 
-|Function|Description|
-|---|---|
-|[simulate_key_pressed](#simulate_key_pressed) | Simulates that a key has been pressed. |
-|[simulate_key_press](#simulate_key_press) | Simulates that a key is pressed. |
-|[simulate_key_release](#simulate_key_release) | Simulates that a key has been released. |
+| Function                                      | Description                             |
+| --------------------------------------------- | --------------------------------------- |
+| [simulate_key_pressed](#simulate_key_pressed) | Simulates that a key has been pressed.  |
+| [simulate_key_press](#simulate_key_press)     | Simulates that a key is pressed.        |
+| [simulate_key_release](#simulate_key_release) | Simulates that a key has been released. |
 
 {% endtab %}
 {% tab scene-runner-overview C# %}
 
-|Function|Description|
-|---|---|
-|[SimulateKeyPressed](#simulate_key_pressed) | Simulates that a key has been pressed. |
-|[SimulateKeyPress](#simulate_key_press) | Simulates that a key is pressed. |
-|[SimulateKeyRelease](#simulate_key_release) | Simulates that a key has been released. |
+| Function                                    | Description                             |
+| ------------------------------------------- | --------------------------------------- |
+| [SimulateKeyPressed](#simulate_key_pressed) | Simulates that a key has been pressed.  |
+| [SimulateKeyPress](#simulate_key_press)     | Simulates that a key is pressed.        |
+| [SimulateKeyRelease](#simulate_key_release) | Simulates that a key has been released. |
 
 {% endtab %}
 {% endtabs %}

@@ -123,20 +123,20 @@ This section provides guidance on how to process and render your scene during te
 {% tabs scene-runner-processing %}
 {% tab scene-runner-processing GdScript %}
 
-|Function|Description|
-|---|---|
-|[simulate_frames](#simulate_frames) | Simulates scene processing for a certain number of frames (respecting time factor).|
-|[set_time_factor](#set_time_factor) | Sets how fast or slow the scene simulation is processed (clock ticks versus the real).|
-|[move_window_to_foreground](#move_window_to_foreground) | Restores the scene window to a windowed mode and brings it to the foreground.|
+| Function                                                | Description                                                                            |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| [simulate_frames](#simulate_frames)                     | Simulates scene processing for a certain number of frames (respecting time factor).    |
+| [set_time_factor](#set_time_factor)                     | Sets how fast or slow the scene simulation is processed (clock ticks versus the real). |
+| [move_window_to_foreground](#move_window_to_foreground) | Restores the scene window to a windowed mode and brings it to the foreground.          |
 
 {% endtab %}
 {% tab scene-runner-processing C# %}
 
-|Function|Description|
-|---|---|
-|[SimulateFrames](#simulate_frames) | Simulates scene processing for a certain number of frames (respecting time factor).|
-|[SetTimeFactor](#set_time_factor) | Sets how fast or slow the scene simulation is processed (clock ticks versus the real).|
-|[MoveWindowToForeground](#move_window_to_foreground) | Restores the scene window to a windowed mode and brings it to the foreground.|
+| Function                                             | Description                                                                            |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| [SimulateFrames](#simulate_frames)                   | Simulates scene processing for a certain number of frames (respecting time factor).    |
+| [SetTimeFactor](#set_time_factor)                    | Sets how fast or slow the scene simulation is processed (clock ticks versus the real). |
+| [MoveWindowToForeground](#move_window_to_foreground) | Restores the scene window to a windowed mode and brings it to the foreground.          |
 
 {% endtab %}
 {% endtabs %}

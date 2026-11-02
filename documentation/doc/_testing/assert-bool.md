@@ -12,23 +12,23 @@ An assertion tool to verify boolean values.
 {% tab assert-bool GdScript %}
 **GdUnitBoolAssert**<br>
 
-|Function|Description|
-|--- | --- |
-|[is_true]({{site.baseurl}}/testing/assert-bool/#is_true)| Verifies that the current value is true.|
-|[is_false]({{site.baseurl}}/testing/assert-bool/#is_false)| Verifies that the current value is false.|
-|[is_equal]({{site.baseurl}}/testing/assert-bool/#is_equal)| Verifies that the current value is equal to the given one.|
-|[is_not_equal]({{site.baseurl}}/testing/assert-bool/#is_not_equal)| Verifies that the current value is not equal to the given one.|
+| Function                                                           | Description                                                    |
+| ------------------------------------------------------------------ | -------------------------------------------------------------- |
+| [is_true]({{site.baseurl}}/testing/assert-bool/#is_true)           | Verifies that the current value is true.                       |
+| [is_false]({{site.baseurl}}/testing/assert-bool/#is_false)         | Verifies that the current value is false.                      |
+| [is_equal]({{site.baseurl}}/testing/assert-bool/#is_equal)         | Verifies that the current value is equal to the given one.     |
+| [is_not_equal]({{site.baseurl}}/testing/assert-bool/#is_not_equal) | Verifies that the current value is not equal to the given one. |
 
 {% endtab %}
 {% tab assert-bool C# %}
 **IBoolAssert**<br>
 
-|Function|Description|
-|--- | --- |
-|[IsTrue]({{site.baseurl}}/testing/assert-bool/#is_true)| Verifies that the current value is true.|
-|[IsFalse]({{site.baseurl}}/testing/assert-bool/#is_false)| Verifies that the current value is false.|
-|[IsEqual]({{site.baseurl}}/testing/assert-bool/#is_equal)| Verifies that the current value is equal to the given one.|
-|[IsNotEqual]({{site.baseurl}}/testing/assert-bool/#is_not_equal)| Verifies that the current value is not equal to the given one.|
+| Function                                                         | Description                                                    |
+| ---------------------------------------------------------------- | -------------------------------------------------------------- |
+| [IsTrue]({{site.baseurl}}/testing/assert-bool/#is_true)          | Verifies that the current value is true.                       |
+| [IsFalse]({{site.baseurl}}/testing/assert-bool/#is_false)        | Verifies that the current value is false.                      |
+| [IsEqual]({{site.baseurl}}/testing/assert-bool/#is_equal)        | Verifies that the current value is equal to the given one.     |
+| [IsNotEqual]({{site.baseurl}}/testing/assert-bool/#is_not_equal) | Verifies that the current value is not equal to the given one. |
 
 {% endtab %}
 {% endtabs %}

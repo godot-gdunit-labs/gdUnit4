@@ -15,15 +15,15 @@ The default timeout of 2s can be overridden by wait_until(<time in ms>)
 {% tab assert-function-overview GdScript %}
 **GdUnitFuncAssert**<br>
 
-|Function|Description|
-|--- | --- |
-|[is_null]({{site.baseurl}}/testing/assert-function/#is_null) | Verifies that the current value is null.|
-|[is_not_null]({{site.baseurl}}/testing/assert-function/#is_not_null) | Verifies that the current value is not null.|
-|[is_equal]({{site.baseurl}}/testing/assert-function/#is_equal) | Verifies that the current value is equal to expected one.|
-|[is_not_equal]({{site.baseurl}}/testing/assert-function/#is_not_equal) | Verifies that the current value is not equal to expected one.|
-|[is_true]({{site.baseurl}}/testing/assert-function/#is_true) | Verifies that the current value is true.|
-|[is_false]({{site.baseurl}}/testing/assert-function/#is_false) | Verifies that the current value is false.|
-|[wait_until]({{site.baseurl}}/testing/assert-function/#wait_until) | Sets the timeout in ms to wait the function returnd the expected value.|
+| Function                                                               | Description                                                             |
+| ---------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| [is_null]({{site.baseurl}}/testing/assert-function/#is_null)           | Verifies that the current value is null.                                |
+| [is_not_null]({{site.baseurl}}/testing/assert-function/#is_not_null)   | Verifies that the current value is not null.                            |
+| [is_equal]({{site.baseurl}}/testing/assert-function/#is_equal)         | Verifies that the current value is equal to expected one.               |
+| [is_not_equal]({{site.baseurl}}/testing/assert-function/#is_not_equal) | Verifies that the current value is not equal to expected one.           |
+| [is_true]({{site.baseurl}}/testing/assert-function/#is_true)           | Verifies that the current value is true.                                |
+| [is_false]({{site.baseurl}}/testing/assert-function/#is_false)         | Verifies that the current value is false.                               |
+| [wait_until]({{site.baseurl}}/testing/assert-function/#wait_until)     | Sets the timeout in ms to wait the function returnd the expected value. |
 
 {% endtab %}
 

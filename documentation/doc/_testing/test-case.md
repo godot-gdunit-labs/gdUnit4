@@ -16,7 +16,8 @@ The function name must start with the prefix **test_** to be identified as a tes
 but it should correspond to the function being tested. Test *[arguments]* are optional and will be explained later in the advanced testing section.<br>
 When naming your tests, use a descriptive name that accurately represents what the test does.
 
-In addition to containing multiple test cases, a TestSuite can also contain test setup and teardown [(**hooks**)]({{site.baseurl}}/testing/hooks/#gdunit-hooks) that are executed before and after each test case, as well as before and after the entire TestSuite.
+In addition to containing multiple test cases, a TestSuite can also contain test setup and teardown [(**hooks**)]({{site.baseurl}}/testing/hooks/#gdunit-hooks)
+that are executed before and after each test case, as well as before and after the entire TestSuite.
 This allows you to control the test environment and ensure that tests are executed in a consistent and repeatable manner.
 
 - [TestCase Hooks]({{site.baseurl}}/testing/hooks/#testcase-hooks)
@@ -99,11 +100,11 @@ content="To avoid warnings about unused arguments, use the underscore prefix `_`
 {% endtab %}
 {% tab faq-test-case-attr C# %}
 
-| Parameter | Description |
-|---| ---|
-| Timeout | Defines a custom timeout in milliseconds. By default, a TestCase will be interrupted after 5 minutes if the tests are not finished. |
-| TestName | Defines a custom TestCase name. |
-| Seed | Defines a seed to provide test data. |
+| Parameter | Description                                                                                                                         |
+| --------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Timeout   | Defines a custom timeout in milliseconds. By default, a TestCase will be interrupted after 5 minutes if the tests are not finished. |
+| TestName  | Defines a custom TestCase name.                                                                                                     |
+| Seed      | Defines a seed to provide test data.                                                                                                |
 
 {% endtab %}
 {% endtabs %}
@@ -164,12 +165,12 @@ and get clearer failure reports.
 By default, GdUnit4 will continue executing all assertions in a test case even after one fails.
 While this can provide comprehensive feedback about all failing conditions, it can also lead to:
 
-* **Cascading failures**: Later assertions may fail because earlier ones didn't establish the expected state
-* **Misleading error messages**: Subsequent failures might not represent real issues but rather consequences of the first failure
-* **Debugger interruptions**: In debug mode, accessing properties on null objects will cause the debugger to break with runtime errors,
+- **Cascading failures**: Later assertions may fail because earlier ones didn't establish the expected state
+- **Misleading error messages**: Subsequent failures might not represent real issues but rather consequences of the first failure
+- **Debugger interruptions**: In debug mode, accessing properties on null objects will cause the debugger to break with runtime errors,
     stopping test execution unexpectedly
-* **Longer execution time**: Unnecessary processing when the test has already failed
-* **Cluttered output**: Multiple failure messages when only the first one is relevant
+- **Longer execution time**: Unnecessary processing when the test has already failed
+- **Cluttered output**: Multiple failure messages when only the first one is relevant
 
 ### Example Without Fail Fast
 

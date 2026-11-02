@@ -21,22 +21,22 @@ before the action under test runs.
 {% tab assert-signal-overview GdScript %}
 **GdUnitSignalAssert**<br>
 
-|Function|Description|
-|--- | --- |
-|[is_emitted]({{site.baseurl}}/testing/assert-signal/#is_emitted) | Verifies that given signal is emitted until waiting time.|
-|[is_not_emitted]({{site.baseurl}}/testing/assert-signal/#is_not_emitted) | Verifies that given signal is NOT emitted until waiting time.|
-|[is_signal_exists]({{site.baseurl}}/testing/assert-signal/#is_signal_exists) | Verifies if the signal exists on the emitter.|
-|[wait_until]({{site.baseurl}}/testing/assert-signal/#wait_until) | Sets the assert signal timeout in ms.|
+| Function                                                                     | Description                                                   |
+| ---------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| [is_emitted]({{site.baseurl}}/testing/assert-signal/#is_emitted)             | Verifies that given signal is emitted until waiting time.     |
+| [is_not_emitted]({{site.baseurl}}/testing/assert-signal/#is_not_emitted)     | Verifies that given signal is NOT emitted until waiting time. |
+| [is_signal_exists]({{site.baseurl}}/testing/assert-signal/#is_signal_exists) | Verifies if the signal exists on the emitter.                 |
+| [wait_until]({{site.baseurl}}/testing/assert-signal/#wait_until)             | Sets the assert signal timeout in ms.                         |
 
 {% endtab %}
 {% tab assert-signal-overview C# %}
 **ISignalAssert**<br>
 
-|Function|Description|
-|--- | --- |
-|[IsEmitted]({{site.baseurl}}/testing/assert-signal/#is_emitted) | Verifies that given signal is emitted until waiting time.|
-|[IsNotEmitted]({{site.baseurl}}/testing/assert-signal/#is_not_emitted) | Verifies that given signal is NOT emitted until waiting time.|
-|[IsSignalExists]({{site.baseurl}}/testing/assert-signal/#is_signal_exists) | Verifies if the signal exists on the emitter.|
+| Function                                                                   | Description                                                   |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| [IsEmitted]({{site.baseurl}}/testing/assert-signal/#is_emitted)            | Verifies that given signal is emitted until waiting time.     |
+| [IsNotEmitted]({{site.baseurl}}/testing/assert-signal/#is_not_emitted)     | Verifies that given signal is NOT emitted until waiting time. |
+| [IsSignalExists]({{site.baseurl}}/testing/assert-signal/#is_signal_exists) | Verifies if the signal exists on the emitter.                 |
 
 {% endtab %}
 {% endtabs %}

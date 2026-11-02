@@ -12,45 +12,45 @@ An assertion tool to verify dictionaries.
 {% tab assert-dict-overview GdScript %}
 **GdUnitDictionaryAssert**<br>
 
-|Function|Description|
-|--- | --- |
-|[is_null]({{site.baseurl}}/testing/assert-dictionary/#is_null) | Verifies that the current value is null.|
-|[is_not_null]({{site.baseurl}}/testing/assert-dictionary/#is_not_null) | Verifies that the current value is not null.|
-|[is_equal]({{site.baseurl}}/testing/assert-dictionary/#is_equal) | Verifies that the current dictionary is equal to the given one, ignoring order.|
-|[is_not_equal]({{site.baseurl}}/testing/assert-dictionary/#is_not_equal) | Verifies that the current dictionary is not equal to the given one, ignoring order.|
-|[is_same]({{site.baseurl}}/testing/assert-dictionary/#is_same) | Verifies that the current dictionary is the same.|
-|[is_not_same]({{site.baseurl}}/testing/assert-dictionary/#is_not_same) | Verifies that the current dictionary is NOT the same.|
-|[is_empty]({{site.baseurl}}/testing/assert-dictionary/#is_empty) | Verifies that the current dictionary is empty, it has a size of 0.|
-|[is_not_empty]({{site.baseurl}}/testing/assert-dictionary/#is_not_empty) | Verifies that the current dictionary is not empty, it has a size of minimum 1.|
-|[has_size]({{site.baseurl}}/testing/assert-dictionary/#has_size) | Verifies that the current dictionary has a size of given value.|
-|[contains_keys]({{site.baseurl}}/testing/assert-dictionary/#contains_keys) | Verifies that the current dictionary contains the given keys.|
-|[contains_key_value]({{site.baseurl}}/testing/assert-dictionary/#contains_key_value) | Verifies that the current dictionary contains the given key and value.|
-|[not_contains_keys]({{site.baseurl}}/testing/assert-dictionary/#not_contains_keys) | Verifies that the current dictionary not contains the given keys.|
-|[contains_same_keys]({{site.baseurl}}/testing/assert-dictionary/#contains_same_keys) | Verifies that the current dictionary contains the given keys.|
-|[contains_same_key_value]({{site.baseurl}}/testing/assert-dictionary/#contains_same_key_value) | Verifies that the current dictionary contains the given key and value.|
-|[not_contains_same_keys]({{site.baseurl}}/testing/assert-dictionary/#not_contains_same_keys) | Verifies that the current dictionary not contains the given keys.|
+| Function                                                                                       | Description                                                                         |
+| ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| [is_null]({{site.baseurl}}/testing/assert-dictionary/#is_null)                                 | Verifies that the current value is null.                                            |
+| [is_not_null]({{site.baseurl}}/testing/assert-dictionary/#is_not_null)                         | Verifies that the current value is not null.                                        |
+| [is_equal]({{site.baseurl}}/testing/assert-dictionary/#is_equal)                               | Verifies that the current dictionary is equal to the given one, ignoring order.     |
+| [is_not_equal]({{site.baseurl}}/testing/assert-dictionary/#is_not_equal)                       | Verifies that the current dictionary is not equal to the given one, ignoring order. |
+| [is_same]({{site.baseurl}}/testing/assert-dictionary/#is_same)                                 | Verifies that the current dictionary is the same.                                   |
+| [is_not_same]({{site.baseurl}}/testing/assert-dictionary/#is_not_same)                         | Verifies that the current dictionary is NOT the same.                               |
+| [is_empty]({{site.baseurl}}/testing/assert-dictionary/#is_empty)                               | Verifies that the current dictionary is empty, it has a size of 0.                  |
+| [is_not_empty]({{site.baseurl}}/testing/assert-dictionary/#is_not_empty)                       | Verifies that the current dictionary is not empty, it has a size of minimum 1.      |
+| [has_size]({{site.baseurl}}/testing/assert-dictionary/#has_size)                               | Verifies that the current dictionary has a size of given value.                     |
+| [contains_keys]({{site.baseurl}}/testing/assert-dictionary/#contains_keys)                     | Verifies that the current dictionary contains the given keys.                       |
+| [contains_key_value]({{site.baseurl}}/testing/assert-dictionary/#contains_key_value)           | Verifies that the current dictionary contains the given key and value.              |
+| [not_contains_keys]({{site.baseurl}}/testing/assert-dictionary/#not_contains_keys)             | Verifies that the current dictionary not contains the given keys.                   |
+| [contains_same_keys]({{site.baseurl}}/testing/assert-dictionary/#contains_same_keys)           | Verifies that the current dictionary contains the given keys.                       |
+| [contains_same_key_value]({{site.baseurl}}/testing/assert-dictionary/#contains_same_key_value) | Verifies that the current dictionary contains the given key and value.              |
+| [not_contains_same_keys]({{site.baseurl}}/testing/assert-dictionary/#not_contains_same_keys)   | Verifies that the current dictionary not contains the given keys.                   |
 
 {% endtab %}
 {% tab assert-dict-overview C# %}
 **IDictionaryAssert**<br>
 
-|Function|Description|
-|--- | --- |
-|[IsNull]({{site.baseurl}}/testing/assert-dictionary/#is_null) | Verifies that the current value is null.|
-|[IsNotNull]({{site.baseurl}}/testing/assert-dictionary/#is_not_null) | Verifies that the current value is not null.|
-|[IsEqual]({{site.baseurl}}/testing/assert-dictionary/#is_equal) | Verifies that the current dictionary is equal to the given one, ignoring order.|
-|[IsNotEqual]({{site.baseurl}}/testing/assert-dictionary/#is_not_equal) | Verifies that the current dictionary is not equal to the given one, ignoring order.|
-|[IsSame]({{site.baseurl}}/testing/assert-dictionary/#is_same) | Verifies that the current dictionary is the same.|
-|[IsNotSame]({{site.baseurl}}/testing/assert-dictionary/#is_not_same) | Verifies that the current dictionary is NOT the same.|
-|[IsEmpty]({{site.baseurl}}/testing/assert-dictionary/#is_empty) | Verifies that the current dictionary is empty, it has a size of 0.|
-|[IsNotEmpty]({{site.baseurl}}/testing/assert-dictionary/#is_not_empty) | Verifies that the current dictionary is not empty, it has a size of minimum 1.|
-|[HasSize]({{site.baseurl}}/testing/assert-dictionary/#has_size) | Verifies that the current dictionary has a size of given value.|
-|[ContainsKeys]({{site.baseurl}}/testing/assert-dictionary/#contains_keys) | Verifies that the current dictionary contains the given keys.|
-|[ContainsKeyValue]({{site.baseurl}}/testing/assert-dictionary/#contains_key_value) | Verifies that the current dictionary contains the given key and value.|
-|[NotContainsKeys]({{site.baseurl}}/testing/assert-dictionary/#contains_not_keys) | Verifies that the current dictionary not contains the given keys.|
-|[ContainsSameKeys]({{site.baseurl}}/testing/assert-dictionary/#contains_same_keys) | Verifies that the current dictionary contains the given keys.|
-|[ContainsSameKeyValue]({{site.baseurl}}/testing/assert-dictionary/#contains_same_key_value) | Verifies that the current dictionary contains the given key and value.|
-|[NotContainsSameKeys]({{site.baseurl}}/testing/assert-dictionary/#not_contains_same_keys) | Verifies that the current dictionary not contains the given keys.|
+| Function                                                                                    | Description                                                                         |
+| ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| [IsNull]({{site.baseurl}}/testing/assert-dictionary/#is_null)                               | Verifies that the current value is null.                                            |
+| [IsNotNull]({{site.baseurl}}/testing/assert-dictionary/#is_not_null)                        | Verifies that the current value is not null.                                        |
+| [IsEqual]({{site.baseurl}}/testing/assert-dictionary/#is_equal)                             | Verifies that the current dictionary is equal to the given one, ignoring order.     |
+| [IsNotEqual]({{site.baseurl}}/testing/assert-dictionary/#is_not_equal)                      | Verifies that the current dictionary is not equal to the given one, ignoring order. |
+| [IsSame]({{site.baseurl}}/testing/assert-dictionary/#is_same)                               | Verifies that the current dictionary is the same.                                   |
+| [IsNotSame]({{site.baseurl}}/testing/assert-dictionary/#is_not_same)                        | Verifies that the current dictionary is NOT the same.                               |
+| [IsEmpty]({{site.baseurl}}/testing/assert-dictionary/#is_empty)                             | Verifies that the current dictionary is empty, it has a size of 0.                  |
+| [IsNotEmpty]({{site.baseurl}}/testing/assert-dictionary/#is_not_empty)                      | Verifies that the current dictionary is not empty, it has a size of minimum 1.      |
+| [HasSize]({{site.baseurl}}/testing/assert-dictionary/#has_size)                             | Verifies that the current dictionary has a size of given value.                     |
+| [ContainsKeys]({{site.baseurl}}/testing/assert-dictionary/#contains_keys)                   | Verifies that the current dictionary contains the given keys.                       |
+| [ContainsKeyValue]({{site.baseurl}}/testing/assert-dictionary/#contains_key_value)          | Verifies that the current dictionary contains the given key and value.              |
+| [NotContainsKeys]({{site.baseurl}}/testing/assert-dictionary/#contains_not_keys)            | Verifies that the current dictionary not contains the given keys.                   |
+| [ContainsSameKeys]({{site.baseurl}}/testing/assert-dictionary/#contains_same_keys)          | Verifies that the current dictionary contains the given keys.                       |
+| [ContainsSameKeyValue]({{site.baseurl}}/testing/assert-dictionary/#contains_same_key_value) | Verifies that the current dictionary contains the given key and value.              |
+| [NotContainsSameKeys]({{site.baseurl}}/testing/assert-dictionary/#not_contains_same_keys)   | Verifies that the current dictionary not contains the given keys.                   |
 
 {% endtab %}
 {% endtabs %}

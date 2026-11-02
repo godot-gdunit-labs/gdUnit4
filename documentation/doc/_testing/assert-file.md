@@ -12,11 +12,11 @@ An assertion tool to verify file resources and their properties.
 {% tab assert-file-overview GdScript %}
 **GdUnitFileAssert**<br>
 
-| Function               |Description|
-|------------------------| --- |
-| [is_file]({{site.baseurl}}/testing/assert-file/#is_file) | Verifies the given resource is a file |
-| [exists]({{site.baseurl}}/testing/assert-file/#exists) | Verifies the given resource exists |
-| [is_script]({{site.baseurl}}/testing/assert-file/#is_script) | Verifies the given resource is a gd script |
+| Function                                                                   | Description                                      |
+| -------------------------------------------------------------------------- | ------------------------------------------------ |
+| [is_file]({{site.baseurl}}/testing/assert-file/#is_file)                   | Verifies the given resource is a file            |
+| [exists]({{site.baseurl}}/testing/assert-file/#exists)                     | Verifies the given resource exists               |
+| [is_script]({{site.baseurl}}/testing/assert-file/#is_script)               | Verifies the given resource is a gd script       |
 | [contains_exactly]({{site.baseurl}}/testing/assert-file/#contains_exactly) | Verifies the given resource contains the content |
 
 {% endtab %}

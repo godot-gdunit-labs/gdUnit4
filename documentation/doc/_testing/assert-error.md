@@ -31,21 +31,21 @@ In **C#**, GdUnit4Net provides advanced exception handling capabilities that can
 {% tab assert-error-overview GdScript %}
 **GdUnitGodotErrorAssert**<br>
 
-|Function|Description|
-|--- | --- |
-|[is_success]({{site.baseurl}}/testing/assert-error/#testing-for-success)| Verifies if the executed code runs without any runtime errors.|
-|[is_runtime_error]({{site.baseurl}}/testing/assert-error/#testing-for-assert-failed)| Verifies if the executed code runs into a runtime error.|
-|[is_push_warning]({{site.baseurl}}/testing/assert-error/#testing-for-push-warnings-and-push-errors)| Verifies if the executed code has a push_warning() used.|
-|[is_push_error]({{site.baseurl}}/testing/assert-error/#testing-for-push-warnings-and-push-errors)| Verifies if the executed code has a push_error() used.|
+| Function                                                                                            | Description                                                    |
+| --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| [is_success]({{site.baseurl}}/testing/assert-error/#testing-for-success)                            | Verifies if the executed code runs without any runtime errors. |
+| [is_runtime_error]({{site.baseurl}}/testing/assert-error/#testing-for-assert-failed)                | Verifies if the executed code runs into a runtime error.       |
+| [is_push_warning]({{site.baseurl}}/testing/assert-error/#testing-for-push-warnings-and-push-errors) | Verifies if the executed code has a push_warning() used.       |
+| [is_push_error]({{site.baseurl}}/testing/assert-error/#testing-for-push-warnings-and-push-errors)   | Verifies if the executed code has a push_error() used.         |
 
 {% endtab %}
 {% tab assert-error-overview C# %}
 **Exception Testing Attributes**<br>
 
-|Attribute|Description|
-|--- | --- |
-|[ThrowsException]({{site.baseurl}}/testing/assert-error/#c-exception-testing-with-throwsexception)| Verifies that a test method throws a specific exception type with optional message and location verification.|
-|[GodotExceptionMonitor]({{site.baseurl}}/testing/assert-error/#godot-exception-monitoring)| Monitors exceptions that occur during Godot's main thread execution, capturing exceptions normally hidden by Godot's runtime.|
+| Attribute                                                                                          | Description                                                                                                                   |
+| -------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| [ThrowsException]({{site.baseurl}}/testing/assert-error/#c-exception-testing-with-throwsexception) | Verifies that a test method throws a specific exception type with optional message and location verification.                 |
+| [GodotExceptionMonitor]({{site.baseurl}}/testing/assert-error/#godot-exception-monitoring)         | Monitors exceptions that occur during Godot's main thread execution, capturing exceptions normally hidden by Godot's runtime. |
 
 {% endtab %}
 {% endtabs %}
@@ -299,15 +299,15 @@ public void TestPushErrorHandling()
 
 ## Key Differences Between GdScript and CSharp
 
-| Feature | GdScript | C# |
-|---------|----------|-----|
-| Basic Error Testing | `assert_error()` function | `[ThrowsException]` attribute |
-| Exception Type Verification | ✅ | ✅ |
-| Message Verification | ✅ | ✅ |
-| Location Verification | ❌ | ✅ |
-| Godot Exception Monitoring | Limited | Advanced with `[GodotExceptionMonitor]` |
-| Multiple Exception Types | ❌ | ✅ |
-| Timeout Exception Testing | ❌ | ✅ |
+| Feature                     | GdScript                  | C#                                      |
+| --------------------------- | ------------------------- | --------------------------------------- |
+| Basic Error Testing         | `assert_error()` function | `[ThrowsException]` attribute           |
+| Exception Type Verification | ✅                        | ✅                                      |
+| Message Verification        | ✅                        | ✅                                      |
+| Location Verification       | ❌                        | ✅                                      |
+| Godot Exception Monitoring  | Limited                   | Advanced with `[GodotExceptionMonitor]` |
+| Multiple Exception Types    | ❌                        | ✅                                      |
+| Timeout Exception Testing   | ❌                        | ✅                                      |
 
 ⚠️ **Important**: Godot Exception Monitoring with `[GodotExceptionMonitor]` is only available in the C# API and provides capabilities
 not available in GdScript testing.

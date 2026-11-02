@@ -12,32 +12,32 @@ An assertion tool to verify Objects.
 {% tab assert-obj-overview GdScript %}
 **GdUnitObjectAssert**<br>
 
-|Function|Description|
-|--- | --- |
-|[is_null]({{site.baseurl}}/testing/assert-object/#is_null) | Verifies that the current value is null.|
-|[is_not_null]({{site.baseurl}}/testing/assert-object/#is_not_null) | Verifies that the current value is not null.|
-|[is_equal]({{site.baseurl}}/testing/assert-object/#is_equal) | Verifies that the current value is equal to expected one.|
-|[is_not_equal]({{site.baseurl}}/testing/assert-object/#is_not_equal) | Verifies that the current value is not equal to expected one.|
-|[is_same]({{site.baseurl}}/testing/assert-object/#is_same) | Verifies that the current value is the same as the given one.|
-|[is_not_same]({{site.baseurl}}/testing/assert-object/#is_not_same) | Verifies that the current value is not the same as the given one.|
-|[is_instanceof]({{site.baseurl}}/testing/assert-object/#is_instanceof) | Verifies that the current value is an instance of the given type.|
-|[is_not_instanceof]({{site.baseurl}}/testing/assert-object/#is_not_instanceof) | Verifies that the current value is not an instance of the given type.|
-|[is_valid]({{site.baseurl}}/testing/assert-object/#is_valid) | Verifies that the current value is a valid, unfreed instance.|
+| Function                                                                       | Description                                                           |
+| ------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| [is_null]({{site.baseurl}}/testing/assert-object/#is_null)                     | Verifies that the current value is null.                              |
+| [is_not_null]({{site.baseurl}}/testing/assert-object/#is_not_null)             | Verifies that the current value is not null.                          |
+| [is_equal]({{site.baseurl}}/testing/assert-object/#is_equal)                   | Verifies that the current value is equal to expected one.             |
+| [is_not_equal]({{site.baseurl}}/testing/assert-object/#is_not_equal)           | Verifies that the current value is not equal to expected one.         |
+| [is_same]({{site.baseurl}}/testing/assert-object/#is_same)                     | Verifies that the current value is the same as the given one.         |
+| [is_not_same]({{site.baseurl}}/testing/assert-object/#is_not_same)             | Verifies that the current value is not the same as the given one.     |
+| [is_instanceof]({{site.baseurl}}/testing/assert-object/#is_instanceof)         | Verifies that the current value is an instance of the given type.     |
+| [is_not_instanceof]({{site.baseurl}}/testing/assert-object/#is_not_instanceof) | Verifies that the current value is not an instance of the given type. |
+| [is_valid]({{site.baseurl}}/testing/assert-object/#is_valid)                   | Verifies that the current value is a valid, unfreed instance.         |
 
 {% endtab %}
 {% tab assert-obj-overview C# %}
 **IObjectAssert**<br>
 
-|Function|Description|
-|--- | --- |
-|[IsNull]({{site.baseurl}}/testing/assert-object/#is_null) | Verifies that the current value is null.|
-|[IsNotNull]({{site.baseurl}}/testing/assert-object/#is_not_null) | Verifies that the current value is not null.|
-|[IsEqual]({{site.baseurl}}/testing/assert-object/#is_equal) | Verifies that the current value is equal to expected one.|
-|[IsNotRqual]({{site.baseurl}}/testing/assert-object/#is_not_equal) | Verifies that the current value is not equal to expected one.|
-|[IsSame]({{site.baseurl}}/testing/assert-object/#is_same) | Verifies that the current value is the same as the given one.|
-|[IsNotSame]({{site.baseurl}}/testing/assert-object/#is_not_same) | Verifies that the current value is not the same as the given one.|
-|[IsInstanceOf]({{site.baseurl}}/testing/assert-object/#is_instanceof) | Verifies that the current value is an instance of the given type.|
-|[IsNotInstanceOf]({{site.baseurl}}/testing/assert-object/#is_not_instanceof) | Verifies that the current value is not an instance of the given type.|
+| Function                                                                     | Description                                                           |
+| ---------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| [IsNull]({{site.baseurl}}/testing/assert-object/#is_null)                    | Verifies that the current value is null.                              |
+| [IsNotNull]({{site.baseurl}}/testing/assert-object/#is_not_null)             | Verifies that the current value is not null.                          |
+| [IsEqual]({{site.baseurl}}/testing/assert-object/#is_equal)                  | Verifies that the current value is equal to expected one.             |
+| [IsNotRqual]({{site.baseurl}}/testing/assert-object/#is_not_equal)           | Verifies that the current value is not equal to expected one.         |
+| [IsSame]({{site.baseurl}}/testing/assert-object/#is_same)                    | Verifies that the current value is the same as the given one.         |
+| [IsNotSame]({{site.baseurl}}/testing/assert-object/#is_not_same)             | Verifies that the current value is not the same as the given one.     |
+| [IsInstanceOf]({{site.baseurl}}/testing/assert-object/#is_instanceof)        | Verifies that the current value is an instance of the given type.     |
+| [IsNotInstanceOf]({{site.baseurl}}/testing/assert-object/#is_not_instanceof) | Verifies that the current value is not an instance of the given type. |
 
 {% endtab %}
 {% endtabs %}

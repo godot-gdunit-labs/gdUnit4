@@ -291,10 +291,10 @@ The generic assert, assert_that (in GdScript) and AssertThat (in C#), can be use
 of GdUnit Assert.<br>
 However, it is recommended to use the type-safe asserts whenever possible to ensure type safety in your tests.
 
-|Assert|Type|
-|--|--|
-|[assert_that]({{site.baseurl}}/testing/assert-that/)| auto typing (not type-safe) |
-|[AssertThat]({{site.baseurl}}/testing/assert-that/)| auto typing (type-safe) |
+| Assert                                               | Type                        |
+| ---------------------------------------------------- | --------------------------- |
+| [assert_that]({{site.baseurl}}/testing/assert-that/) | auto typing (not type-safe) |
+| [AssertThat]({{site.baseurl}}/testing/assert-that/)  | auto typing (type-safe)     |
 
 ---
 
@@ -303,21 +303,21 @@ However, it is recommended to use the type-safe asserts whenever possible to ens
 {% tabs assert-basic-types %}
 {% tab assert-basic-types GdScript %}
 
-|Assert|Type|
-|--|--|
-|[assert_str]({{site.baseurl}}/testing/assert-string/) | string |
-|[assert_bool]({{site.baseurl}}/testing/assert-bool/) | bool |
-|[assert_int]({{site.baseurl}}/testing/assert-integer/) | int |
-|[assert_float]({{site.baseurl}}/testing/assert-float/) | float |
+| Assert                                                 | Type   |
+| ------------------------------------------------------ | ------ |
+| [assert_str]({{site.baseurl}}/testing/assert-string/)  | string |
+| [assert_bool]({{site.baseurl}}/testing/assert-bool/)   | bool   |
+| [assert_int]({{site.baseurl}}/testing/assert-integer/) | int    |
+| [assert_float]({{site.baseurl}}/testing/assert-float/) | float  |
 
 {% endtab %}
 {% tab assert-basic-types C# %}
 
-|Assert|Type|
-|--|--|
-|[IStringAssert]({{site.baseurl}}/testing/assert-string/) | string |
-|[IBoolAssert]({{site.baseurl}}/testing/assert-bool/) | bool |
-|[INumberAssert]({{site.baseurl}}/testing/assert-number/) | number (sbyte,byte,short,ushort,int,uint,long,ulong,float,double,decimal) |
+| Assert                                                   | Type                                                                      |
+| -------------------------------------------------------- | ------------------------------------------------------------------------- |
+| [IStringAssert]({{site.baseurl}}/testing/assert-string/) | string                                                                    |
+| [IBoolAssert]({{site.baseurl}}/testing/assert-bool/)     | bool                                                                      |
+| [INumberAssert]({{site.baseurl}}/testing/assert-number/) | number (sbyte,byte,short,ushort,int,uint,long,ulong,float,double,decimal) |
 
 {% endtab %}
 {% endtabs %}
@@ -331,18 +331,18 @@ For more details about Build-In types click here
 {% tabs assert-container-types %}
 {% tab assert-container-types GdScript %}
 
-|Assert|Type|
-|--|--|
-|[assert_array]({{site.baseurl}}/testing/assert-array/) | All Godot Array Types |
-|[assert_dict]({{site.baseurl}}/testing/assert-dictionary/) | Dictionary |
+| Assert                                                     | Type                  |
+| ---------------------------------------------------------- | --------------------- |
+| [assert_array]({{site.baseurl}}/testing/assert-array/)     | All Godot Array Types |
+| [assert_dict]({{site.baseurl}}/testing/assert-dictionary/) | Dictionary            |
 
 {% endtab %}
 {% tab assert-container-types C# %}
 
-|Assert|Type|
-|--|--|
-|[IEnumerableAssert]({{site.baseurl}}/testing/assert-array/) | IEnumerable |
-|[IDictionaryAssert]({{site.baseurl}}/testing/assert-dictionary/) | IDictionary |
+| Assert                                                           | Type        |
+| ---------------------------------------------------------------- | ----------- |
+| [IEnumerableAssert]({{site.baseurl}}/testing/assert-array/)      | IEnumerable |
+| [IDictionaryAssert]({{site.baseurl}}/testing/assert-dictionary/) | IDictionary |
 
 {% endtab %}
 {% endtabs %}
@@ -357,19 +357,19 @@ For more details about Build-In types click here
 {% tabs assert-engine-types %}
 {% tab assert-engine-types GdScript %}
 
-|Type|Assert|
-|--|--|
-|[assert_object]({{site.baseurl}}/testing/assert-object/) | Object|
-|[assert_vector]({{site.baseurl}}/testing/assert-vector/) | All Godot Vector Types |
-|[assert_file]({{site.baseurl}}/testing/assert-file/) | File|
+| Type                                                     | Assert                 |
+| -------------------------------------------------------- | ---------------------- |
+| [assert_object]({{site.baseurl}}/testing/assert-object/) | Object                 |
+| [assert_vector]({{site.baseurl}}/testing/assert-vector/) | All Godot Vector Types |
+| [assert_file]({{site.baseurl}}/testing/assert-file/)     | File                   |
 
 {% endtab %}
 {% tab assert-engine-types C# %}
 
-|Type|Assert|
-|--|--|
-|[IObjectAssert]({{site.baseurl}}/testing/assert-object/) | Godot.Object, System.object|
-|[IVectorAssert]({{site.baseurl}}/testing/assert-vector/) | Godot.Vector2|
+| Type                                                     | Assert                      |
+| -------------------------------------------------------- | --------------------------- |
+| [IObjectAssert]({{site.baseurl}}/testing/assert-object/) | Godot.Object, System.object |
+| [IVectorAssert]({{site.baseurl}}/testing/assert-vector/) | Godot.Vector2               |
 
 {% endtab %}
 {% endtabs %}
@@ -381,18 +381,18 @@ For more details about Build-In types click here
 {% tabs assert-tool-types %}
 {% tab assert-tool-types GdScript %}
 
-|Type|Assert|
-|--|--|
-|[assert_signal]({{site.baseurl}}/testing/assert-signal/) | Signals |
-|[assert_error]({{site.baseurl}}/testing/assert-error/) | Godot Errors |
+| Type                                                     | Assert       |
+| -------------------------------------------------------- | ------------ |
+| [assert_signal]({{site.baseurl}}/testing/assert-signal/) | Signals      |
+| [assert_error]({{site.baseurl}}/testing/assert-error/)   | Godot Errors |
 
 {% endtab %}
 {% tab assert-tool-types C# %}
 
-|Type|Assert|
-|--|--|
-|[ISignalAssert]({{site.baseurl}}/testing/assert-signal/) | Signals |
-|[IErrorAssert]({{site.baseurl}}/testing/assert-error/) | Godot Errors |
+| Type                                                     | Assert       |
+| -------------------------------------------------------- | ------------ |
+| [ISignalAssert]({{site.baseurl}}/testing/assert-signal/) | Signals      |
+| [IErrorAssert]({{site.baseurl}}/testing/assert-error/)   | Godot Errors |
 
 {% endtab %}
 {% endtabs %}

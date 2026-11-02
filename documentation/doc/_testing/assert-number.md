@@ -11,26 +11,26 @@ Supported numbers are **sbyte**, **byte**, **short**, **ushort**, **int**, **uin
 
 **INumberAssert\<V\>**
 
-|Function|Description|
-|--- | --- |
-|[IsNull]({{site.baseurl}}/testing/assert-number/#isnull) | Verifies that the current value is null.|
-|[IsNotNull]({{site.baseurl}}/testing/assert-number/#isnotnull) | Verifies that the current value is not null.|
-|[IsEqual]({{site.baseurl}}/testing/assert-number/#isequal) | Verifies that the current value is equal to the given one.|
-|[IsNotEqual]({{site.baseurl}}/testing/assert-number/#isnotequal) | Verifies that the current value is not equal to the given one.|
-|[IsEqualApprox]({{site.baseurl}}/testing/assert-number/#isequalapprox) | Verifies that the current and expected value are approximately equal.|
-|[IsLess]({{site.baseurl}}/testing/assert-number/#isless) | Verifies that the current value is less than the given one.|
-|[IsLessEqual]({{site.baseurl}}/testing/assert-number/#islessequal) | Verifies that the current value is less than or equal the given one.|
-|[IsGreater]({{site.baseurl}}/testing/assert-number/#isgreater) | Verifies that the current value is greater than the given one.|
-|[IsGreaterEqual]({{site.baseurl}}/testing/assert-number/#isgreaterequal) | Verifies that the current value is greater than or equal the given one.|
-|[IsEven]({{site.baseurl}}/testing/assert-number/#iseven) | Verifies that the current value is even.|
-|[IsOdd]({{site.baseurl}}/testing/assert-number/#isodd) | Verifies that the current value is odd.|
-|[IsNegative]({{site.baseurl}}/testing/assert-number/#isnegative) | Verifies that the current value is negative.|
-|[IsNotNegative]({{site.baseurl}}/testing/assert-number/#isnotnegative) | Verifies that the current value is not negative.|
-|[IsZero]({{site.baseurl}}/testing/assert-number/#iszero) | Verifies that the current value is equal to zero.|
-|[IsNotZero]({{site.baseurl}}/testing/assert-number/#isnotzero) | Verifies that the current value is not equal to zero.|
-|[IsIn]({{site.baseurl}}/testing/assert-number/#isin) | Verifies that the current value is in the given set of values.|
-|[IsNotIn]({{site.baseurl}}/testing/assert-number/#isnotin) | Verifies that the current value is not in the given set of values.|
-|[IsBetween]({{site.baseurl}}/testing/assert-number/#isbetween) | Verifies that the current value is between the given boundaries (inclusive).|
+| Function                                                                 | Description                                                                  |
+| ------------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
+| [IsNull]({{site.baseurl}}/testing/assert-number/#isnull)                 | Verifies that the current value is null.                                     |
+| [IsNotNull]({{site.baseurl}}/testing/assert-number/#isnotnull)           | Verifies that the current value is not null.                                 |
+| [IsEqual]({{site.baseurl}}/testing/assert-number/#isequal)               | Verifies that the current value is equal to the given one.                   |
+| [IsNotEqual]({{site.baseurl}}/testing/assert-number/#isnotequal)         | Verifies that the current value is not equal to the given one.               |
+| [IsEqualApprox]({{site.baseurl}}/testing/assert-number/#isequalapprox)   | Verifies that the current and expected value are approximately equal.        |
+| [IsLess]({{site.baseurl}}/testing/assert-number/#isless)                 | Verifies that the current value is less than the given one.                  |
+| [IsLessEqual]({{site.baseurl}}/testing/assert-number/#islessequal)       | Verifies that the current value is less than or equal the given one.         |
+| [IsGreater]({{site.baseurl}}/testing/assert-number/#isgreater)           | Verifies that the current value is greater than the given one.               |
+| [IsGreaterEqual]({{site.baseurl}}/testing/assert-number/#isgreaterequal) | Verifies that the current value is greater than or equal the given one.      |
+| [IsEven]({{site.baseurl}}/testing/assert-number/#iseven)                 | Verifies that the current value is even.                                     |
+| [IsOdd]({{site.baseurl}}/testing/assert-number/#isodd)                   | Verifies that the current value is odd.                                      |
+| [IsNegative]({{site.baseurl}}/testing/assert-number/#isnegative)         | Verifies that the current value is negative.                                 |
+| [IsNotNegative]({{site.baseurl}}/testing/assert-number/#isnotnegative)   | Verifies that the current value is not negative.                             |
+| [IsZero]({{site.baseurl}}/testing/assert-number/#iszero)                 | Verifies that the current value is equal to zero.                            |
+| [IsNotZero]({{site.baseurl}}/testing/assert-number/#isnotzero)           | Verifies that the current value is not equal to zero.                        |
+| [IsIn]({{site.baseurl}}/testing/assert-number/#isin)                     | Verifies that the current value is in the given set of values.               |
+| [IsNotIn]({{site.baseurl}}/testing/assert-number/#isnotin)               | Verifies that the current value is not in the given set of values.           |
+| [IsBetween]({{site.baseurl}}/testing/assert-number/#isbetween)           | Verifies that the current value is between the given boundaries (inclusive). |
 
 ---
 

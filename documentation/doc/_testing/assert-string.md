@@ -12,45 +12,45 @@ An assertion tool to verify **String** and **StringName** values.
 {% tab assert-str-overview GdScript %}
 **GdUnitStringAssert**<br>
 
-|Function|Description|
-|--- | --- |
-|[is_null]({{site.baseurl}}/testing/assert-string/#is_null)| Verifies that the current value is null.|
-|[is_not_null]({{site.baseurl}}/testing/assert-string/#is_not_null)| Verifies that the current value is not null.|
-|[is_equal]({{site.baseurl}}/testing/assert-string/#is_equal) | Verifies that the current String is equal to the given one.|
-|[is_equal_ignoring_case]({{site.baseurl}}/testing/assert-string/#is_equal_ignoring_case) | Verifies that the current String is equal to the given one, ignoring case considerations.|
-|[is_not_equal]({{site.baseurl}}/testing/assert-string/#is_not_equal) | Verifies that the current String is not equal to the given one.|
-|[is_not_equal_ignoring_case]({{site.baseurl}}/testing/assert-string/#is_not_equal_ignoring_case) | Verifies that the current String is not equal to the given one, ignoring case considerations.|
-|[is_empty]({{site.baseurl}}/testing/assert-string/#is_empty) | Verifies that the current String is empty, it has a length of 0.|
-|[is_not_empty]({{site.baseurl}}/testing/assert-string/#is_not_empty) | Verifies that the current String is not empty, it has a length of minimum 1.|
-|[contains]({{site.baseurl}}/testing/assert-string/#contains) | Verifies that the current String contains the given String.|
-|[contains_ignoring_case]({{site.baseurl}}/testing/assert-string/#contains_ignoring_case) | Verifies that the current String does not contain the given String, ignoring case considerations.|
-|[not_contains]({{site.baseurl}}/testing/assert-string/#not_contains) | Verifies that the current String does not contain the given String.|
-|[not_contains_ignoring_case]({{site.baseurl}}/testing/assert-string/#not_contains_ignoring_case) | Verifies that the current String does not contain the given String, ignoring case considerations.|
-|[starts_with]({{site.baseurl}}/testing/assert-string/#starts_with) | Verifies that the current String starts with the given prefix.|
-|[ends_with]({{site.baseurl}}/testing/assert-string/#ends_with) | Verifies that the current String ends with the given suffix.|
-|[has_length]({{site.baseurl}}/testing/assert-string/#has_length) | Verifies that the current String has the expected length by used comparator.|
+| Function                                                                                         | Description                                                                                       |
+| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| [is_null]({{site.baseurl}}/testing/assert-string/#is_null)                                       | Verifies that the current value is null.                                                          |
+| [is_not_null]({{site.baseurl}}/testing/assert-string/#is_not_null)                               | Verifies that the current value is not null.                                                      |
+| [is_equal]({{site.baseurl}}/testing/assert-string/#is_equal)                                     | Verifies that the current String is equal to the given one.                                       |
+| [is_equal_ignoring_case]({{site.baseurl}}/testing/assert-string/#is_equal_ignoring_case)         | Verifies that the current String is equal to the given one, ignoring case considerations.         |
+| [is_not_equal]({{site.baseurl}}/testing/assert-string/#is_not_equal)                             | Verifies that the current String is not equal to the given one.                                   |
+| [is_not_equal_ignoring_case]({{site.baseurl}}/testing/assert-string/#is_not_equal_ignoring_case) | Verifies that the current String is not equal to the given one, ignoring case considerations.     |
+| [is_empty]({{site.baseurl}}/testing/assert-string/#is_empty)                                     | Verifies that the current String is empty, it has a length of 0.                                  |
+| [is_not_empty]({{site.baseurl}}/testing/assert-string/#is_not_empty)                             | Verifies that the current String is not empty, it has a length of minimum 1.                      |
+| [contains]({{site.baseurl}}/testing/assert-string/#contains)                                     | Verifies that the current String contains the given String.                                       |
+| [contains_ignoring_case]({{site.baseurl}}/testing/assert-string/#contains_ignoring_case)         | Verifies that the current String does not contain the given String, ignoring case considerations. |
+| [not_contains]({{site.baseurl}}/testing/assert-string/#not_contains)                             | Verifies that the current String does not contain the given String.                               |
+| [not_contains_ignoring_case]({{site.baseurl}}/testing/assert-string/#not_contains_ignoring_case) | Verifies that the current String does not contain the given String, ignoring case considerations. |
+| [starts_with]({{site.baseurl}}/testing/assert-string/#starts_with)                               | Verifies that the current String starts with the given prefix.                                    |
+| [ends_with]({{site.baseurl}}/testing/assert-string/#ends_with)                                   | Verifies that the current String ends with the given suffix.                                      |
+| [has_length]({{site.baseurl}}/testing/assert-string/#has_length)                                 | Verifies that the current String has the expected length by used comparator.                      |
 
 {% endtab %}
 {% tab assert-str-overview C# %}
 **IStringAssert**<br>
 
-|Function|Description|
-|--- | --- |
-|[IsNull]({{site.baseurl}}/testing/assert-string/#is_null)| Verifies that the current value is null.|
-|[IsNotNull]({{site.baseurl}}/testing/assert-string/#is_not_null)| Verifies that the current value is not null.|
-|[IsEqual]({{site.baseurl}}/testing/assert-string/#is_equal) | Verifies that the current String is equal to the given one.|
-|[IsEqualIgnoringCase]({{site.baseurl}}/testing/assert-string/#is_equal_ignoring_case) | Verifies that the current String is equal to the given one, ignoring case considerations.|
-|[IsNotEqual]({{site.baseurl}}/testing/assert-string/#is_not_equal) | Verifies that the current String is not equal to the given one.|
-|[IsNotEqualIgnoringCase]({{site.baseurl}}/testing/assert-string/#is_not_equal_ignoring_case) | Verifies that the current String is not equal to the given one, ignoring case considerations.|
-|[IsEmpty]({{site.baseurl}}/testing/assert-string/#is_empty) | Verifies that the current String is empty, it has a length of 0.|
-|[IsNotEmpty]({{site.baseurl}}/testing/assert-string/#is_not_empty) | Verifies that the current String is not empty, it has a length of minimum 1.|
-|[Contains]({{site.baseurl}}/testing/assert-string/#contains) | Verifies that the current String contains the given String.|
-|[ContainsIgnoringCase]({{site.baseurl}}/testing/assert-string/#contains_ignoring_case) | Verifies that the current String does not contain the given String, ignoring case considerations.|
-|[NotContains]({{site.baseurl}}/testing/assert-string/#not_contains) | Verifies that the current String does not contain the given String.|
-|[NotContainsIgnoringCase]({{site.baseurl}}/testing/assert-string/#not_contains_ignoring_case) | Verifies that the current String does not contain the given String, ignoring case considerations.|
-|[StartsWith]({{site.baseurl}}/testing/assert-string/#starts_with) | Verifies that the current String starts with the given prefix.|
-|[EndsWith]({{site.baseurl}}/testing/assert-string/#ends_with) | Verifies that the current String ends with the given suffix.|
-|[HasLength]({{site.baseurl}}/testing/assert-string/#has_length) | Verifies that the current String has the expected length by used comparator.|
+| Function                                                                                      | Description                                                                                       |
+| --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| [IsNull]({{site.baseurl}}/testing/assert-string/#is_null)                                     | Verifies that the current value is null.                                                          |
+| [IsNotNull]({{site.baseurl}}/testing/assert-string/#is_not_null)                              | Verifies that the current value is not null.                                                      |
+| [IsEqual]({{site.baseurl}}/testing/assert-string/#is_equal)                                   | Verifies that the current String is equal to the given one.                                       |
+| [IsEqualIgnoringCase]({{site.baseurl}}/testing/assert-string/#is_equal_ignoring_case)         | Verifies that the current String is equal to the given one, ignoring case considerations.         |
+| [IsNotEqual]({{site.baseurl}}/testing/assert-string/#is_not_equal)                            | Verifies that the current String is not equal to the given one.                                   |
+| [IsNotEqualIgnoringCase]({{site.baseurl}}/testing/assert-string/#is_not_equal_ignoring_case)  | Verifies that the current String is not equal to the given one, ignoring case considerations.     |
+| [IsEmpty]({{site.baseurl}}/testing/assert-string/#is_empty)                                   | Verifies that the current String is empty, it has a length of 0.                                  |
+| [IsNotEmpty]({{site.baseurl}}/testing/assert-string/#is_not_empty)                            | Verifies that the current String is not empty, it has a length of minimum 1.                      |
+| [Contains]({{site.baseurl}}/testing/assert-string/#contains)                                  | Verifies that the current String contains the given String.                                       |
+| [ContainsIgnoringCase]({{site.baseurl}}/testing/assert-string/#contains_ignoring_case)        | Verifies that the current String does not contain the given String, ignoring case considerations. |
+| [NotContains]({{site.baseurl}}/testing/assert-string/#not_contains)                           | Verifies that the current String does not contain the given String.                               |
+| [NotContainsIgnoringCase]({{site.baseurl}}/testing/assert-string/#not_contains_ignoring_case) | Verifies that the current String does not contain the given String, ignoring case considerations. |
+| [StartsWith]({{site.baseurl}}/testing/assert-string/#starts_with)                             | Verifies that the current String starts with the given prefix.                                    |
+| [EndsWith]({{site.baseurl}}/testing/assert-string/#ends_with)                                 | Verifies that the current String ends with the given suffix.                                      |
+| [HasLength]({{site.baseurl}}/testing/assert-string/#has_length)                               | Verifies that the current String has the expected length by used comparator.                      |
 
 {% endtab %}
 {% endtabs %}

@@ -135,6 +135,15 @@ Linting is enforced by CI for all plugin sources and tests, any warning fails th
 gdstyle check --max-warnings 0 addons/gdUnit4/
 ```
 
+### Formatting Checks
+
+The organization formatting checks of [godot-gdunit-labs/global-workflows](https://github.com/godot-gdunit-labs/global-workflows)
+run by default on every pull request. Only the C# formatting is checked by the `ci-pr` workflow of this repository:
+
+```bash
+dotnet format gdUnit4.csproj --verify-no-changes --verbosity diagnostic
+```
+
 ### Project Structure
 
 For a high-level overview of the repository, see:
@@ -155,8 +164,8 @@ In short: We eliminate the clutter so the AI can find the right answers faster.
 - All plugin sources and tests must pass `gdstyle check` without warnings
 - Please follow existing project rules and CI expectations for the files you modify
 - Never commit changes to `project.godot` unless we need to update the C# API dependencies
-- Follow the repository configuration and formatting rules defined in files such as [gdstyle.toml](./gdstyle.toml), [.editorconfig](./.editorconfig),
-  [.markdownlint.jsonc](./.github/actions/formatting_checks/.markdownlint.jsonc), and [.yamllint.yml](./.github/actions/formatting_checks/.yamllint.yml)
+- Follow the formatting rules of the [organization formatting checks](#formatting-checks), together with [gdstyle.toml](./gdstyle.toml)
+  and [.editorconfig](./.editorconfig) of this repository
 
 ## License
 

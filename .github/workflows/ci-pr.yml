@@ -15,19 +15,22 @@ concurrency:
 
 
 jobs:
-  format-checks:
+  dotnet-format:
     if: ${{ !cancelled() }}
-    name: '📝 Linting & Formatting'
+    name: '📝 C# Code Formatting'
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
-      - uses: ./.github/actions/formatting_checks
 
-  gdstyle:
-    if: ${{ !cancelled() }}
-    name: '📝 gdstyle check'
-    uses: ./.github/workflows/gdstyle.yml
+      - name: 'Setup .Net'
+        uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: 'global.json'
 
+      - name: 'Check C# code formatting'
+        shell: bash
+        run: |
+          dotnet format gdUnit4.csproj --verify-no-changes --verbosity diagnostic
 
   unit-tests:
     runs-on: ubuntu-24.04
@@ -116,7 +119,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     name: 'Final Results'
-    needs: [format-checks, gdstyle, unit-tests]
+    needs: [dotnet-format, unit-tests]
     steps:
       - run: exit 1
         if: >-

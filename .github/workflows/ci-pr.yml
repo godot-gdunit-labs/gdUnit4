@@ -13,6 +13,8 @@ concurrency:
   group: ci-pr-${{ github.event.number }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
 
 jobs:
   dotnet-format:

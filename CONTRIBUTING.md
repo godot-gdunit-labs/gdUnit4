@@ -138,7 +138,8 @@ gdstyle check --max-warnings 0 addons/gdUnit4/
 ### Formatting Checks
 
 The organization formatting checks of [godot-gdunit-labs/global-workflows](https://github.com/godot-gdunit-labs/global-workflows)
-run by default on every pull request. Only the C# formatting is checked by the `ci-pr` workflow of this repository:
+run by default on every pull request, including the C# formatting. The C# code style and analyzer rules are enforced by the build,
+to check them locally run:
 
 ```bash
 dotnet format gdUnit4.csproj --verify-no-changes --verbosity diagnostic

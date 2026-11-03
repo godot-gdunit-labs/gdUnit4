@@ -49,7 +49,7 @@ For .NET projects, `runtest.sh` also runs `dotnet build --debug` automatically.
 # Build
 dotnet build --debug
 
-# Verify formatting (CI-style check, no changes applied)
+# Verify formatting and code style (no changes applied)
 dotnet format gdUnit4.csproj --verify-no-changes --verbosity diagnostic
 ```
 
@@ -225,7 +225,7 @@ The `current_version` in `documentation/_config.yml` should be updated when rele
 - Main branch: `master`
 - Feature branches should be named after the issue number (e.g., `GD-111`)
 - PRs must link to an issue and pass all CI checks before merging
-- CI runs the organization formatting checks (including `gdstyle`), `dotnet format`, and tests
+- CI runs the organization formatting checks (including `gdstyle` and the C# formatting) and tests
   against Godot 4.7, 4.7.1, and 4.8 (dev), see the Compatibility Overview in `README.md`
 
 ### Git Hooks

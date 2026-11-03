@@ -107,3 +107,9 @@ you can ensure that your code is thoroughly tested and free of bugs, which can s
 * [Report Bugs](https://github.com/MikeSchulze/gdUnit4/issues/new?assignees=MikeSchulze&labels=bug&projects=projects%2F5&template=bug_report.yml&title=GD-XXX%3A+Describe+the+issue+briefly){:target="_blank"} by creating a new bug report issue on the gdUnit GitHub Issues page.
 <!-- markdownlint-enable -->
 <!-- markdownlint-restore -->
+
+## Sponsors
+
+Thanks to our sponsors for supporting the development of GdUnit4.
+
+[<img src="https://avatars.githubusercontent.com/u/34529801?v=4" alt="ozzycallooh" width="125"/>](https://github.com/ozzycallooh){:target="_blank"} Ozzy Callooh

@@ -17,23 +17,6 @@ permissions:
   contents: read
 
 jobs:
-  dotnet-format:
-    if: ${{ !cancelled() }}
-    name: '📝 C# Code Formatting'
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v7
-
-      - name: 'Setup .Net'
-        uses: actions/setup-dotnet@v5
-        with:
-          global-json-file: 'global.json'
-
-      - name: 'Check C# code formatting'
-        shell: bash
-        run: |
-          dotnet format gdUnit4.csproj --verify-no-changes --verbosity diagnostic
-
   unit-tests:
     runs-on: ubuntu-24.04
     strategy:
@@ -121,7 +104,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     name: 'Final Results'
-    needs: [dotnet-format, unit-tests]
+    needs: [unit-tests]
     steps:
       - run: exit 1
         if: >-

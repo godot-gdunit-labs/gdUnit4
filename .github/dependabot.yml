@@ -10,3 +10,18 @@ updates:
     schedule:
       interval: daily
     open-pull-requests-limit: 6
+
+  - package-ecosystem: nuget
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'sunday'
+    ignore:
+      - dependency-name: 'GodotSharp'
+      - dependency-name: 'Godot.SourceGenerators'
+      - dependency-name: 'Godot.NET.Sdk'
+    groups:
+      nuget-minor-patch:
+        update-types:
+          - 'minor'
+          - 'patch'

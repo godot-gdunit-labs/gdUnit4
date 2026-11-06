@@ -705,6 +705,28 @@ func test_collect_test_cases_gd_872(_do_skip := not GdUnit4CSharpApiLoader.is_ap
 	assert_object(_inspector._find_tree_item_by_test_suite(_inspector._tree_root, test_case1.suite_resource_path, "AZTests")).is_not_null()
 
 
+#region processing
+func test_processing_disabled_when_ready() -> void:
+	assert_bool(_inspector.is_processing()).is_false()
+
+
+func test_processing_during_discovery() -> void:
+	_inspector._on_gdunit_event(GdUnitEventTestDiscoverStart.new())
+	assert_bool(_inspector.is_processing()).is_true()
+
+	_inspector._on_gdunit_event(GdUnitEventTestDiscoverEnd.new(0, 0))
+	assert_bool(_inspector.is_processing()).is_false()
+
+
+func test_processing_during_test_session() -> void:
+	_inspector._on_gdunit_event(GdUnitSessionStart.new())
+	assert_bool(_inspector.is_processing()).is_true()
+
+	await _inspector._on_gdunit_event(GdUnitSessionClose.new())
+	assert_bool(_inspector.is_processing()).is_false()
+#endregion
+
+
 ## test helpers to validate two trees
 # ------------------------------------------------------------------------------------------------------------------------------------------
 

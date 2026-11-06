@@ -9,11 +9,11 @@
     <NoWarn>NU1605</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
     <!-- ProjectReference Include="..\gdUnit4Net\api\gdUnit4Api.csproj" /-->
-    <PackageReference Include="gdUnit4.api" Version="5.1.0-rc5" />
-    <PackageReference Include="gdUnit4.test.adapter" Version="3.1.1" />
-    <PackageReference Include="gdUnit4.analyzers" Version="1.0.0">
+    <PackageReference Include="gdUnit4.api" Version="5.1.0-rc6" />
+    <PackageReference Include="gdUnit4.test.adapter" Version="3.2.0" />
+    <PackageReference Include="gdUnit4.analyzers" Version="1.1.0">
       <PrivateAssets>none</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

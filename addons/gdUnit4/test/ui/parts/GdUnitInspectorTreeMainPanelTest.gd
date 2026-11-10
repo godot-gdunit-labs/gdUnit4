@@ -49,9 +49,9 @@ func discover_sink(test_case: GdUnitTestCase) -> void:
 
 
 func setup_test_env() -> void:
-	var suite_a := GdUnitTestResourceLoader.load_gd_script("res://addons/gdUnit4/test/ui/parts/resources/foo/ExampleTestSuiteA.resource", true)
-	var suite_b := GdUnitTestResourceLoader.load_gd_script("res://addons/gdUnit4/test/ui/parts/resources/foo/ExampleTestSuiteB.resource", true)
-	var suite_c := GdUnitTestResourceLoader.load_gd_script("res://addons/gdUnit4/test/ui/parts/resources/foo/ExampleTestSuiteC.resource", true)
+	var suite_a := GdUnitTestSuiteScanner.load_with_disabled_warnings("res://addons/gdUnit4/test/ui/parts/resources/foo/ExampleTestSuiteA.gd")
+	var suite_b := GdUnitTestSuiteScanner.load_with_disabled_warnings("res://addons/gdUnit4/test/ui/parts/resources/foo/ExampleTestSuiteB.gd")
+	var suite_c := GdUnitTestSuiteScanner.load_with_disabled_warnings("res://addons/gdUnit4/test/ui/parts/resources/foo/ExampleTestSuiteC.gd")
 
 	GdUnitTestDiscoverer.discover_tests(
 		suite_a,
@@ -102,7 +102,7 @@ func get_item_state(parent: TreeItem, item_name: String = "") -> int:
 
 
 func test_find_item_by_id() -> void:
-	var suite_script := GdUnitTestResourceLoader.load_gd_script("res://addons/gdUnit4/test/ui/parts/resources/bar/ExampleTestSuiteA.resource", true)
+	var suite_script := GdUnitTestSuiteScanner.load_with_disabled_warnings("res://addons/gdUnit4/test/ui/parts/resources/bar/ExampleTestSuiteA.gd")
 	var discovered_tests := {}
 	GdUnitTestDiscoverer.discover_tests(
 		suite_script,
@@ -117,7 +117,7 @@ func test_find_item_by_id() -> void:
 
 # Tests a special case, the test is named equal to the test suite
 func test_find_item_by_id_gd809() -> void:
-	var suite_script := GdUnitTestResourceLoader.load_gd_script("res://addons/gdUnit4/test/ui/parts/resources/gd_809/test_example.resource")
+	var suite_script := GdUnitTestSuiteScanner.load_with_disabled_warnings("res://addons/gdUnit4/test/ui/parts/resources/gd_809/test_example.gd")
 	var discovered_tests := {}
 	GdUnitTestDiscoverer.discover_tests(
 		suite_script,
@@ -133,7 +133,7 @@ func test_find_item_by_id_gd809() -> void:
 
 # Tests a special case, the test is named equal to the test suite
 func test_find_item_by_path_gd809() -> void:
-	var suite_script := GdUnitTestResourceLoader.load_gd_script("res://addons/gdUnit4/test/ui/parts/resources/gd_809/test_example.resource")
+	var suite_script := GdUnitTestSuiteScanner.load_with_disabled_warnings("res://addons/gdUnit4/test/ui/parts/resources/gd_809/test_example.gd")
 	var discovered_tests := {}
 	GdUnitTestDiscoverer.discover_tests(
 		suite_script,
@@ -358,7 +358,7 @@ func test_suite_text_responds_to_test_case_events() -> void:
 # test coverage for issue GD-117
 func test_update_test_case_on_multiple_test_suite_with_same_name() -> void:
 	# add a second test suite where has same name as suite_a_item
-	var suite_script := GdUnitTestResourceLoader.load_gd_script("res://addons/gdUnit4/test/ui/parts/resources/bar/ExampleTestSuiteA.resource", true)
+	var suite_script := GdUnitTestSuiteScanner.load_with_disabled_warnings("res://addons/gdUnit4/test/ui/parts/resources/bar/ExampleTestSuiteA.gd")
 	var discovered_tests := {}
 	GdUnitTestDiscoverer.discover_tests(
 		suite_script,
@@ -403,7 +403,7 @@ func test_update_test_case_on_multiple_test_suite_with_same_name() -> void:
 
 # Test coverage for issue GD-278: GdUnit Inspector: Test marks as passed if both warning and error
 func test_update_icon_state() -> void:
-	var suite_script := GdUnitTestResourceLoader.load_gd_script("res://addons/gdUnit4/test/core/execution/resources/orphans/TestSuiteFailAndOrpahnsDetected.gd", true)
+	var suite_script := GdUnitTestSuiteScanner.load_with_disabled_warnings("res://addons/gdUnit4/test/core/execution/resources/orphans/TestSuiteFailAndOrpahnsDetected.gd")
 	var discovered_tests := {}
 	GdUnitTestDiscoverer.discover_tests(
 		suite_script,

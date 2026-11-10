@@ -217,9 +217,7 @@ static func load_with_disabled_warnings(resource_path: String) -> Script:
 	# disable and load the script
 	ProjectSettings.set_setting("debug/gdscript/warnings/unsafe_method_access", 0)
 
-	var script: Script = (
-		GdUnitTestResourceLoader.load_gd_script(resource_path) if resource_path.ends_with("resource")
-		else ResourceLoader.load(resource_path))
+	var script: Script = ResourceLoader.load(resource_path)
 
 	# restore
 	ProjectSettings.set_setting("debug/gdscript/warnings/unsafe_method_access", unsafe_method_access)

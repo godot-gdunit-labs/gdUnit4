@@ -17,7 +17,20 @@ permissions:
   contents: read
 
 jobs:
+  # Pull requests of the `gdunit4-bot` come from branches of this repository, so GitHub runs them without the approval
+  # it requires for forks. The `bot-approval` environment requires a review by a maintainer before the tests start.
+  approval:
+    if: ${{ github.event.pull_request.user.login == 'gdunit4-bot[bot]' }}
+    runs-on: ubuntu-latest
+    name: 'Approval'
+    environment: bot-approval
+    steps:
+      - run: echo "The tests of this pull request were approved."
+
   unit-tests:
+    needs: [approval]
+    # runs when the approval succeeded or was skipped, because the pull request was not opened by the bot
+    if: ${{ !cancelled() && needs.approval.result != 'failure' }}
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -104,7 +117,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     name: 'Final Results'
-    needs: [unit-tests]
+    needs: [approval, unit-tests]
     steps:
       - run: exit 1
         if: >-

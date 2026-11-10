@@ -12,9 +12,9 @@ func _patch_out_timings(content: String) -> String:
 
 func test_write_report() -> void:
 	var tests: Array[GdUnitTestCase] = []
-	tests.append_array(_load_test_cases("TestSuiteAllStagesSuccess.resource"))
-	tests.append_array(_load_test_cases("TestSuiteFailOnMultipeStages.resource"))
-	tests.append_array(_load_test_cases("TestCaseSkipped.resource"))
+	tests.append_array(_load_test_cases("TestSuiteAllStagesSuccess.gd"))
+	tests.append_array(_load_test_cases("TestSuiteFailOnMultipeStages.gd"))
+	tests.append_array(_load_test_cases("TestCaseSkipped.gd"))
 	_test_session = GdUnitTestSession.new(tests, _report_dir)
 	await run_tests(tests)
 

@@ -118,7 +118,7 @@ func assert_event_reports(events: Array[GdUnitEvent], expected_reports: Array) -
 
 
 func test_execute_success() -> void:
-	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteAllStagesSuccess.resource")
+	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteAllStagesSuccess.gd")
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	var test_case1: GdUnitTestCase = tests["test_case1"]
 	var test_case2: GdUnitTestCase = tests["test_case2"]
@@ -157,7 +157,7 @@ func test_execute_success() -> void:
 
 
 func test_execute_failure_on_stage_before() -> void:
-	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteFailOnStageBefore.resource")
+	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteFailOnStageBefore.gd")
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	var test_case1: GdUnitTestCase = tests["test_case1"]
 	var test_case2: GdUnitTestCase = tests["test_case2"]
@@ -202,7 +202,7 @@ func test_execute_failure_on_stage_before() -> void:
 
 
 func test_execute_failure_on_stage_after() -> void:
-	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteFailOnStageAfter.resource")
+	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteFailOnStageAfter.gd")
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	var test_case1: GdUnitTestCase = tests["test_case1"]
 	var test_case2: GdUnitTestCase = tests["test_case2"]
@@ -248,7 +248,7 @@ func test_execute_failure_on_stage_after() -> void:
 
 
 func test_execute_failure_on_stage_before_test() -> void:
-	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteFailOnStageBeforeTest.resource")
+	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteFailOnStageBeforeTest.gd")
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	var test_case1: GdUnitTestCase = tests["test_case1"]
 	var test_case2: GdUnitTestCase = tests["test_case2"]
@@ -297,7 +297,7 @@ func test_execute_failure_on_stage_before_test() -> void:
 
 
 func test_execute_failure_on_stage_after_test() -> void:
-	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteFailOnStageAfterTest.resource")
+	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteFailOnStageAfterTest.gd")
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	var test_case1: GdUnitTestCase = tests["test_case1"]
 	var test_case2: GdUnitTestCase = tests["test_case2"]
@@ -347,7 +347,7 @@ func test_execute_failure_on_stage_after_test() -> void:
 
 
 func test_execute_failure_on_stage_test_case1() -> void:
-	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteFailOnStageTestCase1.resource")
+	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteFailOnStageTestCase1.gd")
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	var test_case1: GdUnitTestCase = tests["test_case1"]
 	var test_case2: GdUnitTestCase = tests["test_case2"]
@@ -394,7 +394,7 @@ func test_execute_failure_on_stage_test_case1() -> void:
 
 func test_execute_failure_on_multiple_stages() -> void:
 	# this is a more complex failure state, we expect to find multipe failures on different stages
-	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteFailOnMultipeStages.resource")
+	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteFailOnMultipeStages.gd")
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	var test_case1: GdUnitTestCase = tests["test_case1"]
 	var test_case2: GdUnitTestCase = tests["test_case2"]
@@ -591,7 +591,7 @@ func test_execute_success_with_pending_queue_free_nodes() -> void:
 
 func test_execute_error_on_test_timeout() -> void:
 	# this tests a timeout on a test case reported as error
-	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteErrorOnTestTimeout.resource")
+	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteErrorOnTestTimeout.gd")
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	var test_case1: GdUnitTestCase = tests["test_case1"]
 	var test_case2: GdUnitTestCase = tests["test_case2"]
@@ -681,7 +681,7 @@ func test_execute_parameterized_metrics() -> void:
 
 func test_execute_failure_fuzzer_iteration() -> void:
 	# this tests a timeout on a test case reported as error
-	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/GdUnitFuzzerTest.resource")
+	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/GdUnitFuzzerTest.gd")
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	var test_multi_yielding_with_fuzzer: GdUnitTestCase = tests["test_multi_yielding_with_fuzzer"]
 	var test_multi_yielding_with_fuzzer_fail_after_3_iterations: GdUnitTestCase = tests["test_multi_yielding_with_fuzzer_fail_after_3_iterations"]
@@ -726,7 +726,7 @@ func test_execute_failure_fuzzer_iteration() -> void:
 
 
 func test_execute_add_child_on_before_gd_106() -> void:
-	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteFailAddChildStageBefore.resource")
+	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteFailAddChildStageBefore.gd")
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	var test_case1: GdUnitTestCase = tests["test_case1"]
 	var test_case2: GdUnitTestCase = tests["test_case2"]
@@ -764,7 +764,7 @@ func test_execute_add_child_on_before_gd_106() -> void:
 
 func test_execute_parameterizied_tests() -> void:
 	# this is a more complex failure state, we expect to find multipe failures on different stages
-	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteParameterizedTests.resource")
+	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteParameterizedTests.gd")
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	var test_0: GdUnitTestCase = find_test(tests, "test_dictionary_div_number_types:0")
 	var test_1: GdUnitTestCase = find_test(tests, "test_dictionary_div_number_types:1")
@@ -806,7 +806,7 @@ func test_execute_parameterizied_tests() -> void:
 
 
 func test_execute_test_suite_is_skipped() -> void:
-	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteSkipped.resource")
+	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestSuiteSkipped.gd")
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	var test_case1: GdUnitTestCase = tests["test_case1"]
 	var test_case2: GdUnitTestCase = tests["test_case2"]
@@ -850,7 +850,7 @@ func test_execute_test_suite_is_skipped() -> void:
 
 
 func test_execute_test_case_is_skipped() -> void:
-	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestCaseSkipped.resource")
+	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestCaseSkipped.gd")
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	var test_case1: GdUnitTestCase = tests["test_case1"]
 	var test_case2: GdUnitTestCase = tests["test_case2"]
@@ -887,7 +887,7 @@ func test_execute_test_case_is_skipped() -> void:
 
 
 func test_execute_test_case_is_flaky_and_failed() -> void:
-	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestCaseFlaky.resource")
+	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestCaseFlaky.gd")
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	var test_success := find_test(tests, "test_success")
 	var test_flaky_success := find_test(tests, "test_flaky_success")
@@ -924,7 +924,7 @@ func test_execute_test_case_is_flaky_and_failed() -> void:
 
 
 func test_execute_test_case_is_flaky_and_success() -> void:
-	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestCaseFlaky.resource")
+	var tests := GdUnitTestResourceLoader.load_tests("res://addons/gdUnit4/test/core/resources/testsuites/TestCaseFlaky.gd")
 	var all_tests: Array[GdUnitTestCase] = Array(tests.values(), TYPE_OBJECT, "RefCounted", GdUnitTestCase)
 	var test_success := find_test(tests, "test_success")
 	var test_flaky_success := find_test(tests, "test_flaky_success")

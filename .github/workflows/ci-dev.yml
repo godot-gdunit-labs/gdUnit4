@@ -16,33 +16,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  versions:
-    runs-on: ubuntu-latest
-    name: 'Godot Versions'
-    outputs:
-      matrix: ${{ steps.matrix.outputs.matrix }}
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          sparse-checkout: .github/godot-versions.json
-          sparse-checkout-cone-mode: false
-          persist-credentials: false
-
-      - id: matrix
-        shell: bash
-        run: |
-          matrix=$(jq -c '[.[] | select(."godot-status" == "stable") | . + {"godot-net": (".Net", "")}]' \
-            .github/godot-versions.json)
-          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
-
   unit-tests:
-    needs: [versions]
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       max-parallel: 10
       matrix:
-        include: ${{ fromJSON(needs.versions.outputs.matrix) }}
+        godot-version: ['4.7.2']
+        godot-status: ['stable']
+        godot-net: ['.Net', '']
 
     permissions:
       actions: write

@@ -17,47 +17,19 @@ permissions:
   contents: read
 
 jobs:
-  # Pull requests of the `gdunit4-bot` come from branches of this repository, so GitHub runs them without the approval
-  # it requires for forks. The `bot-approval` environment requires a review by a maintainer before the tests start.
-  approval:
-    if: ${{ github.event.pull_request.user.login == 'gdunit4-bot[bot]' }}
-    runs-on: ubuntu-latest
-    name: 'Approval'
-    environment: bot-approval
-    steps:
-      - run: echo "The tests of this pull request were approved."
-
-  # The Godot versions are kept in `.github/godot-versions.json`, so the release check can update them without the
-  # permission to change workflows. Stable versions are also tested with .Net.
-  versions:
-    runs-on: ubuntu-latest
-    name: 'Godot Versions'
-    outputs:
-      matrix: ${{ steps.matrix.outputs.matrix }}
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          sparse-checkout: .github/godot-versions.json
-          sparse-checkout-cone-mode: false
-          persist-credentials: false
-
-      - id: matrix
-        shell: bash
-        run: |
-          matrix=$(jq -c '[.[] | . + {"godot-net": ""}, (select(."godot-status" == "stable") | . + {"godot-net": ".Net"})]' \
-            .github/godot-versions.json)
-          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
-
   unit-tests:
-    needs: [approval, versions]
-    # runs when the approval succeeded or was skipped, because the pull request was not opened by the bot
-    if: ${{ !cancelled() && needs.approval.result != 'failure' && needs.versions.result == 'success' }}
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       max-parallel: 10
       matrix:
-        include: ${{ fromJSON(needs.versions.outputs.matrix) }}
+        # If changes are made here, they must be transferred to `.github\workflows\ci-pr-publish-report.yml`
+        godot-version: ['4.7.2']
+        godot-status: ['stable']
+        godot-net: ['.Net', '']
+        include:
+          - godot-version: '4.8'
+            godot-status: 'beta3'
 
     permissions:
       actions: write
@@ -132,7 +104,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     name: 'Final Results'
-    needs: [approval, versions, unit-tests]
+    needs: [unit-tests]
     steps:
       - run: exit 1
         if: >-

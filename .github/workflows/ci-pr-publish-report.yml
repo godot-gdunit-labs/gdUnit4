@@ -18,21 +18,33 @@ permissions:
   checks: write
 
 jobs:
+  versions:
+    runs-on: ubuntu-latest
+    name: 'Godot Versions'
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: .github/godot-versions.json
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+
+      - id: matrix
+        shell: bash
+        run: |
+          matrix=$(jq -c '[.[] | . + {"report-suffix": ("", "-e2e")}, (select(."godot-status" == "stable") | . + {"report-suffix": "-net"})]' \
+            .github/godot-versions.json)
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
   publish-reports:
+    needs: [versions]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       max-parallel: 10
       matrix:
-        godot-version: ['4.7.2']
-        godot-status: ['stable']
-        report-suffix: ['-net', '', '-e2e']
-        include:
-          - godot-version: '4.8'
-            godot-status: 'beta3'
-          - godot-version: '4.8'
-            godot-status: 'beta3'
-            report-suffix: '-e2e'
+        include: ${{ fromJSON(needs.versions.outputs.matrix) }}
 
     steps:
       - uses: actions/checkout@v7

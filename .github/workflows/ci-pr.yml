@@ -7,30 +7,62 @@ on: # yamllint disable-line rule:truthy
     paths-ignore:
       - '**.jpg'
       - '**.png'
+  pull_request_review:
+    types: [submitted]
   workflow_dispatch:
 
 concurrency:
-  group: ci-pr-${{ github.event.number }}
+  group: >-
+    ci-pr-${{ github.event.pull_request.number || github.event.number || github.ref }}
   cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
-  # Pull requests of the `gdunit4-bot` come from branches of this repository, so GitHub runs them without the approval
-  # it requires for forks. The `bot-approval` environment requires a review by a maintainer before the tests start.
+  # Bot pull requests pass this gate only after a maintainer approves the current head commit.
   approval:
-    if: ${{ github.event.pull_request.user.login == 'gdunit4-bot[bot]' }}
+    if: >-
+      ${{ github.event_name != 'pull_request_review'
+          || github.event.pull_request.user.login == 'gdunit4-bot[bot]' }}
     runs-on: ubuntu-latest
     name: 'Approval'
-    environment: bot-approval
+    permissions:
+      pull-requests: read
     steps:
-      - run: echo "The tests of this pull request were approved."
+      - name: 'Check for an approved review'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          PR_NUMBER: >-
+            ${{ github.event.pull_request.number || github.event.number }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        shell: bash
+        run: |
+          if [[ "$PR_AUTHOR" != "gdunit4-bot[bot]" ]]; then
+            echo "No approval gate is required for this pull request."
+            exit 0
+          fi
+
+          reviews=$(gh api --paginate --slurp "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/reviews")
+          approved=$(jq --arg head "$PR_HEAD_SHA" --arg author "$PR_AUTHOR" \
+            'add | group_by(.user.login) | map(max_by(.submitted_at))
+             | any(.[]; .user.login != $author
+               and .state == "APPROVED" and .commit_id == $head)' \
+            <<< "$reviews")
+          if [[ "$approved" != "true" ]]; then
+            echo "::error::Approve this pull request commit before CI runs."
+            exit 1
+          fi
+          echo "The current pull request commit has an approving review."
 
   unit-tests:
     needs: [approval]
     # runs when the approval succeeded or was skipped, because the pull request was not opened by the bot
-    if: ${{ !cancelled() && needs.approval.result != 'failure' }}
+    if: >-
+      ${{ !cancelled() && needs.approval.result != 'failure'
+          && (github.event_name != 'pull_request_review'
+            || github.event.pull_request.user.login == 'gdunit4-bot[bot]') }}
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -114,7 +146,10 @@ jobs:
           report-name: gdUnit4_Godot${{ matrix.godot-version }}-${{ matrix.godot-status }}-net
 
   finalize:
-    if: ${{ !cancelled() }}
+    if: >-
+      ${{ !cancelled()
+          && (github.event_name != 'pull_request_review'
+            || github.event.pull_request.user.login == 'gdunit4-bot[bot]') }}
     runs-on: ubuntu-latest
     name: 'Final Results'
     needs: [approval, unit-tests]

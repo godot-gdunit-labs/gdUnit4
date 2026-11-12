@@ -23,12 +23,12 @@ jobs:
       fail-fast: false
       max-parallel: 10
       matrix:
-        godot-version: ['4.7', '4.7.1']
+        godot-version: ['4.7', '4.7.2']
         godot-status: ['stable']
         godot-net: ['.Net', '']
         include:
           - godot-version: '4.8'
-            godot-status: 'dev7'
+            godot-status: 'beta3'
 
     permissions:
       actions: write

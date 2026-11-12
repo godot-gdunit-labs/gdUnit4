@@ -18,21 +18,35 @@ permissions:
   checks: write
 
 jobs:
+  find-reports:
+    name: 'Find Test Reports'
+    runs-on: ubuntu-latest
+    outputs:
+      reports: ${{ steps.find.outputs.reports }}
+    steps:
+      - name: 'Collect the test reports of the run'
+        id: find
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+          RUN_ID: ${{ github.event.inputs.workflow_run_id || github.event.workflow_run.id }}
+        run: |
+          reports=$(gh api --paginate "repos/$REPOSITORY/actions/runs/$RUN_ID/artifacts" \
+            --jq '.artifacts[] | select(.expired | not) | .name
+              | select(test("^artifact_gdUnit4_Godot[0-9][0-9.]*-[a-z0-9]+(-e2e|-net)?$")) | ltrimstr("artifact_")' \
+            | jq --raw-input --null-input --compact-output '[inputs | select(length > 0)] | unique')
+          echo "Found reports: $reports"
+          echo "reports=$reports" >> "$GITHUB_OUTPUT"
+
   publish-reports:
+    needs: find-reports
+    if: ${{ needs.find-reports.outputs.reports != '[]' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       max-parallel: 10
       matrix:
-        godot-version: ['4.7', '4.7.1']
-        godot-status: ['stable']
-        report-suffix: ['-net', '', '-e2e']
-        include:
-          - godot-version: '4.8'
-            godot-status: 'dev7'
-          - godot-version: '4.8'
-            godot-status: 'dev7'
-            report-suffix: '-e2e'
+        report: ${{ fromJSON(needs.find-reports.outputs.reports) }}
 
     steps:
       - uses: actions/checkout@v7
@@ -42,9 +56,9 @@ jobs:
       - name: 'Download artifacts'
         uses: actions/download-artifact@v8
         with:
-          name: artifact_gdUnit4_Godot${{ matrix.godot-version }}-${{ matrix.godot-status }}${{ matrix.report-suffix }}
+          name: artifact_${{ matrix.report }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          repository: godot-gdunit-labs/gdUnit4
+          repository: ${{ github.repository }}
           run-id: ${{ github.event.inputs.workflow_run_id || github.event.workflow_run.id }}
 
       - name: 'Publish Test Results'
@@ -52,10 +66,9 @@ jobs:
         with:
           # using artifact to download is broken since download-artifact@v4 see https://github.com/dorny/test-reporter/issues/363
           # We do the download manually on step `Download artifacts`
-          # artifact: artifact_gdUnit4_Godot${{ matrix.godot-version }}-${{ matrix.godot-status }}${{ matrix.report-suffix }}
-          name: report_gdUnit4_Godot${{ matrix.godot-version }}-${{ matrix.godot-status }}${{ matrix.report-suffix }}
+          name: report_${{ matrix.report }}
           path: './home/runner/work/gdUnit4/gdUnit4/reports/**/*.xml'
-          reporter: ${{ matrix.report-suffix == '-net' && 'dotnet-trx' || 'java-junit' }}
+          reporter: ${{ endsWith(matrix.report, '-net') && 'dotnet-trx' || 'java-junit' }}
           fail-on-error: 'false'
           fail-on-empty: 'false'
           use-actions-summary: 'false'

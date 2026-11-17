@@ -432,6 +432,10 @@ dotnet_analyzer_diagnostic.severity = silent
 dotnet_diagnostic.CS1591.severity = none
 dotnet_diagnostic.SA1633.severity = none
 
+# Plugin sources use namespaces that mirror the lowercase Godot resource path
+[addons/gdUnit4/src/**/*.{cs,csx,cake}]
+dotnet_diagnostic.SA1300.severity = none
+
 
 # Godot-specific generated files
 [**/.godot/**/*.{cs,vb}]

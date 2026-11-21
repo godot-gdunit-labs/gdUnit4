@@ -183,6 +183,16 @@ the `src/` structure (e.g. `src/core/Foo.gd` → `test/core/FooTest.gd`).
 See `addons/gdUnit4/test/AGENTS.md` for the full GdUnit4 fluent assertion syntax, test suite skeleton,
 section grouping conventions, mocking, scene runner, and auto-free usage.
 
+## Feature Design Documents
+
+Design documents of a feature live in their own folder `design/<feature>/`. Each folder has an `AGENTS.md` as its
+entry point, it links the documents of the feature, says which of them are binding and holds the instructions for
+working on it. Before working on a feature with such a folder, read its `AGENTS.md`.
+
+| Feature      | Entry point                       |
+| ------------ | --------------------------------- |
+| Benchmarking | `design/benchmarking/AGENTS.md`   |
+
 ## Documentation
 
 The `documentation/` folder is a Jekyll site built with the [just-the-docs](https://just-the-docs.com/) theme (Ruby 3.4.7, Jekyll ~4.4.1).

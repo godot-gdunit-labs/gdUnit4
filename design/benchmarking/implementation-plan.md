@@ -12,28 +12,28 @@ Feature issue: #1532.
 
 ## Steps
 
-| Step | Issue | Content                           | Needs      | PR  |
-| ---- | ----- | --------------------------------- | ---------- | --- |
-| 0    | #1552 | Design documents                  | -          |     |
-| 1    | #1533 | Statistics                        | 0          |     |
-| 2    | #1534 | Result model, environment, events | 1          |     |
-| 3    | #1535 | `GdUnitBenchmarkSuite`            | 0          |     |
-| 4    | #1536 | Benchmark configuration           | 3          |     |
-| 5    | #1537 | Parameters                        | 4          |     |
-| 6    | #1538 | Test execution filters            | 3          |     |
-| 7    | #1539 | Discovery                         | 5, 6       |     |
-| 8    | #1540 | Executor lifecycle                | 2, 7       |     |
-| 9    | #1541 | Measurement                       | 8          |     |
-| 10   | #1542 | Async benchmarks                  | 9          |     |
-| 11   | #1543 | Text report                       | 2          |     |
-| 12   | #1544 | Report files                      | 11         |     |
-| 13   | #1545 | Command line runner               | 10, 12     |     |
-| 14   | #1546 | Transport to the editor           | 2          |     |
-| 15   | #1547 | Editor run                        | 13, 14     |     |
-| 16   | #1548 | Benchmark console                 | 11, 15     |     |
-| 17   | #1549 | Inspector                         | 7, 15      |     |
-| 18   | #1550 | User documentation                | 13, 16, 17 |     |
-| 19   | #1551 | Benchmarks of GdUnit4 itself      | 13         |     |
+| Step | Issue | Content                           | Needs      | PR    |
+| ---- | ----- | --------------------------------- | ---------- | ----- |
+| 0    | #1552 | Design documents                  | -          | #1553 |
+| 1    | #1533 | Statistics                        | 0          |       |
+| 2    | #1534 | Result model, environment, events | 1          |       |
+| 3    | #1535 | `GdUnitBenchmarkSuite`            | 0          |       |
+| 4    | #1536 | Benchmark configuration           | 3          |       |
+| 5    | #1537 | Parameters                        | 4          |       |
+| 6    | #1538 | Test execution filters            | 3          |       |
+| 7    | #1539 | Discovery                         | 5, 6       |       |
+| 8    | #1540 | Executor lifecycle                | 2, 7       |       |
+| 9    | #1541 | Measurement                       | 8          |       |
+| 10   | #1542 | Async benchmarks                  | 9          |       |
+| 11   | #1543 | Text report                       | 2          |       |
+| 12   | #1544 | Report files                      | 11         |       |
+| 13   | #1545 | Command line runner               | 10, 12     |       |
+| 14   | #1546 | Transport to the editor           | 2          |       |
+| 15   | #1547 | Editor run                        | 13, 14     |       |
+| 16   | #1548 | Benchmark console                 | 11, 15     |       |
+| 17   | #1549 | Inspector                         | 7, 15      |       |
+| 18   | #1550 | User documentation                | 13, 16, 17 |       |
+| 19   | #1551 | Benchmarks of GdUnit4 itself      | 13         |       |
 
 ## Design sections and tests
 

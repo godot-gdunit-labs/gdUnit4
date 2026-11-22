@@ -247,8 +247,8 @@ Probe results, Godot 4.7.2:
 | `callv`, prepared array, 1 argument  | 86      |
 | `callv`, prepared array, 2 arguments | 97      |
 
-Default arguments, `callv` on a `Node`, best of 7 rounds of 200 000 calls, Godot 4.7.2 without `-d` (with `-d`
-about 25 ns more per call):
+Default arguments, `callv` on a `Node`, best of 7 rounds of 200 000 calls, Godot 4.7.2 without debugger (active
+debugger: about 25 ns more per call):
 
 | Function                                         | ns/call                               |
 | ------------------------------------------------ | ------------------------------------- |
@@ -268,6 +268,14 @@ about 25 ns more per call):
 
 Clock around the call: smallest spread. Inputs ahead lose the CPU cache. 0/1 µs readings average out.
 
+Debugger, body with a 100 iterations loop, Godot 4.7.2:
+
+| Start                                                   | `EngineDebugger.is_active()` | Empty call | Body    |
+| ------------------------------------------------------- | ---------------------------- | ---------- | ------- |
+| No debugger flag (editor runner)                        | `false`                      | 96 ns      | 1270 ns |
+| `-s -d --remote-debug tcp://127.0.0.1:0` (`runtest.sh`) | `false`                      | 96 ns      | 1305 ns |
+| `-d` alone, local debugger                              | `true`                       | 121 ns     | 2644 ns |
+
 ### Overhead
 
 Per benchmark, a copy of the function without body on a temporary script:
@@ -280,8 +288,12 @@ func __overhead(_values: Array, _parameters: Dictionary, _input: Callable) -> vo
     pass
 ```
 
-- Built by `GdUnitBenchmarkMeasurement` from the `GdFunctionDescriptor`: same argument names and types, no defaults,
-  inferred types written out (`rounds := 10` gives `int`, `input := _shuffled` gives `Callable`).
+- Built by `GdUnitBenchmarkMeasurement` from the signature text (`GdScriptParser.extract_func_signature`), same
+  argument names, defaults removed: `name: T = value` gives `name: T`, `name = value` gives `name`, `name := value`
+  of a configuration argument gives its fixed type (`rounds`, `warmup`: `int`, `baseline`, `do_skip`: `bool`,
+  `input`: `Callable`, `parameters`: `Dictionary`, `skip_reason`: `String`).
+- Not from `GdFunctionArgument` (type as `int`, no class) or `get_script_method_list()` (an inner class argument
+  gives `RefCounted`, Godot 4.7.2).
 - `extends` the suite script, so inner classes, `class_name` and `preload` constants of the suite resolve.
 - The suite overrides no Godot virtual method (see "Cases"). Member initializers of the suite still run, `@onready`
   does not, the instance never enters the tree.
@@ -388,6 +400,7 @@ Fewer than 2 values after 1: StdDev, Error, RatioSD `NA`.
 | OS       | `OS.get_name()`, `OS.get_version()`                   |
 | CPU      | `OS.get_processor_name()`, `OS.get_processor_count()` |
 | Headless | `DisplayServer.get_name() == "headless"`              |
+| Debugger | `EngineDebugger.is_active()`                          |
 | Time     | `Time.get_datetime_string_from_system(true)`          |
 
 ## Events and transport

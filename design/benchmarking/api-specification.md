@@ -54,8 +54,8 @@ func _shuffled() -> Array:
 
 - Prefix `bench_`. The body is the measured unit, no loop.
 - Called repeatedly on the same instance, member changes persist between calls.
-- Configuration by default arguments, read by the discovery, never passed by the executor. A leading `_` is allowed.
-  `UNUSED_PARAMETER` is not reported while loading.
+- Configuration by default arguments, read by the discovery. The executor passes the read values on every call, a
+  default expression never runs per call. A leading `_` is allowed. `UNUSED_PARAMETER` is not reported while loading.
 - With `input`: exactly one argument without default, first. Without: none.
 
 | Argument      | Default | Meaning                                      |
@@ -72,12 +72,13 @@ func _shuffled() -> Array:
 
 Per benchmark and parameter combination:
 
-1. New suite instance, added to the tree.
+1. New suite instance.
 2. Parameter values set on members.
-3. `setup()`.
-4. Calibrate N, `warmup` rounds dropped, `rounds` rounds measured.
-5. `cleanup()`.
-6. Free `auto_free()` objects, then the instance.
+3. Added to the tree, `_ready()` sees the parameter values.
+4. `setup()`.
+5. Calibrate N, `warmup` rounds dropped, `rounds` rounds measured.
+6. `cleanup()`.
+7. Free `auto_free()` objects, then the instance.
 
 Sequential, never parallel, never in a test process.
 
@@ -89,7 +90,7 @@ from its parent and freed, another `Object` freed, a `RefCounted` released. Don'
 
 ## Parameters
 
-- Dictionary of member names to value lists: `{"size": [10, 100]}`. Set before `setup()`.
+- Dictionary of member names to value lists: `{"size": [10, 100]}`. Set before the instance enters the tree.
 - Several keys give the cartesian product in key order.
 - Sources: inline, property (`parameters := _sizes`), function (`parameters := _sizes()`).
 - Keys must be typed member variables (`var size := 10`, `var size: int`), values must fit the type.
@@ -187,14 +188,16 @@ res://test/benchmarks/ArrayBenchmark.gd
 Hints
   Outliers
     ArrayBenchmark.sort: size=10 -> 1 outlier was removed (0.552 µs)
+  Close to the call overhead
+    ArrayBenchmark.find: size=10 -> mean below 2 × call overhead (0.086 µs)
 
 Legend
   size    : Value of the 'size' parameter
   Mean    : Arithmetic mean of all measurements
   Error   : Half of 99.9% confidence interval
   StdDev  : Standard deviation of all measurements
-  Ratio   : Mean of the ratio distribution ([Current]/[Baseline])
-  RatioSD : Standard deviation of the ratio distribution ([Current]/[Baseline])
+  Ratio   : Mean divided by the baseline mean ([Current]/[Baseline])
+  RatioSD : Standard deviation of Ratio, propagated from both StdDev values
   N       : Calibrated calls per round
   1 µs    : 1 Microsecond (0.000001 sec)
 ```

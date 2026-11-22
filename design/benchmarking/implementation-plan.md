@@ -42,26 +42,33 @@ Feature issue: #1532.
 | 1    | "Statistics"                                                                                           | Reference values computed outside Godot, 0/1/2/equal values, only outliers, `NA`        |
 | 2    | "Result model", `GdUnitBenchmarkEvent`                                                                 | Serialize round trip                                                                    |
 | 3    | "GdUnitBenchmarkSuite"                                                                                 | Hooks overridable, `auto_free()`                                                        |
-| 4    | "Cases" items 1, 2                                                                                     | Every argument with and without `_`, every validation error                             |
-| 5    | "Parameters"                                                                                           | All sources, every validation error                                                     |
+| 4    | "Cases" items 1, 2, call arguments in "Modes"                                                          | Every argument with and without `_`, every validation error, call argument order        |
+| 5    | "Parameters"                                                                                           | All sources, every validation error, `int` for `float`, invalid value never set         |
 | 6    | "Separation" item 4, touch points of test commands, CI runner, scanner                                 | Test run of a folder with benchmark suites runs tests only                              |
 | 7    | "Walk", "Cases"                                                                                        | Extends by class name, path, two levels, guard, display names, existing tests unchanged |
-| 8    | "Executor", "Errors", `GdUnitBenchmarkSignals`                                                         | Fake clock: lifecycle order, new instance, errors in every hook, no orphans             |
-| 9    | "Modes", "Overhead", "Calibration", "Clock"                                                            | Fake clock: both modes, `input` freed per call. Real clock: positive values, N grows    |
+| 8    | "Executor", "Errors", `GdUnitBenchmarkSignals`                                                         | Fake clock: lifecycle order, new instance, errors in every hook, no orphans, see below  |
+| 9    | "Modes", "Overhead", "Calibration", "Clock"                                                            | Fake clock: both modes, `input` freed, see below. Real clock: positive values, N grows  |
 | 10   | Async in "Modes"                                                                                       | Async measured with frames, sync never awaits                                           |
 | 11   | "Report": table, text report                                                                           | Expected text, units, parameter columns, baseline, `NA`, `skipped`, `?`, hints, legend  |
 | 12   | "Report": writers                                                                                      | Expected files, history                                                                 |
 | 13   | "Runners" (command line), touch points `GdUnitCmdTool.gd`, `GdUnitCopyLog.gd`, `GdUnitTestCIRunner.gd` | Exit codes, files, test run unchanged. Manual: 4.7, 4.7.1, 4.8, gdUnit4-action          |
-| 14   | "Events and transport", touch point `GdUnitServer.gd`                                                  | RPC round trip                                                                          |
+| 14   | "Events and transport", touch point `GdUnitServer.gd`                                                  | RPC round trip, client disconnected on `SESSION_CLOSE`                                  |
 | 15   | "Runners" (editor), touch point `plugin.gd`                                                            | Manual editor run                                                                       |
 | 16   | "Report": `GdUnitBenchmarkConsole`                                                                     | Console text from an event sequence                                                     |
 | 17   | "Report": inspector, touch point main panel                                                            | Mixed folder in both view modes, commands per item type, test counters                  |
 | 18   | -                                                                                                      | Examples as tests in `#region documented examples`                                      |
 | 19   | -                                                                                                      | Run produces a report                                                                   |
 
+Also tested:
+
+- Step 8: `_ready()` sees the parameter values, combination count differs from the discovery, `push_error` and script
+  errors fail, `printerr` and `push_warning` don't.
+- Step 9: default expressions never run (call counter in `parameters := _sizes()`), overhead reference matches the
+  argument count, an error in the probe call stops before calibration.
+
 Probes: step 7 first checks that `unused_parameter` disabled before `ResourceLoader.load` suppresses the warning on
 first load, also in the editor runner process. Step 10 first checks that `callv` on an awaiting body returns
-`GDScriptFunctionState` on Godot 4.7, 4.7.1, 4.8. Results into the design.
+`GDScriptFunctionState` on Godot 4.7, 4.7.1, 4.8 (4.7.2 verified). Results into the design.
 
 Step 18: `documentation/doc/_advanced_testing/benchmarking.md` covering the specification, `--benchmark` on the
 command line page. Point out explicitly: the `input` value is freed by the executor after every call, no

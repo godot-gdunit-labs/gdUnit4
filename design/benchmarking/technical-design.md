@@ -31,7 +31,8 @@ Implementation of `api-specification.md`. Order of work: `implementation-plan.md
 | `GdUnitFileAccess`, `GdUnit4Version`, `GdUnitResult`           | Files, version, results                              |
 
 Not reused: test parameter resolvers (positional argument lists, benchmarks need member dictionaries),
-`GdUnitScriptErrorCollector` (replaced by `GdUnitBenchmarkErrorLogger`).
+`GdUnitScriptErrorCollector` (script errors only), `GodotGdErrorMonitor.GdUnitLogger` (builds test report entries).
+Replaced by `GdUnitBenchmarkErrorLogger`.
 
 ### Touch points
 
@@ -44,7 +45,7 @@ Not reused: test parameter resolvers (positional argument lists, benchmarks need
 | Editor test commands                            | Drop benchmark cases, disabled on benchmark items                                                                                       |
 | `bin/GdUnitCmdTool.gd`                          | `GdUnitBenchmarkCIRunner` on `--benchmark`                                                                                              |
 | `bin/GdUnitCopyLog.gd`                          | Log into the latest benchmark report on `--benchmark`                                                                                   |
-| `src/network/GdUnitServer.gd`                   | `_receive_rpc_data`: branch for `RPCGdUnitBenchmarkEvent`                                                                               |
+| `src/network/GdUnitServer.gd`                   | `_receive_rpc_data`: branch for `RPCGdUnitBenchmarkEvent`, disconnects the client on its `SESSION_CLOSE` like for `GdUnitEvent`         |
 | `plugin.gd`                                     | Register benchmark console and commands                                                                                                 |
 | `src/ui/parts/GdUnitInspectorTreeMainPanel.gd`  | Benchmark item types, routing by item type                                                                                              |
 
@@ -59,7 +60,7 @@ addons/gdUnit4/src/
     ├── GdUnitBenchmarkSignals.gd
     ├── discovery/
     │   ├── GdUnitBenchmarkScanner.gd        # is_benchmark_suite, is_benchmark_case, discover
-    │   ├── GdUnitBenchmarkConfig.gd         # arguments of a function or setup()
+    │   ├── GdUnitBenchmarkConfig.gd         # arguments of a function or setup(), call arguments
     │   └── GdUnitBenchmarkParameters.gd     # resolve, validate parameters
     ├── execution/
     │   ├── GdUnitBenchmarkExecutor.gd
@@ -99,7 +100,8 @@ Tests: `addons/gdUnit4/test/benchmark/`, discovery fixtures in `test/benchmark/r
 - `setup()`, `cleanup()` empty. The executor checks the script for overrides.
 - `auto_free(obj)` appends to `__auto_free`. Freed after `cleanup()`: valid nodes with `free()`, `RefCounted` by
   dropping the reference.
-- `__empty() -> void`, `__empty_input(_value: Variant) -> void`: overhead references.
+- `__empty_0() -> void` to `__empty_8(...) -> void`: overhead references, one per argument count, untyped arguments
+  without defaults. 8 = `input` value plus 7 configuration arguments.
 
 ## Discovery
 
@@ -128,12 +130,15 @@ Tests: `addons/gdUnit4/test/benchmark/`, discovery fixtures in `test/benchmark/r
 | `display_name`    | `bench_find [size=10]`                            |
 | `attribute_index` | Combination index                                 |
 | `line_number`     | Function line                                     |
-| `metadata`        | `{"benchmark": true, "parameters": {"size": 10}}` |
+| `metadata`        | `{"benchmark": true}`                             |
 
-- `metadata` is serialized, cases reach the runner unchanged.
-- `is_benchmark_case(test_case)` reads the marker, used by all filters.
-- The executor reads the configuration from the script again.
-- Validation errors go to `metadata["error"]`, the executor reports the case as failed without running it.
+- `metadata` holds the marker only. `GdUnitRunnerConfig` stores it via `inst_to_dict` and JSON, object values would
+  not survive. `GdUnitTestCase.to_dict` (C# API) and copies by `GdUnitTestCase.from` drop it.
+- `is_benchmark_case(test_case)` reads the marker, used by all filters of discovered cases. Inspector items use their
+  `GdUnitType`.
+- The executor reads the configuration and resolves the parameters from the script again, the combination by
+  `attribute_index`. A different combination count than the discovery fails the case.
+- Validation errors fail the case in the executor without running it. The discovery only builds the display name.
 
 ### Parameters
 
@@ -148,7 +153,10 @@ Source from the default value text, rule of `GdParameterSetResolverFactory`:
 The discovery instance is freed after reading, `setup()` is not called.
 
 Validation with `script.get_script_property_list()`, entries with `PROPERTY_USAGE_SCRIPT_VARIABLE`: key exists, `type`
-not `TYPE_NIL`, values match by `typeof`, objects also by class or script.
+not `TYPE_NIL`, values match by `typeof`, `int` also for `float` members, objects also by class or script. Required
+before every `set()`: a `String` set on an `int` member gives `0` without error (Godot 4.7.2).
+
+Shared by discovery and executor, same resolution code.
 
 ## Execution
 
@@ -156,8 +164,8 @@ not `TYPE_NIL`, values match by `typeof`, objects also by class or script.
 
 `GdUnitBenchmarkExecutor.execute(script, cases)`, per case:
 
-1. Case error: failed. Suite or function skipped: skipped.
-2. Create instance, add to tree, set `metadata["parameters"]` on members.
+1. Read configuration, resolve and validate parameters. Error: failed. Suite or function skipped: skipped.
+2. Create instance, set the parameter values on members, add to tree.
 3. `OS.add_logger(GdUnitBenchmarkErrorLogger)`.
 4. `await setup()` if overridden.
 5. `GdUnitBenchmarkMeasurement`.
@@ -169,22 +177,24 @@ not `TYPE_NIL`, values match by `typeof`, objects also by class or script.
 
 ### Modes
 
-Arguments prepared once (an array per call costs ~60 ns).
+Arguments prepared once (an array per call costs ~60 ns): one value per declared argument in declaration order,
+configuration values as read by `GdUnitBenchmarkConfig` (`input` as `Callable` on the instance, `parameters` as the
+resolved dictionary). GDScript evaluates a default expression on every call without the argument.
 
 Without `input`:
 
 ```gdscript
-var no_arguments := []
+var arguments := _config.call_arguments(suite)
 var start := _clock.now_usec()
 for i in n:
-    suite.callv(function_name, no_arguments)
+    suite.callv(function_name, arguments)
 var round_usec := _clock.now_usec() - start
 ```
 
-With `input`:
+With `input`, slot 0 holds the value:
 
 ```gdscript
-var arguments := [null]
+var arguments := _config.call_arguments(suite)
 var round_usec := 0
 for i in n:
     arguments[0] = input.call()
@@ -198,7 +208,7 @@ for i in n:
 `_release(value)` after every call, outside the measurement: `Node` removed from its parent and freed, other
 `Object` freed, `RefCounted` released by clearing the argument. Async: after the awaited call.
 
-Async: `callv` returns `GDScriptFunctionState` when the body awaits. Detected on the first awaiting call, then
+Async: `callv` returns `GDScriptFunctionState` when the body awaits (verified Godot 4.7.2). Detected on the first awaiting call, then
 `await suite.callv(...)` at the same place and calibration restarts. Sync benchmarks never `await`.
 
 Time per call: `max(0.0, round_usec * 1000.0 / n - overhead_ns)` ns.
@@ -211,6 +221,19 @@ Probe results, Godot 4.7.2:
 | `callv`, prepared array, 1 argument  | 86      |
 | `callv`, prepared array, 2 arguments | 97      |
 
+Default arguments, `callv` on a `Node`, best of 7 rounds of 200 000 calls, Godot 4.7.2 without `-d` (with `-d`
+about 25 ns more per call):
+
+| Function                                         | ns/call                               |
+| ------------------------------------------------ | ------------------------------------- |
+| No arguments                                     | 112                                   |
+| 3 defaults `int`, `int`, `bool` not passed       | 120                                   |
+| Default `{"size": [10, 10000]}` not passed       | 493                                   |
+| Default `_shuffled` (`Callable`) not passed      | 192                                   |
+| Default `_sizes()` not passed                    | 627, `_sizes()` runs on every call    |
+| 4 arguments passed, dictionary included          | 144                                   |
+| Variadic `(...args)`, 0 / 1 / 4 arguments passed | 174 / 233 / 245, unfit as a reference |
+
 | `sort()` size | Inputs ahead     | Clock around call | Total minus setup |
 | ------------- | ---------------- | ----------------- | ----------------- |
 | 10            | 0.422 µs ± 0.013 | 0.388 µs ± 0.011  | 0.343 µs ± 0.015  |
@@ -221,18 +244,31 @@ Clock around the call: smallest spread. Inputs ahead lose the CPU cache. 0/1 µs
 
 ### Overhead
 
-Per benchmark, same instance and mode: `__empty()` or `__empty_input`, 3 rounds with the calibrated N, median. Async
-uses the sync overhead. Mean below 2 × overhead: hint "close to the call overhead".
+Per benchmark, same instance, mode and argument array: `__empty_<k>` with k = argument count, 3 rounds with the
+calibrated N, median. Async uses the sync overhead. Mean below 2 × overhead: hint "close to the call overhead".
 
 ### Calibration
 
 N = 1, ×10 until a round reaches 50 ms, then scaled to 50 ms. A single call above 50 ms: N = 1. Clock resolution then
-below 0.01 % of a round.
+below 0.01 % of a round. The first round with N = 1 is the probe call, errors are checked right after it.
 
 ### Errors
 
-`GdUnitBenchmarkErrorLogger extends Logger`, collects messages with `error == true`, checked after every executor step.
-An error fails the benchmark and drops its samples. `OS.add_logger` since Godot 4.5.
+`GdUnitBenchmarkErrorLogger extends Logger`, Godot 4.7.2:
+
+| Source               | Callback                               |
+| -------------------- | -------------------------------------- |
+| `push_error`         | `_log_error`, `ERROR_TYPE_ERROR`       |
+| Script runtime error | `_log_error`, `ERROR_TYPE_SCRIPT`      |
+| `push_warning`       | `_log_error`, `ERROR_TYPE_WARNING`     |
+| `printerr`           | `_log_message` with `error == true`    |
+
+- Collects `ERROR_TYPE_ERROR` and `ERROR_TYPE_SCRIPT`, ignores the rest. Mutex, callbacks may come from any thread.
+- Function and line from the first frame of the script backtraces via `GdUnitStackTrace.from_script_backtraces`.
+  The `function` and `line` arguments of `push_error` point into the engine.
+- A script error ends the current call with `null`, the loop goes on. Checked after the probe call, every round and
+  every executor step: at most one round runs with errors.
+- An error fails the benchmark and drops its samples. `OS.add_logger` since Godot 4.5.
 
 ### Clock
 
@@ -346,12 +382,15 @@ Inspector:
 ## Godot compatibility
 
 Godot 4.7, 4.7.1, 4.8 (`master` row of `README.md`). APIs: `Time.get_ticks_usec`, `Object.callv`,
-`Script.get_script_property_list`, `OS.add_logger`, `Logger` (4.5+), `OS.get_processor_name`,
-`Engine.get_version_info`, `DisplayServer.get_name`.
+`GDScriptFunctionState`, `Script.get_script_property_list`, `OS.add_logger`, `Logger._log_error`, `ScriptBacktrace`
+(4.5+), `OS.get_processor_name`, `Engine.get_version_info`, `DisplayServer.get_name`.
 
 ## Risks
 
 - Mixed discovery results: a test entry without the filter runs benchmarks as tests. Safety net: `load_suite`.
 - CI noise: spread varies between runs. Reporting only.
-- `GdUnitInspectorTreeMainPanel.gd` has more than 1000 lines.
+- `GdUnitInspectorTreeMainPanel.gd` (1236 lines, length already suppressed) gets routing only, benchmark logic lives
+  in `GdUnitBenchmarkInspectorTree`.
+- A parameter function with different results in editor and runner changes the combinations. Count check in the
+  executor, values may still differ.
 - `--benchmark` is unknown to older GdUnit4 versions.

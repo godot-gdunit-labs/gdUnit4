@@ -61,7 +61,9 @@ Feature issue: #1532.
 
 Also tested:
 
-- Step 8: `_ready()` sees the parameter values, combination count differs from the discovery, `push_error` and script
+- Step 4: `_init()`, `_ready()`, `_process()`, `_notification()` in the suite or a base script fail every benchmark of
+  the suite with the line, helper functions with `_` prefix don't.
+- Step 8: parameter values set before the instance enters the tree, combination count differs from the discovery, `push_error` and script
   errors fail, `printerr` and `push_warning` don't.
 - Step 9: default expressions never run (call counter in `parameters := _sizes()`), overhead copy has the
   argument names and types (inferred types written out, inner class of the suite), an error in the probe call stops

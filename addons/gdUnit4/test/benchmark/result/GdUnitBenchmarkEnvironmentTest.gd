@@ -29,6 +29,13 @@ func test_current_values() -> void:
 	assert_int(environment.processor_count).is_equal(OS.get_processor_count())
 	assert_bool(environment.headless).is_equal(DisplayServer.get_name() == "headless")
 	assert_str(environment.time).is_not_empty()
+
+
+func test_godot_version_format() -> void:
+	var info := { "major": 4, "minor": 7, "patch": 1, "status": "stable" }
+
+	assert_str(GdUnitBenchmarkEnvironment._godot_version(info)).is_equal("v4.7.1.stable")
+	assert_str(GdUnitBenchmarkEnvironment._godot_version({})).is_equal("v0.0.0.")
 #endregion
 
 
@@ -50,4 +57,8 @@ func test_round_trip_without_active_debugger() -> void:
 
 	assert_that(restored).is_equal(environment)
 	assert_bool(restored.debugger_active).is_false()
+
+
+func test_deserialize_empty() -> void:
+	assert_that(GdUnitBenchmarkEnvironment.deserialize({})).is_equal(GdUnitBenchmarkEnvironment.new())
 #endregion

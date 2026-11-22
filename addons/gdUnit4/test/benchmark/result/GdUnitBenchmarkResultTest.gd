@@ -147,6 +147,45 @@ func test_round_trip_baseline_failed() -> void:
 #endregion
 
 
+#region deserialize
+func test_deserialize_empty() -> void:
+	var restored := GdUnitBenchmarkResult.deserialize({})
+
+	assert_str(restored.resource_path).is_empty()
+	assert_int(restored.state).is_equal(GdUnitBenchmarkResult.State.FAILED)
+	assert_int(restored.n).is_zero()
+	assert_dict(restored.parameters).is_empty()
+	assert_array(restored.samples()).is_empty()
+	assert_bool(GdUnitBenchmarkStatistics.is_na(restored.statistics().mean)).is_true()
+	assert_bool(GdUnitBenchmarkStatistics.is_na(restored.overhead_ns)).is_true()
+	assert_bool(GdUnitBenchmarkStatistics.is_na(restored.ratio)).is_true()
+
+
+func test_deserialize_unknown_state() -> void:
+	assert_int(GdUnitBenchmarkResult.deserialize({ "state": "bogus" }).state).is_equal(GdUnitBenchmarkResult.State.FAILED)
+
+
+func test_deserialize_parameters_without_types() -> void:
+	var restored := GdUnitBenchmarkResult.deserialize(json_round_trip({ "parameters": { "size": 10, "name": "small" } }))
+
+	assert_dict(restored.parameters).is_equal({ "size": 10.0, "name": "small" })
+#endregion
+
+
+#region float values
+func test_serialize_float() -> void:
+	assert_that(GdUnitBenchmarkResult.serialize_float(NA)).is_null()
+	assert_that(GdUnitBenchmarkResult.serialize_float(0.0)).is_equal(0.0)
+	assert_that(GdUnitBenchmarkResult.serialize_float(1.5)).is_equal(1.5)
+
+
+func test_deserialize_float() -> void:
+	assert_bool(GdUnitBenchmarkStatistics.is_na(GdUnitBenchmarkResult.deserialize_float(null))).is_true()
+	assert_float(GdUnitBenchmarkResult.deserialize_float(0.0)).is_equal(0.0)
+	assert_float(GdUnitBenchmarkResult.deserialize_float(2.5)).is_equal(2.5)
+#endregion
+
+
 #region samples
 func test_set_samples_copies_values() -> void:
 	var samples := PackedFloat64Array([1.0, 2.0])

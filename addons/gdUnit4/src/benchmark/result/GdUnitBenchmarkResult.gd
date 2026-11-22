@@ -84,7 +84,8 @@ static func deserialize(serialized: Dictionary) -> GdUnitBenchmarkResult:
 		result.parameters[key] = _deserialize_parameter(values[key], type)
 	result.baseline = serialized.get("baseline", false)
 	result.is_async = serialized.get("async", false)
-	result.state = maxi(STATE_NAMES.find(serialized.get("state", "")), State.MEASURED) as State
+	var state_index := STATE_NAMES.find(serialized.get("state", ""))
+	result.state = State.FAILED if state_index < 0 else state_index as State
 	result.error = serialized.get("error", "")
 	result.n = serialized.get("n", 0)
 	result.rounds = serialized.get("rounds", 0)

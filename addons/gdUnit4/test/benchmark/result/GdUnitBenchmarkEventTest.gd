@@ -53,7 +53,7 @@ func test_benchmark_before() -> void:
 
 	assert_int(restored.type).is_equal(GdUnitBenchmarkEvent.Type.BENCHMARK_BEFORE)
 	assert_str(restored.resource_path).is_equal(RESOURCE_PATH)
-	assert_str(restored.guid).is_equal(str(guid))
+	assert_bool(GdUnitGUID.new(restored.guid).equals(guid)).is_true()
 	assert_object(restored.result).is_null()
 
 
@@ -65,7 +65,7 @@ func test_benchmark_after() -> void:
 
 	assert_int(restored.type).is_equal(GdUnitBenchmarkEvent.Type.BENCHMARK_AFTER)
 	assert_str(restored.resource_path).is_equal(RESOURCE_PATH)
-	assert_str(restored.guid).is_equal(str(guid))
+	assert_bool(GdUnitGUID.new(restored.guid).equals(guid)).is_true()
 	assert_dict(restored.result.serialize()).is_equal(event.result.serialize())
 	assert_dict(restored.result.parameters).is_equal({ "size": 10 })
 	assert_object(restored.environment).is_null()
@@ -86,4 +86,34 @@ func test_session_close() -> void:
 	assert_str(restored.guid).is_empty()
 	assert_object(restored.environment).is_null()
 	assert_object(restored.result).is_null()
+#endregion
+
+
+#region serialize
+func test_serialize_keys() -> void:
+	assert_dict(GdUnitBenchmarkEvent.suite_before(RESOURCE_PATH).serialize()) \
+		.is_equal({ "type": GdUnitBenchmarkEvent.Type.SUITE_BEFORE, "resource_path": RESOURCE_PATH, "guid": "" })
+
+
+func test_serialize_includes_result() -> void:
+	var serialized := GdUnitBenchmarkEvent.benchmark_after(RESOURCE_PATH, GdUnitGUID.new(), _result()).serialize()
+
+	assert_dict(serialized).contains_keys("type", "resource_path", "guid", "result").not_contains_keys("environment")
+
+
+func test_serialize_includes_environment() -> void:
+	var serialized := GdUnitBenchmarkEvent.session_start(GdUnitBenchmarkEnvironment.current(false)).serialize()
+
+	assert_dict(serialized).contains_keys("environment").not_contains_keys("result")
+#endregion
+
+
+#region deserialize
+func test_deserialize_empty() -> void:
+	assert_that(GdUnitBenchmarkEvent.deserialize({})).is_equal(GdUnitBenchmarkEvent.new())
+
+
+func test_deserialize_type_out_of_range() -> void:
+	assert_int(GdUnitBenchmarkEvent.deserialize({ "type": 99 }).type).is_equal(GdUnitBenchmarkEvent.Type.SESSION_CLOSE)
+	assert_int(GdUnitBenchmarkEvent.deserialize({ "type": -1 }).type).is_equal(GdUnitBenchmarkEvent.Type.SESSION_START)
 #endregion

@@ -362,7 +362,7 @@ Fewer than 2 values after 1: StdDev, Error, RatioSD `NA`. NA is `NAN`. The basel
 
 ```json
 {
-    "suite": "res://test/benchmarks/ArrayBenchmark.gd",
+    "resource_path": "res://test/benchmarks/ArrayBenchmark.gd",
     "benchmark": "bench_sort",
     "display_name": "bench_sort [size=10]",
     "parameters": { "size": 10 },
@@ -412,7 +412,7 @@ transport stringify with `sort_keys = false` and `full_precision = true`, the pa
 
 `GdUnitBenchmarkEvent`: `SESSION_START` (environment), `SUITE_BEFORE`, `BENCHMARK_BEFORE`, `BENCHMARK_AFTER`
 (result), `SUITE_AFTER`, `SESSION_CLOSE`. Emitted by `GdUnitBenchmarkSignals.benchmark_event(event)`. Serialized
-as `type`, `suite`, `guid` of the `GdUnitTestCase`, `environment`, `result`.
+as `type`, `resource_path`, `guid` of the `GdUnitTestCase`, `environment`, `result`.
 
 Editor runner: every event as `RPCGdUnitBenchmarkEvent` over the editor TCP connection, re-emitted on
 `GdUnitBenchmarkSignals` by the branch in `GdUnitServer._receive_rpc_data`.

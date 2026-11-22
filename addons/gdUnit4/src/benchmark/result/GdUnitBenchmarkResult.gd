@@ -10,7 +10,7 @@ enum State {
 const STATE_NAMES: Array[String] = ["measured", "failed", "skipped"]
 const JSON_TYPES: Array[int] = [TYPE_NIL, TYPE_BOOL, TYPE_INT, TYPE_FLOAT, TYPE_STRING]
 
-var suite := ""
+var resource_path := ""
 var benchmark := ""
 var display_name := ""
 var parameters := {}
@@ -45,7 +45,7 @@ func set_samples(values: PackedFloat64Array) -> void:
 func serialize() -> Dictionary:
 	var serialized_parameters := _serialize_parameters()
 	return {
-		"suite": suite,
+		"resource_path": resource_path,
 		"benchmark": benchmark,
 		"display_name": display_name,
 		"parameters": serialized_parameters,
@@ -74,7 +74,7 @@ func serialize() -> Dictionary:
 
 static func deserialize(serialized: Dictionary) -> GdUnitBenchmarkResult:
 	var result := GdUnitBenchmarkResult.new()
-	result.suite = serialized.get("suite", "")
+	result.resource_path = serialized.get("resource_path", "")
 	result.benchmark = serialized.get("benchmark", "")
 	result.display_name = serialized.get("display_name", "")
 	var types: Dictionary = serialized.get("parameter_types", {})

@@ -12,7 +12,7 @@ static func json_round_trip(serialized: Dictionary) -> Dictionary:
 
 func _measured_result() -> GdUnitBenchmarkResult:
 	var result := GdUnitBenchmarkResult.new()
-	result.suite = "res://test/benchmarks/ArrayBenchmark.gd"
+	result.resource_path = "res://test/benchmarks/ArrayBenchmark.gd"
 	result.benchmark = "bench_sort"
 	result.display_name = "bench_sort [size=10, factor=2.0, name=small]"
 	result.parameters = { "size": 10, "factor": 2.0, "name": "small" }
@@ -79,7 +79,7 @@ func test_round_trip_measured() -> void:
 	var restored := GdUnitBenchmarkResult.deserialize(json_round_trip(result.serialize()))
 
 	assert_dict(restored.serialize()).is_equal(result.serialize())
-	assert_str(restored.suite).is_equal("res://test/benchmarks/ArrayBenchmark.gd")
+	assert_str(restored.resource_path).is_equal("res://test/benchmarks/ArrayBenchmark.gd")
 	assert_str(restored.benchmark).is_equal("bench_sort")
 	assert_str(restored.display_name).is_equal("bench_sort [size=10, factor=2.0, name=small]")
 	assert_int(restored.state).is_equal(GdUnitBenchmarkResult.State.MEASURED)

@@ -1,7 +1,7 @@
 class_name GdUnitBenchmarkEventTest
 extends GdUnitTestSuite
 
-const SUITE := "res://test/benchmarks/ArrayBenchmark.gd"
+const RESOURCE_PATH := "res://test/benchmarks/ArrayBenchmark.gd"
 
 
 func _round_trip(event: GdUnitBenchmarkEvent) -> GdUnitBenchmarkEvent:
@@ -10,7 +10,7 @@ func _round_trip(event: GdUnitBenchmarkEvent) -> GdUnitBenchmarkEvent:
 
 func _result() -> GdUnitBenchmarkResult:
 	var result := GdUnitBenchmarkResult.new()
-	result.suite = SUITE
+	result.resource_path = RESOURCE_PATH
 	result.benchmark = "bench_find"
 	result.display_name = "bench_find [size=10]"
 	result.parameters = { "size": 10 }
@@ -38,10 +38,10 @@ func test_session_start() -> void:
 
 
 func test_suite_before() -> void:
-	var restored := _round_trip(GdUnitBenchmarkEvent.suite_before(SUITE))
+	var restored := _round_trip(GdUnitBenchmarkEvent.suite_before(RESOURCE_PATH))
 
 	assert_int(restored.type).is_equal(GdUnitBenchmarkEvent.Type.SUITE_BEFORE)
-	assert_str(restored.suite).is_equal(SUITE)
+	assert_str(restored.resource_path).is_equal(RESOURCE_PATH)
 	assert_object(restored.environment).is_null()
 	assert_object(restored.result).is_null()
 
@@ -49,22 +49,22 @@ func test_suite_before() -> void:
 func test_benchmark_before() -> void:
 	var guid := GdUnitGUID.new()
 
-	var restored := _round_trip(GdUnitBenchmarkEvent.benchmark_before(SUITE, guid))
+	var restored := _round_trip(GdUnitBenchmarkEvent.benchmark_before(RESOURCE_PATH, guid))
 
 	assert_int(restored.type).is_equal(GdUnitBenchmarkEvent.Type.BENCHMARK_BEFORE)
-	assert_str(restored.suite).is_equal(SUITE)
+	assert_str(restored.resource_path).is_equal(RESOURCE_PATH)
 	assert_str(restored.guid).is_equal(str(guid))
 	assert_object(restored.result).is_null()
 
 
 func test_benchmark_after() -> void:
 	var guid := GdUnitGUID.new()
-	var event := GdUnitBenchmarkEvent.benchmark_after(SUITE, guid, _result())
+	var event := GdUnitBenchmarkEvent.benchmark_after(RESOURCE_PATH, guid, _result())
 
 	var restored := _round_trip(event)
 
 	assert_int(restored.type).is_equal(GdUnitBenchmarkEvent.Type.BENCHMARK_AFTER)
-	assert_str(restored.suite).is_equal(SUITE)
+	assert_str(restored.resource_path).is_equal(RESOURCE_PATH)
 	assert_str(restored.guid).is_equal(str(guid))
 	assert_dict(restored.result.serialize()).is_equal(event.result.serialize())
 	assert_dict(restored.result.parameters).is_equal({ "size": 10 })
@@ -72,17 +72,17 @@ func test_benchmark_after() -> void:
 
 
 func test_suite_after() -> void:
-	var restored := _round_trip(GdUnitBenchmarkEvent.suite_after(SUITE))
+	var restored := _round_trip(GdUnitBenchmarkEvent.suite_after(RESOURCE_PATH))
 
 	assert_int(restored.type).is_equal(GdUnitBenchmarkEvent.Type.SUITE_AFTER)
-	assert_str(restored.suite).is_equal(SUITE)
+	assert_str(restored.resource_path).is_equal(RESOURCE_PATH)
 
 
 func test_session_close() -> void:
 	var restored := _round_trip(GdUnitBenchmarkEvent.session_close())
 
 	assert_int(restored.type).is_equal(GdUnitBenchmarkEvent.Type.SESSION_CLOSE)
-	assert_str(restored.suite).is_empty()
+	assert_str(restored.resource_path).is_empty()
 	assert_str(restored.guid).is_empty()
 	assert_object(restored.environment).is_null()
 	assert_object(restored.result).is_null()

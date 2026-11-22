@@ -14,7 +14,7 @@ var debugger_active := false
 var time := ""
 
 
-static func current(is_debugger_active := EngineDebugger.is_active()) -> GdUnitBenchmarkEnvironment:
+static func current() -> GdUnitBenchmarkEnvironment:
 	var environment := GdUnitBenchmarkEnvironment.new()
 	environment.gdunit4_version = str(GdUnit4Version.current())
 	environment.godot_version = _godot_version(Engine.get_version_info())
@@ -25,7 +25,7 @@ static func current(is_debugger_active := EngineDebugger.is_active()) -> GdUnitB
 	environment.processor_name = OS.get_processor_name()
 	environment.processor_count = OS.get_processor_count()
 	environment.headless = DisplayServer.get_name() == "headless"
-	environment.debugger_active = is_debugger_active
+	environment.debugger_active = EngineDebugger.is_active()
 	environment.time = Time.get_datetime_string_from_system(true)
 	return environment
 

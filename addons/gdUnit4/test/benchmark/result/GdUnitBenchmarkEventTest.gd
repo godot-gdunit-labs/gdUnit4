@@ -27,23 +27,15 @@ func _result() -> GdUnitBenchmarkResult:
 
 #region round trip
 func test_session_start() -> void:
-	var event := GdUnitBenchmarkEvent.session_start(GdUnitBenchmarkEnvironment.current(true))
+	var event := GdUnitBenchmarkEvent.session_start(GdUnitBenchmarkEnvironment.current())
 
-	var restored := _round_trip(event)
-
-	assert_int(restored.type).is_equal(GdUnitBenchmarkEvent.Type.SESSION_START)
-	assert_that(restored.environment).is_equal(event.environment)
-	assert_object(restored.result).is_null()
-	assert_dict(restored.serialize()).is_equal(event.serialize())
+	assert_that(_round_trip(event)).is_equal(event)
 
 
 func test_suite_before() -> void:
-	var restored := _round_trip(GdUnitBenchmarkEvent.suite_before(RESOURCE_PATH))
+	var event := GdUnitBenchmarkEvent.suite_before(RESOURCE_PATH)
 
-	assert_int(restored.type).is_equal(GdUnitBenchmarkEvent.Type.SUITE_BEFORE)
-	assert_str(restored.resource_path).is_equal(RESOURCE_PATH)
-	assert_object(restored.environment).is_null()
-	assert_object(restored.result).is_null()
+	assert_that(_round_trip(event)).is_equal(event)
 
 
 func test_benchmark_before() -> void:
@@ -51,10 +43,8 @@ func test_benchmark_before() -> void:
 
 	var restored := _round_trip(GdUnitBenchmarkEvent.benchmark_before(RESOURCE_PATH, guid))
 
-	assert_int(restored.type).is_equal(GdUnitBenchmarkEvent.Type.BENCHMARK_BEFORE)
-	assert_str(restored.resource_path).is_equal(RESOURCE_PATH)
+	assert_that(restored).is_equal(GdUnitBenchmarkEvent.new(GdUnitBenchmarkEvent.Type.BENCHMARK_BEFORE, RESOURCE_PATH, str(guid)))
 	assert_bool(GdUnitGUID.new(restored.guid).equals(guid)).is_true()
-	assert_object(restored.result).is_null()
 
 
 func test_benchmark_after() -> void:
@@ -66,26 +56,21 @@ func test_benchmark_after() -> void:
 	assert_int(restored.type).is_equal(GdUnitBenchmarkEvent.Type.BENCHMARK_AFTER)
 	assert_str(restored.resource_path).is_equal(RESOURCE_PATH)
 	assert_bool(GdUnitGUID.new(restored.guid).equals(guid)).is_true()
-	assert_dict(restored.result.serialize()).is_equal(event.result.serialize())
-	assert_dict(restored.result.parameters).is_equal({ "size": 10 })
 	assert_object(restored.environment).is_null()
+	assert_that(restored.result).is_equal(event.result)
+	assert_dict(restored.result.parameters).is_equal({ "size": 10 })
 
 
 func test_suite_after() -> void:
-	var restored := _round_trip(GdUnitBenchmarkEvent.suite_after(RESOURCE_PATH))
+	var event := GdUnitBenchmarkEvent.suite_after(RESOURCE_PATH)
 
-	assert_int(restored.type).is_equal(GdUnitBenchmarkEvent.Type.SUITE_AFTER)
-	assert_str(restored.resource_path).is_equal(RESOURCE_PATH)
+	assert_that(_round_trip(event)).is_equal(event)
 
 
 func test_session_close() -> void:
-	var restored := _round_trip(GdUnitBenchmarkEvent.session_close())
+	var event := GdUnitBenchmarkEvent.session_close()
 
-	assert_int(restored.type).is_equal(GdUnitBenchmarkEvent.Type.SESSION_CLOSE)
-	assert_str(restored.resource_path).is_empty()
-	assert_str(restored.guid).is_empty()
-	assert_object(restored.environment).is_null()
-	assert_object(restored.result).is_null()
+	assert_that(_round_trip(event)).is_equal(event)
 #endregion
 
 
@@ -102,7 +87,7 @@ func test_serialize_includes_result() -> void:
 
 
 func test_serialize_includes_environment() -> void:
-	var serialized := GdUnitBenchmarkEvent.session_start(GdUnitBenchmarkEnvironment.current(false)).serialize()
+	var serialized := GdUnitBenchmarkEvent.session_start(GdUnitBenchmarkEnvironment.current()).serialize()
 
 	assert_dict(serialized).contains_keys("environment").not_contains_keys("result")
 #endregion

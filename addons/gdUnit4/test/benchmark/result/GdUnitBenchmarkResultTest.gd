@@ -30,19 +30,38 @@ func _measured_result() -> GdUnitBenchmarkResult:
 
 #region serialize
 func test_serialize_measured() -> void:
-	var serialized := _measured_result().serialize()
+	var result := _measured_result()
 
+	var serialized := result.serialize()
+
+	assert_array(serialized.keys()).contains_exactly([
+		"resource_path", "benchmark", "display_name", "parameters", "parameter_types", "baseline", "async", "state", "error",
+		"n", "rounds", "warmup", "overhead_ns", "samples_ns", "outliers_ns", "mean_ns", "error_ns", "stddev_ns", "median_ns",
+		"min_ns", "max_ns", "ratio", "ratio_sd", "hints",
+	])
+	assert_str(serialized["resource_path"]).is_equal("res://test/benchmarks/ArrayBenchmark.gd")
+	assert_str(serialized["benchmark"]).is_equal("bench_sort")
+	assert_str(serialized["display_name"]).is_equal("bench_sort [size=10, factor=2.0, name=small]")
+	assert_bool(serialized["baseline"]).is_false()
 	assert_str(serialized["state"]).is_equal("measured")
+	assert_str(serialized["error"]).is_empty()
+	assert_int(serialized["n"]).is_equal(120_000)
+	assert_int(serialized["rounds"]).is_equal(10)
+	assert_int(serialized["warmup"]).is_equal(3)
+	assert_float(serialized["overhead_ns"]).is_equal(86.0)
 	assert_dict(serialized["parameters"]).is_equal({ "size": 10, "factor": 2.0, "name": "small" })
 	assert_dict(serialized["parameter_types"]).is_equal({ "size": TYPE_INT, "factor": TYPE_FLOAT, "name": TYPE_STRING })
 	assert_bool(serialized["async"]).is_true()
 	assert_array(serialized["samples_ns"]).contains_exactly(SAMPLES)
 	assert_array(serialized["outliers_ns"]).contains_exactly([552.0])
 	assert_float(serialized["mean_ns"]).is_equal_approx(388.444444, 0.000001)
+	assert_float(serialized["error_ns"]).is_equal(result.statistics().error)
+	assert_float(serialized["stddev_ns"]).is_equal(result.statistics().stddev)
 	assert_float(serialized["median_ns"]).is_equal(388.3)
 	assert_float(serialized["min_ns"]).is_equal(387.7)
 	assert_float(serialized["max_ns"]).is_equal(389.4)
 	assert_float(serialized["ratio"]).is_equal(3.23)
+	assert_float(serialized["ratio_sd"]).is_equal(0.1)
 	assert_array(serialized["hints"]).contains_exactly(["1 outlier was removed (0.552 µs)"])
 
 
@@ -98,7 +117,6 @@ func test_round_trip_measured() -> void:
 func test_round_trip_keeps_int_types() -> void:
 	var restored := GdUnitBenchmarkResult.deserialize(json_round_trip(_measured_result().serialize()))
 
-	assert_int(typeof(restored.n)).is_equal(TYPE_INT)
 	assert_int(restored.n).is_equal(120_000)
 	assert_int(restored.rounds).is_equal(10)
 	assert_int(restored.warmup).is_equal(3)
@@ -175,8 +193,8 @@ func test_deserialize_parameters_without_types() -> void:
 #region float values
 func test_serialize_float() -> void:
 	assert_that(GdUnitBenchmarkResult.serialize_float(NA)).is_null()
-	assert_that(GdUnitBenchmarkResult.serialize_float(0.0)).is_equal(0.0)
-	assert_that(GdUnitBenchmarkResult.serialize_float(1.5)).is_equal(1.5)
+	assert_float(GdUnitBenchmarkResult.serialize_float(0.0)).is_equal(0.0)
+	assert_float(GdUnitBenchmarkResult.serialize_float(1.5)).is_equal(1.5)
 
 
 func test_deserialize_float() -> void:

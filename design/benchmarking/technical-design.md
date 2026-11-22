@@ -362,10 +362,11 @@ Fewer than 2 values after 1: StdDev, Error, RatioSD `NA`. NA is `NAN`. The basel
 
 ```json
 {
-    "suite": "res://test/benchmarks/ArrayBenchmark.gd",
+    "resource_path": "res://test/benchmarks/ArrayBenchmark.gd",
     "benchmark": "bench_sort",
     "display_name": "bench_sort [size=10]",
     "parameters": { "size": 10 },
+    "parameter_types": { "size": 2 },
     "baseline": false,
     "async": false,
     "state": "measured",
@@ -390,6 +391,10 @@ Fewer than 2 values after 1: StdDev, Error, RatioSD `NA`. NA is `NAN`. The basel
 
 `state`: `measured`, `failed`, `skipped`. `results.json`: `schema_version`, environment, results.
 
+NA is `null`. `parameter_types` holds `typeof` per key, JSON reads every number as `float`. Values other than
+`bool`, `int`, `float`, `String` as text. `deserialize` computes the statistics from `samples_ns` again. Writers and
+transport stringify with `sort_keys = false` and `full_precision = true`, the parameter order gives the report columns.
+
 `GdUnitBenchmarkEnvironment`, once per run:
 
 | Value    | Source                                                |
@@ -406,7 +411,8 @@ Fewer than 2 values after 1: StdDev, Error, RatioSD `NA`. NA is `NAN`. The basel
 ## Events and transport
 
 `GdUnitBenchmarkEvent`: `SESSION_START` (environment), `SUITE_BEFORE`, `BENCHMARK_BEFORE`, `BENCHMARK_AFTER`
-(result), `SUITE_AFTER`, `SESSION_CLOSE`. Emitted by `GdUnitBenchmarkSignals.benchmark_event(event)`.
+(result), `SUITE_AFTER`, `SESSION_CLOSE`. Emitted by `GdUnitBenchmarkSignals.benchmark_event(event)`. Serialized
+as `type`, `resource_path`, `guid` of the `GdUnitTestCase`, `environment`, `result`.
 
 Editor runner: every event as `RPCGdUnitBenchmarkEvent` over the editor TCP connection, re-emitted on
 `GdUnitBenchmarkSignals` by the branch in `GdUnitServer._receive_rpc_data`.

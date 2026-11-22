@@ -15,7 +15,7 @@ Feature issue: #1532.
 | Step | Issue | Content                           | Needs      | PR    |
 | ---- | ----- | --------------------------------- | ---------- | ----- |
 | 0    | #1552 | Design documents                  | -          | #1553 |
-| 1    | #1533 | Statistics                        | 0          |       |
+| 1    | #1533 | Statistics                        | 0          | #1555 |
 | 2    | #1534 | Result model, environment, events | 1          |       |
 | 3    | #1535 | `GdUnitBenchmarkSuite`            | 0          |       |
 | 4    | #1536 | Benchmark configuration           | 3          |       |

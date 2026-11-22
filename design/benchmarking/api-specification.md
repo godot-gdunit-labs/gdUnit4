@@ -141,6 +141,8 @@ func _new_level() -> Level:
   of the suite. Its member initializers run again, outside the measurement.
 - Reported: time per call. Upper outliers removed before `Mean` and `Error`.
 - Editor binary runs GDScript as debug build, not comparable with exported games. Header shows the build.
+- An active debugger (`-d` without a remote debugger) makes the body about 2× slower. Header shows `debugger`, plus a
+  hint. `runtest.sh` and the editor run have none.
 
 ## Errors
 
@@ -208,13 +210,14 @@ Legend
   1 µs    : 1 Microsecond (0.000001 sec)
 ```
 
-- Header: GdUnit4 version, OS, CPU, Godot version, build (editor/template, debug/release), headless.
+- Header: GdUnit4 version, OS, CPU, Godot version, build (editor/template, debug/release), `debugger` when active,
+  headless.
 - One table per suite. Columns: `Benchmark` (name without `bench_`), one per parameter key, `Mean`, `Error`,
   `StdDev`, `Ratio` and `RatioSD` with a baseline, `N`.
 - One time unit per table from the smallest mean: ns, µs, ms, s.
 - `Ratio` against the baseline with equal parameter values, `?` without one.
 - Value columns: `NA` failed, `skipped` skipped.
-- Hints: removed outliers, close to call overhead, async, errors. Legend: shown columns only.
+- Hints: active debugger, removed outliers, close to call overhead, async, errors. Legend: shown columns only.
 
 | Output                   | Content                                                   |
 | ------------------------ | --------------------------------------------------------- |

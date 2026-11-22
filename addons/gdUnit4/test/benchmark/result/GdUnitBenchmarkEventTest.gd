@@ -1,0 +1,89 @@
+class_name GdUnitBenchmarkEventTest
+extends GdUnitTestSuite
+
+const SUITE := "res://test/benchmarks/ArrayBenchmark.gd"
+
+
+func _round_trip(event: GdUnitBenchmarkEvent) -> GdUnitBenchmarkEvent:
+	return GdUnitBenchmarkEvent.deserialize(GdUnitBenchmarkResultTest.json_round_trip(event.serialize()))
+
+
+func _result() -> GdUnitBenchmarkResult:
+	var result := GdUnitBenchmarkResult.new()
+	result.suite = SUITE
+	result.benchmark = "bench_find"
+	result.display_name = "bench_find [size=10]"
+	result.parameters = { "size": 10 }
+	result.baseline = true
+	result.n = 400_000
+	result.rounds = 10
+	result.warmup = 3
+	result.overhead_ns = 86.0
+	result.set_samples(PackedFloat64Array([120.1, 119.8, 120.4, 120.0]))
+	result.ratio = 1.0
+	result.ratio_sd = 0.0
+	return result
+
+
+#region round trip
+func test_session_start() -> void:
+	var event := GdUnitBenchmarkEvent.session_start(GdUnitBenchmarkEnvironment.current(true))
+
+	var restored := _round_trip(event)
+
+	assert_int(restored.type).is_equal(GdUnitBenchmarkEvent.Type.SESSION_START)
+	assert_that(restored.environment).is_equal(event.environment)
+	assert_object(restored.result).is_null()
+	assert_dict(restored.serialize()).is_equal(event.serialize())
+
+
+func test_suite_before() -> void:
+	var restored := _round_trip(GdUnitBenchmarkEvent.suite_before(SUITE))
+
+	assert_int(restored.type).is_equal(GdUnitBenchmarkEvent.Type.SUITE_BEFORE)
+	assert_str(restored.suite).is_equal(SUITE)
+	assert_object(restored.environment).is_null()
+	assert_object(restored.result).is_null()
+
+
+func test_benchmark_before() -> void:
+	var guid := GdUnitGUID.new()
+
+	var restored := _round_trip(GdUnitBenchmarkEvent.benchmark_before(SUITE, guid))
+
+	assert_int(restored.type).is_equal(GdUnitBenchmarkEvent.Type.BENCHMARK_BEFORE)
+	assert_str(restored.suite).is_equal(SUITE)
+	assert_str(restored.guid).is_equal(str(guid))
+	assert_object(restored.result).is_null()
+
+
+func test_benchmark_after() -> void:
+	var guid := GdUnitGUID.new()
+	var event := GdUnitBenchmarkEvent.benchmark_after(SUITE, guid, _result())
+
+	var restored := _round_trip(event)
+
+	assert_int(restored.type).is_equal(GdUnitBenchmarkEvent.Type.BENCHMARK_AFTER)
+	assert_str(restored.suite).is_equal(SUITE)
+	assert_str(restored.guid).is_equal(str(guid))
+	assert_dict(restored.result.serialize()).is_equal(event.result.serialize())
+	assert_dict(restored.result.parameters).is_equal({ "size": 10 })
+	assert_object(restored.environment).is_null()
+
+
+func test_suite_after() -> void:
+	var restored := _round_trip(GdUnitBenchmarkEvent.suite_after(SUITE))
+
+	assert_int(restored.type).is_equal(GdUnitBenchmarkEvent.Type.SUITE_AFTER)
+	assert_str(restored.suite).is_equal(SUITE)
+
+
+func test_session_close() -> void:
+	var restored := _round_trip(GdUnitBenchmarkEvent.session_close())
+
+	assert_int(restored.type).is_equal(GdUnitBenchmarkEvent.Type.SESSION_CLOSE)
+	assert_str(restored.suite).is_empty()
+	assert_str(restored.guid).is_empty()
+	assert_object(restored.environment).is_null()
+	assert_object(restored.result).is_null()
+#endregion

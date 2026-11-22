@@ -134,7 +134,8 @@ func _new_level() -> Level:
 
 - Clock `Time.get_ticks_usec()`, not the script profiler.
 - N calibrated to rounds of at least 50 ms, N = 1 for longer calls.
-- Call overhead measured per benchmark and subtracted.
+- Call overhead measured per benchmark and subtracted, with a copy of the function without body on a second instance
+  of the suite. Its member initializers run again, outside the measurement, `_init()` and `_ready()` don't.
 - Reported: time per call. Upper outliers removed before `Mean` and `Error`.
 - Editor binary runs GDScript as debug build, not comparable with exported games. Header shows the build.
 

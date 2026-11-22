@@ -100,8 +100,6 @@ Tests: `addons/gdUnit4/test/benchmark/`, discovery fixtures in `test/benchmark/r
 - `setup()`, `cleanup()` empty. The executor checks the script for overrides.
 - `auto_free(obj)` appends to `__auto_free`. Freed after `cleanup()`: valid nodes with `free()`, `RefCounted` by
   dropping the reference.
-- `__empty_0() -> void` to `__empty_8(...) -> void`: overhead references, one per argument count, untyped arguments
-  without defaults. 8 = `input` value plus 7 configuration arguments.
 
 ## Discovery
 
@@ -244,8 +242,39 @@ Clock around the call: smallest spread. Inputs ahead lose the CPU cache. 0/1 µs
 
 ### Overhead
 
-Per benchmark, same instance, mode and argument array: `__empty_<k>` with k = argument count, 3 rounds with the
-calibrated N, median. Async uses the sync overhead. Mean below 2 × overhead: hint "close to the call overhead".
+Per benchmark, a copy of the function without body on a temporary script:
+
+```gdscript
+extends "res://test/benchmarks/ArrayBenchmark.gd"
+
+
+func _init() -> void:
+    pass
+
+
+func __overhead(_values: Array, _parameters: Dictionary, _input: Callable) -> void:
+    pass
+```
+
+- Built by `GdUnitBenchmarkMeasurement` from the `GdFunctionDescriptor`: same argument names and types, no defaults,
+  inferred types written out (`rounds := 10` gives `int`, `input := _shuffled` gives `Callable`).
+- `extends` the suite script, so inner classes, `class_name` and `preload` constants of the suite resolve.
+- `_init()` without `super()` skips the `_init()` of the suite. Member initializers of the suite still run (Godot
+  4.7.2), `@onready` does not, the instance never enters the tree.
+- One instance, not added to the tree, called with the same argument array, 3 rounds with the calibrated N, median.
+  Freed after the measurement.
+- Async uses the sync overhead. Mean below 2 × overhead: hint "close to the call overhead".
+
+Probe, Godot 4.7.2, 5 arguments:
+
+| Reference                                          | ns/call     |
+| -------------------------------------------------- | ----------- |
+| Empty function in the suite, typed arguments       | 194         |
+| Empty function in the suite, untyped arguments     | 172         |
+| Standalone script (`extends Node`), untyped        | 166         |
+| Standalone script (`extends Node`), typed          | 202         |
+| Temporary script extending the suite, typed copy   | 194         |
+| Standalone script with an inner class of the suite | parse error |
 
 ### Calibration
 
@@ -393,4 +422,5 @@ Godot 4.7, 4.7.1, 4.8 (`master` row of `README.md`). APIs: `Time.get_ticks_usec`
   in `GdUnitBenchmarkInspectorTree`.
 - A parameter function with different results in editor and runner changes the combinations. Count check in the
   executor, values may still differ.
+- The overhead instance runs the member initializers of the suite a second time, outside the measurement.
 - `--benchmark` is unknown to older GdUnit4 versions.

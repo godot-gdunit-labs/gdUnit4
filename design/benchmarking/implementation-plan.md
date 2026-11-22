@@ -63,8 +63,9 @@ Also tested:
 
 - Step 8: `_ready()` sees the parameter values, combination count differs from the discovery, `push_error` and script
   errors fail, `printerr` and `push_warning` don't.
-- Step 9: default expressions never run (call counter in `parameters := _sizes()`), overhead reference matches the
-  argument count, an error in the probe call stops before calibration.
+- Step 9: default expressions never run (call counter in `parameters := _sizes()`), overhead copy has the
+  argument names and types (inferred types written out, inner class of the suite), an error in the probe call stops
+  before calibration.
 
 Probes: step 7 first checks that `unused_parameter` disabled before `ResourceLoader.load` suppresses the warning on
 first load, also in the editor runner process. Step 10 first checks that `callv` on an awaiting body returns

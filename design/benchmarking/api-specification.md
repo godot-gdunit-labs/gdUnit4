@@ -55,7 +55,7 @@ func _shuffled() -> Array:
 
 ## Benchmark functions
 
-- Prefix `bench_`. The body is the measured unit, no loop.
+- Prefix `bench_`, return type `-> void` required. The body is the measured unit, no loop.
 - Called repeatedly on the same instance, member changes persist between calls.
 - Configuration by default arguments, read by the discovery. The executor passes the read values on every call, a
   default expression never runs per call. A leading `_` is allowed. `UNUSED_PARAMETER` is not reported while loading.
@@ -147,7 +147,8 @@ func _new_level() -> Level:
 A benchmark fails, the others continue, on:
 
 - Godot virtual method overridden in the suite or a base script: all benchmarks of the suite, found by the discovery,
-- unknown argument, second baseline, arguments without default not matching `input`,
+- return type other than `-> void`, unknown argument, second baseline, arguments without default not matching
+  `input`,
 - parameter key not a member, untyped member, value not matching the type,
 - script error or `push_error` in `setup()`, `input`, body or `cleanup()`.
 

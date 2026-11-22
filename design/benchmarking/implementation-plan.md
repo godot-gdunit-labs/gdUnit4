@@ -62,16 +62,20 @@ Feature issue: #1532.
 Also tested:
 
 - Step 4: `_init()`, `_ready()`, `_process()`, `_notification()` in the suite or a base script fail every benchmark of
-  the suite with the line, helper functions with `_` prefix don't.
-- Step 8: parameter values set before the instance enters the tree, combination count differs from the discovery, `push_error` and script
-  errors fail, `printerr` and `push_warning` don't.
+  the suite with the line, helper functions with `_` prefix don't. No return type, `-> Variant`, `-> int` fail,
+  `-> void` passes.
+- Step 8: parameter values set before the instance enters the tree, combination count differs from the discovery,
+  `push_error` and script errors fail, `printerr` and `push_warning` don't.
 - Step 9: default expressions never run (call counter in `parameters := _sizes()`), overhead copy has the
   argument names and types (inferred types written out, inner class of the suite), an error in the probe call stops
   before calibration.
+- Step 10: mode from `is_coroutine()` (coroutine called without `await`, `await` in a lambda), several and nested
+  `await`, `await` behind a condition measured per call, `input` value released after the awaited call, a state on a
+  sync benchmark in the probe call fails it, no pending state at `cleanup()`.
 
 Probes: step 7 first checks that `unused_parameter` disabled before `ResourceLoader.load` suppresses the warning on
 first load, also in the editor runner process. Step 10 first checks that `callv` on an awaiting body returns
-`GDScriptFunctionState` on Godot 4.7, 4.7.1, 4.8 (4.7.2 verified). Results into the design.
+`GDScriptFunctionState` on Godot 4.7, 4.7.1, 4.8 (4.7.2 verified, see "Async"). Results into the design.
 
 Step 18: `documentation/doc/_advanced_testing/benchmarking.md` covering the specification, `--benchmark` on the
 command line page. Point out explicitly: the `input` value is freed by the executor after every call, no

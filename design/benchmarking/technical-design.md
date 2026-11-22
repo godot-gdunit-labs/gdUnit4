@@ -117,7 +117,9 @@ Tests: `addons/gdUnit4/test/benchmark/`, discovery fixtures in `test/benchmark/r
 
 `discover(script)` reads `bench_*` with `GdScriptParser.get_function_descriptors`. Per function:
 
-1. `GdUnitBenchmarkConfig` from the default arguments, names trimmed of `_`.
+1. `GdUnitBenchmarkConfig` from the default arguments, names trimmed of `_`. Return type `-> void` required: entry
+   `return` of `script.get_script_method_list()` with `type == TYPE_NIL` and `usage == 0`. No return type and
+   `-> Variant` give `PROPERTY_USAGE_NIL_IS_VARIANT`, other types their `type` (Godot 4.7.2). Otherwise the case fails.
 2. `GdUnitBenchmarkConfig` of `setup()` for suite `do_skip` / `skip_reason`, and the suite check: a name of
    `script.get_script_method_list()` that `ClassDB.class_get_method_list(script.get_instance_base_type())` lists with
    `METHOD_FLAG_VIRTUAL` fails every case of the suite, line by `GdScriptParser`. Covers `_init`, `_notification`,
@@ -183,35 +185,57 @@ Arguments prepared once (an array per call costs ~60 ns): one value per declared
 configuration values as read by `GdUnitBenchmarkConfig` (`input` as `Callable` on the instance, `parameters` as the
 resolved dictionary). GDScript evaluates a default expression on every call without the argument.
 
-Without `input`:
+Two flags, both known before calibration: `has_input` from the configuration, `is_async` from
+`GdFunctionDescriptor.is_coroutine()` (`await` in the function body). Calibration and measurement run the same loop.
+
+One clock per round, sync without `input`:
 
 ```gdscript
-var arguments := _config.call_arguments(suite)
 var start := _clock.now_usec()
 for i in n:
     suite.callv(function_name, arguments)
 var round_usec := _clock.now_usec() - start
 ```
 
-With `input`, slot 0 holds the value:
+One clock per call, with `input` or async, slot 0 holds the `input` value:
 
 ```gdscript
-var arguments := _config.call_arguments(suite)
 var round_usec := 0
 for i in n:
-    arguments[0] = input.call()
+    if has_input:
+        arguments[0] = input.call()
     var start := _clock.now_usec()
-    suite.callv(function_name, arguments)
+    var state: Variant = suite.callv(function_name, arguments)
+    if is_async and state != null:
+        await state
     round_usec += _clock.now_usec() - start
-    _release(arguments[0])
-    arguments[0] = null
+    if has_input:
+        _release(arguments[0])
+        arguments[0] = null
 ```
 
-`_release(value)` after every call, outside the measurement: `Node` removed from its parent and freed, other
-`Object` freed, `RefCounted` released by clearing the argument. Async: after the awaited call.
+`_release(value)` after every call, outside the measurement and after the awaited call, the body may use the value
+after its `await`: `Node` removed from its parent and freed, other `Object` freed, `RefCounted` released by clearing
+the argument.
 
-Async: `callv` returns `GDScriptFunctionState` when the body awaits (verified Godot 4.7.2). Detected on the first awaiting call, then
-`await suite.callv(...)` at the same place and calibration restarts. Sync benchmarks never `await`.
+#### Async
+
+The body is `-> void` (checked in "Cases"), so `callv` returns `null` or, on its first `await`, a
+`GDScriptFunctionState` (Godot 4.7.2):
+
+- Only an `await` in the body itself suspends it. A coroutine called without `await` or an `await` inside a lambda
+  returns `null`.
+- `await` on the state returns after the whole body, also with several and nested `await` (3 `await`, one in a
+  helper function: 3 frames).
+- An `await` behind a condition returns `null` and the state mixed, both measured right by the per call loop.
+- `!= null` is the whole check. `is GDScriptFunctionState` is a parse error, the type can't be named in GDScript.
+- `is_coroutine()` matches `await` per line and errs toward async (`await` in a lambda). It misses a line like
+  `await foo()  # await`. The probe call (see "Calibration") keeps the return value: a state on a sync benchmark is
+  awaited and fails it.
+- Every state is awaited before `cleanup()`, a freed instance with a pending `await` gives no error, its rest never
+  runs.
+- Awaited frames are measured, calibration usually ends at N = 1.
+- Overhead: the copy has no `await`, it runs the loop of the benchmark with `is_async` and never suspends.
 
 Time per call: `max(0.0, round_usec * 1000.0 / n - overhead_ns)` ns.
 
@@ -259,11 +283,12 @@ func __overhead(_values: Array, _parameters: Dictionary, _input: Callable) -> vo
 - Built by `GdUnitBenchmarkMeasurement` from the `GdFunctionDescriptor`: same argument names and types, no defaults,
   inferred types written out (`rounds := 10` gives `int`, `input := _shuffled` gives `Callable`).
 - `extends` the suite script, so inner classes, `class_name` and `preload` constants of the suite resolve.
-- The suite overrides no Godot virtual method (see "Cases"). Member initializers of the suite still run, `@onready` does not, the
-  instance never enters the tree.
+- The suite overrides no Godot virtual method (see "Cases"). Member initializers of the suite still run, `@onready`
+  does not, the instance never enters the tree.
 - One instance, not added to the tree, called with the same argument array, 3 rounds with the calibrated N, median.
   Freed after the measurement.
-- Async uses the sync overhead. Mean below 2 × overhead: hint "close to the call overhead".
+- Same loop and flags as the benchmark, the copy never suspends. Mean below 2 × overhead: hint "close to the call
+  overhead".
 
 Probe, Godot 4.7.2, 5 arguments:
 
@@ -279,7 +304,8 @@ Probe, Godot 4.7.2, 5 arguments:
 ### Calibration
 
 N = 1, ×10 until a round reaches 50 ms, then scaled to 50 ms. A single call above 50 ms: N = 1. Clock resolution then
-below 0.01 % of a round. The first round with N = 1 is the probe call, errors are checked right after it.
+below 0.01 % of a round. The first round with N = 1 is the probe call: errors are checked right after it, its
+return value is kept (see "Async").
 
 ### Errors
 
@@ -423,4 +449,6 @@ Godot 4.7, 4.7.1, 4.8 (`master` row of `README.md`). APIs: `Time.get_ticks_usec`
 - A parameter function with different results in editor and runner changes the combinations. Count check in the
   executor, values may still differ.
 - The overhead instance runs the member initializers of the suite a second time, outside the measurement.
+- An `await` that `is_coroutine()` misses and that is reached only after the probe call stays undetected, its sync
+  round drops the state and the rest of the body runs later.
 - `--benchmark` is unknown to older GdUnit4 versions.

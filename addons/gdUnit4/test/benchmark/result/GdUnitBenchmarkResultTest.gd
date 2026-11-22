@@ -5,11 +5,6 @@ const NA := GdUnitBenchmarkStatistics.NA
 const SAMPLES: Array[float] = [388.1, 387.9, 389.4, 388.0, 389.2, 388.5, 387.7, 388.3, 552.0, 388.9]
 
 
-static func json_round_trip(serialized: Dictionary) -> Dictionary:
-	var parsed: Dictionary = JSON.parse_string(JSON.stringify(serialized, "", false, true))
-	return parsed
-
-
 func _measured_result() -> GdUnitBenchmarkResult:
 	var result := GdUnitBenchmarkResult.new()
 	result.resource_path = "res://test/benchmarks/ArrayBenchmark.gd"
@@ -95,7 +90,7 @@ func test_serialize_non_json_parameter_as_text() -> void:
 func test_round_trip_measured() -> void:
 	var result := _measured_result()
 
-	var restored := GdUnitBenchmarkResult.deserialize(json_round_trip(result.serialize()))
+	var restored := GdUnitBenchmarkResult.deserialize(GdUnitBenchmarkTestHelper.json_round_trip(result.serialize()))
 
 	assert_dict(restored.serialize()).is_equal(result.serialize())
 	assert_str(restored.resource_path).is_equal("res://test/benchmarks/ArrayBenchmark.gd")
@@ -115,7 +110,7 @@ func test_round_trip_measured() -> void:
 
 
 func test_round_trip_keeps_int_types() -> void:
-	var restored := GdUnitBenchmarkResult.deserialize(json_round_trip(_measured_result().serialize()))
+	var restored := GdUnitBenchmarkResult.deserialize(GdUnitBenchmarkTestHelper.json_round_trip(_measured_result().serialize()))
 
 	assert_int(restored.n).is_equal(120_000)
 	assert_int(restored.rounds).is_equal(10)
@@ -123,7 +118,7 @@ func test_round_trip_keeps_int_types() -> void:
 
 
 func test_round_trip_keeps_parameter_types() -> void:
-	var restored := GdUnitBenchmarkResult.deserialize(json_round_trip(_measured_result().serialize()))
+	var restored := GdUnitBenchmarkResult.deserialize(GdUnitBenchmarkTestHelper.json_round_trip(_measured_result().serialize()))
 
 	assert_dict(restored.parameters).is_equal({ "size": 10, "factor": 2.0, "name": "small" })
 	assert_int(typeof(restored.parameters["size"])).is_equal(TYPE_INT)
@@ -137,7 +132,7 @@ func test_round_trip_na() -> void:
 	result.state = GdUnitBenchmarkResult.State.SKIPPED
 	result.set_samples(PackedFloat64Array([42.0]))
 
-	var restored := GdUnitBenchmarkResult.deserialize(json_round_trip(result.serialize()))
+	var restored := GdUnitBenchmarkResult.deserialize(GdUnitBenchmarkTestHelper.json_round_trip(result.serialize()))
 
 	assert_int(restored.state).is_equal(GdUnitBenchmarkResult.State.SKIPPED)
 	assert_bool(GdUnitBenchmarkStatistics.is_na(restored.overhead_ns)).is_true()
@@ -155,7 +150,7 @@ func test_round_trip_baseline_failed() -> void:
 	result.state = GdUnitBenchmarkResult.State.FAILED
 	result.error = "Script error in setup:7"
 
-	var restored := GdUnitBenchmarkResult.deserialize(json_round_trip(result.serialize()))
+	var restored := GdUnitBenchmarkResult.deserialize(GdUnitBenchmarkTestHelper.json_round_trip(result.serialize()))
 
 	assert_bool(restored.baseline).is_true()
 	assert_int(restored.state).is_equal(GdUnitBenchmarkResult.State.FAILED)
@@ -184,7 +179,7 @@ func test_deserialize_unknown_state() -> void:
 
 
 func test_deserialize_parameters_without_types() -> void:
-	var restored := GdUnitBenchmarkResult.deserialize(json_round_trip({ "parameters": { "size": 10, "name": "small" } }))
+	var restored := GdUnitBenchmarkResult.deserialize(GdUnitBenchmarkTestHelper.json_round_trip({ "parameters": { "size": 10, "name": "small" } }))
 
 	assert_dict(restored.parameters).is_equal({ "size": 10.0, "name": "small" })
 #endregion

@@ -36,7 +36,7 @@ func test_round_trip_with_active_debugger() -> void:
 	var environment := GdUnitBenchmarkEnvironment.current()
 	environment.debugger_active = true
 
-	var restored := GdUnitBenchmarkEnvironment.deserialize(GdUnitBenchmarkResultTest.json_round_trip(environment.serialize()))
+	var restored := GdUnitBenchmarkEnvironment.deserialize(GdUnitBenchmarkTestHelper.json_round_trip(environment.serialize()))
 
 	assert_that(restored).is_equal(environment)
 	assert_bool(restored.debugger_active).is_true()
@@ -46,7 +46,7 @@ func test_round_trip_without_active_debugger() -> void:
 	var environment := GdUnitBenchmarkEnvironment.current()
 	environment.debugger_active = false
 
-	var restored := GdUnitBenchmarkEnvironment.deserialize(GdUnitBenchmarkResultTest.json_round_trip(environment.serialize()))
+	var restored := GdUnitBenchmarkEnvironment.deserialize(GdUnitBenchmarkTestHelper.json_round_trip(environment.serialize()))
 
 	assert_that(restored).is_equal(environment)
 	assert_bool(restored.debugger_active).is_false()

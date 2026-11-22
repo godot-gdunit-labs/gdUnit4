@@ -5,7 +5,7 @@ const RESOURCE_PATH := "res://test/benchmarks/ArrayBenchmark.gd"
 
 
 func _round_trip(event: GdUnitBenchmarkEvent) -> GdUnitBenchmarkEvent:
-	return GdUnitBenchmarkEvent.deserialize(GdUnitBenchmarkResultTest.json_round_trip(event.serialize()))
+	return GdUnitBenchmarkEvent.deserialize(GdUnitBenchmarkTestHelper.json_round_trip(event.serialize()))
 
 
 func _result() -> GdUnitBenchmarkResult:

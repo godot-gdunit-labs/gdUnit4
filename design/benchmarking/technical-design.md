@@ -118,7 +118,11 @@ Tests: `addons/gdUnit4/test/benchmark/`, discovery fixtures in `test/benchmark/r
 `discover(script)` reads `bench_*` with `GdScriptParser.get_function_descriptors`. Per function:
 
 1. `GdUnitBenchmarkConfig` from the default arguments, names trimmed of `_`.
-2. `GdUnitBenchmarkConfig` of `setup()` for suite `do_skip` / `skip_reason`.
+2. `GdUnitBenchmarkConfig` of `setup()` for suite `do_skip` / `skip_reason`, and the suite check: a name of
+   `script.get_script_method_list()` that `ClassDB.class_get_method_list(script.get_instance_base_type())` lists with
+   `METHOD_FLAG_VIRTUAL` fails every case of the suite, line by `GdScriptParser`. Covers `_init`, `_notification`,
+   `_to_string`, `_get` and the `Node` callbacks, base scripts included, never the implicit initializer (Godot 4.7.2).
+   `ClassDB.class_has_method` is `false` for virtual methods, unfit. `GdUnitBenchmarkSuite` overrides none.
 3. `GdUnitBenchmarkParameters` resolves and validates.
 4. One `GdUnitTestCase` per combination via `GdUnitTestCase.from`.
 
@@ -248,10 +252,6 @@ Per benchmark, a copy of the function without body on a temporary script:
 extends "res://test/benchmarks/ArrayBenchmark.gd"
 
 
-func _init() -> void:
-    pass
-
-
 func __overhead(_values: Array, _parameters: Dictionary, _input: Callable) -> void:
     pass
 ```
@@ -259,8 +259,8 @@ func __overhead(_values: Array, _parameters: Dictionary, _input: Callable) -> vo
 - Built by `GdUnitBenchmarkMeasurement` from the `GdFunctionDescriptor`: same argument names and types, no defaults,
   inferred types written out (`rounds := 10` gives `int`, `input := _shuffled` gives `Callable`).
 - `extends` the suite script, so inner classes, `class_name` and `preload` constants of the suite resolve.
-- `_init()` without `super()` skips the `_init()` of the suite. Member initializers of the suite still run (Godot
-  4.7.2), `@onready` does not, the instance never enters the tree.
+- The suite overrides no Godot virtual method (see "Cases"). Member initializers of the suite still run, `@onready` does not, the
+  instance never enters the tree.
 - One instance, not added to the tree, called with the same argument array, 3 rounds with the calibrated N, median.
   Freed after the measurement.
 - Async uses the sync overhead. Mean below 2 × overhead: hint "close to the call overhead".

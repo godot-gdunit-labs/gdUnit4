@@ -43,6 +43,9 @@ func _shuffled() -> Array:
 - Extends `GdUnitBenchmarkSuite` (extends `Node`). No test suite, no asserts, reports values only.
 - Found like tests: folders of "Test Lookup Folder", on the command line the paths of `-a`.
 - No `before()` / `after()`, state belongs to the single benchmark.
+- No override of a Godot virtual method (`_init()`, `_ready()`, `_process()`, `_input()`, `_notification()`, ...) in
+  the suite and its base scripts, they would run during the measurement. Initialization goes into member initializers
+  or `setup()`, frame work into the body.
 
 | Method                               | Behavior                                           |
 | ------------------------------------ | -------------------------------------------------- |
@@ -74,7 +77,7 @@ Per benchmark and parameter combination:
 
 1. New suite instance.
 2. Parameter values set on members.
-3. Added to the tree, `_ready()` sees the parameter values.
+3. Added to the tree.
 4. `setup()`.
 5. Calibrate N, `warmup` rounds dropped, `rounds` rounds measured.
 6. `cleanup()`.
@@ -135,7 +138,7 @@ func _new_level() -> Level:
 - Clock `Time.get_ticks_usec()`, not the script profiler.
 - N calibrated to rounds of at least 50 ms, N = 1 for longer calls.
 - Call overhead measured per benchmark and subtracted, with a copy of the function without body on a second instance
-  of the suite. Its member initializers run again, outside the measurement, `_init()` and `_ready()` don't.
+  of the suite. Its member initializers run again, outside the measurement.
 - Reported: time per call. Upper outliers removed before `Mean` and `Error`.
 - Editor binary runs GDScript as debug build, not comparable with exported games. Header shows the build.
 
@@ -143,6 +146,7 @@ func _new_level() -> Level:
 
 A benchmark fails, the others continue, on:
 
+- Godot virtual method overridden in the suite or a base script: all benchmarks of the suite, found by the discovery,
 - unknown argument, second baseline, arguments without default not matching `input`,
 - parameter key not a member, untyped member, value not matching the type,
 - script error or `push_error` in `setup()`, `input`, body or `cleanup()`.

@@ -354,7 +354,7 @@ return value is kept (see "Async").
 6. Ratio = `Mean / Mean of the baseline` with equal parameter values.
 7. RatioSD = `Ratio * sqrt((StdDev / Mean)² + (StdDev_baseline / Mean_baseline)²)`.
 
-Fewer than 2 values after 1: StdDev, Error, RatioSD `NA`.
+Fewer than 2 values after 1: StdDev, Error, RatioSD `NA`. NA is `NAN`. The baseline itself: Ratio 1, RatioSD 0.
 
 ## Result model
 
@@ -374,14 +374,14 @@ Fewer than 2 values after 1: StdDev, Error, RatioSD `NA`.
     "rounds": 10,
     "warmup": 3,
     "overhead_ns": 86.0,
-    "samples_ns": [388.1, 387.9, 389.4, 388.0, 391.2, 388.5, 387.7, 388.3, 552.0, 388.9],
+    "samples_ns": [388.1, 387.9, 389.4, 388.0, 389.2, 388.5, 387.7, 388.3, 552.0, 388.9],
     "outliers_ns": [552.0],
-    "mean_ns": 388.67,
-    "error_ns": 1.37,
-    "stddev_ns": 1.05,
+    "mean_ns": 388.44,
+    "error_ns": 1.01,
+    "stddev_ns": 0.6,
     "median_ns": 388.3,
     "min_ns": 387.7,
-    "max_ns": 391.2,
+    "max_ns": 389.4,
     "ratio": 3.23,
     "ratio_sd": 0.1,
     "hints": []
